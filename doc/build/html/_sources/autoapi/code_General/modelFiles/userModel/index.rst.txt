@@ -1,0 +1,160 @@
+:py:mod:`code_General.modelFiles.userModel`
+===========================================
+
+.. py:module:: code_General.modelFiles.userModel
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Model for user
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.modelFiles.userModel.UserDescription
+   code_General.modelFiles.userModel.User
+
+
+
+
+.. py:class:: UserDescription
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What does a user consists of?
+
+
+   .. py:attribute:: subID
+      
+
+      
+
+   .. py:attribute:: hashedID
+      
+
+      
+
+   .. py:attribute:: name
+      
+
+      
+
+   .. py:attribute:: organizations
+      
+
+      
+
+   .. py:attribute:: details
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+   .. py:attribute:: lastSeen
+      
+
+      
+
+
+.. py:class:: User(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Profile management class for regular users.
+
+   :subID: Unique ID for that person returned by Auth0, primary key
+   :hashedID: SHA-512 hashed value of the subID for anonymous identification
+   :name: Nickname returned by Auth0, used for filter searches in DB
+   :organizations: The organizations that the user belongs to
+   :details: Adress, E-Mail, ...
+   :createdWhen: Automatically assigned date and time(UTC+0) when the user first registered
+   :updatedWhen: Date and time at which the entry was updated
+   :accessedWhen: Last date and time the user was fetched from the database, automatically set
+   :lastSeen: When was the user last online, set manually
+
+   .. py:class:: Meta
+
+      .. py:attribute:: indexes
+         
+
+         
+
+
+   .. py:attribute:: subID
+      
+
+      
+
+   .. py:attribute:: hashedID
+      
+
+      
+
+   .. py:attribute:: name
+      
+
+      
+
+   .. py:attribute:: organizations
+      
+
+      
+
+   .. py:attribute:: details
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+   .. py:attribute:: lastSeen
+      
+
+      
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+   .. py:method:: toDict()
+
+
+

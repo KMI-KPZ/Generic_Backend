@@ -1,0 +1,15 @@
+:py:mod:`code_SemperKI.settings`
+================================
+
+.. py:module:: code_SemperKI.settings
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   base/index.rst
+
+

@@ -1,0 +1,59 @@
+:py:mod:`BenchyMcMarkface`
+==========================
+
+.. py:module:: BenchyMcMarkface
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: BenchyMcMarkface, it is a script that can be used to benchmark a website
+
+   Needed as parameters: 
+
+   The main url of the website
+
+   A file containing suburls, one per line
+
+   Number of async calls to be made randomly to the suburls
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   BenchyMcMarkface.request
+   BenchyMcMarkface.runLoop
+   BenchyMcMarkface.main
+   BenchyMcMarkface.mainDjango
+   BenchyMcMarkface.startFromDjango
+
+
+
+.. py:function:: request(url)
+   :async:
+
+
+.. py:function:: runLoop(url, paths)
+   :async:
+
+
+.. py:function:: main(argv)
+   :async:
+
+
+.. py:function:: mainDjango(argv)
+   :async:
+
+
+.. py:function:: startFromDjango(request)
+
+

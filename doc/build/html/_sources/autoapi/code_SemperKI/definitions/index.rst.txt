@@ -1,0 +1,314 @@
+:py:mod:`code_SemperKI.definitions`
+===================================
+
+.. py:module:: code_SemperKI.definitions
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Definitions, Classes, Enums to describe Elements in the Backend as well as Services
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.definitions.ProcessStatus
+   code_SemperKI.definitions.DataType
+   code_SemperKI.definitions.ProjectUpdates
+   code_SemperKI.definitions.ProcessUpdates
+   code_SemperKI.definitions.ProcessDetails
+   code_SemperKI.definitions.MessageContent
+   code_SemperKI.definitions.SessionContentSemperKI
+
+
+
+
+.. py:class:: ProcessStatus
+
+   Bases: :py:obj:`enum.IntEnum`
+
+   Defines all statuus for the process (independent of the selected service)
+
+   .. py:attribute:: DRAFT
+      :annotation: = 0
+
+      
+
+   .. py:attribute:: WAITING_FOR_OTHER_PROCESS
+      :annotation: = 100
+
+      
+
+   .. py:attribute:: SERVICE_READY
+      :annotation: = 200
+
+      
+
+   .. py:attribute:: SERVICE_IN_PROGRESS
+      :annotation: = 201
+
+      
+
+   .. py:attribute:: SERVICE_COMPLICATION
+      :annotation: = 202
+
+      
+
+   .. py:attribute:: CONTRACTOR_SELECTED
+      :annotation: = 300
+
+      
+
+   .. py:attribute:: VERIFYING
+      :annotation: = 400
+
+      
+
+   .. py:attribute:: VERIFIED
+      :annotation: = 500
+
+      
+
+   .. py:attribute:: REQUESTED
+      :annotation: = 600
+
+      
+
+   .. py:attribute:: CLARIFICATION
+      :annotation: = 700
+
+      
+
+   .. py:attribute:: CONFIRMED_BY_CONTRACTOR
+      :annotation: = 800
+
+      
+
+   .. py:attribute:: REJECTED_BY_CONTRACTOR
+      :annotation: = 801
+
+      
+
+   .. py:attribute:: CONFIRMED_BY_CLIENT
+      :annotation: = 900
+
+      
+
+   .. py:attribute:: REJECTED_BY_CLIENT
+      :annotation: = 901
+
+      
+
+   .. py:attribute:: PRODUCTION
+      :annotation: = 1000
+
+      
+
+   .. py:attribute:: DELIVERY
+      :annotation: = 1100
+
+      
+
+   .. py:attribute:: DISPUTE
+      :annotation: = 1200
+
+      
+
+   .. py:attribute:: COMPLETED
+      :annotation: = 1300
+
+      
+
+   .. py:attribute:: FAILED
+      :annotation: = 1400
+
+      
+
+   .. py:attribute:: CANCELED
+      :annotation: = 1500
+
+      
+
+
+.. py:class:: DataType
+
+   Bases: :py:obj:`enum.IntEnum`
+
+   Defines the types of data that are saved in the database of the same name
+
+
+   .. py:attribute:: CREATION
+      :annotation: = 1
+
+      
+
+   .. py:attribute:: STATUS
+      :annotation: = 2
+
+      
+
+   .. py:attribute:: MESSAGE
+      :annotation: = 3
+
+      
+
+   .. py:attribute:: FILE
+      :annotation: = 4
+
+      
+
+   .. py:attribute:: DELETION
+      :annotation: = 5
+
+      
+
+   .. py:attribute:: DETAILS
+      :annotation: = 6
+
+      
+
+   .. py:attribute:: OTHER
+      :annotation: = 7
+
+      
+
+
+.. py:class:: ProjectUpdates
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What types of updates are there for a project?
+
+
+   .. py:attribute:: status
+      
+
+      
+
+   .. py:attribute:: details
+      
+
+      
+
+
+.. py:class:: ProcessUpdates
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What types of updates are there for a process? 
+
+
+   .. py:attribute:: messages
+      
+
+      
+
+   .. py:attribute:: files
+      
+
+      
+
+   .. py:attribute:: serviceDetails
+      
+
+      
+
+   .. py:attribute:: serviceType
+      
+
+      
+
+   .. py:attribute:: serviceStatus
+      
+
+      
+
+   .. py:attribute:: processDetails
+      
+
+      
+
+   .. py:attribute:: processStatus
+      
+
+      
+
+   .. py:attribute:: provisionalContractor
+      
+
+      
+
+
+.. py:class:: ProcessDetails
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What Details can a Process have?
+
+
+   .. py:attribute:: name
+      
+
+      
+
+   .. py:attribute:: provisionalContractor
+      
+
+      
+
+
+.. py:class:: MessageContent
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What does a message consists of?
+
+
+   .. py:attribute:: date
+      
+
+      
+
+   .. py:attribute:: userID
+      
+
+      
+
+   .. py:attribute:: userName
+      
+
+      
+
+   .. py:attribute:: text
+      
+
+      
+
+
+.. py:class:: SessionContentSemperKI
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   Name of all added keys to the session for uniform naming
+
+
+   .. py:attribute:: CURRENT_PROJECTS
+      
+
+      
+
+   .. py:attribute:: processes
+      
+
+      
+
+

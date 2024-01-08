@@ -1,0 +1,63 @@
+:py:mod:`backend_django.services.crypto`
+========================================
+
+.. py:module:: backend_django.services.crypto
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for cryptographics
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.crypto.generateMD5
+   backend_django.services.crypto.generateSecureID
+   backend_django.services.crypto.generateSalt
+
+
+
+.. py:function:: generateMD5(someString) -> str
+
+   Convert string to md5 hashed string
+
+   :param someString: String that shall be hashed
+   :type someString: string
+   :return: string containing the md5 hash
+   :rtype: string
+
+
+
+.. py:function:: generateSecureID(someString) -> str
+
+   Convert string to as secure as possible hashed string
+
+   :param someString: String that shall be hashed
+   :type someString: string
+   :return: string containing the hash
+   :rtype: string
+
+
+
+.. py:function:: generateSalt(size=5) -> str
+
+   Generate unique random salt string to be attached to another string before hashing
+
+   :param size: Number of characters generated as salt
+   :type size: int
+   :return: string containing salt
+   :rtype: string
+
+
+

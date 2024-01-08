@@ -1,0 +1,106 @@
+:py:mod:`backend_django.services.mocks`
+=======================================
+
+.. py:module:: backend_django.services.mocks
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Mockups for various stuff
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.mocks.mockPicture
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.mocks.mockModels
+   backend_django.services.mocks.getEmptyMockModel
+   backend_django.services.mocks.mockMaterials
+   backend_django.services.mocks.mockPostProcessing
+   backend_django.services.mocks.mockPrices
+   backend_django.services.mocks.mockLogistics
+   backend_django.services.mocks.mockPrinter
+   backend_django.services.mocks.mockMaterial
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.mocks.testpicture
+   backend_django.services.mocks.modelMock
+   backend_django.services.mocks.materialMock
+   backend_django.services.mocks.postProcessingMock
+
+
+.. py:class:: mockPicture
+
+   .. py:attribute:: picturePath
+      :annotation: = /public/static/public/media/testpicture.jpg
+
+      
+
+
+.. py:data:: testpicture
+   
+
+   
+
+.. py:function:: mockModels()
+
+
+.. py:data:: modelMock
+   
+
+   
+
+.. py:function:: getEmptyMockModel()
+
+
+.. py:function:: mockMaterials()
+
+
+.. py:data:: materialMock
+   
+
+   
+
+.. py:function:: mockPostProcessing()
+
+
+.. py:data:: postProcessingMock
+   
+
+   
+
+.. py:function:: mockPrices(selection)
+
+
+.. py:function:: mockLogistics(selection)
+
+
+.. py:function:: mockPrinter()
+
+
+.. py:function:: mockMaterial()
+
+

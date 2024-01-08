@@ -1,0 +1,66 @@
+:py:mod:`code_SemperKI.code_services.code_service_AdditiveManufacturing.connections.postgresql.pgService`
+=========================================================================================================
+
+.. py:module:: code_SemperKI.code_services.code_service_AdditiveManufacturing.connections.postgresql.pgService
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Functions specific for 3D printing service that access the database directly
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.connections.postgresql.pgService.updateServiceDetails
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.connections.postgresql.pgService.deleteServiceDetails
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.connections.postgresql.pgService.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:function:: updateServiceDetails(existingContent, newContent)
+
+   Update the content of the current service in the process
+
+   :param existingContent: What the process currently holds about the service
+   :type existingContent: Dict
+   :param newContent: What the user changed
+   :type newContent: Dict
+   :return: New service Instance
+   :rtype: Dict
+
+
+.. py:function:: deleteServiceDetails(existingContent, deletedContent)
+
+   Delete stuff from the service
+
+   :param existingContent: What the process currently holds about the service
+   :type existingContent: Dict
+   :param deletedContent: What the user wants deleted
+   :type deletedContent: Dict
+   :return: New service Instance
+   :rtype: Dict
+
+

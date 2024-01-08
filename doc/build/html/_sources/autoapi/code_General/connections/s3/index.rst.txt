@@ -1,0 +1,98 @@
+:py:mod:`code_General.connections.s3`
+=====================================
+
+.. py:module:: code_General.connections.s3
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for aws cloud storage and file management
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.connections.s3.ManageS3
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.connections.s3.manageLocalS3
+   code_General.connections.s3.manageRemoteS3
+
+
+.. py:class:: ManageS3(aesKey, location, bucketName, endpoint, key, secret, local: bool)
+
+   Class for managing access to local/remote AWS
+
+
+   .. py:method:: __getattr__(item)
+
+
+   .. py:method:: createBucket(bucketName)
+
+      Create a named bucket to put stuff in. Should only be used freely for localstack!
+
+      :param bucketName: Name of the bucket
+      :type bucketName: Str
+      :return: Success or error
+      :rtype: Bool or Error
+
+
+   .. py:method:: uploadFile(fileKey, file)
+
+      Upload a binary in-memory file to storage.
+
+      :param fileKey: The key with which to retrieve the file again later
+      :type fileKey: Str
+      :param file: InMemory BytesIO object containing a file
+      :type file: BytesIO InMemoryFile
+      :return: Success or error
+      :rtype: Bool or Error
+
+
+   .. py:method:: downloadFile(fileKey) -> (io.BytesIO, bool)
+
+      Upload a binary in-memory file to storage.
+
+      :param fileKey: The key with which to retrieve the file again later
+      :type fileKey: Str
+      :return: File or error
+      :rtype: BytesIO or Error
+
+
+   .. py:method:: deleteFile(fileKey)
+
+      Delete a file from storage.
+
+      :param fileKey: The key with which to retrieve the file again later
+      :type fileKey: Str
+      :return: File or error
+      :rtype: BytesIO or Error
+
+
+
+.. py:data:: manageLocalS3
+   
+
+   
+
+.. py:data:: manageRemoteS3
+   
+
+   
+

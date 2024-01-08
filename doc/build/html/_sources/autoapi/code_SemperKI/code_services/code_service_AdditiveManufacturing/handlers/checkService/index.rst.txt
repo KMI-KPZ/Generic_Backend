@@ -1,0 +1,76 @@
+:py:mod:`code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.checkService`
+==============================================================================================
+
+.. py:module:: code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.checkService
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Handlers using simulation to check the processes
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.checkService.checkPrintability
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.checkService.checkPrice
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.checkService.checkLogistics
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.checkService.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:function:: checkPrintability(request)
+
+   Check if model is printable
+
+   :param request: ?
+   :type request: ?
+   :return: ?
+   :rtype: ?
+
+
+
+.. py:function:: checkPrice(request)
+
+   Check how much that'll cost
+
+   :param request: GET Request with json attached
+   :type request: Json?
+   :return: JSON with prices for various stuff
+   :rtype: Json Response
+
+
+
+.. py:function:: checkLogistics(request)
+
+   Check how much time stuff'll need
+
+   :param request: GET Request with json attached
+   :type request: Json?
+   :return: JSON with times for various stuff
+   :rtype: Json Response
+
+
+

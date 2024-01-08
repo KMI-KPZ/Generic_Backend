@@ -1,0 +1,250 @@
+:py:mod:`code_General.definitions`
+==================================
+
+.. py:module:: code_General.definitions
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Definitions, Classes, Enums to describe Elements in the Backend as well as Services
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.definitions.FileObject
+   code_General.definitions.FileObjectContent
+   code_General.definitions.SessionContent
+   code_General.definitions.ProfileClasses
+   code_General.definitions.OrganizationDetails
+   code_General.definitions.GlobalDefaults
+
+
+
+
+.. py:class:: FileObject
+
+   How should a file Object look like?
+
+
+   .. py:attribute:: id
+      :annotation: = 
+
+      
+
+   .. py:attribute:: path
+      :annotation: = 
+
+      
+
+   .. py:attribute:: fileName
+      :annotation: = 
+
+      
+
+   .. py:attribute:: tags
+      :annotation: = []
+
+      
+
+   .. py:attribute:: date
+      :annotation: = 
+
+      
+
+   .. py:attribute:: licenses
+      :annotation: = []
+
+      
+
+   .. py:attribute:: certificates
+      :annotation: = []
+
+      
+
+   .. py:attribute:: URI
+      :annotation: = 
+
+      
+
+   .. py:attribute:: createdBy
+      :annotation: = 
+
+      
+
+
+.. py:class:: FileObjectContent
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   .. py:attribute:: id
+      
+
+      
+
+   .. py:attribute:: path
+      
+
+      
+
+   .. py:attribute:: fileName
+      
+
+      
+
+   .. py:attribute:: tags
+      
+
+      
+
+   .. py:attribute:: date
+      
+
+      
+
+   .. py:attribute:: licenses
+      
+
+      
+
+   .. py:attribute:: certificates
+      
+
+      
+
+   .. py:attribute:: URI
+      
+
+      
+
+   .. py:attribute:: createdBy
+      
+
+      
+
+
+.. py:class:: SessionContent
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What is saved into the session?
+
+
+   .. py:attribute:: INITIALIZED
+      
+
+      
+
+   .. py:attribute:: NUMBER_OF_LOGIN_ATTEMPTS
+      
+
+      
+
+   .. py:attribute:: LAST_LOGIN_ATTEMPT
+      
+
+      
+
+   .. py:attribute:: usertype
+      
+
+      
+
+   .. py:attribute:: IS_PART_OF_ORGANIZATION
+      
+
+      
+
+   .. py:attribute:: PG_PROFILE_CLASS
+      
+
+      
+
+   .. py:attribute:: PATH_AFTER_LOGIN
+      
+
+      
+
+   .. py:attribute:: MOCKED_LOGIN
+      
+
+      
+
+   .. py:attribute:: ORGANIZATION_NAME
+      
+
+      
+
+   .. py:attribute:: USER_ROLES
+      
+
+      
+
+   .. py:attribute:: USER_PERMISSIONS
+      
+
+      
+
+
+.. py:class:: ProfileClasses
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   Which classes exist?
+
+   .. py:attribute:: user
+      
+
+      
+
+   .. py:attribute:: organization
+      
+
+      
+
+
+.. py:class:: OrganizationDetails
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What details can an organization have?
+
+
+   .. py:attribute:: adress
+      
+
+      
+
+   .. py:attribute:: email
+      
+
+      
+
+   .. py:attribute:: taxID
+      
+
+      
+
+
+.. py:class:: GlobalDefaults
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   Some things need to be defined globally in name
+
+
+   .. py:attribute:: anonymous
+      
+
+      
+
+

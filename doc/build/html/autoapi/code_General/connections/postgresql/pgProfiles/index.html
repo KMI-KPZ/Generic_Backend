@@ -1,0 +1,600 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>code_General.connections.postgresql.pgProfiles &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.connections.postgresql.pgProfiles">
+<span id="code-general-connections-postgresql-pgprofiles"></span><h1><a class="reference internal" href="#module-code_General.connections.postgresql.pgProfiles" title="code_General.connections.postgresql.pgProfiles"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_General.connections.postgresql.pgProfiles</span></code></a><a class="headerlink" href="#module-code_General.connections.postgresql.pgProfiles" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: Services for database calls to manage a user/organization profile</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase" title="code_General.connections.postgresql.pgProfiles.ProfileManagementBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProfileManagementBase</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementUser" title="code_General.connections.postgresql.pgProfiles.ProfileManagementUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProfileManagementUser</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization" title="code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProfileManagementOrganization</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.connections.postgresql.pgProfiles.logger" title="code_General.connections.postgresql.pgProfiles.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.connections.postgresql.pgProfiles.profileManagement" title="code_General.connections.postgresql.pgProfiles.profileManagement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">profileManagement</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.logger">
+<span class="sig-prename descclassname"><span class="pre">code_General.connections.postgresql.pgProfiles.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.connections.postgresql.pgProfiles.</span></span><span class="sig-name descname"><span class="pre">ProfileManagementBase</span></span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUser">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a user exists or not and retrieve entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>User details from database</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserName">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getUserName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a user exists or not and retrieve entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>User Name from database</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getOrganization">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getOrganization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getOrganization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether an organization exists or not and retrieve information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Organization details from database</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getOrganizationObject">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getOrganizationObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getOrganizationObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether an organization exists or not and retrieve the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Organization object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Database object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserHashID">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getUserHashID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserHashID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve hashed User ID from Session</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Hashed user key from database</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getOrganizationHashID">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getOrganizationHashID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getOrganizationHashID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve Organization name via hashID</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Str</em>) – session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Name of the organization</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getOrganizationName">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getOrganizationName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hashedID</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getOrganizationName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve Organization name via hashID</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hashedID</strong> (<em>Str</em>) – ID of the organization</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Name of the organization</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserKeyViaHash">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getUserKeyViaHash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hashedID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserKeyViaHash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve User ID via Database and hashkey</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hashedID</strong> (<em>str</em>) – hashed ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Orga key from database</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserViaHash">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getUserViaHash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hashedID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserViaHash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve User Object via Database and hashkey</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hashedID</strong> (<em>str</em>) – hashed ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Object from database and whether it’s an orga(True) or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple of Object and bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserNameViaHash">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getUserNameViaHash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hashedID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserNameViaHash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve User Object via Database and hashkey</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hashedID</strong> (<em>str</em>) – hashed ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Name of user/orga from database</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserKey">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getUserKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve User ID from Session</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>User key from database</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserOrgaKey">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getUserOrgaKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserOrgaKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve User ID from Session</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>User key from database</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserKeyWOSC">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getUserKeyWOSC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uID</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getUserKeyWOSC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve User ID from Session without special characters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>User key from database without stuff like | or ^</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.setLoginTime">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setLoginTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userIDHash</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.setLoginTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the last login Time to now. Used for ‘Last Login’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>str</em>) – userID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.deleteUser">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deleteUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uHashedID</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.deleteUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete User.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – GET request session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag if it worked or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.deleteOrganization">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deleteOrganization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orgID</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.deleteOrganization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete Organization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – GET request session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag if it worked or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getAll">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getAll</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.getAll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all Users and Organizations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Two arrays containing all entries</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List, List</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementBase.checkIfUserIsInOrganization">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">checkIfUserIsInOrganization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase.checkIfUserIsInOrganization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a user is in an organization or not. Can be used to decide if additional code specific for orgas should be run</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – GET request session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if User is in organization, False if not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementUser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.connections.postgresql.pgProfiles.</span></span><span class="sig-name descname"><span class="pre">ProfileManagementUser</span></span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase" title="code_General.connections.postgresql.pgProfiles.ProfileManagementBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProfileManagementBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementUser.addUserIfNotExists">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">addUserIfNotExists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementUser.addUserIfNotExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add user if the entry doesn’t already exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<em>Dictionary</em>) – POST request session</p></li>
+<li><p><strong>organization</strong> (<em>None</em>) – Dummy object to comply to interface of function with same name from sister class</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Information about the user. Necessary to check if database entry is equal to callback information</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User Object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementUser.updateContent">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">updateContent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userID</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementUser.updateContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update user details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – GET request session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag if it worked or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementUser.getClientID">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getClientID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementUser.getClientID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ID of current client (can be organization or user)
+:param session: request session
+:type session: dict
+:return: hashed ID
+:rtype: String</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.connections.postgresql.pgProfiles.</span></span><span class="sig-name descname"><span class="pre">ProfileManagementOrganization</span></span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementBase" title="code_General.connections.postgresql.pgProfiles.ProfileManagementBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProfileManagementBase</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization.addUserIfNotExists">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">addUserIfNotExists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organization</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization.addUserIfNotExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add user if the entry doesn’t already exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – POST request session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>User info for verification</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization.addUserToOrganization">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">addUserToOrganization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">userToBeAdded</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organizationID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization.addUserToOrganization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add user to organization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>userToBeAdded</strong> (<a class="reference internal" href="../../../modelFiles/userModel/index.html#code_General.modelFiles.userModel.User" title="code_General.modelFiles.userModel.User"><em>User</em></a>) – User to be added</p></li>
+<li><p><strong>organization</strong> (<em>str</em>) – id of the organization</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag if it worked or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization.addOrGetOrganization">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">addOrGetOrganization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization.addOrGetOrganization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add organization if the entry doesn’t already exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<em>Dictionary</em>) – POST request session</p></li>
+<li><p><strong>typeOfOrganization</strong> (<em>str</em>) – type of the organization, can be: manufacturer, stakeholder</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag if it worked or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization.updateContent">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">updateContent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orgaID</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization.updateContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update user details and more.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – GET request session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag if it worked or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization.getClientID">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getClientID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization.getClientID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ID of current client (can be organization or user)
+:param session: request session
+:type session: dict
+:return: hashed ID
+:rtype: String</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.connections.postgresql.pgProfiles.profileManagement">
+<span class="sig-prename descclassname"><span class="pre">code_General.connections.postgresql.pgProfiles.</span></span><span class="sig-name descname"><span class="pre">profileManagement</span></span><a class="headerlink" href="#code_General.connections.postgresql.pgProfiles.profileManagement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../../_sources/autoapi/code_General/connections/postgresql/pgProfiles/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

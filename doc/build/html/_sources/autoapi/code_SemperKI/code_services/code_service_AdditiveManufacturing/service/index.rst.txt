@@ -1,0 +1,48 @@
+:py:mod:`code_SemperKI.code_services.code_service_AdditiveManufacturing.service`
+================================================================================
+
+.. py:module:: code_SemperKI.code_services.code_service_AdditiveManufacturing.service
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Class which describes the service in particular
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.service.AdditiveManufacturing
+
+
+
+
+.. py:class:: AdditiveManufacturing
+
+   Bases: :py:obj:`code_SemperKI.services.ServiceBase`
+
+   All functions of this service
+
+
+   .. py:method:: updateServiceDetails(existingContent, newContent)
+
+      Run service specific update of service details
+
+
+
+   .. py:method:: deleteServiceDetails(existingContent, deletedContent)
+
+      Delete stuff from a service
+
+
+
+

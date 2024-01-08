@@ -1,0 +1,176 @@
+:py:mod:`code_SemperKI.modelFiles.dataModel`
+============================================
+
+.. py:module:: code_SemperKI.modelFiles.dataModel
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Models for data
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.modelFiles.dataModel.DataDescription
+   code_SemperKI.modelFiles.dataModel.Data
+
+
+
+
+.. py:class:: DataDescription
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What does a data entry consists of?
+
+
+   .. py:attribute:: dataID
+      
+
+      
+
+   .. py:attribute:: process
+      
+
+      
+
+   .. py:attribute:: type
+      
+
+      
+
+   .. py:attribute:: data
+      
+
+      
+
+   .. py:attribute:: details
+      
+
+      
+
+   .. py:attribute:: createdBy
+      
+
+      
+
+   .. py:attribute:: contentID
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+
+.. py:class:: Data(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Data management class.
+
+   :dataID: Primary Key with hash
+   :process: Link to the process that created this entry
+   :type: Type of data, defined in another enum
+   :data: The data itself
+   :details: Meta data and other information
+   :createdBy: Who created this data
+   :contentID: ID of a file for example, makes searching easier
+   :createdWhen: Automatically assigned date and time(UTC+0) when the entry is created
+   :updatedWhen: Date and time at which the entry was updated
+   :accessedWhen: Last date and time the data was fetched from the database, automatically set
+
+   .. py:class:: Meta
+
+      .. py:attribute:: ordering
+         :annotation: = ['createdWhen']
+
+         
+
+      .. py:attribute:: indexes
+         
+
+         
+
+
+   .. py:attribute:: dataID
+      
+
+      
+
+   .. py:attribute:: process
+      
+
+      
+
+   .. py:attribute:: type
+      
+
+      
+
+   .. py:attribute:: data
+      
+
+      
+
+   .. py:attribute:: details
+      
+
+      
+
+   .. py:attribute:: createdBy
+      
+
+      
+
+   .. py:attribute:: contentID
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+   .. py:method:: toDict()
+
+
+

@@ -1,0 +1,124 @@
+:py:mod:`backend_django.handlers.checkOrder`
+============================================
+
+.. py:module:: backend_django.handlers.checkOrder
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Handlers using simulation to check the orders
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.checkOrder.updateCart
+   backend_django.handlers.checkOrder.getCart
+   backend_django.handlers.checkOrder.getManufacturers
+   backend_django.handlers.checkOrder.checkPrintability
+   backend_django.handlers.checkOrder.checkPrice
+   backend_django.handlers.checkOrder.checkLogistics
+   backend_django.handlers.checkOrder.sendOrder
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.checkOrder.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:function:: updateCart(request)
+
+   Save selection of user into session
+
+   :param request: json containing selection
+   :type request: JSON
+   :return: Response if saving worked or not
+   :rtype: HTTP Response
+
+
+
+.. py:function:: getCart(request)
+
+   Retrieve selection from session
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: JSON cart
+   :rtype: JSON Response
+
+
+
+.. py:function:: getManufacturers(request)
+
+   Get all suitable manufacturers.
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: List of manufacturers and some details
+   :rtype: JSON
+
+
+
+.. py:function:: checkPrintability(request)
+
+   Check if model is printable
+
+   :param request: ?
+   :type request: ?
+   :return: ?
+   :rtype: ?
+
+
+
+.. py:function:: checkPrice(request)
+
+   Check how much that'll cost
+
+   :param request: GET Request with json attached
+   :type request: Json?
+   :return: JSON with prices for various stuff
+   :rtype: Json Response
+
+
+
+.. py:function:: checkLogistics(request)
+
+   Check how much time stuff'll need
+
+   :param request: GET Request with json attached
+   :type request: Json?
+   :return: JSON with times for various stuff
+   :rtype: Json Response
+
+
+
+.. py:function:: sendOrder(request)
+
+   Save order and send it to manufacturer
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: Response if sent successfully or not
+   :rtype: HTTP Response
+
+
+

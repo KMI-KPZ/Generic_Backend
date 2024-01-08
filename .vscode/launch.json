@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "Docker: Python - Django",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run: debug",
+            "postDebugTask": "docker-compose-down",            
+            "python": {
+                "pathMappings": [
+                    {
+                        "localRoot": "${workspaceFolder}",
+                        "remoteRoot": "/app"
+                    }
+                ],
+                "projectType": "django",
+                "justMyCode": false,
+                "autoReload": {
+                    "enable": true
+                }
+            }
+        }
+    ],
+    "launchBrowser": {
+        "enabled": false
+    }
+}

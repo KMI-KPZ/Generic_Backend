@@ -1,0 +1,288 @@
+:py:mod:`code_SemperKI.handlers.projectAndProcessManagement`
+============================================================
+
+.. py:module:: code_SemperKI.handlers.projectAndProcessManagement
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Handlers managing the projects and processes
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.handlers.projectAndProcessManagement.fireWebsocketEvents
+   code_SemperKI.handlers.projectAndProcessManagement.createProjectID
+   code_SemperKI.handlers.projectAndProcessManagement.updateProject
+   code_SemperKI.handlers.projectAndProcessManagement.deleteProjects
+   code_SemperKI.handlers.projectAndProcessManagement.createProcessID
+   code_SemperKI.handlers.projectAndProcessManagement.updateProcessFunction
+   code_SemperKI.handlers.projectAndProcessManagement.getProcessAndProjectFromSession
+   code_SemperKI.handlers.projectAndProcessManagement.updateProcess
+   code_SemperKI.handlers.projectAndProcessManagement.deleteProcesses
+   code_SemperKI.handlers.projectAndProcessManagement.getFlatProjects
+   code_SemperKI.handlers.projectAndProcessManagement.getProject
+   code_SemperKI.handlers.projectAndProcessManagement.retrieveProjects
+   code_SemperKI.handlers.projectAndProcessManagement.getMissedEvents
+   code_SemperKI.handlers.projectAndProcessManagement.getContractors
+   code_SemperKI.handlers.projectAndProcessManagement.saveProjectsViaWebsocket
+   code_SemperKI.handlers.projectAndProcessManagement.saveProjects
+   code_SemperKI.handlers.projectAndProcessManagement.verifyProject
+   code_SemperKI.handlers.projectAndProcessManagement.sendProject
+   code_SemperKI.handlers.projectAndProcessManagement.getProcessHistory
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.handlers.projectAndProcessManagement.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:function:: fireWebsocketEvents(projectID, processID, session, event, operation='')
+
+   Fire websocket event from a list for a specific project and process. 
+   If it should fire for only specific operations like messages or files, specify so.
+
+   :param projectID: The project ID
+   :type projectID: Str
+   :param processID: The process ID
+   :type processID: Str
+   :param session: The session of the current user
+   :type session: Dict
+   :param event: The event to fire
+   :type event: Str
+   :param operation: Nothing or messages, files, ...
+   :type operation: Str
+   :return: Nothing
+   :rtype: None
+
+
+.. py:function:: createProjectID(request)
+
+   Create project ID for frontend
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: project ID as string
+   :rtype: JSONResponse
+
+
+
+.. py:function:: updateProject(request)
+
+   Update stuff about the project
+
+   :param request: Request with content
+   :type request: HTTP PATCH
+   :return: Message if it worked or not
+   :rtype: HTTPResponse
+
+
+
+.. py:function:: deleteProjects(request)
+
+   Delete the whole project
+
+   :param request: DELETE Request
+   :type request: HTTP DELETE
+   :param projectID: id of the project
+   :type projectID: str
+   :return: Success or not
+   :rtype: HTTPRespone
+
+
+
+.. py:function:: createProcessID(request, projectID)
+
+   Create process ID for frontend
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :param projectID: id of the project the created process should belong to
+   :type projectID: str
+   :return: process ID as string
+   :rtype: JSONResponse
+
+
+
+.. py:function:: updateProcessFunction(request, changes: dict, projectID: str, processIDs: list[str])
+
+   Update process logic
+
+   :param projectID: Project ID
+   :type projectID: Str
+   :param projectID: Process ID
+   :type projectID: Str
+   :return: Message if it worked or not
+   :rtype: Str, bool or Error
+
+
+.. py:function:: getProcessAndProjectFromSession(session, processID)
+
+   Retrieve a specific process from the current session instead of the database
+
+   :param session: Session of the current user
+   :type session: Dict
+   :param projectID: Process ID
+   :type projectID: Str
+   :return: Process or None
+   :rtype: Dict or None
+
+
+.. py:function:: updateProcess(request)
+
+   Update stuff about the process
+
+   :param request: Request with content
+   :type request: HTTP PATCH
+   :return: Message if it worked or not
+   :rtype: HTTPResponse
+
+
+
+.. py:function:: deleteProcesses(request, projectID)
+
+   Delete one or more processes
+
+   :param request: DELETE Request
+   :type request: HTTP DELETE
+   :param projectID: id of the project
+   :type projectID: str
+   :return: Success or not
+   :rtype: HTTPRespone
+
+
+
+.. py:function:: getFlatProjects(request)
+
+   Retrieve projects without much detail.
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: Response with list
+   :rtype: JSON Response
+
+
+
+.. py:function:: getProject(request, projectID)
+
+   Retrieve project and processes.
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :param projectID: id of the project
+   :type projectID: str
+   :return: Response with dict
+   :rtype: JSON Response
+
+
+
+.. py:function:: retrieveProjects(request)
+
+   Retrieve all saved projects with processes.
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: JSON Response with projects/processes of that user
+   :rtype: JSON Response
+
+
+
+.. py:function:: getMissedEvents(request)
+
+   Show how many events (chat messages ...) were missed since last login.
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: JSON Response with numbers for every process and project
+   :rtype: JSON Response
+
+
+
+.. py:function:: getContractors(request, processID)
+
+   Get all suitable Contractors.
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: List of contractors and some details
+   :rtype: JSON
+
+
+
+.. py:function:: saveProjectsViaWebsocket(session)
+
+   Save projects to database
+
+   :param session: session of user
+   :type session: Dict
+   :return: None
+   :rtype: None
+
+
+
+.. py:function:: saveProjects(request)
+
+   Save projects to database
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: Response if sent successfully or not
+   :rtype: HTTP Response
+
+
+
+.. py:function:: verifyProject(request)
+
+   Start calculations on server and set status accordingly
+
+   :param request: PATCH Request
+   :type request: HTTP PATCH
+   :return: Response if processes are started successfully
+   :rtype: HTTP Response
+
+
+
+.. py:function:: sendProject(request)
+
+   Retrieve Calculations and send process to contractor(s)
+
+   :param request: PATCH Request
+   :type request: HTTP PATCH
+   :return: Response if processes are started successfully
+   :rtype: HTTP Response
+
+
+
+.. py:function:: getProcessHistory(request, processID)
+
+   See who has done what and when
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :param processID: The process of interest
+   :type processID: str
+   :return: JSON of process history
+   :rtype: JSON Response
+
+
+

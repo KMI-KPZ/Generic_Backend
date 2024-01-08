@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>backend_django.handlers.ontology &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-backend_django.handlers.ontology">
+<span id="backend-django-handlers-ontology"></span><h1><a class="reference internal" href="#module-backend_django.handlers.ontology" title="backend_django.handlers.ontology"><code class="xref py py-mod docutils literal notranslate"><span class="pre">backend_django.handlers.ontology</span></code></a><a class="headerlink" href="#module-backend_django.handlers.ontology" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: Calls to ontology for adding and retrieving data</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.onto_getMaterials" title="backend_django.handlers.ontology.onto_getMaterials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onto_getMaterials</span></code></a>(request)</p></td>
+<td><p>Gathers all available materials from the knowledge graph/ontology</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.onto_getPrinters" title="backend_django.handlers.ontology.onto_getPrinters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onto_getPrinters</span></code></a>(request)</p></td>
+<td><p>Gathers all available 3D printers from the knowledge graph/ontology</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.onto_getPrinter" title="backend_django.handlers.ontology.onto_getPrinter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onto_getPrinter</span></code></a>(request)</p></td>
+<td><p>Gathers info about one specific 3D printer from the knowledge graph/ontology</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.onto_getMaterial" title="backend_django.handlers.ontology.onto_getMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onto_getMaterial</span></code></a>(request)</p></td>
+<td><p>Gathers info about one specific meterial from the knowledge graph/ontology</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.orga_getPrinters" title="backend_django.handlers.ontology.orga_getPrinters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orga_getPrinters</span></code></a>(request)</p></td>
+<td><p>Gathers list of printers assigned to that organization from the knowledge graph/ontology</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.orga_addPrinter" title="backend_django.handlers.ontology.orga_addPrinter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orga_addPrinter</span></code></a>(request)</p></td>
+<td><p>Links an existing printer to that organization in the knowledge graph/ontology</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.orga_addPrinterEdit" title="backend_django.handlers.ontology.orga_addPrinterEdit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orga_addPrinterEdit</span></code></a>(request)</p></td>
+<td><p>Links an existing printer to that organization in the knowledge graph/ontology and adds some extra info</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.orga_createPrinter" title="backend_django.handlers.ontology.orga_createPrinter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orga_createPrinter</span></code></a>(request)</p></td>
+<td><p>Adds a new printer for that organization to the knowledge graph/ontology</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.orga_removePrinter" title="backend_django.handlers.ontology.orga_removePrinter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orga_removePrinter</span></code></a>(request)</p></td>
+<td><p>Unlinks an existing printer of that organization in the knowledge graph/ontology</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.orga_addMaterial" title="backend_django.handlers.ontology.orga_addMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orga_addMaterial</span></code></a>(request)</p></td>
+<td><p>Links an existing material to that organization in the knowledge graph/ontology</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.orga_addMaterialEdit" title="backend_django.handlers.ontology.orga_addMaterialEdit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orga_addMaterialEdit</span></code></a>(request)</p></td>
+<td><p>Links an existing material to that organization in the knowledge graph/ontology and adds some custom properties</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.orga_createMaterial" title="backend_django.handlers.ontology.orga_createMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orga_createMaterial</span></code></a>(request)</p></td>
+<td><p>Creates a new material and links it to that organization in the knowledge graph/ontology</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.orga_removeMaterial" title="backend_django.handlers.ontology.orga_removeMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orga_removeMaterial</span></code></a>(request)</p></td>
+<td><p>Unlinks an existing material of that organization in the knowledge graph/ontology</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.orga_getMaterials" title="backend_django.handlers.ontology.orga_getMaterials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orga_getMaterials</span></code></a>(request)</p></td>
+<td><p>Lists all materials of that organization from the knowledge graph/ontology</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.ontology.logger" title="backend_django.handlers.ontology.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.logger">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#backend_django.handlers.ontology.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.onto_getMaterials">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">onto_getMaterials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.onto_getMaterials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers all available materials from the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP GET</em>) – Get request from frontend</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flat list of Materials</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSONResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.onto_getPrinters">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">onto_getPrinters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.onto_getPrinters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers all available 3D printers from the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP GET</em>) – Get request from frontend</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flat list of printers</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSONResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.onto_getPrinter">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">onto_getPrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.onto_getPrinter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers info about one specific 3D printer from the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Info about a printer</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSONResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.onto_getMaterial">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">onto_getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.onto_getMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers info about one specific meterial from the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Info about a material</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSONResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.orga_getPrinters">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">orga_getPrinters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.orga_getPrinters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers list of printers assigned to that organization from the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of printers</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSONResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.orga_addPrinter">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">orga_addPrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.orga_addPrinter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Links an existing printer to that organization in the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend with organization name and printer name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Success or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.orga_addPrinterEdit">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">orga_addPrinterEdit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.orga_addPrinterEdit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Links an existing printer to that organization in the knowledge graph/ontology and adds some extra info</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend with organization name and printer name as well as properties</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Success or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.orga_createPrinter">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">orga_createPrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.orga_createPrinter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new printer for that organization to the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend with organization name and printer details</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Success or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.orga_removePrinter">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">orga_removePrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.orga_removePrinter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlinks an existing printer of that organization in the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend with organization name and printer name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Success or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.orga_addMaterial">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">orga_addMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.orga_addMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Links an existing material to that organization in the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend with organization name and material name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Success or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.orga_addMaterialEdit">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">orga_addMaterialEdit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.orga_addMaterialEdit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Links an existing material to that organization in the knowledge graph/ontology and adds some custom properties</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend with organization name and material name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Success or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.orga_createMaterial">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">orga_createMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.orga_createMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new material and links it to that organization in the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend with organization name and material name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Success or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.orga_removeMaterial">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">orga_removeMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.orga_removeMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlinks an existing material of that organization in the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend with organization name and material name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Success or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.ontology.orga_getMaterials">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.ontology.</span></span><span class="sig-name descname"><span class="pre">orga_getMaterials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.ontology.orga_getMaterials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all materials of that organization from the knowledge graph/ontology</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Post request from frontend with organization name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Success or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/backend_django/handlers/ontology/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

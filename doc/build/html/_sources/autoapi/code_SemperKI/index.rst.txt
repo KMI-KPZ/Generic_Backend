@@ -1,0 +1,36 @@
+:py:mod:`code_SemperKI`
+=======================
+
+.. py:module:: code_SemperKI
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   code_services/index.rst
+   connections/index.rst
+   handlers/index.rst
+   management/index.rst
+   modelFiles/index.rst
+   settings/index.rst
+   utilities/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   apps/index.rst
+   definitions/index.rst
+   imports/index.rst
+   models/index.rst
+   services/index.rst
+   tests/index.rst
+   urls/index.rst
+
+

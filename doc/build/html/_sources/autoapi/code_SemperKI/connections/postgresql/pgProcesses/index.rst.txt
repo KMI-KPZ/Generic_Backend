@@ -1,0 +1,364 @@
+:py:mod:`code_SemperKI.connections.postgresql.pgProcesses`
+==========================================================
+
+.. py:module:: code_SemperKI.connections.postgresql.pgProcesses
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for database calls
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.connections.postgresql.pgProcesses.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:class:: ProcessManagementBase
+
+   .. py:method:: getData(processID, processObject=None)
+      :staticmethod:
+
+      Get all files.
+
+      :param processID: process ID for a process
+      :type processID: str
+      :return: list of all data
+      :rtype: list
+
+
+
+   .. py:method:: getDataWithContentID(processID, IDofContent)
+      :staticmethod:
+
+      Get one datum in particular but use the content ID.
+
+      :param processID: process ID for a process
+      :type processID: str
+      :param IDofContent: ID for a datum
+      :type IDofContent: str
+      :return: this datum
+      :rtype: dict
+
+
+
+   .. py:method:: getDataWithID(IDofData)
+      :staticmethod:
+
+      Get one datum in particular.
+
+      :param IDofData: ID for a datum
+      :type IDofData: str
+      :return: this datum
+      :rtype: dict
+
+
+
+   .. py:method:: getDataByType(typeOfData: code_SemperKI.definitions.DataType, processID, processObject=None)
+      :staticmethod:
+
+      Get all data of a certain type for a process.
+
+      :param processID: process ID for a process
+      :type processID: str
+      :param typeOfData: type of this data
+      :type typeOfData: DataType
+      :return: all results
+      :rtype: list
+
+
+
+   .. py:method:: createDataEntry(data, dataID, processID, typeOfData: code_SemperKI.definitions.DataType, createdBy: str, details={}, IDofData='')
+      :staticmethod:
+
+      Create an entry in the Data table
+
+      :param data: The data itself
+      :type data: Dict in JSON
+      :param dataID: The ID of that date
+      :type dataID: Str
+      :param processID: process it belongs to
+      :type processID: str
+      :param typeOfData: The type of this data
+      :type typeOfData: DataType
+      :param createdBy: Who created it (hashed ID)
+      :type createdBy: Str
+      :param details: Some metadata
+      :type details: JSON Dict
+      :param IDofData: If the data has an id, save it
+      :type IDofData: Str
+      :return: Nothing
+      :rtype: None
+
+
+   .. py:method:: deleteDataEntry(dataID)
+      :staticmethod:
+
+      Delete a specific data entry
+
+      :param dataID: The primary key of that datum
+      :type dataID: str
+      :return: Nothing
+      :rtype: None
+
+
+   .. py:method:: getProcessObj(processID)
+      :staticmethod:
+
+      Get one process.
+
+      :param processID: process ID for a process
+      :type processID: str
+      :return: Requested process
+      :rtype: ProcessObj
+
+
+
+   .. py:method:: getProjectObj(projectID)
+      :staticmethod:
+
+      Get one project object.
+
+      :param projectID: project ID for a project 
+      :type projectID: str
+      :return: Requested project object
+      :rtype: project
+
+
+
+   .. py:method:: getProject(projectID, currentUserHashID, currentOrgaHashID)
+      :staticmethod:
+
+      Get info about one project.
+
+      :param projectID: ID of the project
+      :type projectID: str
+      :return: dict with info about that project
+      :rtype: dict
+
+
+
+   .. py:method:: getAllUsersOfProcess(processID)
+      :staticmethod:
+
+      Get all users that are connected to that processID.
+
+      :param processID: unique process ID
+      :type processID: str
+      :return: List of all userIDs
+      :rtype: List
+
+
+
+   .. py:method:: getProjectIDViaProcessID(processID)
+      :staticmethod:
+
+      Get Project ID from the Process ID
+
+      :param processID: unique process ID
+      :type processID: str
+      :return: project ID
+      :rtype: str
+
+
+   .. py:method:: deleteProcess(processID, processObj=None)
+      :staticmethod:
+
+      Delete specific process.
+
+      :param processID: unique process ID to be deleted
+      :type processID: str
+      :return: Flag if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: deleteProject(projectID)
+      :staticmethod:
+
+      Delete specific project.
+
+      :param projectID: unique project ID to be deleted
+      :type projectID: str
+      :return: Flag if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: updateProject(projectID, updateType: code_SemperKI.definitions.ProjectUpdates, content)
+      :staticmethod:
+
+      Change details of an project like its status. 
+
+      :param projectID: project ID that this project belongs to
+      :type projectID: str
+      :param updateType: changed project details
+      :type updateType: EnumUpdates
+      :param content: changed project, can be many stuff
+      :type content: json dict
+      :return: Flag if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: updateProcess(processID, updateType: code_SemperKI.definitions.ProcessUpdates, content, updatedBy)
+      :staticmethod:
+
+      Change details of a process like its status, or save communication. 
+
+      :param processID: unique processID to be edited
+      :type processID: str
+      :param updateType: changed process details
+      :type updateType: EnumUpdates
+      :param content: changed process, can be many stuff
+      :type content: json dict
+      :return: Flag if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: sendProcess(processID)
+      :staticmethod:
+
+      Send process to contractor.
+
+      :param processID: ID of the process that is being sent
+      :type processID: str
+      :return: Nothing or an error
+      :rtype: None or error
+
+
+   .. py:method:: deleteFromProcess(processID, updateType: code_SemperKI.definitions.ProcessUpdates, content, deletedBy)
+      :staticmethod:
+
+      Delete details of a process like its status, or content. 
+
+      :param processID: unique process ID to be edited
+      :type processID: str
+      :param updateType: changed process details
+      :type updateType: EnumUpdates
+      :param content: deletions
+      :type content: json dict
+      :return: Flag if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: addProcessTemplateToProject(projectID, template, clientID)
+      :staticmethod:
+
+      add a process to an existing project in the database
+
+      :param projectID: project ID to retrieve data from
+      :type projectID: str
+      :param template: Dictionary with templated process
+      :type template: Dict
+      :return: None or Error
+      :rtype: None or Error
+
+
+
+   .. py:method:: getInfoAboutProjectForWebsocket(projectID, affectedProcessesIDs: list, event)
+      :staticmethod:
+
+      Retrieve information about the users connected to the project from the database. 
+
+      :param projectID: project ID to retrieve data from
+      :type projectID: str
+      :return: Dictionary of users with project ID and processes in order for the websocket to fire events
+      :rtype: Dict
+
+
+
+   .. py:method:: getAllProjectsFlat()
+      :staticmethod:
+
+      Return flat list of all projects, for admins
+
+      :return: Json with all projects and their data
+      :rtype: List of dicts
+
+
+   .. py:method:: getProcessesPerPID(projectID)
+      :staticmethod:
+
+      Retrieve infos about one project, for admins
+
+      :param projectID: project of interest
+      :type projectID: str
+      :return: list of all processes of that OC
+      :rtype: list
+
+
+   .. py:method:: addProjectToDatabase(session)
+      :staticmethod:
+
+      Add project and processes for that user. Check if user already has a project and append if so, create a new process if not.
+
+      :param session: session of user
+      :type session: session dict
+      :return: Dictionary of users with project id and processes in order for the websocket to fire events
+      :rtype: Dict
+
+
+
+   .. py:method:: getProjects(session)
+      :staticmethod:
+
+      Get all processes for that user.
+
+      :param session: session of that user
+      :type session: dict
+      :return: sorted list with all processes
+      :rtype: list
+
+
+
+   .. py:method:: getProjectsFlat(session)
+      :staticmethod:
+
+      Get all projects for that user but with limited detail.
+
+      :param session: session of that user
+      :type session: dict
+      :return: sorted list with projects
+      :rtype: list
+
+
+
+   .. py:method:: getAllContractors(selectedService: int)
+      :staticmethod:
+
+      Get all contractors.
+
+      :return: All contractors
+      :rtype: Dictionary
+
+
+
+

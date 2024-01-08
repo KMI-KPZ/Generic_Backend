@@ -1,0 +1,50 @@
+:py:mod:`backend_django.services.stl`
+=====================================
+
+.. py:module:: backend_django.services.stl
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for generating a preview of stl files
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.stl.stlToBinJpg
+   backend_django.services.stl.binToJpg
+
+
+
+.. py:function:: stlToBinJpg(file) -> str
+   :async:
+
+   Convert stl file to jpg
+
+   :param file: open file from redis
+   :type file: binary file
+   :return: jpg for rendering
+   :rtype: JPG as base64 encoded binary string
+
+
+
+.. py:function:: binToJpg(binaryString)
+
+   Convert binary string to jpg
+
+   :param binaryString: binary string
+   :type request: string
+
+
+

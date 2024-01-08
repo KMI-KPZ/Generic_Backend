@@ -1,0 +1,114 @@
+:py:mod:`backend_django.handlers.files`
+=======================================
+
+.. py:module:: backend_django.handlers.files
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: File upload handling
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.files.testRedis
+   backend_django.handlers.files.uploadFileTemporary
+   backend_django.handlers.files.createPreviewForOneFile
+   backend_django.handlers.files.createPreview
+   backend_django.handlers.files.uploadModels
+   backend_django.handlers.files.getUploadedFiles
+   backend_django.handlers.files.testGetUploadedFiles
+   backend_django.handlers.files.downloadFiles
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.files.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:function:: testRedis(request)
+
+   Save a key:value in redis and retrieve it to test if it works.
+
+   :param request: request
+   :type request: HTTP GET
+   :return: Response with results of "search"
+   :rtype: JSON
+
+
+
+.. py:function:: uploadFileTemporary(request)
+
+   File upload for temporary use, save into redis.
+
+   :param request: request
+   :type request: HTTP POST
+   :return: Response with success or fail
+   :rtype: HTTPResponse
+
+
+
+.. py:function:: createPreviewForOneFile(inMemoryFile)
+   :async:
+
+
+.. py:function:: createPreview(listOfFiles, fileNames)
+   :async:
+
+
+.. py:function:: uploadModels(request)
+
+   File(s) upload for temporary use, save into redis. File(s) are 3D models
+
+   :param request: request
+   :type request: HTTP POST
+   :return: Response with mock model of uploaded file
+   :rtype: HTTPResponse
+
+
+
+.. py:function:: getUploadedFiles(session_key)
+
+   Retrieve temporary files from redis.
+
+   :param session_key: session_key of user
+   :type session_key: string
+   :return: Saved content
+   :rtype: tuple
+
+
+
+.. py:function:: testGetUploadedFiles(request)
+
+
+.. py:function:: downloadFiles(request)
+
+   Send file to user from temporary, later permanent storage
+
+   :param request: Request of user for a specific file of an order
+   :type request: HTTP POST
+   :return: Saved content
+   :rtype: HTTP Response
+
+
+

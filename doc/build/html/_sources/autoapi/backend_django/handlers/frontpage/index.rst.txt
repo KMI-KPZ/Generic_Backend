@@ -1,0 +1,75 @@
+:py:mod:`backend_django.handlers.frontpage`
+===========================================
+
+.. py:module:: backend_django.handlers.frontpage
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Views for some backend websites
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.frontpage.landingPage
+   backend_django.handlers.frontpage.benchyPage
+   backend_django.handlers.frontpage.docPage
+   backend_django.handlers.frontpage.sparqlPage
+
+
+
+.. py:function:: landingPage(request)
+
+   Landing page for the backend
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: Rendered page
+   :rtype: None
+
+
+
+.. py:function:: benchyPage(request)
+
+   Landing page for the benchmark tool
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: Rendered page
+   :rtype: None
+
+
+
+.. py:function:: docPage(request)
+
+   Documentation page for the backend
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: Rendered page
+   :rtype: None
+
+
+
+.. py:function:: sparqlPage(request)
+
+   Landing page for a sparql test query
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: Rendered page
+   :rtype: None
+
+
+

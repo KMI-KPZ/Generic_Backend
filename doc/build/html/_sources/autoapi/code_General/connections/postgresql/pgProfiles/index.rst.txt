@@ -1,0 +1,376 @@
+:py:mod:`code_General.connections.postgresql.pgProfiles`
+========================================================
+
+.. py:module:: code_General.connections.postgresql.pgProfiles
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for database calls to manage a user/organization profile
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.connections.postgresql.pgProfiles.ProfileManagementBase
+   code_General.connections.postgresql.pgProfiles.ProfileManagementUser
+   code_General.connections.postgresql.pgProfiles.ProfileManagementOrganization
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.connections.postgresql.pgProfiles.logger
+   code_General.connections.postgresql.pgProfiles.profileManagement
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:class:: ProfileManagementBase
+
+   .. py:method:: getUser(session)
+      :staticmethod:
+
+      Check whether a user exists or not and retrieve entry.
+
+      :param session: session
+      :type session: Dictionary
+      :return: User details from database
+      :rtype: Dictionary
+
+
+
+   .. py:method:: getUserName(session)
+      :staticmethod:
+
+      Check whether a user exists or not and retrieve entry.
+
+      :param session: session
+      :type session: Dictionary
+      :return: User Name from database
+      :rtype: Str
+
+
+
+   .. py:method:: getOrganization(session)
+      :staticmethod:
+
+      Check whether an organization exists or not and retrieve information.
+
+      :param session: session
+      :type session: Dictionary
+      :return: Organization details from database
+      :rtype: Dictionary
+
+
+
+   .. py:method:: getOrganizationObject(session)
+      :staticmethod:
+
+      Check whether an organization exists or not and retrieve the object.
+
+      :param session: session
+      :type session: Dictionary
+      :return: Organization object
+      :rtype: Database object
+
+
+
+   .. py:method:: getUserHashID(session)
+      :staticmethod:
+
+      Retrieve hashed User ID from Session
+
+      :param session: session
+      :type session: Dictionary
+      :return: Hashed user key from database
+      :rtype: Str
+
+
+
+   .. py:method:: getOrganizationHashID(session)
+      :staticmethod:
+
+      Retrieve Organization name via hashID
+
+      :param session: session
+      :type session: Str
+      :return: Name of the organization
+      :rtype: Str
+
+
+
+   .. py:method:: getOrganizationName(hashedID: str)
+      :staticmethod:
+
+      Retrieve Organization name via hashID
+
+      :param hashedID: ID of the organization
+      :type hashedID: Str
+      :return: Name of the organization
+      :rtype: Str
+
+
+
+   .. py:method:: getUserKeyViaHash(hashedID)
+      :staticmethod:
+
+      Retrieve User ID via Database and hashkey
+
+      :param hashedID: hashed ID
+      :type hashedID: str
+      :return: Orga key from database
+      :rtype: Str
+
+
+
+   .. py:method:: getUserViaHash(hashedID)
+      :staticmethod:
+
+      Retrieve User Object via Database and hashkey
+
+      :param hashedID: hashed ID
+      :type hashedID: str
+      :return: Object from database and whether it's an orga(True) or not
+      :rtype: Tuple of Object and bool
+
+
+
+   .. py:method:: getUserNameViaHash(hashedID)
+      :staticmethod:
+
+      Retrieve User Object via Database and hashkey
+
+      :param hashedID: hashed ID
+      :type hashedID: str
+      :return: Name of user/orga from database
+      :rtype: Str
+
+
+
+   .. py:method:: getUserKey(session)
+      :staticmethod:
+
+      Retrieve User ID from Session
+
+      :param session: session
+      :type session: Dictionary
+      :return: User key from database
+      :rtype: Str
+
+
+
+   .. py:method:: getUserOrgaKey(session)
+      :staticmethod:
+
+      Retrieve User ID from Session
+
+      :param session: session
+      :type session: Dictionary
+      :return: User key from database
+      :rtype: Str
+
+
+
+   .. py:method:: getUserKeyWOSC(session=None, uID=None)
+      :staticmethod:
+
+      Retrieve User ID from Session without special characters
+
+      :param session: session
+      :type session: Dictionary
+      :return: User key from database without stuff like | or ^
+      :rtype: Str
+
+
+
+   .. py:method:: setLoginTime(userIDHash)
+      :staticmethod:
+
+      Sets the last login Time to now. Used for 'Last Login'.
+
+      :param session: userID
+      :type session: str
+      :return: Nothing
+      :rtype: None
+
+
+
+   .. py:method:: deleteUser(session, uHashedID='')
+      :staticmethod:
+
+      Delete User.
+
+      :param session: GET request session
+      :type session: Dictionary
+      :return: Flag if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: deleteOrganization(session, orgID='')
+      :staticmethod:
+
+      Delete Organization.
+
+      :param session: GET request session
+      :type session: Dictionary
+      :return: Flag if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: getAll()
+      :staticmethod:
+
+      Get all Users and Organizations.
+
+      :return: Two arrays containing all entries
+      :rtype: List, List
+
+
+
+   .. py:method:: checkIfUserIsInOrganization(session)
+      :staticmethod:
+
+      Check if a user is in an organization or not. Can be used to decide if additional code specific for orgas should be run
+
+      :param session: GET request session
+      :type session: Dictionary
+      :return: True if User is in organization, False if not
+      :rtype: bool
+
+
+
+
+.. py:class:: ProfileManagementUser
+
+   Bases: :py:obj:`ProfileManagementBase`
+
+   .. py:method:: addUserIfNotExists(session, organization=None)
+      :staticmethod:
+
+      Add user if the entry doesn't already exists.
+
+      :param session: POST request session
+      :type session: Dictionary
+      :param organization: Dummy object to comply to interface of function with same name from sister class
+      :type organization: None
+      :return: Information about the user. Necessary to check if database entry is equal to callback information
+      :rtype: User Object
+
+
+
+   .. py:method:: updateContent(session, details, userID='')
+      :staticmethod:
+
+      Update user details.
+
+      :param session: GET request session
+      :type session: Dictionary
+      :return: Flag if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: getClientID(session)
+      :staticmethod:
+
+      Get ID of current client (can be organization or user)
+      :param session: request session
+      :type session: dict
+      :return: hashed ID
+      :rtype: String
+
+
+
+
+.. py:class:: ProfileManagementOrganization
+
+   Bases: :py:obj:`ProfileManagementBase`
+
+   .. py:method:: addUserIfNotExists(session, organization)
+      :staticmethod:
+
+      Add user if the entry doesn't already exists.
+
+      :param session: POST request session
+      :type session: Dictionary
+      :return: User info for verification
+      :rtype: User object
+
+
+
+   .. py:method:: addUserToOrganization(userToBeAdded, organizationID)
+      :staticmethod:
+
+      Add user to organization.
+
+      :param userToBeAdded: User to be added
+      :type userToBeAdded: User
+      :param organization: id of the organization
+      :type organization: str
+      :return: Flag if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: addOrGetOrganization(session)
+      :staticmethod:
+
+      Add organization if the entry doesn't already exists.
+
+      :param session: POST request session
+      :type session: Dictionary
+      :param typeOfOrganization: type of the organization, can be: manufacturer, stakeholder
+      :type typeOfOrganization: str
+      :return: Flag if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: updateContent(session, content, orgaID='')
+      :staticmethod:
+
+      Update user details and more.
+
+      :param session: GET request session
+      :type session: Dictionary
+      :return: Flag if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: getClientID(session)
+      :staticmethod:
+
+      Get ID of current client (can be organization or user)
+      :param session: request session
+      :type session: dict
+      :return: hashed ID
+      :rtype: String
+
+
+
+
+.. py:data:: profileManagement
+   
+
+   
+

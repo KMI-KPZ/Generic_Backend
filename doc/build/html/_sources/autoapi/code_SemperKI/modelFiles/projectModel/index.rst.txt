@@ -1,0 +1,123 @@
+:py:mod:`code_SemperKI.modelFiles.projectModel`
+===============================================
+
+.. py:module:: code_SemperKI.modelFiles.projectModel
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Model for projects
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.modelFiles.projectModel.ProjectDescription
+   code_SemperKI.modelFiles.projectModel.Project
+
+
+
+
+.. py:class:: ProjectDescription
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What does a project consists of?
+
+
+   .. py:attribute:: projectID
+      
+
+      
+
+   .. py:attribute:: status
+      
+
+      
+
+   .. py:attribute:: client
+      
+
+      
+
+   .. py:attribute:: details
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+
+.. py:class:: Project(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Project class.
+
+   :projectID: Unique ID for that project, primary key
+   :status: Current state of the project
+   :createdWhen: Automatically assigned date and time(UTC+0) when the entry is created
+   :updatedWhen: Date and time at which the entry was updated
+   :accessedWhen: Last date and time the data was fetched from the database, automatically set
+
+   .. py:attribute:: projectID
+      
+
+      
+
+   .. py:attribute:: status
+      
+
+      
+
+   .. py:attribute:: client
+      
+
+      
+
+   .. py:attribute:: details
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+   .. py:method:: toDict()
+
+
+

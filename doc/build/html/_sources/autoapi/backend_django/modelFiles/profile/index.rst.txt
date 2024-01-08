@@ -1,0 +1,252 @@
+:py:mod:`backend_django.modelFiles.profile`
+===========================================
+
+.. py:module:: backend_django.modelFiles.profile
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Model for user and manufacturer profiles, as well as their meta classes
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.modelFiles.profile.User
+   backend_django.modelFiles.profile.Stakeholder
+   backend_django.modelFiles.profile.Manufacturer
+
+
+
+
+.. py:class:: User(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Profile management class for regular users.
+
+   :subID: Unique ID for that person returned by Auth0, primary key
+   :hashedID: SHA-512 hashed value of the subID for anonymous identification
+   :name: Nickname returned by Auth0, used for filter searches in DB
+   :email: E-Mail with which the user registered themselves
+   :organization: The Stakeholder that user belongs to
+   :role: Role assigned to the user
+   :rights: The rights that user has
+   :address: Where to find the user
+   :createdWhen: Automatically assigned date and time(UTC+0) when the user first registered
+   :updatedWhen: Date and time at which the entry was updated
+   :accessedWhen: Last date and time the user was fetched from the database, automatically set
+
+   .. py:attribute:: subID
+      
+
+      
+
+   .. py:attribute:: hashedID
+      
+
+      
+
+   .. py:attribute:: name
+      
+
+      
+
+   .. py:attribute:: email
+      
+
+      
+
+   .. py:attribute:: organization
+      
+
+      
+
+   .. py:attribute:: role
+      
+
+      
+
+   .. py:attribute:: rights
+      
+
+      
+
+   .. py:attribute:: address
+      
+
+      
+
+   .. py:attribute:: orders
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+   .. py:attribute:: lastSeen
+      
+
+      
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+   .. py:method:: toDict()
+
+
+
+.. py:class:: Stakeholder(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Profile management class for stakeholder.
+
+   :subID: Unique ID for that stakeholder returned by Auth0, primary key
+   :hashedID: SHA-512 hashed value of the subID for anonymous identification
+   :name: Nickname returned by Auth0, used for filter searches in DB
+   :email: E-Mail with which the user registered themselves
+   :address: Where to find the user
+   :users: Link to users belonging to that stakeholder
+   :createdWhen: Automatically assigned date and time(UTC+0) when the user first registered
+   :updatedWhen: Date and time at which the entry was updated
+   :accessedWhen: Last date and time the user was fetched from the database, automatically set
+
+   .. py:attribute:: subID
+      
+
+      
+
+   .. py:attribute:: hashedID
+      
+
+      
+
+   .. py:attribute:: name
+      
+
+      
+
+   .. py:attribute:: email
+      
+
+      
+
+   .. py:attribute:: address
+      
+
+      
+
+   .. py:attribute:: users
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+
+.. py:class:: Manufacturer(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Profile management class for manufacturers.
+
+   :subID: Unique ID for that person returned by Auth0, primary key
+   :hashedID: SHA-512 hashed value of the subID for anonymous identification
+   :name: Nickname returned by Auth0, used for filter searches in DB
+   :email: E-Mail with which the user registered themselves
+   :address: Where to find the manufacturer
+   :users: Link to users belonging to that manufacturer
+   :uri: Representation link inside the knowledge graph
+   :createdWhen: Automatically assigned date and time(UTC+0) when the user first registered
+   :updatedWhen: Date and time at which the entry was updated
+   :accessedWhen: Last date and time the user was fetched from the database, automatically set
+
+   .. py:attribute:: subID
+      
+
+      
+
+   .. py:attribute:: hashedID
+      
+
+      
+
+   .. py:attribute:: name
+      
+
+      
+
+   .. py:attribute:: email
+      
+
+      
+
+   .. py:attribute:: address
+      
+
+      
+
+   .. py:attribute:: users
+      
+
+      
+
+   .. py:attribute:: uri
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+

@@ -1,0 +1,85 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+
+		{  "label": "docker-compose-up",
+			"type": "shell",
+			"command" :"docker-compose",
+			"args": [
+				"-p", "vs-code-dev-services", "-f", "./docker-local-dev-services.yml","up","-d"
+			],
+			"group": {
+				"kind":"build",
+				"isDefault": true,
+			} ,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false
+			}
+		},
+			
+		{
+			"type": "docker-build",
+			"label": "docker-build",
+			"platform": "python",
+			"dockerBuild": {
+				"tag": "backend:latest",
+				"dockerfile": "${workspaceFolder}/Dockerfile",
+				"context": "${workspaceFolder}",
+				"pull": true
+			},
+			"dependsOn":[
+				"docker-compose-up"
+			]
+		},
+		{
+			"type": "docker-run",
+			"label": "docker-run: debug",
+			"dependsOn": [
+				"docker-build"
+			],
+			"dockerRun": {
+				"customOptions": "-p 8000:8000",
+				"volumes": [
+					{ "containerPath": "/app", "localPath": "${workspaceFolder}"}
+				],
+				"env": {
+					"MODE" :"local_container"
+				},
+				"network": "vs-code-dev-services_semper-ki-dev-network"
+			},
+			"python": {
+				"args": [
+					"code_General.asgi:application --reload --reload-include *.* --reload-exclude  *.log  --reload-dir ./code_General --log-level info --env-file ./.env.dev --host 0.0.0.0 --port 8000 "
+				],
+
+				"module":"uvicorn"
+			}
+		},
+		{ 
+			"label": "docker-compose-down",
+			"type": "shell",
+			"command": "docker-compose",
+			"args": [
+				"-p", "vs-code-dev-services", "-f", "./docker-local-dev-services.yml","down"
+			],
+			"group": {
+				"kind":"build",
+				"isDefault": true,
+			},
+
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false
+			}
+		}
+	]
+}

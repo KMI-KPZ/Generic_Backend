@@ -1,0 +1,15 @@
+:py:mod:`code_General.management`
+=================================
+
+.. py:module:: code_General.management
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   commands/index.rst
+
+

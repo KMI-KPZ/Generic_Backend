@@ -1,0 +1,53 @@
+:py:mod:`backend_django.settings.development`
+=============================================
+
+.. py:module:: backend_django.settings.development
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Further settings for development mode
+
+
+
+Module Contents
+---------------
+
+.. py:data:: DEBUG
+   :annotation: = False
+
+   
+
+.. py:data:: USE_X_FORWARDED_HOST
+   :annotation: = True
+
+   
+
+.. py:data:: SECURE_PROXY_SSL_HEADER
+   :annotation: = ['HTTP_X_FORWARDED_PROTO', 'https']
+
+   
+
+.. py:data:: PRODUCTION
+   :annotation: = True
+
+   
+
+.. py:data:: CSRF_COOKIE_DOMAIN
+   :annotation: = .semper-ki.org
+
+   
+
+.. py:data:: DATABASES
+   
+
+   
+
+.. py:data:: REDIS_HOST
+   :annotation: = files-dev
+
+   
+

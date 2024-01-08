@@ -1,0 +1,171 @@
+:py:mod:`code_General.modelFiles.organizationModel`
+===================================================
+
+.. py:module:: code_General.modelFiles.organizationModel
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Model for organizations
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.modelFiles.organizationModel.OrganizationDescription
+   code_General.modelFiles.organizationModel.Organization
+
+
+
+
+.. py:class:: OrganizationDescription
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What does an Organization consists of?
+
+
+   .. py:attribute:: subID
+      
+
+      
+
+   .. py:attribute:: hashedID
+      
+
+      
+
+   .. py:attribute:: name
+      
+
+      
+
+   .. py:attribute:: details
+      
+
+      
+
+   .. py:attribute:: users
+      
+
+      
+
+   .. py:attribute:: supportedServices
+      
+
+      
+
+   .. py:attribute:: uri
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+
+.. py:class:: Organization(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Profile management class for organizations.
+
+   :subID: Unique ID for that person returned by Auth0, primary key
+   :hashedID: SHA-512 hashed value of the subID for anonymous identification
+   :name: Nickname returned by Auth0, used for filter searches in DB
+   :details: Adress, tax id and so on
+   :users: Link to users belonging to that organization
+   :supportedServices: Array of service codes that this organization supports
+   :uri: Representation link inside the knowledge graph
+   :createdWhen: Automatically assigned date and time(UTC+0) when the entry is created
+   :updatedWhen: Date and time at which the entry was updated
+   :accessedWhen: Last date and time the data was fetched from the database, automatically set
+
+   .. py:class:: Meta
+
+      .. py:attribute:: indexes
+         
+
+         
+
+
+   .. py:attribute:: subID
+      
+
+      
+
+   .. py:attribute:: hashedID
+      
+
+      
+
+   .. py:attribute:: name
+      
+
+      
+
+   .. py:attribute:: details
+      
+
+      
+
+   .. py:attribute:: users
+      
+
+      
+
+   .. py:attribute:: supportedServices
+      
+
+      
+
+   .. py:attribute:: uri
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+   .. py:method:: toDict()
+
+
+

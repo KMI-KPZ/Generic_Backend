@@ -1,0 +1,15 @@
+:py:mod:`code_SemperKI.management`
+==================================
+
+.. py:module:: code_SemperKI.management
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   commands/index.rst
+
+

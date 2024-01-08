@@ -1,0 +1,63 @@
+:py:mod:`code_SemperKI.handlers.sparqlQueries`
+==============================================
+
+.. py:module:: code_SemperKI.handlers.sparqlQueries
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Test handler for sparql
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.handlers.sparqlQueries.sendQuery
+   code_SemperKI.handlers.sparqlQueries.sendQueryCoypu
+   code_SemperKI.handlers.sparqlQueries.sendTestQuery
+
+
+
+.. py:function:: sendQuery(request)
+
+   Test Sparql queries that come from the form.
+
+   :param request: POST Request
+   :type request: HTTP POST
+   :return: Json containing results of the query
+   :rtype: JSONResponse
+
+
+
+.. py:function:: sendQueryCoypu(request)
+
+   Test Sparql for coypu
+
+   :param request: POST Request
+   :type request: HTTP POST
+   :return: Json containing results of the query
+   :rtype: JSONResponse
+
+
+
+.. py:function:: sendTestQuery(request)
+
+   Test Sparql query.
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: Json containing results of testquery
+   :rtype: JSONResponse
+
+
+

@@ -1,0 +1,80 @@
+:py:mod:`code_General.utilities.signals`
+========================================
+
+.. py:module:: code_General.utilities.signals
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Signals that can be sent to other apps
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.utilities.signals.SignalDispatchers
+   code_General.utilities.signals.SignalReceivers
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.utilities.signals.signalDispatcher
+   code_General.utilities.signals.signalReceiver
+
+
+.. py:class:: SignalDispatchers
+
+   Defines signal dispatchers that send signals to other apps
+
+
+   .. py:attribute:: userLoggedIn
+      
+
+      
+
+   .. py:attribute:: userLoggedOut
+      
+
+      
+
+   .. py:attribute:: websocketConnected
+      
+
+      
+
+   .. py:attribute:: websocketDisconnected
+      
+
+      
+
+
+.. py:data:: signalDispatcher
+   
+
+   
+
+.. py:class:: SignalReceivers
+
+   Defines signal receivers from other apps
+
+
+
+.. py:data:: signalReceiver
+   
+
+   
+

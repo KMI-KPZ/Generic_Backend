@@ -1,0 +1,17 @@
+:py:mod:`code_General.management.commands`
+==========================================
+
+.. py:module:: code_General.management.commands
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   create_db/index.rst
+   generate_env/index.rst
+   mail/index.rst
+
+

@@ -1,0 +1,28 @@
+:py:mod:`backend_django.handlers`
+=================================
+
+.. py:module:: backend_django.handlers
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   authentification/index.rst
+   basics/index.rst
+   checkOrder/index.rst
+   dashboard/index.rst
+   files/index.rst
+   filter/index.rst
+   frontpage/index.rst
+   ontology/index.rst
+   organizations/index.rst
+   profiles/index.rst
+   sparqlQueries/index.rst
+   statistics/index.rst
+   test_response/index.rst
+   websocket/index.rst
+
+

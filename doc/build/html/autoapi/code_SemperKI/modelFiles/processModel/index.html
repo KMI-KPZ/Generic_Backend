@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>code_SemperKI.modelFiles.processModel &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_SemperKI.modelFiles.processModel">
+<span id="code-semperki-modelfiles-processmodel"></span><h1><a class="reference internal" href="#module-code_SemperKI.modelFiles.processModel" title="code_SemperKI.modelFiles.processModel"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_SemperKI.modelFiles.processModel</span></code></a><a class="headerlink" href="#module-code_SemperKI.modelFiles.processModel" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: Model for processes</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_SemperKI.modelFiles.processModel.ProcessDescription" title="code_SemperKI.modelFiles.processModel.ProcessDescription"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProcessDescription</span></code></a></p></td>
+<td><p>What makes up a process object for creation in the database</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_SemperKI.modelFiles.processModel.Process" title="code_SemperKI.modelFiles.processModel.Process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Process</span></code></a></p></td>
+<td><p>Process management class.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_SemperKI.modelFiles.processModel.</span></span><span class="sig-name descname"><span class="pre">ProcessDescription</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../code_General/utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactylAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactylAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactylAsDefined</span></code></a></p>
+<p>What makes up a process object for creation in the database</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.processID">
+<span class="sig-name descname"><span class="pre">processID</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.processID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.project">
+<span class="sig-name descname"><span class="pre">project</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.processDetails">
+<span class="sig-name descname"><span class="pre">processDetails</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.processDetails" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.processStatus">
+<span class="sig-name descname"><span class="pre">processStatus</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.processStatus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.serviceDetails">
+<span class="sig-name descname"><span class="pre">serviceDetails</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.serviceDetails" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.serviceStatus">
+<span class="sig-name descname"><span class="pre">serviceStatus</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.serviceStatus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.serviceType">
+<span class="sig-name descname"><span class="pre">serviceType</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.serviceType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.client">
+<span class="sig-name descname"><span class="pre">client</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.client" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.contractor">
+<span class="sig-name descname"><span class="pre">contractor</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.contractor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.files">
+<span class="sig-name descname"><span class="pre">files</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.messages">
+<span class="sig-name descname"><span class="pre">messages</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.messages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.dependenciesIn">
+<span class="sig-name descname"><span class="pre">dependenciesIn</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.dependenciesIn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.dependenciesOut">
+<span class="sig-name descname"><span class="pre">dependenciesOut</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.dependenciesOut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.createdWhen">
+<span class="sig-name descname"><span class="pre">createdWhen</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.createdWhen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.updatedWhen">
+<span class="sig-name descname"><span class="pre">updatedWhen</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.updatedWhen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.ProcessDescription.accessedWhen">
+<span class="sig-name descname"><span class="pre">accessedWhen</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.ProcessDescription.accessedWhen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_SemperKI.modelFiles.processModel.</span></span><span class="sig-name descname"><span class="pre">Process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">django.db.models.Model</span></code></p>
+<p>Process management class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">ProcessID<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Unique ID for that process, primary key</p>
+</dd>
+<dt class="field-even">Project<span class="colon">:</span></dt>
+<dd class="field-even"><p>Signals django to link that process to a project</p>
+</dd>
+<dt class="field-odd">ProcessDetails<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of the process and stuff</p>
+</dd>
+<dt class="field-even">ProcessStatus<span class="colon">:</span></dt>
+<dd class="field-even"><p>How everything is going in general</p>
+</dd>
+<dt class="field-odd">ServiceDetails<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Details for that service</p>
+</dd>
+<dt class="field-even">ServiceStatus<span class="colon">:</span></dt>
+<dd class="field-even"><p>How everything is going for the service</p>
+</dd>
+<dt class="field-odd">ServiceType<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Which service it is</p>
+</dd>
+<dt class="field-even">Client<span class="colon">:</span></dt>
+<dd class="field-even"><p>Who started the process</p>
+</dd>
+<dt class="field-odd">Contractor<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Who gets to handle it</p>
+</dd>
+<dt class="field-even">Files<span class="colon">:</span></dt>
+<dd class="field-even"><p>Registrar keeping check, which files are currently there, link to Data model</p>
+</dd>
+<dt class="field-odd">Messages<span class="colon">:</span></dt>
+<dd class="field-odd"><p>same as files but for chat messages</p>
+</dd>
+<dt class="field-even">DependenciesIn<span class="colon">:</span></dt>
+<dd class="field-even"><p>Which process this one depends on</p>
+</dd>
+<dt class="field-odd">DependenciesOut<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Which processes depend on this one</p>
+</dd>
+<dt class="field-even">CreatedWhen<span class="colon">:</span></dt>
+<dd class="field-even"><p>Automatically assigned date and time(UTC+0) when the entry is created</p>
+</dd>
+<dt class="field-odd">UpdatedWhen<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Date and time at which the entry was updated</p>
+</dd>
+<dt class="field-even">AccessedWhen<span class="colon">:</span></dt>
+<dd class="field-even"><p>Last date and time the entry was fetched from the database, automatically set</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.Meta.indexes">
+<span class="sig-name descname"><span class="pre">indexes</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.Meta.indexes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.processID">
+<span class="sig-name descname"><span class="pre">processID</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.processID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.project">
+<span class="sig-name descname"><span class="pre">project</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.processDetails">
+<span class="sig-name descname"><span class="pre">processDetails</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.processDetails" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.processStatus">
+<span class="sig-name descname"><span class="pre">processStatus</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.processStatus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.serviceDetails">
+<span class="sig-name descname"><span class="pre">serviceDetails</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.serviceDetails" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.serviceStatus">
+<span class="sig-name descname"><span class="pre">serviceStatus</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.serviceStatus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.serviceType">
+<span class="sig-name descname"><span class="pre">serviceType</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.serviceType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.client">
+<span class="sig-name descname"><span class="pre">client</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.client" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.contractor">
+<span class="sig-name descname"><span class="pre">contractor</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.contractor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.files">
+<span class="sig-name descname"><span class="pre">files</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.messages">
+<span class="sig-name descname"><span class="pre">messages</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.messages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.dependenciesIn">
+<span class="sig-name descname"><span class="pre">dependenciesIn</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.dependenciesIn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.dependenciesOut">
+<span class="sig-name descname"><span class="pre">dependenciesOut</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.dependenciesOut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.createdWhen">
+<span class="sig-name descname"><span class="pre">createdWhen</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.createdWhen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.updatedWhen">
+<span class="sig-name descname"><span class="pre">updatedWhen</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.updatedWhen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.accessedWhen">
+<span class="sig-name descname"><span class="pre">accessedWhen</span></span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.accessedWhen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.modelFiles.processModel.Process.toDict">
+<span class="sig-name descname"><span class="pre">toDict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.modelFiles.processModel.Process.toDict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_SemperKI/modelFiles/processModel/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

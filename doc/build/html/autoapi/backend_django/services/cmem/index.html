@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>backend_django.services.cmem &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-backend_django.services.cmem">
+<span id="backend-django-services-cmem"></span><h1><a class="reference internal" href="#module-backend_django.services.cmem" title="backend_django.services.cmem"><code class="xref py py-mod docutils literal notranslate"><span class="pre">backend_django.services.cmem</span></code></a><a class="headerlink" href="#module-backend_django.services.cmem" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: Services for the sparql endpoint</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.services.cmem.ManageToken" title="backend_django.services.cmem.ManageToken"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ManageToken</span></code></a></p></td>
+<td><p>Manage oauth token class.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.services.cmem.sendQuery" title="backend_django.services.cmem.sendQuery"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sendQuery</span></code></a>(query)</p></td>
+<td><p>Send SPARQL query.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.services.cmem.endpoint" title="backend_django.services.cmem.endpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">endpoint</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.services.cmem.oauthToken" title="backend_django.services.cmem.oauthToken"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oauthToken</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="backend_django.services.cmem.ManageToken">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backend_django.services.cmem.</span></span><span class="sig-name descname"><span class="pre">ManageToken</span></span><a class="headerlink" href="#backend_django.services.cmem.ManageToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manage oauth token class.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="backend_django.services.cmem.ManageToken.token">
+<span class="sig-name descname"><span class="pre">token</span></span><a class="headerlink" href="#backend_django.services.cmem.ManageToken.token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="backend_django.services.cmem.ManageToken.client">
+<span class="sig-name descname"><span class="pre">client</span></span><a class="headerlink" href="#backend_django.services.cmem.ManageToken.client" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend_django.services.cmem.ManageToken.getAccessToken">
+<span class="sig-name descname"><span class="pre">getAccessToken</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.services.cmem.ManageToken.getAccessToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get initial token. Made as a function to be callable from outside.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="backend_django.services.cmem.ManageToken.checkIfExpired">
+<span class="sig-name descname"><span class="pre">checkIfExpired</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.services.cmem.ManageToken.checkIfExpired" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if token has expired and if so, refresh it.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="backend_django.services.cmem.endpoint">
+<span class="sig-prename descclassname"><span class="pre">backend_django.services.cmem.</span></span><span class="sig-name descname"><span class="pre">endpoint</span></span><a class="headerlink" href="#backend_django.services.cmem.endpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="backend_django.services.cmem.oauthToken">
+<span class="sig-prename descclassname"><span class="pre">backend_django.services.cmem.</span></span><span class="sig-name descname"><span class="pre">oauthToken</span></span><a class="headerlink" href="#backend_django.services.cmem.oauthToken" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.services.cmem.sendQuery">
+<span class="sig-prename descclassname"><span class="pre">backend_django.services.cmem.</span></span><span class="sig-name descname"><span class="pre">sendQuery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.services.cmem.sendQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send SPARQL query.
+:param query: Contains sparql query as string
+:type query: str
+:return: result of query
+:rtype: JSON</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/backend_django/services/cmem/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

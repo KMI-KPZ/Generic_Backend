@@ -1,0 +1,42 @@
+:py:mod:`code_General.utilities.customStrEnum`
+==============================================
+
+.. py:module:: code_General.utilities.customStrEnum
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Custom StrEnum Class for representation of String Enum variables exactly as defined (and not lower case)
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.utilities.customStrEnum.StrEnumExactylAsDefined
+
+
+
+
+.. py:class:: StrEnumExactylAsDefined
+
+   Bases: :py:obj:`str`, :py:obj:`enum.ReprEnum`
+
+   Enum where members are also (and must be) strings and are represented exacty as defined in the enum
+
+
+   .. py:method:: _generate_next_value_(start, count, last_values)
+
+      Return the member name.
+
+
+
+

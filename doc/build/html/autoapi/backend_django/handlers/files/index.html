@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>backend_django.handlers.files &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-backend_django.handlers.files">
+<span id="backend-django-handlers-files"></span><h1><a class="reference internal" href="#module-backend_django.handlers.files" title="backend_django.handlers.files"><code class="xref py py-mod docutils literal notranslate"><span class="pre">backend_django.handlers.files</span></code></a><a class="headerlink" href="#module-backend_django.handlers.files" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: File upload handling</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.files.testRedis" title="backend_django.handlers.files.testRedis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testRedis</span></code></a>(request)</p></td>
+<td><p>Save a key:value in redis and retrieve it to test if it works.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.files.uploadFileTemporary" title="backend_django.handlers.files.uploadFileTemporary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uploadFileTemporary</span></code></a>(request)</p></td>
+<td><p>File upload for temporary use, save into redis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.files.createPreviewForOneFile" title="backend_django.handlers.files.createPreviewForOneFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createPreviewForOneFile</span></code></a>(inMemoryFile)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.files.createPreview" title="backend_django.handlers.files.createPreview"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createPreview</span></code></a>(listOfFiles, fileNames)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.files.uploadModels" title="backend_django.handlers.files.uploadModels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uploadModels</span></code></a>(request)</p></td>
+<td><p>File(s) upload for temporary use, save into redis. File(s) are 3D models</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.files.getUploadedFiles" title="backend_django.handlers.files.getUploadedFiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getUploadedFiles</span></code></a>(session_key)</p></td>
+<td><p>Retrieve temporary files from redis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.files.testGetUploadedFiles" title="backend_django.handlers.files.testGetUploadedFiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testGetUploadedFiles</span></code></a>(request)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.files.downloadFiles" title="backend_django.handlers.files.downloadFiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">downloadFiles</span></code></a>(request)</p></td>
+<td><p>Send file to user from temporary, later permanent storage</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.files.logger" title="backend_django.handlers.files.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="backend_django.handlers.files.logger">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.files.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#backend_django.handlers.files.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.files.testRedis">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.files.</span></span><span class="sig-name descname"><span class="pre">testRedis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.files.testRedis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a key:value in redis and retrieve it to test if it works.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP GET</em>) – request</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response with results of “search”</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.files.uploadFileTemporary">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.files.</span></span><span class="sig-name descname"><span class="pre">uploadFileTemporary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.files.uploadFileTemporary" title="Permalink to this definition">¶</a></dt>
+<dd><p>File upload for temporary use, save into redis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – request</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response with success or fail</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.files.createPreviewForOneFile">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backend_django.handlers.files.</span></span><span class="sig-name descname"><span class="pre">createPreviewForOneFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inMemoryFile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.files.createPreviewForOneFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.files.createPreview">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backend_django.handlers.files.</span></span><span class="sig-name descname"><span class="pre">createPreview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listOfFiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileNames</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.files.createPreview" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.files.uploadModels">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.files.</span></span><span class="sig-name descname"><span class="pre">uploadModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.files.uploadModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>File(s) upload for temporary use, save into redis. File(s) are 3D models</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – request</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response with mock model of uploaded file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.files.getUploadedFiles">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.files.</span></span><span class="sig-name descname"><span class="pre">getUploadedFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.files.getUploadedFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve temporary files from redis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session_key</strong> (<em>string</em>) – session_key of user</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Saved content</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.files.testGetUploadedFiles">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.files.</span></span><span class="sig-name descname"><span class="pre">testGetUploadedFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.files.testGetUploadedFiles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.files.downloadFiles">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.files.</span></span><span class="sig-name descname"><span class="pre">downloadFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.files.downloadFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send file to user from temporary, later permanent storage</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Request of user for a specific file of an order</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Saved content</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP Response</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/backend_django/handlers/files/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

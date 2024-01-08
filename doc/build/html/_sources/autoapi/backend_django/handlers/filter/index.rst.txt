@@ -1,0 +1,99 @@
+:py:mod:`backend_django.handlers.filter`
+========================================
+
+.. py:module:: backend_django.handlers.filter
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Handling of frontend filters for models, materials and post processing
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.filter.getProcessData
+   backend_django.handlers.filter.getUploadedModel
+   backend_django.handlers.filter.getModels
+   backend_django.handlers.filter.getMaterials
+   backend_django.handlers.filter.getPostProcessing
+   backend_django.handlers.filter.getFilters
+
+
+
+.. py:function:: getProcessData(request)
+
+   Try to filter all according to json.
+
+   :param request: Json containing filters
+   :type request: HTTP POST
+   :return: Models accoding to filters via JSON
+   :rtype: JSON
+
+
+
+.. py:function:: getUploadedModel(files)
+
+   Get uploaded model
+
+   :param files: Saved files from redis
+   :type files: array of tuples
+   :return: uploaded model
+   :rtype: Dictionary
+
+
+
+.. py:function:: getModels(request)
+
+   Try to filter 3d-models according to json.
+
+   :param request: Json containing filters
+   :type request: HTTP POST
+   :return: Models accoding to filters via JSON
+   :rtype: JSON
+
+
+
+.. py:function:: getMaterials(request)
+
+   Try to filter materials according to json.
+
+   :param request: Json containing filters
+   :type request: HTTP POST
+   :return: Materials accoding to filters via JSON
+   :rtype: JSON
+
+
+
+.. py:function:: getPostProcessing(request)
+
+   Try to filter post processing according to json.
+
+   :param request: Json containing filters
+   :type request: HTTP POST
+   :return: Materials accoding to filters via JSON
+   :rtype: JSON
+
+
+
+.. py:function:: getFilters(request)
+
+   Try to filter 3d-models according to json.
+
+   :param request: Json containing filters
+   :type request: HTTP POST
+   :return: Models accoding to filters via JSON
+   :rtype: JSON
+
+
+

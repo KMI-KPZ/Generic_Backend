@@ -1,0 +1,140 @@
+:py:mod:`backend_django.modelFiles.orders`
+==========================================
+
+.. py:module:: backend_django.modelFiles.orders
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Model for orders of a user
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.modelFiles.orders.OrderCollection
+   backend_django.modelFiles.orders.Orders
+
+
+
+
+.. py:class:: OrderCollection(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Order Collection class.
+
+   :orderCollectionID: Unique ID for that order collection, primary key
+   :status: Current state of the order collection
+   :createdWhen: Automatically assigned date and time(UTC+0) when the user first registered
+   :updatedWhen: Date and time at which the entry was updated
+   :accessedWhen: Last date and time the user was fetched from the database, automatically set
+
+   .. py:attribute:: orderCollectionID
+      
+
+      
+
+   .. py:attribute:: status
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+
+.. py:class:: Orders(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Order management class.
+
+   :orderID: Unique ID for that order, primary key
+   :orderCollectionKey: Signals django to link that order to an order collection
+   :userOrders: Orders from the cart including prices and everything
+   :status: How everything is going
+   :userCommunication: What was said by whom to whom and when
+   :files: All URL Paths of files uploaded for an order
+   :dates: Date created and updated for every order
+   :createdWhen: Automatically assigned date and time(UTC+0) when the user first registered
+   :updatedWhen: Date and time at which the entry was updated
+   :accessedWhen: Last date and time the user was fetched from the database, automatically set
+
+   .. py:attribute:: orderID
+      
+
+      
+
+   .. py:attribute:: orderCollectionKey
+      
+
+      
+
+   .. py:attribute:: userOrders
+      
+
+      
+
+   .. py:attribute:: status
+      
+
+      
+
+   .. py:attribute:: userCommunication
+      
+
+      
+
+   .. py:attribute:: files
+      
+
+      
+
+   .. py:attribute:: dates
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+

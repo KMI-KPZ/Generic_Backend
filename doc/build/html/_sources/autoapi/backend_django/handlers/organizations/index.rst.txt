@@ -1,0 +1,286 @@
+:py:mod:`backend_django.handlers.organizations`
+===============================================
+
+.. py:module:: backend_django.handlers.organizations
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Handling of admin requests for organizations, api calls to auth0
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.organizations.sendEventViaWebsocket
+   backend_django.handlers.organizations.getOrganizationName
+   backend_django.handlers.organizations.sendInvite
+   backend_django.handlers.organizations.getMembersOfOrganization
+   backend_django.handlers.organizations.deleteUserFromOrganization
+   backend_django.handlers.organizations.createRole
+   backend_django.handlers.organizations.assignRole
+   backend_django.handlers.organizations.removeRole
+   backend_django.handlers.organizations.editRole
+   backend_django.handlers.organizations.getRoles
+   backend_django.handlers.organizations.deleteRole
+   backend_django.handlers.organizations.addPermissionsToRole
+   backend_django.handlers.organizations.getAllPermissions
+   backend_django.handlers.organizations.getPermissionsForRole
+   backend_django.handlers.organizations.handleCallToPath
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.organizations.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:function:: sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args)
+
+       
+
+
+.. py:function:: getOrganizationName(session, orgID, baseURL, baseHeader)
+
+   Get Name of the Organization
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :return: If successful, name of organization, error if not
+   :rtype: str or error
+
+
+.. py:function:: sendInvite(orgID, baseURL, baseHeader, nameOfCurrentUser, withEmail, emailAdressOfUserToBeAdded)
+
+   Ask Auth0 API to invite someone via e-mail
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :param nameOfCurrentUser: Name of the user that adds people
+   :type nameOfCurrentUser: str
+   :param emailAdressOfUserToBeAdded: E-Mail adress of the user that shall be added
+   :type emailAdressOfUserToBeAdded: str
+   :return: If successful or not
+   :rtype: Bool, json or error
+
+
+.. py:function:: getMembersOfOrganization(orgID, baseURL, baseHeader, orgaName)
+
+   Ask Auth0 API to invite someone via e-mail
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :param orgaName: Name of organization
+   :type orgaName: str
+   :return: If successful or not
+   :rtype: Json or error
+
+
+.. py:function:: deleteUserFromOrganization(orgID, baseURL, baseHeader, userMail)
+
+   Ask Auth0 API to delete someone from an organization via their name
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :param userMail: userName of person that should be deleted
+   :type userMail: str
+   :return: If successful or not
+   :rtype: True or error
+
+
+.. py:function:: createRole(baseURL, baseHeader, roleName, roleDescription)
+
+   Ask Auth0 API to create a new role
+
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :param roleName: name of role
+   :type roleName: str
+   :param roleDescription: what the role stands for
+   :type roleDescription: str
+   :return: If successful the id or an error if not
+   :rtype: Dict with ID or error
+
+
+.. py:function:: assignRole(orgID, baseURL, baseHeader, userMail, roleID)
+
+   Assign a role to a person
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :param userMail: mail adress of person that should get the role
+   :type userMail: str
+   :param roleID: ID of the role for that person
+   :type roleID: str
+   :return: If successful or not
+   :rtype: True or error
+
+
+.. py:function:: removeRole(orgID, baseURL, baseHeader, userMail, roleID)
+
+   Remove a role from a person
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :param userMail: mail adress of person
+   :type userMail: str
+   :param roleID: ID of the role for that person
+   :type roleID: str
+   :return: If successful or not
+   :rtype: True or error
+
+
+.. py:function:: editRole(orgID, baseURL, baseHeader, roleID, roleName, roleDescription)
+
+   Ask Auth0 API to edit a role
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :param roleID: ID of the role for that person
+   :type roleID: str
+   :param roleName: name of role
+   :type roleName: str
+   :param roleDescription: what the role stands for
+   :type roleDescription: str
+   :return: If successful true or an error if not
+   :rtype: Bool or error
+
+
+.. py:function:: getRoles(orgID, baseURL, baseHeader, orgaName)
+
+   Fetch all roles and filter for the organization
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :param orgaName: Name of the organization
+   :type orgaName: str
+   :return: If successful, list of roles for that organization, error if not
+   :rtype: List or error
+
+
+.. py:function:: deleteRole(orgID, baseURL, baseHeader, roleID)
+
+   Delete role via ID
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :param roleID: ID of the role that shall be deleted
+   :type roleID: str
+   :return: If successful, true, error if not
+   :rtype: Bool or error
+
+
+.. py:function:: addPermissionsToRole(orgID, baseURL, baseHeader, roleID, listOfPermissionIDs)
+
+   Add Permissions to role
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :param roleID: ID of the role that shall be deleted
+   :type roleID: str
+   :param listOfPermissionIDs: List of permission IDs
+   :type listOfPermissionIDs: list
+   :return: If successful, true, error if not
+   :rtype: Bool or error
+
+
+.. py:function:: getAllPermissions(orgID, baseURL, baseHeader)
+
+   Get all Permissions
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :return: If successful, list of permissions for role as array, error if not
+   :rtype: JSON or error
+
+
+.. py:function:: getPermissionsForRole(orgID, baseURL, baseHeader, roleID)
+
+   Get Permissions of role
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :param roleID: ID of the role that shall be deleted
+   :type roleID: str
+   :return: If successful, list of permissions for role as array, error if not
+   :rtype: JSON or error
+
+
+.. py:function:: handleCallToPath(request)
+
+   Ask Auth0 API for various stuff
+
+   :param request: POST request with intent and data
+   :type request: HTTP POST
+   :return: Response if successful or not
+   :rtype: HTTP/JSON Response
+
+

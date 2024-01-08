@@ -1,0 +1,137 @@
+:py:mod:`backend_django.services.auth0`
+=======================================
+
+.. py:module:: backend_django.services.auth0
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for oauth verification
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.auth0.ManageAPIToken
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.auth0.authorizeToken
+   backend_django.services.auth0.authorizeRedirect
+   backend_django.services.auth0.authorizeTokenOrga
+   backend_django.services.auth0.authorizeRedirectOrga
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.auth0.oauth_auth0
+   backend_django.services.auth0.oauth_auth0_orga
+   backend_django.services.auth0.apiToken
+
+
+.. py:data:: oauth_auth0
+   
+
+   
+
+.. py:function:: authorizeToken(request)
+
+   Get information back from Auth0 and generate token.
+
+   :param request: POST request
+   :type request: HTTP POST
+   :return: Token
+   :rtype: Dictionary
+
+
+
+.. py:function:: authorizeRedirect(request, callback)
+
+   Authorize redirection for callback
+
+   :param request: GET request
+   :type request: HTTP GET
+   :param callback: Function
+   :type callback: Function
+   :return: URI
+   :rtype: HTTP URI
+
+
+
+.. py:data:: oauth_auth0_orga
+   
+
+   
+
+.. py:function:: authorizeTokenOrga(request)
+
+   Get information back from Auth0 and generate token.
+
+   :param request: POST request
+   :type request: HTTP POST
+   :return: Token
+   :rtype: Dictionary
+
+
+
+.. py:function:: authorizeRedirectOrga(request, callback)
+
+   Authorize redirection for callback
+
+   :param request: GET request
+   :type request: HTTP GET
+   :param callback: Function
+   :type callback: Function
+   :return: URI
+   :rtype: HTTP URI
+
+
+
+.. py:class:: ManageAPIToken
+
+   Manage oauth token class.
+
+   .. py:attribute:: savedToken
+      
+
+      
+
+   .. py:attribute:: accessToken
+      :annotation: = 
+
+      
+
+   .. py:method:: getAccessToken()
+
+      Get initial token. Made as a function to be callable from outside. 
+
+
+   .. py:method:: checkIfExpired()
+
+      Check if token has expired and if so, request a new one. 
+
+
+
+.. py:data:: apiToken
+   
+
+   
+

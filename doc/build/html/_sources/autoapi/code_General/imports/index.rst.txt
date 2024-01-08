@@ -1,0 +1,15 @@
+:py:mod:`code_General.imports`
+==============================
+
+.. py:module:: code_General.imports
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Modules that need to be imported
+
+
+

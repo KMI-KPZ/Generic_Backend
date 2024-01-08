@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>code_General.utilities.crypto &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.utilities.crypto">
+<span id="code-general-utilities-crypto"></span><h1><a class="reference internal" href="#module-code_General.utilities.crypto" title="code_General.utilities.crypto"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_General.utilities.crypto</span></code></a><a class="headerlink" href="#module-code_General.utilities.crypto" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: Services for cryptographics</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.crypto.generateMD5" title="code_General.utilities.crypto.generateMD5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generateMD5</span></code></a>(→ str)</p></td>
+<td><p>Convert string to md5 hashed string</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.crypto.generateSecureID" title="code_General.utilities.crypto.generateSecureID"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generateSecureID</span></code></a>(→ str)</p></td>
+<td><p>Convert string to as secure as possible hashed string</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.crypto.generateSalt" title="code_General.utilities.crypto.generateSalt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generateSalt</span></code></a>(→ str)</p></td>
+<td><p>Generate unique random salt string to be attached to another string before hashing</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.crypto.generateNoncryptographicHash" title="code_General.utilities.crypto.generateNoncryptographicHash"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generateNoncryptographicHash</span></code></a>(→ str)</p></td>
+<td><p>Convert string to hashed string</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.crypto.generateURLFriendlyRandomString" title="code_General.utilities.crypto.generateURLFriendlyRandomString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generateURLFriendlyRandomString</span></code></a>(→ str)</p></td>
+<td><p>Generate random string</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.crypto.generateAESKey" title="code_General.utilities.crypto.generateAESKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generateAESKey</span></code></a>(→ str)</p></td>
+<td><p>Generate a one time use AES Key</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.crypto.encryptAES" title="code_General.utilities.crypto.encryptAES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encryptAES</span></code></a>(→ io.BytesIO)</p></td>
+<td><p>Encrypt a file with a previously set key</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.crypto.decryptAES" title="code_General.utilities.crypto.decryptAES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decryptAES</span></code></a>(→ io.BytesIO)</p></td>
+<td><p>Decrypt a file with a previously set key</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.generateMD5">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateMD5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">someString</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateMD5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert string to md5 hashed string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>someString</strong> (<em>string</em>) – String that shall be hashed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string containing the md5 hash</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.generateSecureID">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateSecureID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">someString</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateSecureID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert string to as secure as possible hashed string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>someString</strong> (<em>string</em>) – String that shall be hashed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string containing the hash</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.generateSalt">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateSalt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateSalt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate unique random salt string to be attached to another string before hashing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int</em>) – Number of characters generated as salt</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string containing salt</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.generateNoncryptographicHash">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateNoncryptographicHash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">someString</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateNoncryptographicHash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert string to hashed string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>someString</strong> (<em>string</em>) – String that shall be hashed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>string containing the hash</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.generateURLFriendlyRandomString">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateURLFriendlyRandomString</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateURLFriendlyRandomString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate random string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>random string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.generateAESKey">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateAESKey</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateAESKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a one time use AES Key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Key to be saved somewhere</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.encryptAES">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">encryptAES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">io.BytesIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">io.BytesIO</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.encryptAES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypt a file with a previously set key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – String containing the encryption key</p></li>
+<li><p><strong>file</strong> (<em>BytesIO</em><em> or </em><em>inMemoryFile</em>) – The file to be encrypted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Encrypted file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BytesIO</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.decryptAES">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">decryptAES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">io.BytesIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">io.BytesIO</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.decryptAES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypt a file with a previously set key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – String containing the encryption key</p></li>
+<li><p><strong>file</strong> (<em>BytesIO</em><em> or </em><em>inMemoryFile</em>) – The file to be decrypted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Decrypted file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BytesIO</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_General/utilities/crypto/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

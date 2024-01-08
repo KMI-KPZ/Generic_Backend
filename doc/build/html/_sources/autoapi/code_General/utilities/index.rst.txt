@@ -1,0 +1,20 @@
+:py:mod:`code_General.utilities`
+================================
+
+.. py:module:: code_General.utilities
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   basics/index.rst
+   crypto/index.rst
+   customStrEnum/index.rst
+   files/index.rst
+   rights/index.rst
+   signals/index.rst
+
+

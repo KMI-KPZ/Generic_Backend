@@ -1,0 +1,114 @@
+:py:mod:`code_General.utilities.rights`
+=======================================
+
+.. py:module:: code_General.utilities.rights
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Service for rights management
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.utilities.rights.Rights
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.utilities.rights.rightsManagement
+
+
+.. py:class:: Rights
+
+   Manage the rights for every path.
+
+   .. py:attribute:: rightsDict
+      
+
+      
+
+   .. py:attribute:: rightsList
+      :annotation: = []
+
+      
+
+   .. py:attribute:: rightsFile
+      
+
+      
+
+   .. py:method:: getFile()
+
+      Serves the file as it is (usually for frontend)
+
+      :return: File in JSON Format
+      :rtype: JSON Object
+
+
+   .. py:method:: checkIfAllowed(permissions, path)
+
+      Check if permission is sufficient for that path.
+
+      :param permissions: Permissions of that user
+      :type permissions: [str]
+      :param path: The name of the function (usually handlers)
+      :type path: Str
+      :return: True of permission sufficient, false if not.
+      :rtype: Bool
+
+
+   .. py:method:: checkIfAllowedWithOperation(permissions, path, operation)
+
+      Check if permission is sufficient for that path and operation.
+
+      :param permissions: Permissions of that user
+      :type permissions: [str]
+      :param path: The name of the function (usually handlers)
+      :type path: Str
+      :param operation: Contains the operation (messages, files, ...) that should be checked
+      :type operation: Str
+      :return: True of permission sufficient, false if not.
+      :rtype: Bool
+
+
+   .. py:method:: getPermissionsNeededForPath(path)
+
+      Return list of permissions that correspond to the given path
+
+      :param path: path that needs to be checked
+      :type path: str
+      :return: list of permissions
+      :rtype: list
+
+
+   .. py:method:: getRightsList()
+
+      Return list of permissions
+
+      :return: List of permissions
+      :rtype: list
+
+
+
+
+.. py:data:: rightsManagement
+   
+
+   
+

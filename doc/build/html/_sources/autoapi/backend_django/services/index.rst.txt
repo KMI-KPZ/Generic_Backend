@@ -1,0 +1,22 @@
+:py:mod:`backend_django.services`
+=================================
+
+.. py:module:: backend_django.services
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   auth0/index.rst
+   cmem/index.rst
+   crypto/index.rst
+   mocks/index.rst
+   postgres/index.rst
+   redis/index.rst
+   rights/index.rst
+   stl/index.rst
+
+

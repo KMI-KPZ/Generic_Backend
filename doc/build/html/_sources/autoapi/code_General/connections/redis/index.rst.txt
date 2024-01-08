@@ -1,0 +1,113 @@
+:py:mod:`code_General.connections.redis`
+========================================
+
+.. py:module:: code_General.connections.redis
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for using the key-value store in redis
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.connections.redis.RedisConnection
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.connections.redis.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:class:: RedisConnection
+
+   .. py:attribute:: redis_instance
+      :annotation: = 
+
+      
+
+   .. py:method:: addContent(key, content, expire=False)
+
+      Save a key and its content in redis.
+
+      :param key: key, usually a session ID
+      :type key: String
+      :param content: The stuff that should be saved
+      :type content: Differs, will be set to binary here
+      :return: Either "true" if it worked or an error if not
+      :rtype: Bool
+
+
+
+   .. py:method:: addContentJSON(key, content, expire=False)
+
+      Save a key and its content in redis.
+
+      :param key: key, usually a session ID
+      :type key: String
+      :param content: The stuff that should be saved
+      :type content: Differs, will be set to binary here
+      :return: Either "true" if it worked or an error if not
+      :rtype: Bool
+
+
+
+   .. py:method:: deleteKey(key)
+
+      Delete key and value from redis by key.
+
+      :param key: key, usually a session ID
+      :type key: String
+      :return: Flag to show if it worked or not
+      :rtype: Bool
+
+
+
+   .. py:method:: retrieveContent(key, deleteOrNot=False)
+
+      Retrieve content from redis by key.
+      WARNING: This is not secure! It would be better to use JSON
+
+      :param key: key, usually a session ID
+      :type key: String
+      :param deleteOrNot: Decides if the key:content pair should be deleted after retrieval
+      :type deleteOrNot: Bool
+      :return: content
+      :rtype: Differs, not binary
+
+
+
+   .. py:method:: retrieveContentJSON(key, deleteOrNot=False)
+
+      Retrieve content from redis by key.
+
+      :param key: key, usually a session ID
+      :type key: String
+      :param deleteOrNot: Decides if the key:content pair should be deleted after retrieval
+      :type deleteOrNot: Bool
+      :return: content
+      :rtype: Differs, not binary
+
+
+
+

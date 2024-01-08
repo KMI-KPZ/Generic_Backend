@@ -1,0 +1,13 @@
+{
+  "Servers" : {
+    "server1" : {
+      "Name" : "localhost - semper-ki - dvl PG-DB",
+      "Port" : 5432,
+      "Username" : "postgres",
+      "Host" : "host.docker.internal",
+      "SSLMode" : "prefer",
+      "MaintenanceDB" : "postgres",
+      "Group" : "Semper_KI_Dev"
+    }
+  }
+}

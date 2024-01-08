@@ -1,0 +1,88 @@
+:py:mod:`code_SemperKI.utilities.signals`
+=========================================
+
+.. py:module:: code_SemperKI.utilities.signals
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Signals that can be sent to other apps
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.utilities.signals.SemperKISignalDispatchers
+   code_SemperKI.utilities.signals.SemperKISignalReceivers
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.utilities.signals.semperKISignalDispatcher
+   code_SemperKI.utilities.signals.semperKISignalReceiver
+
+
+.. py:class:: SemperKISignalDispatchers
+
+   Defines signal dispatchers that send signals to other apps
+
+
+
+.. py:data:: semperKISignalDispatcher
+   
+
+   
+
+.. py:class:: SemperKISignalReceivers
+
+   Defines signal receivers from other apps
+
+
+   .. py:method:: receiverForLogin(sender, **kwargs)
+      :staticmethod:
+
+      If a user logged in, what shall be done?
+
+
+
+   .. py:method:: receiverForLogout(sender, **kwargs)
+      :staticmethod:
+
+      If a user logged out, what shall be done?
+
+
+
+   .. py:method:: receiverForWebsocketConnect(sender, **kwargs)
+      :staticmethod:
+
+      If websocket connected, what shall be done?
+
+
+
+   .. py:method:: receiverForWebsocketDisconnect(sender, **kwargs)
+      :staticmethod:
+
+      If websocket disconnected, what shall be done?
+
+
+
+
+.. py:data:: semperKISignalReceiver
+   
+
+   
+

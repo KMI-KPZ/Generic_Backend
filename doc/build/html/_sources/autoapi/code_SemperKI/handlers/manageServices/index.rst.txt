@@ -1,0 +1,39 @@
+:py:mod:`code_SemperKI.handlers.manageServices`
+===============================================
+
+.. py:module:: code_SemperKI.handlers.manageServices
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Handlers for managing the services
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.handlers.manageServices.getServices
+
+
+
+.. py:function:: getServices(request)
+
+   Return the offered services
+
+   :param request: The request object
+   :type request: Dict
+   :return: The Services as dictionary with string and integer coding
+   :rtype: JSONResponse
+
+
+

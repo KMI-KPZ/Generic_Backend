@@ -1,0 +1,39 @@
+:py:mod:`code_SemperKI.handlers.testResponse`
+=============================================
+
+.. py:module:: code_SemperKI.handlers.testResponse
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Handling test calls and getting a csrf cookie
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.handlers.testResponse.isMagazineUp
+
+
+
+.. py:function:: isMagazineUp(request)
+
+   Pings the magazine website and check if that works or not
+
+   :param request: GET/POST request
+   :type request: HTTP GET/POST
+   :return: Response with True or False 
+   :rtype: JSON Response
+
+
+

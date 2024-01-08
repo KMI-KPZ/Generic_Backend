@@ -1,0 +1,15 @@
+:py:mod:`code_SemperKI.apps`
+============================
+
+.. py:module:: code_SemperKI.apps
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Thomas Skodawessely 2023
+
+   Contains: Nothing yet
+
+
+

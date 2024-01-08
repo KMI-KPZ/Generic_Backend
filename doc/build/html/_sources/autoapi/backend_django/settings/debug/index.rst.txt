@@ -1,0 +1,33 @@
+:py:mod:`backend_django.settings.debug`
+=======================================
+
+.. py:module:: backend_django.settings.debug
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Further settings for debug mode
+
+
+
+Module Contents
+---------------
+
+.. py:data:: DEBUG
+   :annotation: = True
+
+   
+
+.. py:data:: DATABASES
+   
+
+   
+
+.. py:data:: REDIS_HOST
+   :annotation: = files
+
+   
+

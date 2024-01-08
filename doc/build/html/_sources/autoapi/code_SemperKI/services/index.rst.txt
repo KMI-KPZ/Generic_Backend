@@ -1,0 +1,151 @@
+:py:mod:`code_SemperKI.services`
+================================
+
+.. py:module:: code_SemperKI.services
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Metaclass that handles the services
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.services.ServiceBase
+   code_SemperKI.services._ServicesManager
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.services.serviceManager
+
+
+.. py:class:: ServiceBase
+
+   Bases: :py:obj:`abc.ABC`
+
+   Abstract base class defining the interface that every service has to implement
+
+
+   .. py:method:: updateServiceDetails(existingContent, newContent)
+      :abstractmethod:
+
+      Update a service
+
+
+
+   .. py:method:: deleteServiceDetails(existingContent, deletedContent)
+      :abstractmethod:
+
+      Delete stuff from a service
+
+
+
+
+.. py:class:: _ServicesManager
+
+   The class handling the services
+
+
+   .. py:class:: _Structure
+
+      Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+      How the services dictionary is structures
+
+
+      .. py:attribute:: object
+         
+
+         
+
+      .. py:attribute:: name
+         
+
+         
+
+      .. py:attribute:: identifier
+         
+
+         
+
+
+   .. py:method:: register(name: str, identifier: int, serviceClassObject)
+
+      Registers a new service class
+
+      :param name: The name of the service as given in ServiceTypes
+      :type name: str
+      :param serviceClass: The service class 
+      :type serviceClass: Derived Class Instances of ServiceBase
+      :param kwargs: Parameters for service class
+      :type kwargs: Any
+
+
+   .. py:method:: getNone() -> int
+
+      Return default object idx
+
+      :return: Idx of none
+      :rtype: int
+
+
+   .. py:method:: getService(savedService: int) -> ServiceBase
+
+      Depending on the service, select the correct Service class
+
+      :param savedService: The selected service saved in the dictionary _services
+      :type savedService: int
+      :return: The respective Service class
+      :rtype: Derived class of ServiceBase
+
+
+   .. py:method:: getAllServices()
+
+      Return all registered services as dict
+
+      :return: all registered services as dict
+      :rtype: dict
+
+
+   .. py:method:: toInt(serviceName: str) -> int
+
+      Convert the service name to its integer representation
+
+      :param serviceName: Name of the service as given in ServiceTypes
+      :type serviceName: Str
+      :return: Integer Code of that service
+      :rtype: Int
+
+
+   .. py:method:: toStr(index: int) -> str
+
+      Convert the service name to its string representation
+
+      :param serviceName: Int code of the service
+      :type serviceName: int
+      :return: Str Code of that service as given in ServiceTypes
+      :rtype: Str
+
+
+
+.. py:data:: serviceManager
+   
+
+   
+

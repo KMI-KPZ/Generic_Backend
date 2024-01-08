@@ -1,0 +1,186 @@
+:py:mod:`code_General.handlers.authentification`
+================================================
+
+.. py:module:: code_General.handlers.authentification
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Authentification handling using Auth0
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.authentification.isLoggedIn
+   code_General.handlers.authentification.provideRightsFile
+   code_General.handlers.authentification.loginUser
+   code_General.handlers.authentification.setOrganizationName
+   code_General.handlers.authentification.retrieveRolesAndPermissionsForMemberOfOrganization
+   code_General.handlers.authentification.retrieveRolesAndPermissionsForStandardUser
+   code_General.handlers.authentification.setRoleAndPermissionsOfUser
+   code_General.handlers.authentification.callbackLogin
+   code_General.handlers.authentification.getRolesOfUser
+   code_General.handlers.authentification.getPermissionsOfUser
+   code_General.handlers.authentification.getNewRoleAndPermissionsForUser
+   code_General.handlers.authentification.logoutUser
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.authentification.logger
+   code_General.handlers.authentification.loggerError
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:data:: loggerError
+   
+
+   
+
+.. py:function:: isLoggedIn(request)
+
+   Check whether the token of a user has expired and a new login is necessary
+
+   :param request: User session token
+   :type request: Dictionary
+   :return: True if the token is valid or False if not
+   :rtype: Bool
+
+
+.. py:function:: provideRightsFile(request)
+
+   Returns the json file containing the rights for the frontend
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: JSON Response.
+   :rtype: JSONResponse
+
+
+
+.. py:function:: loginUser(request)
+
+   Return a link for redirection to Auth0.
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: HTTP Response.
+   :rtype: HTTP Link as str
+
+
+
+.. py:function:: setOrganizationName(request)
+
+   Set's the Organization name based on the information of the token
+
+   :param request: request containing OAuth Token
+   :type request: Dict
+   :return: Nothing
+   :rtype: None
+
+
+
+.. py:function:: retrieveRolesAndPermissionsForMemberOfOrganization(session)
+
+   Get the roles and the permissions via API from Auth0
+
+   :param session: The session of the user
+   :type session: Dict
+   :return: Dict with roles and permissions
+   :rtype: Dict
+
+
+.. py:function:: retrieveRolesAndPermissionsForStandardUser(session)
+
+   Get the roles and the permissions via API from Auth0
+
+   :param session: The session of the user
+   :type session: Dict
+   :return: Dict with roles and permissions
+   :rtype: Dict
+
+
+.. py:function:: setRoleAndPermissionsOfUser(request)
+
+   Set's the role and the permissions of the user based on the information of the token
+
+   :param request: request containing OAuth Token
+   :type request: Dict
+   :return: Exception or True
+   :rtype: Exception or Bool
+
+
+
+.. py:function:: callbackLogin(request)
+
+   TODO: Check if user really is part of an organization or not -> check if misclick at login, and set flags and instances here
+   Get information back from Auth0.
+   Add user to database if entry doesn't exist.
+
+   :param request: POST request
+   :type request: HTTP POST
+   :return: URL forwarding with success to frontend/user
+   :rtype: HTTP Link as redirect
+
+
+
+.. py:function:: getRolesOfUser(request)
+
+   Get Roles of User.
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: List of roles
+   :rtype: JSONResponse
+
+
+.. py:function:: getPermissionsOfUser(request)
+
+   Get Permissions of User.
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: List of roles
+   :rtype: JSONResponse
+
+
+.. py:function:: getNewRoleAndPermissionsForUser(request)
+
+   In case the role changed, get new role and new permissions from auth0
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: New Permissions for User
+   :rtype: JSONResponse
+
+
+.. py:function:: logoutUser(request)
+
+   Delete session for this user and log out.
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: URL to be forwarded
+   :rtype: HTTP URL
+
+
+

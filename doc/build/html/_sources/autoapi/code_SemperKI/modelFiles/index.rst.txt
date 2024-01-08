@@ -1,0 +1,17 @@
+:py:mod:`code_SemperKI.modelFiles`
+==================================
+
+.. py:module:: code_SemperKI.modelFiles
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   dataModel/index.rst
+   processModel/index.rst
+   projectModel/index.rst
+
+

@@ -1,0 +1,66 @@
+:py:mod:`code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.model`
+=======================================================================================
+
+.. py:module:: code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.model
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: handling of model files
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.model.uploadModel
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.model.deleteModel
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.model.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:function:: uploadModel(request)
+
+   File upload for 3D model
+
+   :param request: request
+   :type request: HTTP POST
+   :return: Response with information about the file
+   :rtype: JSONResponse
+
+
+
+.. py:function:: deleteModel(request, processID)
+
+   Delete the model and the file with it, if not done already
+
+   :param request: request
+   :type request: HTTP POST
+   :param processID: process ID
+   :type processID: Str
+   :return: Successful or not
+   :rtype: HTTPResponse
+
+
+

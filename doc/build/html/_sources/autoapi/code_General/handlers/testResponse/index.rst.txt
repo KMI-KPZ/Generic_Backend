@@ -1,0 +1,116 @@
+:py:mod:`code_General.handlers.testResponse`
+============================================
+
+.. py:module:: code_General.handlers.testResponse
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Handling test calls and getting a csrf cookie
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.testResponse.testWebSocket
+   code_General.handlers.testResponse.Counter
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.testResponse.testResponse
+   code_General.handlers.testResponse.testResponseCsrf
+   code_General.handlers.testResponse.testCallToWebsocket
+   code_General.handlers.testResponse.dynamic
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.testResponse.counter
+
+
+.. py:function:: testResponse(request)
+
+   Tests whether request and response scheme works.
+
+   :param request: any request
+   :type request: HTTP 
+   :return: Response with answer string and testheader
+   :rtype: HTTP Response
+
+
+
+.. py:function:: testResponseCsrf(request)
+
+   Ensures that the csrf cookie is set correctly.
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: Response with cookie
+   :rtype: HTTP Response
+
+
+
+.. py:class:: testWebSocket(*args, **kwargs)
+
+   Bases: :py:obj:`channels.generic.websocket.AsyncWebsocketConsumer`
+
+   Base WebSocket consumer, async version. Provides a general encapsulation
+   for the WebSocket handling model that other applications can build on.
+
+   .. py:method:: connect()
+      :async:
+
+
+   .. py:method:: disconnect(code)
+      :async:
+
+      Called when a WebSocket connection is closed.
+
+
+   .. py:method:: receive(text_data=None, bytes_data=None)
+      :async:
+
+      Called with a decoded WebSocket frame.
+
+
+
+.. py:function:: testCallToWebsocket(request)
+
+
+.. py:class:: Counter
+
+   .. py:attribute:: counter
+      :annotation: = 1
+
+      
+
+
+.. py:data:: counter
+   
+
+   
+
+.. py:function:: dynamic(request)
+
+   Dynamically generate buttons just for fun
+
+
+

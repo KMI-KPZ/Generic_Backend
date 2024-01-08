@@ -1,0 +1,51 @@
+:py:mod:`code_General.handlers.email`
+=====================================
+
+.. py:module:: code_General.handlers.email
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Thomas Skodawessely 2023
+
+   Contains: handlers for sending emails out of different front end forms
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.email.send_contact_form
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.email.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:function:: send_contact_form(request)
+
+   Send an email from the contact form from the front end
+
+   :param request: HTTP POST request
+   :type request: HttpRequest
+   :return: JSON to front end having a status and result field with the email count or False
+   :rtype: JsonResponse
+
+

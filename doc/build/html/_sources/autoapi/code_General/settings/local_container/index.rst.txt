@@ -1,0 +1,33 @@
+:py:mod:`code_General.settings.local_container`
+===============================================
+
+.. py:module:: code_General.settings.local_container
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Further settings for debug mode
+
+
+
+Module Contents
+---------------
+
+.. py:data:: DEBUG
+   :annotation: = True
+
+   
+
+.. py:data:: BACKEND_SETTINGS
+   :annotation: = local container
+
+   
+
+.. py:data:: CACHES
+   
+
+   
+

@@ -1,0 +1,24 @@
+:py:mod:`code_General.handlers`
+===============================
+
+.. py:module:: code_General.handlers
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   admin/index.rst
+   authentification/index.rst
+   email/index.rst
+   files/index.rst
+   frontpage/index.rst
+   organizations/index.rst
+   profiles/index.rst
+   statistics/index.rst
+   testResponse/index.rst
+   websocket/index.rst
+
+

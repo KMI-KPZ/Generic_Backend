@@ -1,0 +1,237 @@
+:py:mod:`code_SemperKI.modelFiles.processModel`
+===============================================
+
+.. py:module:: code_SemperKI.modelFiles.processModel
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Model for processes
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.modelFiles.processModel.ProcessDescription
+   code_SemperKI.modelFiles.processModel.Process
+
+
+
+
+.. py:class:: ProcessDescription
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What makes up a process object for creation in the database
+
+
+   .. py:attribute:: processID
+      
+
+      
+
+   .. py:attribute:: project
+      
+
+      
+
+   .. py:attribute:: processDetails
+      
+
+      
+
+   .. py:attribute:: processStatus
+      
+
+      
+
+   .. py:attribute:: serviceDetails
+      
+
+      
+
+   .. py:attribute:: serviceStatus
+      
+
+      
+
+   .. py:attribute:: serviceType
+      
+
+      
+
+   .. py:attribute:: client
+      
+
+      
+
+   .. py:attribute:: contractor
+      
+
+      
+
+   .. py:attribute:: files
+      
+
+      
+
+   .. py:attribute:: messages
+      
+
+      
+
+   .. py:attribute:: dependenciesIn
+      
+
+      
+
+   .. py:attribute:: dependenciesOut
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+
+.. py:class:: Process(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+   Process management class.
+
+   :processID: Unique ID for that process, primary key
+   :project: Signals django to link that process to a project
+   :processDetails: Name of the process and stuff
+   :processStatus: How everything is going in general
+   :serviceDetails: Details for that service
+   :serviceStatus: How everything is going for the service
+   :serviceType: Which service it is
+   :client: Who started the process
+   :contractor: Who gets to handle it
+   :files: Registrar keeping check, which files are currently there, link to Data model
+   :messages: same as files but for chat messages
+   :dependenciesIn: Which process this one depends on
+   :dependenciesOut: Which processes depend on this one
+   :createdWhen: Automatically assigned date and time(UTC+0) when the entry is created
+   :updatedWhen: Date and time at which the entry was updated
+   :accessedWhen: Last date and time the entry was fetched from the database, automatically set
+
+   .. py:class:: Meta
+
+      .. py:attribute:: indexes
+         
+
+         
+
+
+   .. py:attribute:: processID
+      
+
+      
+
+   .. py:attribute:: project
+      
+
+      
+
+   .. py:attribute:: processDetails
+      
+
+      
+
+   .. py:attribute:: processStatus
+      
+
+      
+
+   .. py:attribute:: serviceDetails
+      
+
+      
+
+   .. py:attribute:: serviceStatus
+      
+
+      
+
+   .. py:attribute:: serviceType
+      
+
+      
+
+   .. py:attribute:: client
+      
+
+      
+
+   .. py:attribute:: contractor
+      
+
+      
+
+   .. py:attribute:: files
+      
+
+      
+
+   .. py:attribute:: messages
+      
+
+      
+
+   .. py:attribute:: dependenciesIn
+      
+
+      
+
+   .. py:attribute:: dependenciesOut
+      
+
+      
+
+   .. py:attribute:: createdWhen
+      
+
+      
+
+   .. py:attribute:: updatedWhen
+      
+
+      
+
+   .. py:attribute:: accessedWhen
+      
+
+      
+
+   .. py:method:: __str__()
+
+      Return str(self).
+
+
+   .. py:method:: toDict()
+
+
+

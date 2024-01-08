@@ -1,0 +1,6 @@
+:py:mod:`backend_django.global_vars`
+====================================
+
+.. py:module:: backend_django.global_vars
+
+

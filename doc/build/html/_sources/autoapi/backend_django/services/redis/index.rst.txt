@@ -1,0 +1,80 @@
+:py:mod:`backend_django.services.redis`
+=======================================
+
+.. py:module:: backend_django.services.redis
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for using the key-value store in redis
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.redis.addContent
+   backend_django.services.redis.deleteKey
+   backend_django.services.redis.retrieveContent
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.redis.redis_instance
+
+
+.. py:data:: redis_instance
+   
+
+   
+
+.. py:function:: addContent(key, content)
+
+   Save a key and its content in redis.
+
+   :param key: key, usually a session ID
+   :type key: String
+   :param content: The stuff that should be saved
+   :type content: Differs, will be set to binary here
+   :return: Either "true" if it worked or an error if not
+   :rtype: Bool
+
+
+
+.. py:function:: deleteKey(key)
+
+   Delete key and value from redis by key.
+
+   :param key: key, usually a session ID
+   :type key: String
+   :return: Flag to show if it worked or not
+   :rtype: Bool
+
+
+
+.. py:function:: retrieveContent(key, deleteOrNot=False)
+
+   Retrieve content from redis by key.
+
+   :param key: key, usually a session ID
+   :type key: String
+   :param deleteOrNot: Decides if the key:content pair should be deleted after retrieval
+   :type deleteOrNot: Bool
+   :return: content
+   :rtype: Differs, not binary
+
+
+

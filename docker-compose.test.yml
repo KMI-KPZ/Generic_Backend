@@ -1,0 +1,60 @@
+version: '3.4'
+
+services:
+  backend-production:
+    image: backend-production
+    build:
+      context: .
+      dockerfile: ./Dockerfile.Testing
+    command: ["bash", "run/runtests.sh"]
+    env_file:
+      - .env.production
+    ports:
+      - 127.0.0.1:8001:8000
+    volumes:
+      - .:/app
+    networks:
+      - semper-ki-production-network
+
+  db-production:
+    image: postgres:15
+    env_file:
+     - .env.production
+    ports:
+      - 127.0.0.1:5433:5432
+    volumes:
+      - ./postgres/data-test/:/var/lib/postgresql/data/
+    networks:
+      - semper-ki-production-network
+
+  files-production:
+    image: redis:7
+    env_file:
+    - .env.production
+    ports:
+      - 127.0.0.1:6380:6379
+    volumes:
+      - ./redis/data-test/:/var/lib/redis/data/
+      - ./docker/docker-service-redis-start.sh:/usr/local/bin/docker-service-redis-start.sh
+    entrypoint: /usr/local/bin/docker-service-redis-start.sh # used to pass PW from environment variable change things there if needed
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - semper-ki-production-network
+    
+  localstack-production:
+      image: localstack/localstack
+      volumes:
+        - ./localstack/:/var/lib/localstack
+      env_file:
+        - .env.production
+      environment:
+        - DOCKER_HOST=unix:///var/run/docker.sock
+        - LOCALSTACK_PERSISTENCE=1
+      ports:
+        - "127.0.0.1:4567:4566"
+      networks:
+          - semper-ki-production-network
+
+networks:
+  semper-ki-production-network:

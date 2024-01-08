@@ -1,0 +1,194 @@
+:py:mod:`code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources`
+===========================================================================================
+
+.. py:module:: code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Calls to ontology for adding and retrieving data
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.onto_getMaterials
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.onto_getPrinters
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.onto_getPrinter
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.onto_getMaterial
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.orga_getPrinters
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.orga_addPrinter
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.orga_addPrinterEdit
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.orga_createPrinter
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.orga_removePrinter
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.orga_addMaterial
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.orga_addMaterialEdit
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.orga_createMaterial
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.orga_removeMaterial
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.orga_getMaterials
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.handlers.resources.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:function:: onto_getMaterials(request)
+
+   Gathers all available materials from the knowledge graph/ontology
+
+   :param request: Get request from frontend
+   :type request: HTTP GET
+   :return: Flat list of Materials
+   :rtype: JSONResponse
+
+
+.. py:function:: onto_getPrinters(request)
+
+   Gathers all available 3D printers from the knowledge graph/ontology
+
+   :param request: Get request from frontend
+   :type request: HTTP GET
+   :return: Flat list of printers
+   :rtype: JSONResponse
+
+
+.. py:function:: onto_getPrinter(request)
+
+   Gathers info about one specific 3D printer from the knowledge graph/ontology
+
+   :param request: Post request from frontend
+   :type request: HTTP POST
+   :return: Info about a printer
+   :rtype: JSONResponse
+
+
+.. py:function:: onto_getMaterial(request)
+
+   Gathers info about one specific meterial from the knowledge graph/ontology
+
+   :param request: Post request from frontend
+   :type request: HTTP POST
+   :return: Info about a material
+   :rtype: JSONResponse
+
+
+.. py:function:: orga_getPrinters(request)
+
+   Gathers list of printers assigned to that organization from the knowledge graph/ontology
+
+   :param request: Post request from frontend
+   :type request: HTTP POST
+   :return: List of printers
+   :rtype: JSONResponse
+
+
+.. py:function:: orga_addPrinter(request)
+
+   Links an existing printer to that organization in the knowledge graph/ontology
+
+   :param request: Post request from frontend with organization name and printer name
+   :type request: HTTP POST
+   :return: Success or not
+   :rtype: HTTPResponse
+
+
+.. py:function:: orga_addPrinterEdit(request)
+
+   Links an existing printer to that organization in the knowledge graph/ontology and adds some extra info
+
+   :param request: Post request from frontend with organization name and printer name as well as properties
+   :type request: HTTP POST
+   :return: Success or not
+   :rtype: HTTPResponse
+
+
+.. py:function:: orga_createPrinter(request)
+
+   Adds a new printer for that organization to the knowledge graph/ontology
+
+   :param request: Post request from frontend with organization name and printer details
+   :type request: HTTP POST
+   :return: Success or not
+   :rtype: HTTPResponse
+
+
+.. py:function:: orga_removePrinter(request)
+
+   Unlinks an existing printer of that organization in the knowledge graph/ontology
+
+   :param request: Post request from frontend with organization name and printer name
+   :type request: HTTP POST
+   :return: Success or not
+   :rtype: HTTPResponse
+
+
+.. py:function:: orga_addMaterial(request)
+
+   Links an existing material to that organization in the knowledge graph/ontology
+
+   :param request: Post request from frontend with organization name and material name
+   :type request: HTTP POST
+   :return: Success or not
+   :rtype: HTTPResponse
+
+
+.. py:function:: orga_addMaterialEdit(request)
+
+   Links an existing material to that organization in the knowledge graph/ontology and adds some custom properties
+
+   :param request: Post request from frontend with organization name and material name
+   :type request: HTTP POST
+   :return: Success or not
+   :rtype: HTTPResponse
+
+
+.. py:function:: orga_createMaterial(request)
+
+   Creates a new material and links it to that organization in the knowledge graph/ontology
+
+   :param request: Post request from frontend with organization name and material name
+   :type request: HTTP POST
+   :return: Success or not
+   :rtype: HTTPResponse
+
+
+.. py:function:: orga_removeMaterial(request)
+
+   Unlinks an existing material of that organization in the knowledge graph/ontology
+
+   :param request: Post request from frontend with organization name and material name
+   :type request: HTTP POST
+   :return: Success or not
+   :rtype: HTTPResponse
+
+
+.. py:function:: orga_getMaterials(request)
+
+   Lists all materials of that organization from the knowledge graph/ontology
+
+   :param request: Post request from frontend with organization name
+   :type request: HTTP POST
+   :return: Success or not
+   :rtype: HTTPResponse
+
+

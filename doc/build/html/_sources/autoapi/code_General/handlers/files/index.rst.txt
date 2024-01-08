@@ -1,0 +1,97 @@
+:py:mod:`code_General.handlers.files`
+=====================================
+
+.. py:module:: code_General.handlers.files
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: File upload handling
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.files.genericUploadFiles
+   code_General.handlers.files.genericDownloadFile
+   code_General.handlers.files.genericDownloadFilesAsZip
+   code_General.handlers.files.genericDeleteFile
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.files.logger
+   code_General.handlers.files.loggerError
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:data:: loggerError
+   
+
+   
+
+.. py:function:: genericUploadFiles(request)
+
+   Generic file upload
+
+   :param request: Request with files in it
+   :type request: HTTP POST
+   :return: Successful or not
+   :rtype: HTTP Response
+
+
+.. py:function:: genericDownloadFile(request, fileID)
+
+   Send file to user from storage
+
+   :param request: Request of user for a specific file
+   :type request: HTTP POST
+   :param fileID: file ID
+   :type fileID: Str
+   :return: Saved content
+   :rtype: FileResponse
+
+
+
+.. py:function:: genericDownloadFilesAsZip(request)
+
+   Send files to user as zip
+
+   :param request: Request of user for all selected files
+   :type request: HTTP POST
+   :return: Saved content
+   :rtype: FileResponse
+
+
+
+.. py:function:: genericDeleteFile(request, fileID)
+
+   Delete a file from storage
+
+   :param request: Request of user for a specific file
+   :type request: HTTP DELETE
+   :param fileID: file ID
+   :type fileID: Str
+   :return: Successful or not
+   :rtype: HTTPResponse
+
+
+

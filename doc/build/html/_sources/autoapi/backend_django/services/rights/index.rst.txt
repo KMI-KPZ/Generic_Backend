@@ -1,0 +1,63 @@
+:py:mod:`backend_django.services.rights`
+========================================
+
+.. py:module:: backend_django.services.rights
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Service for rights management
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.rights.Rights
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.rights.rightsManagement
+
+
+.. py:class:: Rights
+
+   Manage the rights for every path.
+
+   .. py:attribute:: rightsDict
+      
+
+      
+
+   .. py:method:: checkIfAllowed(permissions, path)
+
+      Check if permission is sufficient for that path.
+
+      :param permissions: Permissions of that user
+      :type permissions: [str]
+      :param path: The name of the function (usually handlers)
+      :type path: Str
+      :return: True of permission sufficient, false if not.
+      :rtype: Bool
+
+
+
+.. py:data:: rightsManagement
+   
+
+   
+

@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>code_SemperKI.connections.coypu &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_SemperKI.connections.coypu">
+<span id="code-semperki-connections-coypu"></span><h1><a class="reference internal" href="#module-code_SemperKI.connections.coypu" title="code_SemperKI.connections.coypu"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_SemperKI.connections.coypu</span></code></a><a class="headerlink" href="#module-code_SemperKI.connections.coypu" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: Services for the sparql endpoint of coypu</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_SemperKI.connections.coypu.ManageQueries" title="code_SemperKI.connections.coypu.ManageQueries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ManageQueries</span></code></a></p></td>
+<td><p>Contains query from file as object</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_SemperKI.connections.coypu.getExampleNews" title="code_SemperKI.connections.coypu.getExampleNews"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getExampleNews</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="code_SemperKI.connections.coypu.ManageQueries">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_SemperKI.connections.coypu.</span></span><span class="sig-name descname"><span class="pre">ManageQueries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filePathAndName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.coypu.ManageQueries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains query from file as object</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.connections.coypu.ManageQueries.redisCon">
+<span class="sig-name descname"><span class="pre">redisCon</span></span><a class="headerlink" href="#code_SemperKI.connections.coypu.ManageQueries.redisCon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.coypu.ManageQueries.sendQuery">
+<span class="sig-name descname"><span class="pre">sendQuery</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.coypu.ManageQueries.sendQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send SPARQL query.
+:param self: Contains sparql query as obj
+:type self: Object
+:return: result of query
+:rtype: JSON</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="code_SemperKI.connections.coypu.getExampleNews">
+<span class="sig-prename descclassname"><span class="pre">code_SemperKI.connections.coypu.</span></span><span class="sig-name descname"><span class="pre">getExampleNews</span></span><a class="headerlink" href="#code_SemperKI.connections.coypu.getExampleNews" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_SemperKI/connections/coypu/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

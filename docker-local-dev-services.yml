@@ -1,0 +1,58 @@
+version: '3.4'
+services:
+  db-dev-local:
+    image: postgres:15
+    env_file:
+     - .env.local_container
+    ports:
+      - 127.0.0.1:5432:5432
+    volumes:
+      - ./postgres/data/:/var/lib/postgresql/data/
+    networks:
+      - semper-ki-dev-network
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    env_file:
+     - .env.local_container
+    ports:
+      - "8088:80"
+    volumes:
+      - ./docker-pg-admin.json:/pgadmin4/servers.json
+    networks:
+      - semper-ki-dev-network
+
+  files:
+    image: redis:7
+    container_name: redis
+    env_file:
+    - .env.local_container
+    ports:
+      - 127.0.0.1:6379:6379
+    volumes:
+      - ./redis/data/:/var/lib/redis/data/
+      - ./docker/docker-service-redis-start.sh:/usr/local/bin/docker-service-redis-start.sh
+    entrypoint: /usr/local/bin/docker-service-redis-start.sh # used to pass PW from environment variable change things there if needed
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - semper-ki-dev-network
+    
+  localstack:
+      image: localstack/localstack
+      container_name: localstack-aws
+      volumes:
+        - ./localstack/:/var/lib/localstack
+      env_file:
+        - .env.local_container
+      environment:
+        - DOCKER_HOST=unix:///var/run/docker.sock
+        - LOCALSTACK_PERSISTENCE=1
+      ports:
+        - "127.0.0.1:4566:4566"
+      networks:
+          - semper-ki-dev-network
+
+networks:
+  semper-ki-dev-network:
+

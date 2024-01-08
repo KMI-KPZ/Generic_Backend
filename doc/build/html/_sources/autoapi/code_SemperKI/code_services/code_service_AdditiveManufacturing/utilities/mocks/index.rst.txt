@@ -1,0 +1,101 @@
+:py:mod:`code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks`
+========================================================================================
+
+.. py:module:: code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Mockups for various stuff
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.mockPicture
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.mockModels
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.getEmptyMockModel
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.mockMaterials
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.mockPostProcessing
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.mockPrices
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.mockLogistics
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.mockPrinter
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.mockMaterial
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.testpicture
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.modelMock
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.materialMock
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.utilities.mocks.postProcessingMock
+
+
+.. py:class:: mockPicture
+
+
+.. py:data:: testpicture
+   
+
+   
+
+.. py:function:: mockModels()
+
+
+.. py:data:: modelMock
+   
+
+   
+
+.. py:function:: getEmptyMockModel()
+
+
+.. py:function:: mockMaterials()
+
+
+.. py:data:: materialMock
+   
+
+   
+
+.. py:function:: mockPostProcessing()
+
+
+.. py:data:: postProcessingMock
+   
+
+   
+
+.. py:function:: mockPrices(selection)
+
+
+.. py:function:: mockLogistics(selection)
+
+
+.. py:function:: mockPrinter()
+
+
+.. py:function:: mockMaterial()
+
+

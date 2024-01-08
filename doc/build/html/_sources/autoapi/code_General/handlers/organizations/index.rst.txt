@@ -1,0 +1,235 @@
+:py:mod:`code_General.handlers.organizations`
+=============================================
+
+.. py:module:: code_General.handlers.organizations
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Handling of admin requests for organizations, api calls to auth0
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.organizations.sendEventViaWebsocket
+   code_General.handlers.organizations.getOrganizationName
+   code_General.handlers.organizations.organizations_getInviteLink
+   code_General.handlers.organizations.organizations_addUser
+   code_General.handlers.organizations.organizations_fetchUsers
+   code_General.handlers.organizations.organizations_deleteUser
+   code_General.handlers.organizations.organizations_createRole
+   code_General.handlers.organizations.organizations_assignRole
+   code_General.handlers.organizations.organizations_removeRole
+   code_General.handlers.organizations.organizations_editRole
+   code_General.handlers.organizations.organizations_getRoles
+   code_General.handlers.organizations.organizations_deleteRole
+   code_General.handlers.organizations.organizations_setPermissionsForRole
+   code_General.handlers.organizations.organizations_getPermissions
+   code_General.handlers.organizations.organizations_getPermissionsForRole
+   code_General.handlers.organizations.organizations_createNewOrganization
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.organizations.logger
+   code_General.handlers.organizations.loggerError
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:data:: loggerError
+   
+
+   
+
+.. py:function:: sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args)
+
+   Send events to the respective websockets.
+
+   :param orgID: ID of that organization
+   :type orgID: str
+   :param baseURL: stuff for Auth0
+   :type baseURL: str
+   :param baseHeader: stuff for Auth0
+   :type baseHeader: str
+   :param eventName: stuff for frontend
+   :type eventName: str
+   :param args: other arguments
+   :type args: str
+   :return: True or exception
+   :rtype: Bool or exception
+
+
+.. py:function:: getOrganizationName(session, orgID, baseURL, baseHeader)
+
+   Get Name of the Organization
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :return: If successful, name of organization, error if not
+   :rtype: str or error
+
+
+.. py:function:: organizations_getInviteLink(request)
+
+   Ask Auth0 API to invite someone via e-mail and retrieve the link
+
+   :param request: Request with content as json
+   :type request: HTTP POST
+   :return: If successful or not
+   :rtype: HTTPResponse
+
+
+.. py:function:: organizations_addUser(request)
+
+   Ask Auth0 API to invite someone via e-mail
+
+   :param request: Request with content as json
+   :type request: HTTP POST
+   :return: If successful or not
+   :rtype: HTTPResponse
+
+
+.. py:function:: organizations_fetchUsers(request)
+
+   Ask Auth0 API for all users of an organization
+
+   :param request: Request with session in it
+   :type request: HTTP GET
+   :return: If successful or not
+   :rtype: Json or error
+
+
+.. py:function:: organizations_deleteUser(request)
+
+   Ask Auth0 API to delete someone from an organization via their name
+
+   :param request: Request with content as json
+   :type request: HTTP POST
+   :return: If successful or not
+   :rtype: HTTPResponse or error
+
+
+.. py:function:: organizations_createRole(request)
+
+   Ask Auth0 API to create a new role
+
+   :param request: request with json as content
+   :type request: HTTP POST
+   :return: If successful or not
+   :rtype: JSON or Error
+
+
+.. py:function:: organizations_assignRole(request)
+
+   Assign a role to a person
+
+   :param request: request with content as json
+   :type request: HTTP POST
+   :return: If successful or not
+   :rtype: HTTPResponse
+
+
+.. py:function:: organizations_removeRole(request)
+
+   Remove a role from a person
+
+   :param request: request with content as json
+   :type request: HTTP POST
+   :return: If successful or not
+   :rtype: True or error
+
+
+.. py:function:: organizations_editRole(request)
+
+   Ask Auth0 API to edit a role
+
+   :param request: request with content as json
+   :type request: HTTP POST
+   :return: If successful true or an error if not
+   :rtype: Bool or error
+
+
+.. py:function:: organizations_getRoles(request)
+
+   Fetch all roles for the organization
+
+   :param request: request with session
+   :type request: HTTP GET
+   :return: If successful, list of roles for that organization, error if not
+   :rtype: JSON or error
+
+
+.. py:function:: organizations_deleteRole(request)
+
+   Delete role via ID
+
+   :param request: request with content as json
+   :type request: HTTP POST
+   :return: If successful or not
+   :rtype: HTTPResponse or error
+
+
+.. py:function:: organizations_setPermissionsForRole(request)
+
+   Add Permissions to role
+
+   :param request: request with content as json
+   :type request: HTTP POST
+   :return: If successful or not
+   :rtype: HTTPResponse or error
+
+
+.. py:function:: organizations_getPermissions(request)
+
+   Get all Permissions
+
+   :param request: request with session
+   :type request: HTTP GET
+   :return: If successful, list of permissions for role as array, error if not
+   :rtype: JSON or error
+
+
+.. py:function:: organizations_getPermissionsForRole(request)
+
+   Get Permissions of role
+
+   :param request: request with content as json
+   :type request: HTTP POST
+   :return: If successful, list of permissions for role as array, error if not
+   :rtype: JSON or error
+
+
+.. py:function:: organizations_createNewOrganization(request)
+
+   Create a new organization, create an admin role, invite a person via email as admin.
+   All via Auth0s API.
+
+   :param request: request with content as json
+   :type request: HTTP POST
+   :return: Successfull or not
+   :rtype: HTTPResponse
+
+

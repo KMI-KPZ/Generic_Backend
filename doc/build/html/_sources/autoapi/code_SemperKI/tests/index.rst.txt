@@ -1,0 +1,91 @@
+:py:mod:`code_SemperKI.tests`
+=============================
+
+.. py:module:: code_SemperKI.tests
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Tests for various functions and services
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.tests.TestProjects
+
+
+
+
+.. py:class:: TestProjects(methodName='runTest')
+
+   Bases: :py:obj:`django.test.TestCase`
+
+   Similar to TransactionTestCase, but use `transaction.atomic()` to achieve
+   test isolation.
+
+   In most situations, TestCase should be preferred to TransactionTestCase as
+   it allows faster execution. However, there are some situations where using
+   TransactionTestCase might be necessary (e.g. testing some transactional
+   behavior).
+
+   On database backends with no transaction support, TestCase behaves as
+   TransactionTestCase.
+
+   .. py:attribute:: testFile
+      
+
+      
+
+   .. py:method:: createOrganization(client: django.test.Client, id='', userID='')
+      :classmethod:
+
+
+   .. py:method:: createUser(client: django.test.Client, sub='', name='')
+      :staticmethod:
+
+
+   .. py:method:: createProjectAndProcess(client: django.test.Client)
+      :staticmethod:
+
+
+   .. py:method:: setUpClass()
+      :classmethod:
+
+      Hook method for setting up class fixture before running tests in the class.
+
+
+   .. py:method:: test_getProject()
+
+
+   .. py:method:: test_getFlatProjects()
+
+
+   .. py:method:: test_updateProject()
+
+
+   .. py:method:: test_deleteProjects()
+
+
+   .. py:method:: test_updateProcess()
+
+
+   .. py:method:: test_deleteProcesses()
+
+
+   .. py:method:: test_uploadAndDownloadFile()
+
+
+   .. py:method:: test_sendProject()
+
+
+

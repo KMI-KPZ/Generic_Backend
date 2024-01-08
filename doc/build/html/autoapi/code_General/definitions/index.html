@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>code_General.definitions &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.definitions">
+<span id="code-general-definitions"></span><h1><a class="reference internal" href="#module-code_General.definitions" title="code_General.definitions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_General.definitions</span></code></a><a class="headerlink" href="#module-code_General.definitions" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: Definitions, Classes, Enums to describe Elements in the Backend as well as Services</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.definitions.FileObject" title="code_General.definitions.FileObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FileObject</span></code></a></p></td>
+<td><p>How should a file Object look like?</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.definitions.FileObjectContent" title="code_General.definitions.FileObjectContent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FileObjectContent</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.definitions.SessionContent" title="code_General.definitions.SessionContent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SessionContent</span></code></a></p></td>
+<td><p>What is saved into the session?</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.definitions.ProfileClasses" title="code_General.definitions.ProfileClasses"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProfileClasses</span></code></a></p></td>
+<td><p>Which classes exist?</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.definitions.OrganizationDetails" title="code_General.definitions.OrganizationDetails"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OrganizationDetails</span></code></a></p></td>
+<td><p>What details can an organization have?</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.definitions.GlobalDefaults" title="code_General.definitions.GlobalDefaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GlobalDefaults</span></code></a></p></td>
+<td><p>Some things need to be defined globally in name</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.definitions.FileObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.definitions.</span></span><span class="sig-name descname"><span class="pre">FileObject</span></span><a class="headerlink" href="#code_General.definitions.FileObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>How should a file Object look like?</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObject.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="w"> </span><span class="pre">=</span></em><a class="headerlink" href="#code_General.definitions.FileObject.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObject.path">
+<span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="w"> </span><span class="pre">=</span></em><a class="headerlink" href="#code_General.definitions.FileObject.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObject.fileName">
+<span class="sig-name descname"><span class="pre">fileName</span></span><em class="property"><span class="w"> </span><span class="pre">=</span></em><a class="headerlink" href="#code_General.definitions.FileObject.fileName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObject.tags">
+<span class="sig-name descname"><span class="pre">tags</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#code_General.definitions.FileObject.tags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObject.date">
+<span class="sig-name descname"><span class="pre">date</span></span><em class="property"><span class="w"> </span><span class="pre">=</span></em><a class="headerlink" href="#code_General.definitions.FileObject.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObject.licenses">
+<span class="sig-name descname"><span class="pre">licenses</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#code_General.definitions.FileObject.licenses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObject.certificates">
+<span class="sig-name descname"><span class="pre">certificates</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#code_General.definitions.FileObject.certificates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObject.URI">
+<span class="sig-name descname"><span class="pre">URI</span></span><em class="property"><span class="w"> </span><span class="pre">=</span></em><a class="headerlink" href="#code_General.definitions.FileObject.URI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObject.createdBy">
+<span class="sig-name descname"><span class="pre">createdBy</span></span><em class="property"><span class="w"> </span><span class="pre">=</span></em><a class="headerlink" href="#code_General.definitions.FileObject.createdBy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.definitions.FileObjectContent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.definitions.</span></span><span class="sig-name descname"><span class="pre">FileObjectContent</span></span><a class="headerlink" href="#code_General.definitions.FileObjectContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactylAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactylAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactylAsDefined</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObjectContent.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#code_General.definitions.FileObjectContent.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObjectContent.path">
+<span class="sig-name descname"><span class="pre">path</span></span><a class="headerlink" href="#code_General.definitions.FileObjectContent.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObjectContent.fileName">
+<span class="sig-name descname"><span class="pre">fileName</span></span><a class="headerlink" href="#code_General.definitions.FileObjectContent.fileName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObjectContent.tags">
+<span class="sig-name descname"><span class="pre">tags</span></span><a class="headerlink" href="#code_General.definitions.FileObjectContent.tags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObjectContent.date">
+<span class="sig-name descname"><span class="pre">date</span></span><a class="headerlink" href="#code_General.definitions.FileObjectContent.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObjectContent.licenses">
+<span class="sig-name descname"><span class="pre">licenses</span></span><a class="headerlink" href="#code_General.definitions.FileObjectContent.licenses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObjectContent.certificates">
+<span class="sig-name descname"><span class="pre">certificates</span></span><a class="headerlink" href="#code_General.definitions.FileObjectContent.certificates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObjectContent.URI">
+<span class="sig-name descname"><span class="pre">URI</span></span><a class="headerlink" href="#code_General.definitions.FileObjectContent.URI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.FileObjectContent.createdBy">
+<span class="sig-name descname"><span class="pre">createdBy</span></span><a class="headerlink" href="#code_General.definitions.FileObjectContent.createdBy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.definitions.</span></span><span class="sig-name descname"><span class="pre">SessionContent</span></span><a class="headerlink" href="#code_General.definitions.SessionContent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactylAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactylAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactylAsDefined</span></code></a></p>
+<p>What is saved into the session?</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent.INITIALIZED">
+<span class="sig-name descname"><span class="pre">INITIALIZED</span></span><a class="headerlink" href="#code_General.definitions.SessionContent.INITIALIZED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent.NUMBER_OF_LOGIN_ATTEMPTS">
+<span class="sig-name descname"><span class="pre">NUMBER_OF_LOGIN_ATTEMPTS</span></span><a class="headerlink" href="#code_General.definitions.SessionContent.NUMBER_OF_LOGIN_ATTEMPTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent.LAST_LOGIN_ATTEMPT">
+<span class="sig-name descname"><span class="pre">LAST_LOGIN_ATTEMPT</span></span><a class="headerlink" href="#code_General.definitions.SessionContent.LAST_LOGIN_ATTEMPT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent.usertype">
+<span class="sig-name descname"><span class="pre">usertype</span></span><a class="headerlink" href="#code_General.definitions.SessionContent.usertype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent.IS_PART_OF_ORGANIZATION">
+<span class="sig-name descname"><span class="pre">IS_PART_OF_ORGANIZATION</span></span><a class="headerlink" href="#code_General.definitions.SessionContent.IS_PART_OF_ORGANIZATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent.PG_PROFILE_CLASS">
+<span class="sig-name descname"><span class="pre">PG_PROFILE_CLASS</span></span><a class="headerlink" href="#code_General.definitions.SessionContent.PG_PROFILE_CLASS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent.PATH_AFTER_LOGIN">
+<span class="sig-name descname"><span class="pre">PATH_AFTER_LOGIN</span></span><a class="headerlink" href="#code_General.definitions.SessionContent.PATH_AFTER_LOGIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent.MOCKED_LOGIN">
+<span class="sig-name descname"><span class="pre">MOCKED_LOGIN</span></span><a class="headerlink" href="#code_General.definitions.SessionContent.MOCKED_LOGIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent.ORGANIZATION_NAME">
+<span class="sig-name descname"><span class="pre">ORGANIZATION_NAME</span></span><a class="headerlink" href="#code_General.definitions.SessionContent.ORGANIZATION_NAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent.USER_ROLES">
+<span class="sig-name descname"><span class="pre">USER_ROLES</span></span><a class="headerlink" href="#code_General.definitions.SessionContent.USER_ROLES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.SessionContent.USER_PERMISSIONS">
+<span class="sig-name descname"><span class="pre">USER_PERMISSIONS</span></span><a class="headerlink" href="#code_General.definitions.SessionContent.USER_PERMISSIONS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.definitions.ProfileClasses">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.definitions.</span></span><span class="sig-name descname"><span class="pre">ProfileClasses</span></span><a class="headerlink" href="#code_General.definitions.ProfileClasses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactylAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactylAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactylAsDefined</span></code></a></p>
+<p>Which classes exist?</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.ProfileClasses.user">
+<span class="sig-name descname"><span class="pre">user</span></span><a class="headerlink" href="#code_General.definitions.ProfileClasses.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.ProfileClasses.organization">
+<span class="sig-name descname"><span class="pre">organization</span></span><a class="headerlink" href="#code_General.definitions.ProfileClasses.organization" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.definitions.OrganizationDetails">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.definitions.</span></span><span class="sig-name descname"><span class="pre">OrganizationDetails</span></span><a class="headerlink" href="#code_General.definitions.OrganizationDetails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactylAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactylAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactylAsDefined</span></code></a></p>
+<p>What details can an organization have?</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.OrganizationDetails.adress">
+<span class="sig-name descname"><span class="pre">adress</span></span><a class="headerlink" href="#code_General.definitions.OrganizationDetails.adress" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.OrganizationDetails.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#code_General.definitions.OrganizationDetails.email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.OrganizationDetails.taxID">
+<span class="sig-name descname"><span class="pre">taxID</span></span><a class="headerlink" href="#code_General.definitions.OrganizationDetails.taxID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.definitions.GlobalDefaults">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.definitions.</span></span><span class="sig-name descname"><span class="pre">GlobalDefaults</span></span><a class="headerlink" href="#code_General.definitions.GlobalDefaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactylAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactylAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactylAsDefined</span></code></a></p>
+<p>Some things need to be defined globally in name</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.definitions.GlobalDefaults.anonymous">
+<span class="sig-name descname"><span class="pre">anonymous</span></span><a class="headerlink" href="#code_General.definitions.GlobalDefaults.anonymous" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/autoapi/code_General/definitions/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

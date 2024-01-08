@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>code_SemperKI.tests &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_SemperKI.tests">
+<span id="code-semperki-tests"></span><h1><a class="reference internal" href="#module-code_SemperKI.tests" title="code_SemperKI.tests"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_SemperKI.tests</span></code></a><a class="headerlink" href="#module-code_SemperKI.tests" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: Tests for various functions and services</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_SemperKI.tests.TestProjects" title="code_SemperKI.tests.TestProjects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestProjects</span></code></a></p></td>
+<td><p>Similar to TransactionTestCase, but use <cite>transaction.atomic()</cite> to achieve</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_SemperKI.tests.</span></span><span class="sig-name descname"><span class="pre">TestProjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">django.test.TestCase</span></code></p>
+<p>Similar to TransactionTestCase, but use <cite>transaction.atomic()</cite> to achieve
+test isolation.</p>
+<p>In most situations, TestCase should be preferred to TransactionTestCase as
+it allows faster execution. However, there are some situations where using
+TransactionTestCase might be necessary (e.g. testing some transactional
+behavior).</p>
+<p>On database backends with no transaction support, TestCase behaves as
+TransactionTestCase.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.testFile">
+<span class="sig-name descname"><span class="pre">testFile</span></span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.testFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.createOrganization">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">createOrganization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">django.test.Client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userID</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.createOrganization" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.createUser">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">createUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">django.test.Client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.createUser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.createProjectAndProcess">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">createProjectAndProcess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">django.test.Client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.createProjectAndProcess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.setUpClass">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setUpClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.setUpClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up class fixture before running tests in the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.test_getProject">
+<span class="sig-name descname"><span class="pre">test_getProject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.test_getProject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.test_getFlatProjects">
+<span class="sig-name descname"><span class="pre">test_getFlatProjects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.test_getFlatProjects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.test_updateProject">
+<span class="sig-name descname"><span class="pre">test_updateProject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.test_updateProject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.test_deleteProjects">
+<span class="sig-name descname"><span class="pre">test_deleteProjects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.test_deleteProjects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.test_updateProcess">
+<span class="sig-name descname"><span class="pre">test_updateProcess</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.test_updateProcess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.test_deleteProcesses">
+<span class="sig-name descname"><span class="pre">test_deleteProcesses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.test_deleteProcesses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.test_uploadAndDownloadFile">
+<span class="sig-name descname"><span class="pre">test_uploadAndDownloadFile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.test_uploadAndDownloadFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.tests.TestProjects.test_sendProject">
+<span class="sig-name descname"><span class="pre">test_sendProject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.tests.TestProjects.test_sendProject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/autoapi/code_SemperKI/tests/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,32 @@
+:py:mod:`backend_django`
+========================
+
+.. py:module:: backend_django
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   handlers/index.rst
+   modelFiles/index.rst
+   services/index.rst
+   settings/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   asgi/index.rst
+   global_vars/index.rst
+   models/index.rst
+   tests/index.rst
+   urls/index.rst
+   wsgi/index.rst
+
+

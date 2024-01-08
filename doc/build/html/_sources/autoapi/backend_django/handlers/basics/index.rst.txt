@@ -1,0 +1,70 @@
+:py:mod:`backend_django.handlers.basics`
+========================================
+
+.. py:module:: backend_django.handlers.basics
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Basic stuff that is imported everywhere
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.basics.checkIfTokenValid
+   backend_django.handlers.basics.checkIfUserIsLoggedIn
+   backend_django.handlers.basics.handleTooManyRequestsError
+   backend_django.handlers.basics.checkIfRightsAreSufficient
+
+
+
+.. py:function:: checkIfTokenValid(token)
+
+   Check whether the token of a user has expired and a new login is necessary
+
+   :param token: User session token
+   :type token: Dictionary
+   :return: True if the token is valid or False if not
+   :rtype: Bool
+
+
+.. py:function:: checkIfUserIsLoggedIn(json=False)
+
+   Check whether a user is logged in or not.
+
+   :param json: Controls if the output is in JSON Format or not
+   :type json: Bool
+   :return: Response whether the user is logged in or not. If so, call the function.
+   :rtype: HTTPRespone/JSONResponse, Func
+
+
+.. py:function:: handleTooManyRequestsError(callToAPI)
+
+   Calls the function and checks, if there were too many requests. If so, repeat the request until it's done.
+   :param callToAPI: Function call to Auth0 API
+   :type callToAPI: Lambda func
+   :return: Either an error, or the response
+   :rtype: Exception | JSON/Dict
+
+
+.. py:function:: checkIfRightsAreSufficient(funcName, json=False)
+
+   Check whether a user has sufficient rights to call that function.
+
+   :param json: Controls if the output is in JSON Format or not
+   :type json: Bool
+   :return: Response if the rights were not sufficient, function call if they were.
+   :rtype: HTTPRespone/JSONResponse, Func
+
+

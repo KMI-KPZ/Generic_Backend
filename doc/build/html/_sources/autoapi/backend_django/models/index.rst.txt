@@ -1,0 +1,15 @@
+:py:mod:`backend_django.models`
+===============================
+
+.. py:module:: backend_django.models
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: link to model files for django to handle
+
+
+

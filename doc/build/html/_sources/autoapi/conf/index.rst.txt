@@ -1,0 +1,64 @@
+:py:mod:`conf`
+==============
+
+.. py:module:: conf
+
+
+Module Contents
+---------------
+
+.. py:data:: project
+   :annotation: = KISS-backend
+
+   
+
+.. py:data:: copyright
+   :annotation: = 2023, Silvio Weging
+
+   
+
+.. py:data:: author
+   :annotation: = Silvio Weging
+
+   
+
+.. py:data:: release
+   :annotation: = 0.1
+
+   
+
+.. py:data:: extensions
+   :annotation: = ['sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'autoapi.extension']
+
+   
+
+.. py:data:: autoapi_type
+   :annotation: = python
+
+   
+
+.. py:data:: autoapi_dirs
+   :annotation: = ['../../']
+
+   
+
+.. py:data:: templates_path
+   :annotation: = ['_templates']
+
+   
+
+.. py:data:: exclude_patterns
+   :annotation: = []
+
+   
+
+.. py:data:: html_theme
+   :annotation: = alabaster
+
+   
+
+.. py:data:: html_static_path
+   :annotation: = ['_static']
+
+   
+

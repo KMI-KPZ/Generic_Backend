@@ -1,0 +1,62 @@
+:py:mod:`code_SemperKI.connections.coypu`
+=========================================
+
+.. py:module:: code_SemperKI.connections.coypu
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for the sparql endpoint of coypu
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.connections.coypu.ManageQueries
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.connections.coypu.getExampleNews
+
+
+.. py:class:: ManageQueries(filePathAndName)
+
+   Contains query from file as object
+
+
+   .. py:attribute:: redisCon
+      
+
+      
+
+   .. py:method:: sendQuery()
+
+      Send SPARQL query.
+      :param self: Contains sparql query as obj
+      :type self: Object
+      :return: result of query
+      :rtype: JSON
+
+
+
+
+.. py:data:: getExampleNews
+   
+
+   
+

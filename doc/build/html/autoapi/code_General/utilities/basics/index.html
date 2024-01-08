@@ -1,0 +1,394 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>code_General.utilities.basics &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.utilities.basics">
+<span id="code-general-utilities-basics"></span><h1><a class="reference internal" href="#module-code_General.utilities.basics" title="code_General.utilities.basics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_General.utilities.basics</span></code></a><a class="headerlink" href="#module-code_General.utilities.basics" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: Basic stuff that is imported everywhere</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.basics.Logging" title="code_General.utilities.basics.Logging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Logging</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.basics.checkIfTokenValid" title="code_General.utilities.basics.checkIfTokenValid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkIfTokenValid</span></code></a>(token)</p></td>
+<td><p>Check whether the token of a user has expired and a new login is necessary</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.basics.manualCheckifLoggedIn" title="code_General.utilities.basics.manualCheckifLoggedIn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manualCheckifLoggedIn</span></code></a>(session)</p></td>
+<td><p>Check whether a user is logged in or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.basics.checkIfUserIsLoggedIn" title="code_General.utilities.basics.checkIfUserIsLoggedIn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkIfUserIsLoggedIn</span></code></a>([json])</p></td>
+<td><p>Check whether a user is logged in or not.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.basics.checkIfUserIsAdmin" title="code_General.utilities.basics.checkIfUserIsAdmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkIfUserIsAdmin</span></code></a>([json])</p></td>
+<td><p>Check whether the current user is an admin or not</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.basics.handleTooManyRequestsError" title="code_General.utilities.basics.handleTooManyRequestsError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handleTooManyRequestsError</span></code></a>(callToAPI)</p></td>
+<td><p>Calls the function and checks, if there were too many requests. If so, repeat the request until it's done.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.basics.manualCheckIfRightsAreSufficient" title="code_General.utilities.basics.manualCheckIfRightsAreSufficient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manualCheckIfRightsAreSufficient</span></code></a>(session, funcName)</p></td>
+<td><p>Check whether a user has the permissions to do something.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.basics.manualCheckIfRightsAreSufficientForSpecificOperation" title="code_General.utilities.basics.manualCheckIfRightsAreSufficientForSpecificOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manualCheckIfRightsAreSufficientForSpecificOperation</span></code></a>(...)</p></td>
+<td><p>Check whether a user has the permissions to do something.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.basics.checkIfRightsAreSufficient" title="code_General.utilities.basics.checkIfRightsAreSufficient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkIfRightsAreSufficient</span></code></a>([json])</p></td>
+<td><p>Check whether a user has sufficient rights to call that function.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.basics.checkIfTokenValid">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.basics.</span></span><span class="sig-name descname"><span class="pre">checkIfTokenValid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.basics.checkIfTokenValid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the token of a user has expired and a new login is necessary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>token</strong> (<em>Dictionary</em>) – User session token</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the token is valid or False if not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.basics.manualCheckifLoggedIn">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.basics.</span></span><span class="sig-name descname"><span class="pre">manualCheckifLoggedIn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.basics.manualCheckifLoggedIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a user is logged in or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>dict</em>) – Session of user</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response whether the user is logged in or not.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.basics.checkIfUserIsLoggedIn">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.basics.</span></span><span class="sig-name descname"><span class="pre">checkIfUserIsLoggedIn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.basics.checkIfUserIsLoggedIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a user is logged in or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>json</strong> (<em>Bool</em>) – Controls if the output is in JSON Format or not</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response whether the user is logged in or not. If so, call the function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPRespone/JSONResponse, Func</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.basics.checkIfUserIsAdmin">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.basics.</span></span><span class="sig-name descname"><span class="pre">checkIfUserIsAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.basics.checkIfUserIsAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the current user is an admin or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>json</strong> (<em>Bool</em>) – Controls if the output is in JSON Format or not</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response whether the user is an admin or not. If so, call the function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPRespone/JSONResponse, Func</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.basics.handleTooManyRequestsError">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.basics.</span></span><span class="sig-name descname"><span class="pre">handleTooManyRequestsError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callToAPI</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.basics.handleTooManyRequestsError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the function and checks, if there were too many requests. If so, repeat the request until it’s done.
+:param callToAPI: Function call to Auth0 API
+:type callToAPI: Lambda func
+:return: Either an error, or the response
+:rtype: Exception | JSON/Dict</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.basics.manualCheckIfRightsAreSufficient">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.basics.</span></span><span class="sig-name descname"><span class="pre">manualCheckIfRightsAreSufficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funcName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.basics.manualCheckIfRightsAreSufficient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a user has the permissions to do something.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<em>dict</em>) – Session of user</p></li>
+<li><p><strong>funcName</strong> (<em>str</em>) – The function that called this</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response whether the user is logged in or not.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.basics.manualCheckIfRightsAreSufficientForSpecificOperation">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.basics.</span></span><span class="sig-name descname"><span class="pre">manualCheckIfRightsAreSufficientForSpecificOperation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funcName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.basics.manualCheckIfRightsAreSufficientForSpecificOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a user has the permissions to do something.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<em>dict</em>) – Session of user</p></li>
+<li><p><strong>funcName</strong> (<em>str</em>) – The function that called this</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response whether the user is logged in or not.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.basics.checkIfRightsAreSufficient">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.basics.</span></span><span class="sig-name descname"><span class="pre">checkIfRightsAreSufficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.basics.checkIfRightsAreSufficient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a user has sufficient rights to call that function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>json</strong> (<em>Bool</em>) – Controls if the output is in JSON Format or not</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response if the rights were not sufficient, function call if they were.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPRespone/JSONResponse, Func</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.utilities.basics.</span></span><span class="sig-name descname"><span class="pre">Logging</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py class">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Subject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Subject</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Subject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactylAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactylAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactylAsDefined</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Subject.USER">
+<span class="sig-name descname"><span class="pre">USER</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Subject.USER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Subject.ADMIN">
+<span class="sig-name descname"><span class="pre">ADMIN</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Subject.ADMIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Subject.ORGANISATION">
+<span class="sig-name descname"><span class="pre">ORGANISATION</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Subject.ORGANISATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Subject.SYSTEM">
+<span class="sig-name descname"><span class="pre">SYSTEM</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Subject.SYSTEM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Subject.SUBJECT">
+<span class="sig-name descname"><span class="pre">SUBJECT</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Subject.SUBJECT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Predicate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Predicate</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Predicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactylAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactylAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactylAsDefined</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Predicate.CREATED">
+<span class="sig-name descname"><span class="pre">CREATED</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Predicate.CREATED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Predicate.DEFINED">
+<span class="sig-name descname"><span class="pre">DEFINED</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Predicate.DEFINED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Predicate.FETCHED">
+<span class="sig-name descname"><span class="pre">FETCHED</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Predicate.FETCHED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Predicate.EDITED">
+<span class="sig-name descname"><span class="pre">EDITED</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Predicate.EDITED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Predicate.DELETED">
+<span class="sig-name descname"><span class="pre">DELETED</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Predicate.DELETED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Predicate.PREDICATE">
+<span class="sig-name descname"><span class="pre">PREDICATE</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Predicate.PREDICATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Object">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Object</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactylAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactylAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactylAsDefined</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Object.USER">
+<span class="sig-name descname"><span class="pre">USER</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Object.USER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Object.ADMIN">
+<span class="sig-name descname"><span class="pre">ADMIN</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Object.ADMIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Object.ORGANISATION">
+<span class="sig-name descname"><span class="pre">ORGANISATION</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Object.ORGANISATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Object.SYSTEM">
+<span class="sig-name descname"><span class="pre">SYSTEM</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Object.SYSTEM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Object.SELF">
+<span class="sig-name descname"><span class="pre">SELF</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Object.SELF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.basics.Logging.Object.OBJECT">
+<span class="sig-name descname"><span class="pre">OBJECT</span></span><a class="headerlink" href="#code_General.utilities.basics.Logging.Object.OBJECT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_General/utilities/basics/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

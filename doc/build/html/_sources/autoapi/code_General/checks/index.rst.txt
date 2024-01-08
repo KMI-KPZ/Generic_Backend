@@ -1,0 +1,82 @@
+:py:mod:`code_General.checks`
+=============================
+
+.. py:module:: code_General.checks
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Thomas Skodawessely 2023
+
+   Contains: Checks
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.checks.Tags
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.checks.checkEnv
+   code_General.checks.checkDb
+   code_General.checks.checkRedis
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.checks.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:class:: Tags
+
+   Bases: :py:obj:`django.core.checks.Tags`
+
+   Built-in tags for internal checks.
+
+   .. py:attribute:: env_check
+      :annotation: = env_check
+
+      
+
+   .. py:attribute:: db_check
+      :annotation: = db_check
+
+      
+
+   .. py:attribute:: redis_check
+      :annotation: = redis_check
+
+      
+
+
+.. py:function:: checkEnv(app_configs=None, **kwargs)
+
+
+.. py:function:: checkDb(app_configs=None, **kwargs)
+
+
+.. py:function:: checkRedis(app_configs=None, **kwargs)
+
+

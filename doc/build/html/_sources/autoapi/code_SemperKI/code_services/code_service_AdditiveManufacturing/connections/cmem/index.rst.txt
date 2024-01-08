@@ -1,0 +1,28 @@
+:py:mod:`code_SemperKI.code_services.code_service_AdditiveManufacturing.connections.cmem`
+=========================================================================================
+
+.. py:module:: code_SemperKI.code_services.code_service_AdditiveManufacturing.connections.cmem
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for the sparql endpoint regarding 3D Printer Data
+
+
+
+Module Contents
+---------------
+
+.. py:data:: getAllMaterials
+   
+
+   
+
+.. py:data:: getAllPrinters
+   
+
+   
+

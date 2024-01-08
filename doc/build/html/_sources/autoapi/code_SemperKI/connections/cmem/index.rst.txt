@@ -1,0 +1,119 @@
+:py:mod:`code_SemperKI.connections.cmem`
+========================================
+
+.. py:module:: code_SemperKI.connections.cmem
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for the sparql endpoint
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.connections.cmem.ManageToken
+   code_SemperKI.connections.cmem.ManageQueries
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.connections.cmem.sendGeneralQuery
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.connections.cmem.endpoint
+   code_SemperKI.connections.cmem.oauthToken
+
+
+.. py:class:: ManageToken
+
+   Manage oauth token class.
+
+   .. py:attribute:: _token
+      
+
+      
+
+   .. py:attribute:: client
+      
+
+      
+
+   .. py:method:: __getattr__(item)
+
+
+   .. py:method:: __del__()
+
+
+   .. py:method:: getAccessToken()
+
+      Get initial token. Made as a function to be callable from outside. 
+      Reminder for me: It makes no sense to save this access token in redis because it expires much to quickly!
+
+
+   .. py:method:: checkIfExpired()
+
+      Check if token has expired and if so, refresh it. 
+
+
+
+.. py:data:: endpoint
+   
+
+   
+
+.. py:data:: oauthToken
+   
+
+   
+
+.. py:class:: ManageQueries(filePathAndName)
+
+   Contains query from file as object
+
+
+   .. py:attribute:: redisCon
+      
+
+      
+
+   .. py:method:: sendQuery()
+
+      Send SPARQL query.
+      :param self: Contains sparql query as obj
+      :type self: Object
+      :return: result of query
+      :rtype: JSON
+
+
+
+
+.. py:function:: sendGeneralQuery(query)
+
+   Send SPARQL query.
+   :param query: Contains sparql query as string
+   :type query: str
+   :return: result of query
+   :rtype: JSON
+
+
+

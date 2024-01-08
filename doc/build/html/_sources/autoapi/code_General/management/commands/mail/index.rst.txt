@@ -1,0 +1,76 @@
+:py:mod:`code_General.management.commands.mail`
+===============================================
+
+.. py:module:: code_General.management.commands.mail
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Thomas Skodawessely 2023
+
+   Contains: 
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.management.commands.mail.Command
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.management.commands.mail.logging
+
+
+.. py:data:: logging
+   
+
+   
+
+.. py:class:: Command(stdout=None, stderr=None, no_color=False, force_color=False)
+
+   Bases: :py:obj:`django.core.management.base.BaseCommand`
+
+   Sends a test mail to see if config is correct
+
+
+   .. py:attribute:: help
+      :annotation: = sends a test mail to see if config is correct
+
+      
+
+   .. py:method:: add_arguments(parser)
+
+      :param self: Command object
+      :type self: Command
+      :param parser: parser object
+      :type parser: ArgumentParser
+      :return: None
+      :rtype: None
+
+
+   .. py:method:: handle(*args, **options)
+
+      :param self: Command object
+      :type self: Command
+      :param args: arguments
+      :type args: list
+      :param options: options
+      :type options: dict
+      :return: None
+      :rtype: None
+
+
+

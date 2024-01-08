@@ -1,0 +1,39 @@
+:py:mod:`code_General`
+======================
+
+.. py:module:: code_General
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   connections/index.rst
+   handlers/index.rst
+   helper/index.rst
+   management/index.rst
+   modelFiles/index.rst
+   settings/index.rst
+   templates/index.rst
+   utilities/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   apps/index.rst
+   asgi/index.rst
+   checks/index.rst
+   definitions/index.rst
+   imports/index.rst
+   models/index.rst
+   tests/index.rst
+   urls/index.rst
+   wsgi/index.rst
+
+

@@ -1,0 +1,48 @@
+:py:mod:`code_SemperKI.code_services.code_service_CreateModel.service`
+======================================================================
+
+.. py:module:: code_SemperKI.code_services.code_service_CreateModel.service
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Class which describes the service in particular
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_CreateModel.service.CreateModel
+
+
+
+
+.. py:class:: CreateModel
+
+   Bases: :py:obj:`code_SemperKI.services.ServiceBase`
+
+   All connections of this service that Semper-KI should know about
+
+
+   .. py:method:: updateServiceDetails(existingContent, newContent)
+
+      Run service specific update of service details
+
+
+
+   .. py:method:: deleteServiceDetails(existingContent, newContent)
+
+      Run service specific update of service details
+
+
+
+

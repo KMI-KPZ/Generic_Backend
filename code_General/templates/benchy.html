@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>BenchyMcMarkface</title>
+  </head>
+  <body>
+    <h1>BenchyMcMarkface</h1>
+    <form  method="post" action="/private/benchyMcMarkface/" enctype="multipart/form-data">
+        {% csrf_token  %}
+        <input type="text" name="NumberOfCalls" placeholder="Number of Calls"  size="40" required>
+        <input type="text" name="URL" placeholder="URL (with / at the end!)"  size="40" required> 
+        <input type="file" name="PathFile" placeholder="File with paths"  size="40" required enctype="multipart/form-data" accept="text/txt"/> 
+        <button type="submit" >Submit</button>
+    </form>  
+  </body>
+</html>

@@ -1,0 +1,66 @@
+:py:mod:`backend_django.services.oauth`
+=======================================
+
+.. py:module:: backend_django.services.oauth
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for oauth verification
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.oauth.authorizeToken
+   backend_django.services.oauth.authorizeRedirect
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.services.oauth.oauth
+
+
+.. py:data:: oauth
+   
+
+   
+
+.. py:function:: authorizeToken(request)
+
+   Get information back from Auth0 and generate token.
+
+   :param request: POST request
+   :type request: HTTP POST
+   :return: Token
+   :rtype: Dictionary
+
+
+
+.. py:function:: authorizeRedirect(request, callback)
+
+   Authorize redirection for callback
+
+   :param request: GET request
+   :type request: HTTP GET
+   :param callback: Function
+   :type callback: Function
+   :return: URI
+   :rtype: HTTP URI
+
+
+

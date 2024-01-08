@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>code_General.handlers.files &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.handlers.files">
+<span id="code-general-handlers-files"></span><h1><a class="reference internal" href="#module-code_General.handlers.files" title="code_General.handlers.files"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_General.handlers.files</span></code></a><a class="headerlink" href="#module-code_General.handlers.files" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: File upload handling</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.files.genericUploadFiles" title="code_General.handlers.files.genericUploadFiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">genericUploadFiles</span></code></a>(request)</p></td>
+<td><p>Generic file upload</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.files.genericDownloadFile" title="code_General.handlers.files.genericDownloadFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">genericDownloadFile</span></code></a>(request, fileID)</p></td>
+<td><p>Send file to user from storage</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.files.genericDownloadFilesAsZip" title="code_General.handlers.files.genericDownloadFilesAsZip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">genericDownloadFilesAsZip</span></code></a>(request)</p></td>
+<td><p>Send files to user as zip</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.files.genericDeleteFile" title="code_General.handlers.files.genericDeleteFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">genericDeleteFile</span></code></a>(request, fileID)</p></td>
+<td><p>Delete a file from storage</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.files.logger" title="code_General.handlers.files.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.files.loggerError" title="code_General.handlers.files.loggerError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loggerError</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.handlers.files.logger">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.files.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#code_General.handlers.files.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.handlers.files.loggerError">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.files.</span></span><span class="sig-name descname"><span class="pre">loggerError</span></span><a class="headerlink" href="#code_General.handlers.files.loggerError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.handlers.files.genericUploadFiles">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.files.</span></span><span class="sig-name descname"><span class="pre">genericUploadFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.files.genericUploadFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic file upload</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Request with files in it</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP Response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.handlers.files.genericDownloadFile">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.files.</span></span><span class="sig-name descname"><span class="pre">genericDownloadFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.files.genericDownloadFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send file to user from storage</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HTTP POST</em>) – Request of user for a specific file</p></li>
+<li><p><strong>fileID</strong> (<em>Str</em>) – file ID</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Saved content</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FileResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.handlers.files.genericDownloadFilesAsZip">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.files.</span></span><span class="sig-name descname"><span class="pre">genericDownloadFilesAsZip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.files.genericDownloadFilesAsZip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send files to user as zip</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – Request of user for all selected files</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Saved content</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FileResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.handlers.files.genericDeleteFile">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.files.</span></span><span class="sig-name descname"><span class="pre">genericDeleteFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.files.genericDeleteFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a file from storage</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>HTTP DELETE</em>) – Request of user for a specific file</p></li>
+<li><p><strong>fileID</strong> (<em>Str</em>) – file ID</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Successful or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTPResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_General/handlers/files/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,36 @@
+:py:mod:`code_SemperKI.code_services.code_service_CreateModel.definitions`
+==========================================================================
+
+.. py:module:: code_SemperKI.code_services.code_service_CreateModel.definitions
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Definitions, Classes, Enums to describe Elements in the Backend as well as Services
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_CreateModel.definitions.ServiceDetails
+
+
+
+
+.. py:class:: ServiceDetails
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+
+   What does the service consists of 
+
+
+

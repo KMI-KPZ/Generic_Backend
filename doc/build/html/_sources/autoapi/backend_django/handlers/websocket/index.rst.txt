@@ -1,0 +1,73 @@
+:py:mod:`backend_django.handlers.websocket`
+===========================================
+
+.. py:module:: backend_django.handlers.websocket
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Websocket for various stuff
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.websocket.GeneralWebSocket
+
+
+
+
+.. py:class:: GeneralWebSocket(*args, **kwargs)
+
+   Bases: :py:obj:`channels.generic.websocket.AsyncJsonWebsocketConsumer`
+
+   Variant of AsyncWebsocketConsumer that automatically JSON-encodes and decodes
+   messages as they come in and go out. Expects everything to be text; will
+   error on binary data.
+
+   .. py:method:: getSession(save=True)
+
+
+   .. py:method:: setSession(key, value)
+
+
+   .. py:method:: connect()
+      :async:
+
+
+   .. py:method:: disconnect(code)
+      :async:
+
+      Called when a WebSocket connection is closed.
+
+
+   .. py:method:: receive(text_data=None, bytes_data=None)
+      :async:
+
+      Called with a decoded WebSocket frame.
+
+
+   .. py:method:: send(text_data=None, bytes_data=None, close=False)
+      :async:
+
+      Sends a reply back down the WebSocket
+
+
+   .. py:method:: sendMessage(event)
+      :async:
+
+
+   .. py:method:: sendMessageJSON(event)
+      :async:
+
+
+

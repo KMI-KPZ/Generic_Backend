@@ -1,0 +1,588 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>code_SemperKI.connections.postgresql.pgProcesses &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_SemperKI.connections.postgresql.pgProcesses">
+<span id="code-semperki-connections-postgresql-pgprocesses"></span><h1><a class="reference internal" href="#module-code_SemperKI.connections.postgresql.pgProcesses" title="code_SemperKI.connections.postgresql.pgProcesses"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_SemperKI.connections.postgresql.pgProcesses</span></code></a><a class="headerlink" href="#module-code_SemperKI.connections.postgresql.pgProcesses" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: Services for database calls</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase" title="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProcessManagementBase</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_SemperKI.connections.postgresql.pgProcesses.logger" title="code_SemperKI.connections.postgresql.pgProcesses.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.logger">
+<span class="sig-prename descclassname"><span class="pre">code_SemperKI.connections.postgresql.pgProcesses.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_SemperKI.connections.postgresql.pgProcesses.</span></span><span class="sig-name descname"><span class="pre">ProcessManagementBase</span></span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getData">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processID</strong> (<em>str</em>) – process ID for a process</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of all data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getDataWithContentID">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getDataWithContentID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">IDofContent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getDataWithContentID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get one datum in particular but use the content ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>processID</strong> (<em>str</em>) – process ID for a process</p></li>
+<li><p><strong>IDofContent</strong> (<em>str</em>) – ID for a datum</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>this datum</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getDataWithID">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getDataWithID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">IDofData</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getDataWithID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get one datum in particular.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>IDofData</strong> (<em>str</em>) – ID for a datum</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>this datum</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getDataByType">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getDataByType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typeOfData</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../definitions/index.html#code_SemperKI.definitions.DataType" title="code_SemperKI.definitions.DataType"><span class="pre">code_SemperKI.definitions.DataType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">processID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getDataByType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all data of a certain type for a process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>processID</strong> (<em>str</em>) – process ID for a process</p></li>
+<li><p><strong>typeOfData</strong> (<a class="reference internal" href="../../../definitions/index.html#code_SemperKI.definitions.DataType" title="code_SemperKI.definitions.DataType"><em>DataType</em></a>) – type of this data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>all results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.createDataEntry">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">createDataEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typeOfData</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../definitions/index.html#code_SemperKI.definitions.DataType" title="code_SemperKI.definitions.DataType"><span class="pre">code_SemperKI.definitions.DataType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">createdBy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">IDofData</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.createDataEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an entry in the Data table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>Dict in JSON</em>) – The data itself</p></li>
+<li><p><strong>dataID</strong> (<em>Str</em>) – The ID of that date</p></li>
+<li><p><strong>processID</strong> (<em>str</em>) – process it belongs to</p></li>
+<li><p><strong>typeOfData</strong> (<a class="reference internal" href="../../../definitions/index.html#code_SemperKI.definitions.DataType" title="code_SemperKI.definitions.DataType"><em>DataType</em></a>) – The type of this data</p></li>
+<li><p><strong>createdBy</strong> (<em>Str</em>) – Who created it (hashed ID)</p></li>
+<li><p><strong>details</strong> (<em>JSON Dict</em>) – Some metadata</p></li>
+<li><p><strong>IDofData</strong> (<em>Str</em>) – If the data has an id, save it</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.deleteDataEntry">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deleteDataEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.deleteDataEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a specific data entry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataID</strong> (<em>str</em>) – The primary key of that datum</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProcessObj">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getProcessObj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProcessObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get one process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processID</strong> (<em>str</em>) – process ID for a process</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Requested process</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ProcessObj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProjectObj">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getProjectObj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projectID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProjectObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get one project object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>projectID</strong> (<em>str</em>) – project ID for a project</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Requested project object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>project</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProject">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getProject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projectID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">currentUserHashID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">currentOrgaHashID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get info about one project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>projectID</strong> (<em>str</em>) – ID of the project</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict with info about that project</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getAllUsersOfProcess">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getAllUsersOfProcess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getAllUsersOfProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all users that are connected to that processID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processID</strong> (<em>str</em>) – unique process ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of all userIDs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProjectIDViaProcessID">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getProjectIDViaProcessID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProjectIDViaProcessID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Project ID from the Process ID</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processID</strong> (<em>str</em>) – unique process ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>project ID</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.deleteProcess">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deleteProcess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processObj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.deleteProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete specific process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processID</strong> (<em>str</em>) – unique process ID to be deleted</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag if it worked or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.deleteProject">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deleteProject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projectID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.deleteProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete specific project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>projectID</strong> (<em>str</em>) – unique project ID to be deleted</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag if it worked or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.updateProject">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">updateProject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projectID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updateType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../definitions/index.html#code_SemperKI.definitions.ProjectUpdates" title="code_SemperKI.definitions.ProjectUpdates"><span class="pre">code_SemperKI.definitions.ProjectUpdates</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.updateProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change details of an project like its status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>projectID</strong> (<em>str</em>) – project ID that this project belongs to</p></li>
+<li><p><strong>updateType</strong> (<em>EnumUpdates</em>) – changed project details</p></li>
+<li><p><strong>content</strong> (<em>json dict</em>) – changed project, can be many stuff</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag if it worked or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.updateProcess">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">updateProcess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updateType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../definitions/index.html#code_SemperKI.definitions.ProcessUpdates" title="code_SemperKI.definitions.ProcessUpdates"><span class="pre">code_SemperKI.definitions.ProcessUpdates</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updatedBy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.updateProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change details of a process like its status, or save communication.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>processID</strong> (<em>str</em>) – unique processID to be edited</p></li>
+<li><p><strong>updateType</strong> (<em>EnumUpdates</em>) – changed process details</p></li>
+<li><p><strong>content</strong> (<em>json dict</em>) – changed process, can be many stuff</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag if it worked or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.sendProcess">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sendProcess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.sendProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send process to contractor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processID</strong> (<em>str</em>) – ID of the process that is being sent</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing or an error</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.deleteFromProcess">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deleteFromProcess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updateType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../../definitions/index.html#code_SemperKI.definitions.ProcessUpdates" title="code_SemperKI.definitions.ProcessUpdates"><span class="pre">code_SemperKI.definitions.ProcessUpdates</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deletedBy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.deleteFromProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete details of a process like its status, or content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>processID</strong> (<em>str</em>) – unique process ID to be edited</p></li>
+<li><p><strong>updateType</strong> (<em>EnumUpdates</em>) – changed process details</p></li>
+<li><p><strong>content</strong> (<em>json dict</em>) – deletions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flag if it worked or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.addProcessTemplateToProject">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">addProcessTemplateToProject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projectID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clientID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.addProcessTemplateToProject" title="Permalink to this definition">¶</a></dt>
+<dd><p>add a process to an existing project in the database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>projectID</strong> (<em>str</em>) – project ID to retrieve data from</p></li>
+<li><p><strong>template</strong> (<em>Dict</em>) – Dictionary with templated process</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None or Error</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None or Error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getInfoAboutProjectForWebsocket">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getInfoAboutProjectForWebsocket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projectID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">affectedProcessesIDs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getInfoAboutProjectForWebsocket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve information about the users connected to the project from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>projectID</strong> (<em>str</em>) – project ID to retrieve data from</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of users with project ID and processes in order for the websocket to fire events</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getAllProjectsFlat">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getAllProjectsFlat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getAllProjectsFlat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return flat list of all projects, for admins</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Json with all projects and their data</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of dicts</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProcessesPerPID">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getProcessesPerPID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projectID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProcessesPerPID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve infos about one project, for admins</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>projectID</strong> (<em>str</em>) – project of interest</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of all processes of that OC</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.addProjectToDatabase">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">addProjectToDatabase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.addProjectToDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add project and processes for that user. Check if user already has a project and append if so, create a new process if not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>session dict</em>) – session of user</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of users with project id and processes in order for the websocket to fire events</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProjects">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getProjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProjects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all processes for that user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>dict</em>) – session of that user</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>sorted list with all processes</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProjectsFlat">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getProjectsFlat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getProjectsFlat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all projects for that user but with limited detail.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>dict</em>) – session of that user</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>sorted list with projects</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getAllContractors">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getAllContractors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selectedService</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_SemperKI.connections.postgresql.pgProcesses.ProcessManagementBase.getAllContractors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all contractors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>All contractors</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../../_sources/autoapi/code_SemperKI/connections/postgresql/pgProcesses/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

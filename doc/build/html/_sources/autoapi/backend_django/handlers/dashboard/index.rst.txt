@@ -1,0 +1,100 @@
+:py:mod:`backend_django.handlers.dashboard`
+===========================================
+
+.. py:module:: backend_django.handlers.dashboard
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Handlers for the dashboard
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.dashboard.retrieveOrders
+   backend_django.handlers.dashboard.updateOrder
+   backend_django.handlers.dashboard.deleteOrder
+   backend_django.handlers.dashboard.deleteOrderCollection
+   backend_django.handlers.dashboard.getMissedEvents
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.dashboard.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:function:: retrieveOrders(request)
+
+   Retrieve saved orders for dashboard.
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: JSON Response with orders of that user
+   :rtype: JSON Response
+
+
+
+.. py:function:: updateOrder(request)
+
+   Update saved orders for dashboard.
+
+   :param request: PUT Request
+   :type request: HTTP PUT
+   :return: HTTP Response if update worked
+   :rtype: HTTP Response
+
+
+
+.. py:function:: deleteOrder(request)
+
+   Delete a specific order.
+
+   :param request: DELETE Request
+   :type request: HTTP DELETE
+   :return: HTTP Response if update worked
+   :rtype: HTTP Response
+
+
+
+.. py:function:: deleteOrderCollection(request)
+
+   Delete a specific order collection.
+
+   :param request: DELETE Request
+   :type request: HTTP DELETE
+   :return: HTTP Response if update worked
+   :rtype: HTTP Response
+
+
+
+.. py:function:: getMissedEvents(request)
+
+   Show how many events (chat messages ...) were missed since last login.
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: JSON Response with numbers for every order and orderCollection
+   :rtype: JSON Response
+
+
+

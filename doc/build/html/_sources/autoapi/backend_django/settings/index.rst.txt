@@ -1,0 +1,19 @@
+:py:mod:`backend_django.settings`
+=================================
+
+.. py:module:: backend_django.settings
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   base/index.rst
+   debug/index.rst
+   debug_local/index.rst
+   development/index.rst
+   production/index.rst
+
+

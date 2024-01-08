@@ -1,0 +1,489 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>backend_django.handlers.organizations &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-backend_django.handlers.organizations">
+<span id="backend-django-handlers-organizations"></span><h1><a class="reference internal" href="#module-backend_django.handlers.organizations" title="backend_django.handlers.organizations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">backend_django.handlers.organizations</span></code></a><a class="headerlink" href="#module-backend_django.handlers.organizations" title="Permalink to this heading">¶</a></h1>
+<p>Part of Semper-KI software</p>
+<p>Silvio Weging 2023</p>
+<p>Contains: Handling of admin requests for organizations, api calls to auth0</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.sendEventViaWebsocket" title="backend_django.handlers.organizations.sendEventViaWebsocket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sendEventViaWebsocket</span></code></a>(orgID, baseURL, baseHeader, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.getOrganizationName" title="backend_django.handlers.organizations.getOrganizationName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getOrganizationName</span></code></a>(session, orgID, baseURL, baseHeader)</p></td>
+<td><p>Get Name of the Organization</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.sendInvite" title="backend_django.handlers.organizations.sendInvite"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sendInvite</span></code></a>(orgID, baseURL, baseHeader, ...)</p></td>
+<td><p>Ask Auth0 API to invite someone via e-mail</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.getMembersOfOrganization" title="backend_django.handlers.organizations.getMembersOfOrganization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMembersOfOrganization</span></code></a>(orgID, baseURL, baseHeader, ...)</p></td>
+<td><p>Ask Auth0 API to invite someone via e-mail</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.deleteUserFromOrganization" title="backend_django.handlers.organizations.deleteUserFromOrganization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deleteUserFromOrganization</span></code></a>(orgID, baseURL, baseHeader, ...)</p></td>
+<td><p>Ask Auth0 API to delete someone from an organization via their name</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.createRole" title="backend_django.handlers.organizations.createRole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createRole</span></code></a>(baseURL, baseHeader, roleName, roleDescription)</p></td>
+<td><p>Ask Auth0 API to create a new role</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.assignRole" title="backend_django.handlers.organizations.assignRole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assignRole</span></code></a>(orgID, baseURL, baseHeader, userMail, roleID)</p></td>
+<td><p>Assign a role to a person</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.removeRole" title="backend_django.handlers.organizations.removeRole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">removeRole</span></code></a>(orgID, baseURL, baseHeader, userMail, roleID)</p></td>
+<td><p>Remove a role from a person</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.editRole" title="backend_django.handlers.organizations.editRole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">editRole</span></code></a>(orgID, baseURL, baseHeader, roleID, roleName, ...)</p></td>
+<td><p>Ask Auth0 API to edit a role</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.getRoles" title="backend_django.handlers.organizations.getRoles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getRoles</span></code></a>(orgID, baseURL, baseHeader, orgaName)</p></td>
+<td><p>Fetch all roles and filter for the organization</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.deleteRole" title="backend_django.handlers.organizations.deleteRole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deleteRole</span></code></a>(orgID, baseURL, baseHeader, roleID)</p></td>
+<td><p>Delete role via ID</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.addPermissionsToRole" title="backend_django.handlers.organizations.addPermissionsToRole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addPermissionsToRole</span></code></a>(orgID, baseURL, baseHeader, ...)</p></td>
+<td><p>Add Permissions to role</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.getAllPermissions" title="backend_django.handlers.organizations.getAllPermissions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAllPermissions</span></code></a>(orgID, baseURL, baseHeader)</p></td>
+<td><p>Get all Permissions</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.getPermissionsForRole" title="backend_django.handlers.organizations.getPermissionsForRole"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getPermissionsForRole</span></code></a>(orgID, baseURL, baseHeader, roleID)</p></td>
+<td><p>Get Permissions of role</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.handleCallToPath" title="backend_django.handlers.organizations.handleCallToPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handleCallToPath</span></code></a>(request)</p></td>
+<td><p>Ask Auth0 API for various stuff</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#backend_django.handlers.organizations.logger" title="backend_django.handlers.organizations.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.logger">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#backend_django.handlers.organizations.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.sendEventViaWebsocket">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">sendEventViaWebsocket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eventName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.sendEventViaWebsocket" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.getOrganizationName">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">getOrganizationName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.getOrganizationName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Name of the Organization</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful, name of organization, error if not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.sendInvite">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">sendInvite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nameOfCurrentUser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">withEmail</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emailAdressOfUserToBeAdded</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.sendInvite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask Auth0 API to invite someone via e-mail</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+<li><p><strong>nameOfCurrentUser</strong> (<em>str</em>) – Name of the user that adds people</p></li>
+<li><p><strong>emailAdressOfUserToBeAdded</strong> (<em>str</em>) – E-Mail adress of the user that shall be added</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool, json or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.getMembersOfOrganization">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">getMembersOfOrganization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orgaName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.getMembersOfOrganization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask Auth0 API to invite someone via e-mail</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+<li><p><strong>orgaName</strong> (<em>str</em>) – Name of organization</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Json or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.deleteUserFromOrganization">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">deleteUserFromOrganization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userMail</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.deleteUserFromOrganization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask Auth0 API to delete someone from an organization via their name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+<li><p><strong>userMail</strong> (<em>str</em>) – userName of person that should be deleted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.createRole">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">createRole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roleName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roleDescription</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.createRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask Auth0 API to create a new role</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+<li><p><strong>roleName</strong> (<em>str</em>) – name of role</p></li>
+<li><p><strong>roleDescription</strong> (<em>str</em>) – what the role stands for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful the id or an error if not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict with ID or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.assignRole">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">assignRole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userMail</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roleID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.assignRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign a role to a person</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+<li><p><strong>userMail</strong> (<em>str</em>) – mail adress of person that should get the role</p></li>
+<li><p><strong>roleID</strong> (<em>str</em>) – ID of the role for that person</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.removeRole">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">removeRole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userMail</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roleID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.removeRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a role from a person</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+<li><p><strong>userMail</strong> (<em>str</em>) – mail adress of person</p></li>
+<li><p><strong>roleID</strong> (<em>str</em>) – ID of the role for that person</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.editRole">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">editRole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roleID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roleName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roleDescription</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.editRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask Auth0 API to edit a role</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+<li><p><strong>roleID</strong> (<em>str</em>) – ID of the role for that person</p></li>
+<li><p><strong>roleName</strong> (<em>str</em>) – name of role</p></li>
+<li><p><strong>roleDescription</strong> (<em>str</em>) – what the role stands for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful true or an error if not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.getRoles">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">getRoles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orgaName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.getRoles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch all roles and filter for the organization</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+<li><p><strong>orgaName</strong> (<em>str</em>) – Name of the organization</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful, list of roles for that organization, error if not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.deleteRole">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">deleteRole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roleID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.deleteRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete role via ID</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+<li><p><strong>roleID</strong> (<em>str</em>) – ID of the role that shall be deleted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful, true, error if not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.addPermissionsToRole">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">addPermissionsToRole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roleID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">listOfPermissionIDs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.addPermissionsToRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Permissions to role</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+<li><p><strong>roleID</strong> (<em>str</em>) – ID of the role that shall be deleted</p></li>
+<li><p><strong>listOfPermissionIDs</strong> (<em>list</em>) – List of permission IDs</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful, true, error if not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.getAllPermissions">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">getAllPermissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.getAllPermissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all Permissions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful, list of permissions for role as array, error if not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.getPermissionsForRole">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">getPermissionsForRole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orgID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseURL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseHeader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roleID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.getPermissionsForRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Permissions of role</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orgID</strong> (<em>str</em>) – the id of the current organization</p></li>
+<li><p><strong>baseURL</strong> (<em>str</em>) – start of the url</p></li>
+<li><p><strong>baseHeader</strong> (<em>Dict</em>) – Header with basic stuff</p></li>
+<li><p><strong>roleID</strong> (<em>str</em>) – ID of the role that shall be deleted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If successful, list of permissions for role as array, error if not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JSON or error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="backend_django.handlers.organizations.handleCallToPath">
+<span class="sig-prename descclassname"><span class="pre">backend_django.handlers.organizations.</span></span><span class="sig-name descname"><span class="pre">handleCallToPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend_django.handlers.organizations.handleCallToPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask Auth0 API for various stuff</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP POST</em>) – POST request with intent and data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response if successful or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP/JSON Response</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/backend_django/handlers/organizations/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

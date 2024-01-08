@@ -1,0 +1,191 @@
+:py:mod:`code_General.connections.auth0`
+========================================
+
+.. py:module:: code_General.connections.auth0
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Services for oauth verification
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_General.connections.auth0.OAuthLazy
+   code_General.connections.auth0.ManageAPIToken
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.connections.auth0.auth0Register
+   code_General.connections.auth0.authorizeToken
+   code_General.connections.auth0.authorizeRedirect
+   code_General.connections.auth0.auth0OrgaRegister
+   code_General.connections.auth0.authorizeTokenOrga
+   code_General.connections.auth0.authorizeRedirectOrga
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.connections.auth0.logger
+   code_General.connections.auth0.oauth_auth0
+   code_General.connections.auth0.oauth_auth0_orga
+   code_General.connections.auth0.apiToken
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:class:: OAuthLazy
+
+   Bases: :py:obj:`authlib.integrations.django_client.OAuth`
+
+   Registry for oauth clients.
+
+   Create an instance for registry::
+
+       oauth = OAuth()
+
+   .. py:attribute:: lazy_fn
+      
+
+      
+
+   .. py:attribute:: lazy_fn_called
+      :annotation: = False
+
+      
+
+   .. py:method:: __getattr__(item)
+
+
+   .. py:method:: setLazyFn(fn)
+
+
+
+.. py:function:: auth0Register(instance)
+
+
+.. py:data:: oauth_auth0
+   
+
+   
+
+.. py:function:: authorizeToken(request)
+
+   Get information back from Auth0 and generate token.
+
+   :param request: POST request
+   :type request: HTTP POST
+   :return: Token
+   :rtype: Dictionary
+
+
+
+.. py:function:: authorizeRedirect(request, callback)
+
+   Authorize redirection for callback
+
+   :param request: GET request
+   :type request: HTTP GET
+   :param callback: Function
+   :type callback: Function
+   :return: URI
+   :rtype: HTTP URI
+
+
+
+.. py:function:: auth0OrgaRegister(instance: authlib.integrations.django_client.OAuth)
+
+
+.. py:data:: oauth_auth0_orga
+   
+
+   
+
+.. py:function:: authorizeTokenOrga(request)
+
+   Get information back from Auth0 and generate token.
+
+   :param request: POST request
+   :type request: HTTP POST
+   :return: Token
+   :rtype: Dictionary
+
+
+
+.. py:function:: authorizeRedirectOrga(request, callback)
+
+   Authorize redirection for callback
+
+   :param request: GET request
+   :type request: HTTP GET
+   :param callback: Function
+   :type callback: Function
+   :return: URI
+   :rtype: HTTP URI
+
+
+
+.. py:class:: ManageAPIToken
+
+   Manage oauth token class.
+
+   .. py:attribute:: savedToken
+      
+
+      
+
+   .. py:attribute:: accessTokenString
+      :annotation: = 
+
+      
+
+   .. py:attribute:: redisConn
+      
+
+      
+
+   .. py:attribute:: redisKey
+      :annotation: = auth0_access_token
+
+      
+
+   .. py:method:: __getattr__(item)
+
+
+   .. py:method:: getAccessToken()
+
+      Get initial token. Made as a function to be callable from outside. 
+
+      :return: Nothing
+      :rtype: None
+
+
+
+
+.. py:data:: apiToken
+   
+
+   
+

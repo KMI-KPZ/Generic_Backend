@@ -1,0 +1,51 @@
+:py:mod:`backend_django.handlers.sparqlQueries`
+===============================================
+
+.. py:module:: backend_django.handlers.sparqlQueries
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Test handler for sparql
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   backend_django.handlers.sparqlQueries.sendQuery
+   backend_django.handlers.sparqlQueries.sendTestQuery
+
+
+
+.. py:function:: sendQuery(request)
+
+   Test Sparql queries that come from the form.
+
+   :param request: POST Request
+   :type request: HTTP POST
+   :return: Json containing results of the query
+   :rtype: JSONResponse
+
+
+
+.. py:function:: sendTestQuery(request)
+
+   Test Sparql query.
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: Json containing results of testquery
+   :rtype: JSONResponse
+
+
+

@@ -1,0 +1,15 @@
+:py:mod:`code_SemperKI.settings.base`
+=====================================
+
+.. py:module:: code_SemperKI.settings.base
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI Software
+
+   Silvio Weging 2023
+
+   Contains: Extention of settings specific for Semper-KI
+
+
+

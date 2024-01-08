@@ -1,0 +1,142 @@
+:py:mod:`code_General.handlers.profiles`
+========================================
+
+.. py:module:: code_General.handlers.profiles
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Handling of database requests
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.profiles.addUserTest
+   code_General.handlers.profiles.addOrganizationTest
+   code_General.handlers.profiles.getOrganizationDetails
+   code_General.handlers.profiles.updateDetailsOfOrganization
+   code_General.handlers.profiles.deleteOrganization
+   code_General.handlers.profiles.getUserDetails
+   code_General.handlers.profiles.updateDetails
+   code_General.handlers.profiles.deleteUser
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.handlers.profiles.logger
+   code_General.handlers.profiles.loggerError
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:data:: loggerError
+   
+
+   
+
+.. py:function:: addUserTest(request)
+
+   For testing.
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: HTTP response
+   :rtype: HTTP status
+
+
+
+.. py:function:: addOrganizationTest(request)
+
+   For testing.
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: HTTP response
+   :rtype: HTTP status
+
+
+
+.. py:function:: getOrganizationDetails(request)
+
+   Return details about organization. 
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: Organization details
+   :rtype: Json
+
+
+
+.. py:function:: updateDetailsOfOrganization(request)
+
+   Update details of organization of that user.
+
+   :param request: PATCH request
+   :type request: HTTP PATCH
+   :return: HTTP response
+   :rtype: HTTP status
+
+
+
+.. py:function:: deleteOrganization(request)
+
+   Deletes an entry in the database corresponding to user name.
+
+   :param request: DELETE request
+   :type request: HTTP DELETE
+   :return: HTTP response
+   :rtype: HTTP status
+
+
+
+.. py:function:: getUserDetails(request)
+
+   Return details about user. 
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: User details
+   :rtype: Json
+
+
+
+.. py:function:: updateDetails(request)
+
+   Update user details.
+
+   :param request: PATCH request
+   :type request: HTTP PATCH
+   :return: HTTP response
+   :rtype: HTTP status
+
+
+
+.. py:function:: deleteUser(request)
+
+   Deletes an entry in the database corresponding to user name.
+
+   :param request: DELETE request
+   :type request: HTTP DELETE
+   :return: HTTP response
+   :rtype: HTTP status
+
+
+

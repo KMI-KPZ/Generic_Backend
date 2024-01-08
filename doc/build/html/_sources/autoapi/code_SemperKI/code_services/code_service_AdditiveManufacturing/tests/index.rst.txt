@@ -1,0 +1,70 @@
+:py:mod:`code_SemperKI.code_services.code_service_AdditiveManufacturing.tests`
+==============================================================================
+
+.. py:module:: code_SemperKI.code_services.code_service_AdditiveManufacturing.tests
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Tests for various functions and services
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.code_services.code_service_AdditiveManufacturing.tests.TestAdditiveManufacturing
+
+
+
+
+.. py:class:: TestAdditiveManufacturing(methodName='runTest')
+
+   Bases: :py:obj:`django.test.TestCase`
+
+   Similar to TransactionTestCase, but use `transaction.atomic()` to achieve
+   test isolation.
+
+   In most situations, TestCase should be preferred to TransactionTestCase as
+   it allows faster execution. However, there are some situations where using
+   TransactionTestCase might be necessary (e.g. testing some transactional
+   behavior).
+
+   On database backends with no transaction support, TestCase behaves as
+   TransactionTestCase.
+
+   .. py:attribute:: testFile
+      
+
+      
+
+   .. py:method:: createOrganization(client: django.test.Client, id='', userID='')
+      :classmethod:
+
+
+   .. py:method:: createUser(client: django.test.Client, sub='', name='')
+      :staticmethod:
+
+
+   .. py:method:: createProjectAndProcess(client: django.test.Client)
+      :staticmethod:
+
+
+   .. py:method:: setUpClass()
+      :classmethod:
+
+      Hook method for setting up class fixture before running tests in the class.
+
+
+   .. py:method:: test_uploadAndDeleteModel()
+
+
+

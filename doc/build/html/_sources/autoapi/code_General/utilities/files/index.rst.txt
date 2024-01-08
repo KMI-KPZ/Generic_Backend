@@ -1,0 +1,70 @@
+:py:mod:`code_General.utilities.files`
+======================================
+
+.. py:module:: code_General.utilities.files
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Thomas Skodawessely 2023
+
+   Contains: File upload helpers
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_General.utilities.files.syncBytesioIterator
+   code_General.utilities.files.asyncBytesioIterator
+   code_General.utilities.files.createFileResponse
+
+
+
+.. py:function:: syncBytesioIterator(bytesio: io.BytesIO, chunk_size: int = 8192)
+
+   Synchronous iterator for bytesio
+
+   :param bytesio: a byte buffer object of what ever you want to stream (e.g. a file)
+   :type bytesio: BytesIO
+   :param chunk_size: size of iterator chunks
+   :type chunk_size: int
+   :return: sync iterator
+   :rtype: iterator
+
+
+
+.. py:function:: asyncBytesioIterator(bytesio: io.BytesIO, chunk_size: int = 8192)
+   :async:
+
+   Asynchronous iterator for bytesio
+
+   :param bytesio: a byte buffer object of what ever you want to stream  (e.g. a file)
+   :type bytesio: BytesIO
+   :param chunk_size: sie of iterator chunks
+   :type chunk_size: int
+   :return: async iterator
+   :rtype: iterator
+
+
+
+.. py:function:: createFileResponse(bytesio: io.BytesIO, filename: str) -> django.http.FileResponse
+
+   Create a file response for a given file and sync/async context
+
+   :param bytesio: a file like object in BytesIO format
+   :type bytesio: BytesIO
+   :param filename: name of the file
+   :type filename: str
+   :return: an FileResponse object with according async or sync iterator over the given bytesio object
+   :rtype: FileResponse
+
+
+

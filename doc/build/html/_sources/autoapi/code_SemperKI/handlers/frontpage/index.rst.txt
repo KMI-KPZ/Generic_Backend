@@ -1,0 +1,52 @@
+:py:mod:`code_SemperKI.handlers.frontpage`
+==========================================
+
+.. py:module:: code_SemperKI.handlers.frontpage
+
+.. autoapi-nested-parse::
+
+   Part of Semper-KI software
+
+   Silvio Weging 2023
+
+   Contains: Views for some backend websites
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.handlers.frontpage.sparqlPage
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   code_SemperKI.handlers.frontpage.logger
+
+
+.. py:data:: logger
+   
+
+   
+
+.. py:function:: sparqlPage(request)
+
+   Landing page for a sparql test query
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: Rendered page
+   :rtype: HTTPResponse
+
+
+
