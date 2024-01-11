@@ -12,8 +12,6 @@ from django.contrib.postgres.fields import ArrayField
 
 from ..utilities.customStrEnum import StrEnumExactylAsDefined
 
-import code_General.modelFiles.organizationModel as orgaModel #must be imported that way to avoid cyclic imports
-
 ###################################################
 class UserDescription(StrEnumExactylAsDefined):
     """
@@ -50,7 +48,7 @@ class User(models.Model):
     subID = models.CharField(primary_key=True,max_length=100)
     hashedID = models.CharField(max_length=513)
     name = models.CharField(max_length=100)
-    organizations = models.ManyToManyField(orgaModel.Organization)
+    organizations = models.ManyToManyField("Organization")
     details = models.JSONField()
     createdWhen = models.DateTimeField(auto_now_add=True)
     updatedWhen = models.DateTimeField(default=timezone.now)

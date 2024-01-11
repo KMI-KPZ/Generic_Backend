@@ -13,11 +13,11 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 
-from code_General.utilities import crypto
-from code_General.connections.postgresql import pgProfiles
-from code_General.utilities.basics import Logging, manualCheckifLoggedIn, manualCheckIfRightsAreSufficient, checkIfUserIsLoggedIn, checkIfRightsAreSufficient
-from code_General.utilities.files import createFileResponse
-from code_General.connections import s3
+from ..utilities import crypto
+from ..connections.postgresql import pgProfiles
+from ..utilities.basics import Logging, manualCheckifLoggedIn, manualCheckIfRightsAreSufficient, checkIfUserIsLoggedIn, checkIfRightsAreSufficient
+from ..utilities.files import createFileResponse
+from ..connections import s3
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")

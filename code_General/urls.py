@@ -3,20 +3,7 @@ Part of Semper-KI software
 
 Silvio Weging 2023
 
-Contains: URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+Contains: URL Configuration for code_General
 
 """
 
@@ -24,13 +11,15 @@ from django.urls import path, re_path
 from django.conf import settings
 from django.conf.urls import handler404
 
+from main.urls import paths, urlpatterns, websockets
+
 ##############################################################################
 ### WSGI
 
-from .handlers import admin, authentification, email, files, frontpage, organizations, profiles, statistics, websocket, testResponse, files
+from .handlers import admin, authentification, email, files, frontpage, organizations, profiles, statistics, testResponse, files
 from Benchy.BenchyMcMarkface import startFromDjango
 
-paths = { 
+newPaths = { 
     "landingPage": ("",frontpage.landingPage),
     "benchyPage": ("private/benchy/",frontpage.benchyPage),
     "benchyMcMarkface": ("private/benchyMcMarkface/",startFromDjango),
@@ -89,20 +78,22 @@ paths = {
     "contactForm": ("public/contact/",email.send_contact_form),
 }
 
-urlpatterns = [
+paths.update(newPaths)
+
+urlpatterns.extend([
     re_path(r'^private/doc', frontpage.docPage, name="docPage"),
     
     path('private/test/', testResponse.testResponse, name='test_response'),
     path('private/testWebsocket/', testResponse.testCallToWebsocket, name='testCallToWebsocket'),
-]
+])
 
 if settings.DEBUG:
     urlpatterns.append(path('private/settings', frontpage.getSettingsToken, name='getSettingsToken'))
 
 # add paths
-for entry in paths:
+for entry in newPaths:
     key = entry
-    pathTuple = paths[entry]
+    pathTuple = newPaths[entry]
     pathItself = pathTuple[0]
     handler = pathTuple[1]
     urlpatterns.append(path(pathItself, handler, name=key))
@@ -114,6 +105,6 @@ handler404 = statistics.getIpAdress
 ### ASGI
 from .handlers.websocket import GeneralWebSocket
 
-websockets = [
+websockets.append(
     path("ws/generalWebsocket/", GeneralWebSocket.as_asgi(), name="Websocket")
-]
+)

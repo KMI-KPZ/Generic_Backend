@@ -62,7 +62,7 @@ class testWebSocket(AsyncWebsocketConsumer):
 ################################################### 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from code_General.connections.postgresql import pgProfiles
+from ..connections.postgresql import pgProfiles
 def testCallToWebsocket(request):
     if "user" in request.session:
         channel_layer = get_channel_layer()

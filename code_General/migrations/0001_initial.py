@@ -38,13 +38,13 @@ class Migration(migrations.Migration):
                 ('updatedWhen', models.DateTimeField(default=django.utils.timezone.now)),
                 ('accessedWhen', models.DateTimeField(auto_now=True)),
                 ('lastSeen', models.DateTimeField(default=django.utils.timezone.now)),
-                ('organizations', models.ManyToManyField(to='code_General.organization')),
+                ('organizations', models.ManyToManyField(to='.organization')),
             ],
         ),
         migrations.AddField(
             model_name='organization',
             name='users',
-            field=models.ManyToManyField(to='code_General.user'),
+            field=models.ManyToManyField(to='.user'),
         ),
         migrations.AddIndex(
             model_name='user',

@@ -7,4 +7,5 @@ Contains: Modules that need to be imported
 
 """
 
-from code_General import urls
+from .settings import base
+from . import urls
