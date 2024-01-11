@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
-from code_General.settings import BackendManagement, set_settings
+from main.settings import BackendManagement, set_settings
 import sys
 
 
@@ -18,7 +18,7 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    set_settings()
+    set_settings('main.settings.')
 
     utility = BackendManagement(sys.argv)
     utility.execute() 

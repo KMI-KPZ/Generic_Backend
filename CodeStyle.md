@@ -22,12 +22,13 @@ We use [Camel case](https://en.wikipedia.org/wiki/Camel_case) for almost everyth
 ## Folder structure
 - `backend`: Contains docker files, .env files and files necessary for git.
   - `.vscode`: Contains the settings for the local debug configuration
+  - `main`: The main django application
   - `code_*`: Contains source code
     - `handlers`: Files with functions that handle requests from the frontend
     - `migrations`: Rule set for django that defines the content of the database(s). Will be created automatically so no editing!
     - `modelFiles`: Database models
     - `connections`: Capsule classes for handling local and remote connections like ID Management, Database access and much more
-    - `settings`: Django settings for different environments
+    - `settings`: Django settings for this particular application
     - `templates`: html code for some default views, not important
     - `utilities`: Helper files that offer specific functionality for most handlers/services
   - `Benchy`: Benchmark tool for Silvio, can safely be ignored
@@ -36,7 +37,8 @@ We use [Camel case](https://en.wikipedia.org/wiki/Camel_case) for almost everyth
   - `postgres`: Contains the database(s) for the postgres container
   - `redis`: Contains snapshots of redis
 
-The `code_General` folder is the main application with mostly generic code usable by all (future) web-apps.
+The `code_General` folder is the one with mostly generic code usable by all (future) web-apps.
+In the file `main/settings/base.py`, the `INSTALLED_APPS` array must contain the paths of the other apps like `code_General` and those developed by you to be usable in django.
 
 ## File structure
 Every file should start with a header like this:

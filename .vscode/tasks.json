@@ -54,7 +54,7 @@
 			},
 			"python": {
 				"args": [
-					"code_General.asgi:application --reload --reload-include *.* --reload-exclude  *.log  --reload-dir ./code_General --log-level info --env-file ./.env.dev --host 0.0.0.0 --port 8000 "
+					"main.asgi:application --reload --reload-include *.* --reload-exclude  *.log  --log-level info --env-file ./.env.dev --host 0.0.0.0 --port 8000 "
 				],
 
 				"module":"uvicorn"
