@@ -67,5 +67,5 @@ As for the compose files:
 - ```python manage.py mail --env <environment> email-address``` to send a test mail to the email-address
 
 ## Good to know
-- The Backend Container supports hot reloading, which means that editing files and saving changes will be reflected instantly. For the Debug Version, the current handler must be finished, then the worker will restart after saving the changes. The Container is a bit delayed but the logs show if and when it happend.
+- The Backend Container supports hot reloading, which means that editing files and saving changes will be reflected instantly. For the Debug Version, the current handler must be finished, then the worker will restart after saving the changes. The Container is a bit delayed but the logs show if and when it happened.
 
