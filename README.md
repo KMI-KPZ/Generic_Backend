@@ -21,7 +21,7 @@ Remote:
 
 There will probably be more keys printed than you need, just leave them empty, delete them or use some dummy string.
 
-After you filled in the necessary details, create 5 .env files in the root directory of this code: `.env.dev`, `.env.local`, `.env.local_container`, `.env.production`, `.env.stage` and copy these details in there. Change internal connections hosts (e.g. database, redis) to localhost as well as ENV_TOKEN to local to see which env file is being used in outputs.
+After you filled in the necessary details, create 5 .env files in the root directory of this code: `.env.dev`, `.env.local`, `.env.local_container`, `.env.production`, `.env.staging` and copy these details in there. Change internal connections hosts (e.g. database, redis) to localhost as well as ENV_TOKEN to local to see which env file is being used in outputs.
 These will then be used when running the containers or locally. `.env.dev` for example will be used if you debug via VS Code. If only the docker containers are of interest, `.env.local_container` is used. See the next section how to install and launch it.
 
 ## Installation for dev purposes

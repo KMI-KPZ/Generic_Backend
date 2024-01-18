@@ -46,6 +46,15 @@ class BackendConfigHelper(ConfigHelper):
         'AUTH0_API_CLIENT_SECRET': {'var': 'AUTH0_API_CLIENT_SECRET',
                                     'hint': 'Auth0 client secret for authentication services for management via m2m calls',
                                     'default': None, 'required': True},
+        'AUTH0_CLAIMS_URL': {'var': 'AUTH0_CLAIMS_URL',
+                                    'hint': 'URL prefix which carries the claims in the oauth token',
+                                    'default': None, 'required': True},
+        'AUTH0_PERMISSIONS_API_NAME': {'var': 'AUTH0_PERMISSIONS_API_NAME',
+                                    'hint': 'Domain of the API that has the permissions',
+                                    'default': None, 'required': True},
+        'AUTH0_DEFAULT_ROLE_ID': {'var': 'AUTH0_DEFAULT_ROLE_ID',
+                                    'hint': 'ID of the default role for users',
+                                    'default': None, 'required': True},
         # CMEM
         'CMEM_CLIENT_ID': {'var': 'CMEM_CLIENT_ID',
                          'hint': 'CMEM client id for authentication services for management via m2m calls',
@@ -114,6 +123,8 @@ class BackendConfigHelper(ConfigHelper):
                           'default': '127.0.0.1,localhost,dev.semper-ki.org,semper-ki.org,www.semper-ki.org,https://dev.semper-ki.org', 'required': False},
         'ENV_TOKEN': {'var': 'ENV_TOKEN', 'hint': 'A token with which you can check which env is used',
                    'default': 'DEFAULT_ENV', 'required': False},
+        'FORWARD_URL': {'var': 'FORWARD_URL', 'hint': 'The URL to which Login should point',
+                   'default': 'http://127.0.0.1:3000', 'required': True},
         'PGADMIN_DEFAULT_EMAIL': {'var': 'PGADMIN_DEFAULT_EMAIL', 'hint': 'Email for postgresadmin', 'default': 'test@infai.org', 'required': True},
         'PGADMIN_DEFAULT_PASSWORD': {'var': 'PGADMIN_DEFAULT_PASSWORD', 'hint': 'Password for postgresadmin', 'default': 'asdf', 'required': True}
 

@@ -14,7 +14,7 @@ from .base import *
 
 DEBUG = False
 DEVELOPMENT=True
-BACKEND_SETTINGS= "stage"
+BACKEND_SETTINGS= "staging"
 
 # for nginx
 USE_X_FORWARDED_HOST = True

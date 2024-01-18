@@ -1,49 +1,60 @@
 version: '3.4'
  
 services:
-  backend-stage:
-    image: backend-stage
+  backend-staging:
+    image: backend-staging
     build:
       context: .
       dockerfile: ./Dockerfile
-    command: ["-e stage"]
+    command: ["-e staging"]
+    env_file:
+     - .env.staging
     ports:
-      - 127.0.0.1:8000:8000
+      - 127.0.0.1:8001:8000
     volumes:
       - .:/app
+    networks:
+      - staging-network
 
-  db-stage:
+  db-staging:
     image: postgres:15
     env_file:
-     - .env.stage
+     - .env.staging
     ports:
-      - 127.0.0.1:5432:5432
+      - 127.0.0.1:5433:5432
     volumes:
       - ./postgres/data/:/var/lib/postgresql/data-dev/
+    networks:
+      - staging-network
 
-  files-stage:
+  redis-staging:
     image: redis:7
-    container_name: redis
     env_file:
-      - .env.stage
+      - .env.staging
     ports:
-      - 127.0.0.1:6379:6379
+      - 127.0.0.1:6380:6379
     volumes:
       - ./redis/data/:/var/lib/redis/data/
       - ./docker/docker-service-redis-start.sh:/usr/local/bin/docker-service-redis-start.sh
     entrypoint: /usr/local/bin/docker-service-redis-start.sh # used to pass PW from environment variable change things there if needed
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      - staging-network
   
-  localstack-stage:
+  localstack-staging:
     image: localstack/localstack
-    container_name: localstack-aws-stage
     volumes:
       - ./localstack/:/var/lib/localstack
     env_file:
-      - .env.stage
+      - .env.staging
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
       - LOCALSTACK_PERSISTENCE=1
     ports:
-      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4567:4566"
+    networks:
+      - staging-network
+
+networks:
+  staging-network:
