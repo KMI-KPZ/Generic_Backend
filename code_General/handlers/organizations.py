@@ -642,7 +642,7 @@ def organizations_setPermissionsForRole(request):
 
         data = {"permissions" : []}
         for entry in permissionList:
-            data["permissions"].append({"resource_server_identifier": "back.semper-ki.org", "permission_name": entry})
+            data["permissions"].append({"resource_server_identifier": settings.AUTH0_PERMISSIONS_API_NAME, "permission_name": entry})
         
         # get all permissions, remove them, then add anew. It's cumbersome but the API is the way it is
         response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/roles/{roleID}/permissions', headers=headers) )
@@ -650,7 +650,7 @@ def organizations_setPermissionsForRole(request):
             raise response
         permissionsToBeRemoved = {"permissions": []}
         for entry in response:
-            permissionsToBeRemoved["permissions"].append({"resource_server_identifier": "back.semper-ki.org", "permission_name": entry["permission_name"]})
+            permissionsToBeRemoved["permissions"].append({"resource_server_identifier": settings.AUTH0_PERMISSIONS_API_NAME, "permission_name": entry["permission_name"]})
         if len(permissionsToBeRemoved["permissions"]) > 0: # there are permissions that need removal
             response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/api/v2/roles/{roleID}/permissions', headers=headers, json=permissionsToBeRemoved) )
             if isinstance(response, Exception):
@@ -696,7 +696,7 @@ def organizations_getPermissions(request):
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
 
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/resource-servers/back.semper-ki.org', headers=headers) )
+        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/resource-servers/'+settings.AUTH0_PERMISSIONS_API_NAME, headers=headers) )
         if isinstance(response, Exception):
             raise response
         
@@ -804,13 +804,13 @@ def organizations_createNewOrganization(request):
         roleID = response["id"]
 
         # connect admin role with permissions
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/resource-servers/back.semper-ki.org', headers=headers) )
+        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/resource-servers/'+settings.AUTH0_PERMISSIONS_API_NAME, headers=headers) )
         if isinstance(response, Exception):
             raise response
 
         data = {"permissions": []}
         for entry in response["scopes"]:
-            data["permissions"].append({"resource_server_identifier": "back.semper-ki.org", "permission_name": entry["value"]})
+            data["permissions"].append({"resource_server_identifier": settings.AUTH0_PERMISSIONS_API_NAME, "permission_name": entry["value"]})
 
         response = handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/api/v2/roles/{roleID}/permissions', headers=headers, json=data) )
         if isinstance(response, Exception):

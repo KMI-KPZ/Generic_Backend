@@ -122,18 +122,10 @@ def loginUser(request):
             request.session[SessionContent.IS_PART_OF_ORGANIZATION] = False
             request.session[SessionContent.PG_PROFILE_CLASS] = ProfileClasses.user
 
-    # set redirect url
-    if settings.PRODUCTION:
-        forward_url = 'https://www.semper-ki.org'
-    elif settings.DEVELOPMENT:
-        forward_url = 'https://dev.semper-ki.org'
-    else:
-        forward_url = 'http://127.0.0.1:3000'
-    
     if "Path" not in request.headers:
-        request.session[SessionContent.PATH_AFTER_LOGIN] = forward_url
+        request.session[SessionContent.PATH_AFTER_LOGIN] = settings.FORWARD_URL
     else:
-        request.session[SessionContent.PATH_AFTER_LOGIN] = forward_url + request.headers["Path"]
+        request.session[SessionContent.PATH_AFTER_LOGIN] = settings.FORWARD_URL + request.headers["Path"]
         
     register = ""
     if "Register" in request.headers and mocked is False:
@@ -163,9 +155,9 @@ def setOrganizationName(request):
     :rtype: None
 
     """
-    if "https://auth.semper-ki.org/claims/organization" in request.session["user"]["userinfo"]:
-        if len(request.session["user"]["userinfo"]["https://auth.semper-ki.org/claims/organization"]) != 0:
-            request.session[SessionContent.ORGANIZATION_NAME] = request.session["user"]["userinfo"]["https://auth.semper-ki.org/claims/organization"]
+    if settings.AUTH0_CLAIMS_URL+"claims/organization" in request.session["user"]["userinfo"]:
+        if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/organization"]) != 0:
+            request.session[SessionContent.ORGANIZATION_NAME] = request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/organization"]
         else:
             request.session[SessionContent.ORGANIZATION_NAME] = ""
     else:
@@ -236,7 +228,7 @@ def retrieveRolesAndPermissionsForStandardUser(session):
         # set default role
         if len(roles) == 0 and session[SessionContent.usertype] == "user":
             response = basics.handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/api/v2/users/{userID}/roles', headers=headers, json={"roles": ["rol_jG8PAa9b9LUlSz3q"]}))
-            roles = [{"id":"rol_jG8PAa9b9LUlSz3q"}]
+            roles = [{"id":settings.AUTH0_DEFAULT_ROLE_ID}]
         
         for entry in roles:
             response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/roles/{entry["id"]}/permissions', headers=headers) )
@@ -277,9 +269,9 @@ def setRoleAndPermissionsOfUser(request):
         request.session[SessionContent.USER_PERMISSIONS] = {x["permission_name"]: "" for x in resultDict["permissions"] } # save only the permission names, the dict is for faster access
 
         # check if person is admin, global role so check works differently
-        if "https://auth.semper-ki.org/claims/roles" in request.session["user"]["userinfo"]:
-            if len(request.session["user"]["userinfo"]["https://auth.semper-ki.org/claims/roles"]) != 0:
-                if "semper-admin" in request.session["user"]["userinfo"]["https://auth.semper-ki.org/claims/roles"]:
+        if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
+            if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
+                if "semper-admin" in request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]:
                     request.session[SessionContent.usertype] = "admin"
 
         return True
@@ -318,19 +310,13 @@ def callbackLogin(request):
             request.session["user"]["userinfo"]["sub"] = "auth0|testuser"
             request.session["user"]["userinfo"]["nickname"] = "testuser"
             request.session["user"]["userinfo"]["email"] = "testuser@test.de"
-            request.session[SessionContent.USER_ROLES] = [{"id":"rol_jG8PAa9b9LUlSz3q"}]
+            request.session[SessionContent.USER_ROLES] = [{"id":settings.AUTH0_DEFAULT_ROLE_ID}]
             request.session[SessionContent.USER_PERMISSIONS] = {"processes:read": "", "processes:messages": "","processes:edit": "","processes:delete": "","processes:files": ""}
             
 
         # email of user was not verified yet, tell them that!
         if not mocked and token["userinfo"]["email_verified"] == False:
-            if settings.PRODUCTION:
-                forward_url = 'https://www.semper-ki.org'
-            elif settings.DEVELOPMENT:
-                forward_url = 'https://dev.semper-ki.org'
-            else:
-                forward_url = 'http://127.0.0.1:3000'
-            return HttpResponseRedirect(forward_url+"/verifyEMail", status=401)
+            return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail", status=401)
 
         # convert expiration time to the corresponding date and time
         if not mocked:
@@ -387,9 +373,9 @@ def getRolesOfUser(request):
     :rtype: JSONResponse
     """
 
-    if "https://auth.semper-ki.org/claims/roles" in request.session["user"]["userinfo"]:
-        if len(request.session["user"]["userinfo"]["https://auth.semper-ki.org/claims/roles"]) != 0:
-            return JsonResponse(request.session["user"]["userinfo"]["https://auth.semper-ki.org/claims/roles"], safe=False)
+    if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
+        if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
+            return JsonResponse(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"], safe=False)
         else:
             return JsonResponse([], safe=False, status=200)
     else:
@@ -483,13 +469,7 @@ def logoutUser(request):
     #     ),
     # )
 
-    
-    if settings.PRODUCTION:
-        callbackString = request.build_absolute_uri('https://www.semper-ki.org')
-    elif settings.DEVELOPMENT:
-        callbackString = request.build_absolute_uri('https://dev.semper-ki.org')
-    else:
-        callbackString = request.build_absolute_uri('http://127.0.0.1:3000')
+    callbackString = request.build_absolute_uri(settings.FORWARD_URL)
     
     if not mock:    
         return HttpResponse(f"https://{settings.AUTH0_DOMAIN}/v2/logout?" + urlencode({"returnTo": request.build_absolute_uri(callbackString),"client_id": settings.AUTH0_CLIENT_ID,},quote_via=quote_plus,))

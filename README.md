@@ -56,7 +56,7 @@ As for the compose files:
 - `docker-local-dev-container-backend.yml`: For the backend container when running in local_container mode
 - `docker-local-dev-services.yml`: Every other container like redis, postgres and so on
 - `docker-compose.test.yml`: For running the tests, can be called via docker-compose up directly
-- `docker-compose.stage.yml`: Used on the server for staging
+- `docker-compose.staging.yml`: Used on the server for staging
 - `docker-compose.production.yml`: Same as above albeit for production
 
 ## Optional commands
