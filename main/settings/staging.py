@@ -13,7 +13,8 @@ from .base import *
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DEBUG = False
-DEVELOPMENT=True
+DEVELOPMENT = True
+STAGING = True
 BACKEND_SETTINGS= "staging"
 
 # for nginx

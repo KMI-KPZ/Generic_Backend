@@ -169,6 +169,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # SECRET_KEY = os.environ.get("DJANGO_SECRET")
 PRODUCTION = False
 DEVELOPMENT = False
+STAGING = False
 DEBUG = True
 
 BACKEND_SETTINGS = "base"
