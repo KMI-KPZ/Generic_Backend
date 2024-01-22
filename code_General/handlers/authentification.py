@@ -78,8 +78,7 @@ def loginUser(request):
     if "Usertype" in request.headers and (request.headers["Usertype"] == "fakeUser" or request.headers["Usertype"] == "fakeAdmin" or request.headers["Usertype"] == "fakeOrganization"):
         mocked = True
 
-    # disable login in production as of now (19.7.2023)
-    if settings.PRODUCTION:
+    if settings.PRODUCTION or settings.STAGING:
         mocked = False
         #return HttpResponse("Currently, logging in is not allowed. Sorry.", status=403)
 
