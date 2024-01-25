@@ -139,8 +139,7 @@ class ManageAPIToken:
     #######################################################
     def __getattr__(self, item):
         if item == "accessToken":
-            if self.accessTokenString == "":
-                self.getAccessToken()
+            self.getAccessToken()
             return self.accessTokenString
         else:
             raise AttributeError
