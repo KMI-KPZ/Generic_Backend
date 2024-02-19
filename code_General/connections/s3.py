@@ -87,9 +87,9 @@ class ManageS3():
         return True
 
     #######################################################
-    def downloadFile(self, fileKey) -> (BytesIO, bool):
+    def downloadFile(self, fileKey) -> tuple[BytesIO, bool]:
         """
-        Upload a binary in-memory file to storage.
+        Download a binary in-memory file to storage.
 
         :param fileKey: The key with which to retrieve the file again later
         :type fileKey: Str
