@@ -315,7 +315,7 @@ def callbackLogin(request):
 
         # email of user was not verified yet, tell them that!
         if not mocked and token["userinfo"]["email_verified"] == False:
-            return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail", status=401)
+            return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
 
         # convert expiration time to the corresponding date and time
         if not mocked:
