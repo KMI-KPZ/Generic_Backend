@@ -14,7 +14,7 @@ from ...modelFiles.userModel import User
 from ...utilities import crypto
 from logging import getLogger
 
-from ...definitions import SessionContent, UserDescription, OrganizationDescription, ProfileClasses, GlobalDefaults
+from ...definitions import SessionContent, UserDescription, OrganizationDescription, ProfileClasses, GlobalDefaults, UserDetails, OrganizationDetails
 
 logger = getLogger("errors")
 
@@ -233,6 +233,8 @@ class ProfileManagementBase():
         """
         ObjOfUserOrOrga = ""
         try:
+            if hashedID == "SYSTEM":
+                return "SYSTEM"
             ObjOfUserOrOrga = Organization.objects.get(hashedID=hashedID)
         except (ObjectDoesNotExist) as error:
             ObjOfUserOrOrga = User.objects.get(hashedID=hashedID)
@@ -436,7 +438,7 @@ class ProfileManagementUser(ProfileManagementBase):
             try:
                 userName = session["user"]["userinfo"]["nickname"]
                 userEmail = session["user"]["userinfo"]["email"]
-                details = {"email": userEmail}
+                details = {UserDetails.email: userEmail}
                 updated = timezone.now()
                 lastSeen = timezone.now()
                 idHash = crypto.generateSecureID(userID)
@@ -513,7 +515,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
             try:
                 userName = session["user"]["userinfo"]["nickname"]
                 userEmail = session["user"]["userinfo"]["email"]
-                details = {"email": userEmail}
+                details = {OrganizationDetails.email: userEmail}
                 updated = timezone.now()
                 lastSeen = timezone.now()
                 idHash = crypto.generateSecureID(userID)
@@ -580,7 +582,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
         except (ObjectDoesNotExist) as error:
             try:
                 orgaName = session[SessionContent.ORGANIZATION_NAME]
-                orgaDetails = {"email": "", "adress": "", "taxID": ""}
+                orgaDetails = {OrganizationDetails.email: "", OrganizationDetails.adress: "", OrganizationDetails.taxID: ""}
                 idHash = crypto.generateSecureID(orgaID)
                 uri = ""
                 supportedServices = [0]

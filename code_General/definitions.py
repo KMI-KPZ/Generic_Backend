@@ -73,6 +73,15 @@ class ProfileClasses(StrEnumExactylAsDefined):
     organization = enum.auto()
 
 ###################################################
+# Enum for Content of details for users
+class UserDetails(StrEnumExactylAsDefined):
+    """
+    What details can a user have
+    
+    """
+    email = enum.auto()
+
+###################################################
 # Enum for Content of details for organizations
 class OrganizationDetails(StrEnumExactylAsDefined):
     """

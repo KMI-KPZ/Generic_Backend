@@ -75,7 +75,7 @@ newPaths = {
 
     "statistics": ("public/getStatistics/",statistics.getNumberOfUsers),
 
-    "contactForm": ("public/contact/",email.send_contact_form),
+    "contactForm": ("public/contact/",email.sendContactForm),
 }
 
 paths.update(newPaths)
