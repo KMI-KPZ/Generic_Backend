@@ -483,6 +483,7 @@ class ProfileManagementUser(ProfileManagementBase):
     def getClientID(session):
         """
         Get ID of current client (can be organization or user)
+
         :param session: request session
         :type session: dict
         :return: hashed ID
@@ -490,6 +491,28 @@ class ProfileManagementUser(ProfileManagementBase):
 
         """
         return ProfileManagementUser.getUserHashID(session)
+    
+    ##############################################
+    @staticmethod
+    def getEMailAdress(clientID:str) -> str | None:
+        """
+        Get Mail address of user if available
+
+        :param clientID: The hashed ID of the user
+        :type clientID: str
+        :return: E-Mail address or None
+        :rtype: str | None
+        """
+        try:
+            userObj = User.objects.get(hashedID=clientID)
+            if UserDetails.email in userObj.details:
+                return userObj.details[UserDetails.email]
+            
+            return None
+        except Exception as e:
+            logger.error(f"Error getting user email address: {str(e)}")
+            return None
+
 
 ####################################################################################
 class ProfileManagementOrganization(ProfileManagementBase):
@@ -582,7 +605,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
         except (ObjectDoesNotExist) as error:
             try:
                 orgaName = session[SessionContent.ORGANIZATION_NAME]
-                orgaDetails = {OrganizationDetails.email: "", OrganizationDetails.adress: "", OrganizationDetails.taxID: ""}
+                orgaDetails = {OrganizationDetails.email: "", OrganizationDetails.address: "", OrganizationDetails.taxID: ""}
                 idHash = crypto.generateSecureID(orgaID)
                 uri = ""
                 supportedServices = [0]
@@ -638,5 +661,26 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
         """
         return ProfileManagementBase.getOrganization(session)[OrganizationDescription.hashedID]
+
+    ##############################################
+    @staticmethod
+    def getEMailAdress(clientID:str) -> str | None:
+        """
+        Get Mail address of user if available
+
+        :param clientID: The hashed ID of the user
+        :type clientID: str
+        :return: E-Mail address or None
+        :rtype: str | None
+        """
+        try:
+            orgaObj = Organization.objects.get(hashedID=clientID)
+            if OrganizationDetails.email in orgaObj.details:
+                return orgaObj.details[OrganizationDetails.email]
+            
+            return None
+        except Exception as e:
+            logger.error(f"Error getting user email address: {str(e)}")
+            return None
 
 profileManagement= {ProfileClasses.user: ProfileManagementUser(), ProfileClasses.organization: ProfileManagementOrganization()}

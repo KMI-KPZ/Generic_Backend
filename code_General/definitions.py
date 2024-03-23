@@ -88,7 +88,7 @@ class OrganizationDetails(StrEnumExactylAsDefined):
     What details can an organization have?
     
     """
-    adress = enum.auto()
+    address = enum.auto()
     email = enum.auto()
     taxID = enum.auto()
 
