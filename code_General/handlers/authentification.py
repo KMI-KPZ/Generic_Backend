@@ -7,13 +7,15 @@ Contains: Authentification handling using Auth0
 """
 
 import json, datetime, requests, logging
+from urllib.parse import quote_plus, urlencode
+
+from django.views.decorators.http import require_http_methods
 from django.conf import settings
 from django.urls import reverse
-from urllib.parse import quote_plus, urlencode
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+
 from ..utilities import basics, rights, signals
 from ..connections.postgresql import pgProfiles
-from django.views.decorators.http import require_http_methods
 from ..connections import auth0, redis
 from ..definitions import SessionContent, ProfileClasses, UserDescription
 
@@ -30,7 +32,7 @@ def isLoggedIn(request):
     :param request: User session token
     :type request: Dictionary
     :return: True if the token is valid or False if not
-    :rtype: Bool
+    :rtype: HttpResponse
     """
     # Initialize session if not done already to generate session key
     if SessionContent.INITIALIZED not in request.session:
@@ -44,6 +46,36 @@ def isLoggedIn(request):
             return HttpResponse("Failed",status=200)
     
     return HttpResponse("Failed",status=200)
+
+#######################################################
+@require_http_methods(["POST"])
+def setLocaleOfUser(request):
+    """
+    Get the preferred language of the user from the frontend
+
+    :param request: Information from the frontend
+    :type request: Dictionary-like object (nonmutable)
+    :return: Success if language could be saved in session, failed if not
+    :rtype: HttpResponse
+    
+    """
+    try:
+        # Initialize session if not done already to generate session key
+        if SessionContent.INITIALIZED not in request.session:
+            request.session[SessionContent.INITIALIZED] = True
+        
+        info = json.loads(request.body.decode("utf-8"))
+        localeOfUser = info["locale"]
+        if "-" in localeOfUser: # test supported languages here
+            request.session[SessionContent.LOCALE] = localeOfUser
+            pgProfiles.ProfileManagementBase.setUserLocale(request.session)
+            return HttpResponse("Success",status=200)
+
+        return HttpResponse("Failed", status=200)
+    except Exception as e:
+        loggerError.error(f"getLocaleOfUser: {str(e)}")
+        return HttpResponse("Failed", status=500)
+
 
 #######################################################
 @require_http_methods(["GET"])

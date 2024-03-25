@@ -62,6 +62,7 @@ class SessionContent(StrEnumExactylAsDefined):
     ORGANIZATION_NAME = enum.auto()
     USER_ROLES = enum.auto()
     USER_PERMISSIONS = enum.auto()
+    LOCALE = enum.auto()
 
 ###################################################
 # Enum for types of users
@@ -80,6 +81,7 @@ class UserDetails(StrEnumExactylAsDefined):
     
     """
     email = enum.auto()
+    locale = enum.auto()
 
 ###################################################
 # Enum for Content of details for organizations

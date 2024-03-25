@@ -18,7 +18,6 @@ class RedisConnection():
     redis_instance = ""
 
     def __init__(self) -> None:
-        logger.debug(f"USING REDIS PASSWORD: {settings.REDIS_PASSWORD}")
         self.redis_instance = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, password=settings.REDIS_PASSWORD)
 
     #######################################################

@@ -314,8 +314,8 @@ class ProfileManagementBase():
         """
         Sets the last login Time to now. Used for 'Last Login'.
 
-        :param session: userID
-        :type session: str
+        :param userIDHash: userID
+        :type userIDHash: str
         :return: Nothing
         :rtype: None
 
@@ -323,6 +323,57 @@ class ProfileManagementBase():
         currUser = User.objects.get(hashedID=userIDHash)
         currUser.lastSeen = timezone.now()
         currUser.save()
+
+    ##############################################
+    @staticmethod
+    def setUserLocale(session):
+        """
+        Sets the locale of the user in the profile.
+
+        :param session: session
+        :type session: Dictionary-like object
+        :return: Nothing
+        :rtype: None
+        
+        """
+        try:
+            if "user" in session:
+                userID = session["user"]["userinfo"]["sub"]
+                userObj = User.objects.get(subID=userID)
+                if userObj != None:
+                    userObj.details[UserDetails.locale] = session[SessionContent.LOCALE]
+        except (Exception) as error:
+            logger.error(f"Error setting user locale: {str(error)}")
+
+    ##############################################
+    @staticmethod
+    def getUserLocale(session):
+        """
+        Gets the locale of the user from the profile or session.
+
+        :param session: session
+        :type session: Dictionary-like object
+        :return: Locale
+        :rtype: Str
+        
+        """
+        try:
+            if "user" in session:
+                userID = session["user"]["userinfo"]["sub"]
+                userObj = User.objects.get(subID=userID)
+                if userObj != None:
+                    return userObj.details[UserDetails.locale]
+                else:
+                    return "de-DE"
+            elif SessionContent.LOCALE in session:
+                return session[SessionContent.LOCALE]
+            else:
+                return "de-DE"
+        except (Exception) as error:
+            logger.error(f"Error getting user locale: {str(error)}")
+            return "de-DE"
+
+
 
     ##############################################
     @staticmethod
