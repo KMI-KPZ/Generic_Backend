@@ -93,6 +93,7 @@ class OrganizationDetails(StrEnumExactylAsDefined):
     address = enum.auto()
     email = enum.auto()
     taxID = enum.auto()
+    locale = enum.auto()
 
 ###################################################
 # Class for default strings

@@ -136,11 +136,11 @@ class ProfileManagementBase():
     @staticmethod
     def getOrganizationHashID(session):
         """
-        Retrieve Organization name via hashID
+        Retrieve Organization object via hashID
 
         :param session: session
         :type session: Str
-        :return: Name of the organization
+        :return: Hashed ID of the organization
         :rtype: Str
 
         """
@@ -177,11 +177,11 @@ class ProfileManagementBase():
     @staticmethod
     def getUserKeyViaHash(hashedID):
         """
-        Retrieve User ID via Database and hashkey
+        Retrieve User/Orga ID via hash ID
 
         :param hashedID: hashed ID
         :type hashedID: str
-        :return: Orga key from database
+        :return: Orga or User key from database
         :rtype: Str
 
         """
@@ -199,7 +199,7 @@ class ProfileManagementBase():
     @staticmethod
     def getUserViaHash(hashedID):
         """
-        Retrieve User Object via Database and hashkey
+        Retrieve User/Orga Object via Database and hashkey
 
         :param hashedID: hashed ID
         :type hashedID: str
@@ -347,30 +347,47 @@ class ProfileManagementBase():
 
     ##############################################
     @staticmethod
-    def getUserLocale(session):
+    def getUserLocale(session=None, hashedID=""):
         """
         Gets the locale of the user from the profile or session.
 
         :param session: session
         :type session: Dictionary-like object
+        :param hashedID: The hashed ID of the user/orga
+        :type hashedID: str
         :return: Locale
         :rtype: Str
         
         """
         try:
-            if "user" in session:
-                userID = session["user"]["userinfo"]["sub"]
-                userObj = User.objects.get(subID=userID)
-                if userObj != None:
-                    return userObj.details[UserDetails.locale]
+            if session != None:
+                if "user" in session:
+                    userID = session["user"]["userinfo"]["sub"]
+                    userObj = User.objects.get(subID=userID)
+                    if userObj != None and UserDetails.locale in userObj.details:
+                        return userObj.details[UserDetails.locale]
+                    else:
+                        return "de-DE"
+                elif SessionContent.LOCALE in session:
+                    return session[SessionContent.LOCALE]
                 else:
                     return "de-DE"
-            elif SessionContent.LOCALE in session:
-                return session[SessionContent.LOCALE]
+            elif hashedID != "":
+                if ProfileManagementBase.checkIfHashIDBelongsToOrganization(hashedID):
+                    orgaObj = Organization.objects.get(hashedID=hashedID)
+                    if orgaObj != None and OrganizationDetails.locale in orgaObj.details:
+                        return orgaObj.details[OrganizationDetails.locale]
+                    else:
+                        return "de-DE"
+                else:
+                    userObj = User.objects.get(subID=userID)
+                    if userObj != None and UserDetails.locale in userObj.details:
+                        return userObj.details[UserDetails.locale]
+                    else:
+                        return "de-DE"
             else:
                 return "de-DE"
         except (Exception) as error:
-            logger.error(f"Error getting user locale: {str(error)}")
             return "de-DE"
 
 
@@ -446,19 +463,53 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def checkIfUserIsInOrganization(session):
+    def checkIfUserIsInOrganization(session=None, hashID=""):
         """
         Check if a user is in an organization or not. Can be used to decide if additional code specific for orgas should be run
 
-        :param session: GET request session
-        :type session: Dictionary
+        :param session: Session
+        :type session: Dictionary-like object
+        :param hashID: The user ID
+        :type hashID: str
         :return: True if User is in organization, False if not
         :rtype: bool
         
         """
-        if "user" in session and "org_id" in session["user"]["userinfo"]:
+        try:
+            if session != None:
+                if "user" in session and "org_id" in session["user"]["userinfo"]:
+                    return True
+            elif hashID != "":
+                # search user and see if is in at least one orga
+                userObj = User.objects.get(hashedID=hashID)
+                if len(userObj.organizations.all()) > 0:
+                    return True
+
+            return False
+        except Exception as error:
+            logger.error(f"Error checkIfUserIsInOrganization: {str(error)}")
+            return False
+        
+    ##############################################
+    @staticmethod
+    def checkIfHashIDBelongsToOrganization(hashID):
+        """
+        Checks if the ID belongs to an organization or not
+
+        :param hashID: The ID in question
+        :type hashID: str
+        :return: True, if ID belongs to orga, False if not
+        :rtype: Bool
+        
+        """
+        try:
+            Organization.objects.get(hashedID=hashID)
             return True
-        return False
+        except (ObjectDoesNotExist) as error:
+            return False
+        except Exception as error:
+            logger.error(f"Error checking whether ID belongs to orga: {str(error)}")
+
 
 ####################################################################################
 class ProfileManagementUser(ProfileManagementBase):
@@ -545,7 +596,7 @@ class ProfileManagementUser(ProfileManagementBase):
     
     ##############################################
     @staticmethod
-    def getEMailAdress(clientID:str) -> str | None:
+    def getEMailAddress(clientID:str) -> str | None:
         """
         Get Mail address of user if available
 
@@ -715,11 +766,11 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def getEMailAdress(clientID:str) -> str | None:
+    def getEMailAddress(clientID:str) -> str | None:
         """
-        Get Mail address of user if available
+        Get Mail address of orga if available
 
-        :param clientID: The hashed ID of the user
+        :param clientID: The hashed ID of the orga
         :type clientID: str
         :return: E-Mail address or None
         :rtype: str | None
@@ -731,7 +782,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
             
             return None
         except Exception as e:
-            logger.error(f"Error getting user email address: {str(e)}")
+            logger.error(f"Error getting orga email address: {str(e)}")
             return None
 
 profileManagement= {ProfileClasses.user: ProfileManagementUser(), ProfileClasses.organization: ProfileManagementOrganization()}
