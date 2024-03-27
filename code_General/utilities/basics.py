@@ -49,6 +49,24 @@ def manualCheckifLoggedIn(session):
 
     return False
 
+#######################################################
+def manualCheckifAdmin(session):
+    """
+    Check whether a user is an admin or not.
+
+    :param session: Session of user
+    :type session: dict
+    :return: Response whether the user is an admin or not.
+    :rtype: Bool
+    """
+    if SessionContent.usertype in session:
+        if session[SessionContent.usertype] == "admin":
+            return True
+
+    return False
+
+
+
 #################### DECORATOR ###################################
 def checkIfUserIsLoggedIn(json=False):
     """
