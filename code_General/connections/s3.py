@@ -179,7 +179,7 @@ class ManageS3():
 
 
     #######################################################
-    def getFileStreamingBody(self, fileKey) -> (StreamingBody, bool):
+    def getFileStreamingBody(self, fileKey) -> tuple[StreamingBody, bool]:
         """
         Get the file object stream from storage.
 
