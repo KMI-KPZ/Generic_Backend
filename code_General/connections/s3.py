@@ -29,11 +29,14 @@ class ManageS3():
                 self.createBucket(self.bucketName) # has to be done every time lest localstack forgets it exists
 
             return self.s3_client
+        if item == "s3_resource":
+            self.s3_resource = self.initResource()
+            return self.s3_resource
         else:
             raise AttributeError
 
     #######################################################
-    def __init__(self, aesKey, location, bucketName, endpoint, key, secret, local:bool) -> None:
+    def __init__(self, aesKey, location, bucketName, endpoint, key, secret, local:bool, downloadLinkPrefix) -> None:
         """
         Initialize instance with settings for either local or remote storage
 
@@ -46,9 +49,11 @@ class ManageS3():
         """
         # lazy loading of the boto client. Is stored in a function object that is called in __getattr__
         self.initClient = lambda : boto3.client("s3", region_name=location, endpoint_url=endpoint, aws_access_key_id=key, aws_secret_access_key=secret)
+        self.initResource = lambda : boto3.resource("s3", region_name=location, endpoint_url=endpoint, aws_access_key_id=key, aws_secret_access_key=secret)
         self.bucketName = bucketName
         self.aesEncryptionKey = aesKey
         self.local = local
+        self.downloadLinkPrefix = downloadLinkPrefix
 
     #######################################################
     def createBucket(self, bucketName):
@@ -123,8 +128,39 @@ class ManageS3():
         # TODO: if response...
 
         return True
+    
+    #######################################################
+    def getContentOfBucket(self, prefix):
+        """
+        Retrieve the content of a certain bucket from the storage.
+
+        :param prefix: The prefix of the folder
+        :type prefix: str
+        :return: Dictionary of files
+        :rtype: Dict
+        
+        """
+        response = self.s3_client.list_objects_v2(Bucket=self.bucketName, Prefix=prefix)
+        outList = []
+        for idx, elem in enumerate(response["Contents"]):
+            resp = self.s3_client.head_object(Bucket=self.bucketName, Key=elem["Key"])
+            elem["Metadata"] = resp["Metadata"]
+            outList.append(elem)
+        return outList
+    
+    #######################################################
+    def getDownloadLinkPrefix(self):
+        """
+        What is the prefix for downloading files?
+
+        :return: Link prefix
+        :rtype: str
+        
+        """
+        return self.downloadLinkPrefix
 
 ##########################################################
 
-manageLocalS3 = ManageS3(settings.AES_ENCRYPTION_KEY,'us-east-1','files',settings.LOCALSTACK_ENDPOINT, settings.LOCALSTACK_ACCESS_KEY, settings.LOCALSTACK_SECRET, True)
-manageRemoteS3 = ManageS3(settings.AES_ENCRYPTION_KEY,settings.AWS_LOCATION, settings.AWS_BUCKET_NAME, f"https://{settings.AWS_BUCKET_NAME}.{settings.AWS_REGION_NAME}.{settings.AWS_S3_ENDPOINT_URL}", settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, False)
+manageLocalS3 = ManageS3(settings.AES_ENCRYPTION_KEY,'us-east-1','files',settings.LOCALSTACK_ENDPOINT, settings.LOCALSTACK_ACCESS_KEY, settings.LOCALSTACK_SECRET, True, "")
+manageRemoteS3 = ManageS3(settings.AES_ENCRYPTION_KEY,settings.AWS_LOCATION, settings.AWS_BUCKET_NAME, f"https://{settings.AWS_BUCKET_NAME}.{settings.AWS_REGION_NAME}.{settings.AWS_S3_ENDPOINT_URL}", settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, False, f"https://{settings.AWS_BUCKET_NAME}.{settings.AWS_REGION_NAME}.{settings.AWS_CDN_ENDPOINT}/")
+manageRemoteS3Buckets = ManageS3(settings.AES_ENCRYPTION_KEY,settings.AWS_LOCATION, settings.AWS_BUCKET_NAME, f"https://{settings.AWS_REGION_NAME}.{settings.AWS_S3_ENDPOINT_URL}", settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, False, f"https://{settings.AWS_BUCKET_NAME}.{settings.AWS_REGION_NAME}.{settings.AWS_CDN_ENDPOINT}/")
