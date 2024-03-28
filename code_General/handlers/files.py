@@ -74,10 +74,10 @@ def genericDownloadFile(request, fileID):
         userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
 
         # retrieve the correct file and download it from (local or remote) aws to the user
-        content, Flag = s3.manageLocalS3.downloadFile(userName+"/"+fileID)
-        if Flag is False:
-            content, Flag = s3.manageRemoteS3.downloadFile(userName+"/"+fileID)
-            if Flag is False:
+        content, flag = s3.manageLocalS3.downloadFile(userName+"/"+fileID)
+        if flag is False:
+            content, flag = s3.manageRemoteS3.downloadFile(userName+"/"+fileID)
+            if flag is False:
                 return HttpResponse("Not found!", status=404)
             
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.FETCHED},downloaded,{Logging.Object.OBJECT},file {fileID}," + str(datetime.now()))
@@ -108,10 +108,10 @@ def genericDownloadFilesAsZip(request):
 
         # get files, download them from aws, put them in an array together with their name
         for fileID in fileIDs:
-            content, Flag = s3.manageLocalS3.downloadFile(userName+"/"+fileID)
-            if Flag is False:
-                content, Flag = s3.manageRemoteS3.downloadFile(userName+"/"+fileID)
-                if Flag is False:
+            content, flag = s3.manageLocalS3.downloadFile(userName+"/"+fileID)
+            if flag is False:
+                content, flag = s3.manageRemoteS3.downloadFile(userName+"/"+fileID)
+                if flag is False:
                     return HttpResponse("Not found!", status=404)
                 
                 filesArray.append( (fileID, content) )

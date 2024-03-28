@@ -190,8 +190,8 @@ class ManageS3():
         """
 
         try:
-            fileObj, Flag = self.getFileObject(fileKey)
-            if not Flag:
+            fileObj, flag = self.getFileObject(fileKey)
+            if not flag:
                 return (None, False)
 
             if not 'Body' in fileObj:

@@ -28,6 +28,7 @@ class FileObject():
     certificates = []
     URI = ""
     createdBy = ""
+    remote = False
 
 ###################################################
 # File object content as enum
@@ -41,6 +42,7 @@ class FileObjectContent(StrEnumExactylAsDefined):
     certificates = enum.auto()
     URI = enum.auto()
     createdBy = enum.auto()
+    remote = enum.auto()
 
 ###################################################
 # Enum for session content

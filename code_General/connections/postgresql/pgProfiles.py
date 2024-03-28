@@ -400,7 +400,7 @@ class ProfileManagementBase():
 
         :param session: GET request session
         :type session: Dictionary
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """
@@ -422,7 +422,7 @@ class ProfileManagementBase():
 
         :param session: GET request session
         :type session: Dictionary
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """
@@ -560,7 +560,7 @@ class ProfileManagementUser(ProfileManagementBase):
 
         :param session: GET request session
         :type session: Dictionary
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """
@@ -670,7 +670,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
         :type userToBeAdded: User
         :param organization: id of the organization
         :type organization: str
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """
@@ -694,7 +694,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
         :type session: Dictionary
         :param typeOfOrganization: type of the organization, can be: manufacturer, stakeholder
         :type typeOfOrganization: str
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """
@@ -728,7 +728,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
         :param session: GET request session
         :type session: Dictionary
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """

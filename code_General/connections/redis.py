@@ -73,7 +73,7 @@ class RedisConnection():
 
         :param key: key, usually a session ID
         :type key: String
-        :return: Flag to show if it worked or not
+        :return: flag to show if it worked or not
         :rtype: Bool
 
         """
