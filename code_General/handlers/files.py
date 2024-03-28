@@ -53,6 +53,8 @@ def genericUploadFiles(request):
 
 #######################################################
 # TODO Transfer from local to remote
+# implement in your more specific code!
+
 
 #######################################################
 @require_http_methods(["GET"])

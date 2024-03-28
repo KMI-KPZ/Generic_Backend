@@ -5,9 +5,13 @@ Silvio Weging 2023
 
 Contains: Services for aws cloud storage and file management
 """
+import logging
 
 import boto3, enum
 from io import BytesIO
+
+from botocore.exceptions import ClientError
+from botocore.response import StreamingBody
 
 from ..utilities import crypto
 
@@ -23,11 +27,19 @@ class ManageS3():
 
     #######################################################
     def __getattr__(self, item):
+        """
+        Lazy loading of the boto client. Is stored in a function object that is called in __getattr__
+
+        :param item: the attribute to get
+        :type item: str
+        :return: the attribute
+        :rtype: object
+        """
+
         if item == "s3_client":
             self.s3_client = self.initClient()
             if self.local:
                 self.createBucket(self.bucketName) # has to be done every time lest localstack forgets it exists
-
             return self.s3_client
         if item == "s3_resource":
             self.s3_resource = self.initResource()
@@ -65,8 +77,11 @@ class ManageS3():
         :return: Success or error
         :rtype: Bool or Error
         """
-        response = self.s3_client.create_bucket(ACL='private',Bucket=bucketName)
-        # TODO if response...
+        try:
+            self.s3_client.head_bucket(Bucket=bucketName)
+        except:
+            response = self.s3_client.create_bucket(ACL='private', Bucket=bucketName)
+            # TODO if response...
 
         return True
     
@@ -82,14 +97,35 @@ class ManageS3():
         :return: Success or error
         :rtype: Bool or Error
         """
-        file.file.seek(0) # because read() is called and has to start at the front of the file
-        fileToBeUploaded = file.file
+        # see if file.file exists and set file to file.file if it does
+        if hasattr(file, 'file'):
+            file = file.file
+
+        file.seek(0) # because read() is called and has to start at the front of the file
+        fileToBeUploaded = file
         if self.local is False:
-            fileToBeUploaded = crypto.encryptAES(self.aesEncryptionKey, file.file) # encrypt file for remote AWS
+            fileToBeUploaded = crypto.encryptAES(self.aesEncryptionKey, file) # encrypt file for remote AWS
         response = self.s3_client.upload_fileobj(fileToBeUploaded, self.bucketName, fileKey)
         # TODO if response...
 
         return True
+
+
+    #######################################################
+    def uploadFileObject(self, fileKey, file, config = None):
+        """
+        Upload a binary in-memory file like object to storage.
+        :param fileKey: the key with which to retrieve the file again later
+        :type fileKey: str
+        :param file: the file like object to be uploaded - should have a read method
+        :type file: object
+        :param config: the configuration for the upload (see boto3 documentation)
+        :type config: dict
+        :return: Pass through of the boto3 upload_fileobj response
+        :rtype: dict
+        """
+        return self.s3_client.upload_fileobj(file, self.bucketName, fileKey, Config=config)
+
 
     #######################################################
     def downloadFile(self, fileKey) -> tuple[BytesIO, bool]:
@@ -103,7 +139,12 @@ class ManageS3():
         """
 
         output = BytesIO()
-        self.s3_client.download_fileobj(self.bucketName, fileKey, output)
+        try:
+            self.s3_client.download_fileobj(self.bucketName, fileKey, output)
+        except Exception as e:
+            logging.warning(f"Error while downloading file: {str(e)}")
+            return (output, False)
+
         output.seek(0)
         if output.getbuffer().nbytes == 0: # is empty so no file has been downloaded
             return (output, False)
@@ -112,7 +153,62 @@ class ManageS3():
             return (decrypted_file, True)
         else:
             return (output, True)
-    
+
+
+    #######################################################
+    def getFileObject(self, fileKey) :
+        """
+        Get the file object from storage.
+
+        :param fileKey: The key with which to retrieve the file again later in combination with the bucket name
+        :type fileKey: Str
+        :return: ( FileObject or None , true if successful)
+        :rtype: ( object, bool )
+
+        """
+
+        try:
+            result = self.s3_client.get_object(Bucket=self.bucketName,Key=fileKey)
+            return (result, True)
+        except ClientError as e:
+            if e.response['Error']['Code'] == "NoSuchKey":
+                logging.info(f"file does not exist: {str(e)}")
+                return (None, False)
+            logging.warning(f"Error while accessing file {fileKey}: {str(e)}")
+            return (None, False)
+
+
+    #######################################################
+    def getFileStreamingBody(self, fileKey) -> (StreamingBody, bool):
+        """
+        Get the file object stream from storage.
+
+        :param fileKey: the key with which to retrieve the file again later
+        :type fileKey: str
+        :return: ( the objects streaming body or None , true if successful)
+        :rtype: ( StreamingBody, bool )
+        """
+
+        try:
+            fileObj, Flag = self.getFileObject(fileKey)
+            if not Flag:
+                return (None, False)
+
+            if not 'Body' in fileObj:
+                logging.warning(f"Error while accessing stream object for file {fileKey}")
+                return (None, False)
+
+            if not isinstance(fileObj['Body'], StreamingBody):
+                logging.warning(f"Error while accessing streaming body for file {fileKey}")
+                return (None, False)
+
+            return (fileObj['Body'], True)
+
+        except Exception as e:
+            logging.error(f"Error while accessing stream object for file {fileKey}: {str(e)}")
+            return (None, False)
+
+
     #######################################################
     def deleteFile(self, fileKey):
         """
