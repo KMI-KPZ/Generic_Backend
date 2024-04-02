@@ -42,7 +42,6 @@ def runInBackground(task):
 ####################################################################
 # Example:
 @runInBackground
-def testTask(a:int,b:str):
+def testTask(a:str):
     print("Task done", a)
-    return str(a)+b
-# then use testTask(1," Test") and it will be run async
+# then use testTask("Test") and it will be run async
