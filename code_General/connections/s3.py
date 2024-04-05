@@ -208,6 +208,22 @@ class ManageS3():
             logging.error(f"Error while accessing stream object for file {fileKey}: {str(e)}")
             return (None, False)
 
+    #######################################################
+    def copyFile(self, inPath:str, outPath:str):
+        """
+        Copy a file inside the same bucket
+
+        :param inPath: The file to be copied
+        :type inPath: str
+        :param outPath: The new file path
+        :type outPath: str
+        :return: Nothing
+        :rtype: None
+        
+        """
+
+        retVal = self.s3_client.copy_object(ACL='private', Bucket=self.bucketName, CopySource=inPath, Key=outPath)
+
 
     #######################################################
     def deleteFile(self, fileKey):
