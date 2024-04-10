@@ -221,9 +221,9 @@ class ManageS3():
         :rtype: None
         
         """
-
-        retVal = self.s3_client.copy_object(ACL='private', Bucket=self.bucketName, CopySource=inPath, Key=outPath)
-
+        source = self.bucketName+"/"+inPath # for some stupid reason, this is necessary
+        out = outPath # sometimes, the folder name needs to be in front as well
+        retVal = self.s3_client.copy_object(ACL='private', Bucket=self.bucketName, CopySource=source, Key=out)
 
     #######################################################
     def deleteFile(self, fileKey):

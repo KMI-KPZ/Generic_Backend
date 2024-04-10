@@ -251,3 +251,28 @@ class Logging():
         SYSTEM = enum.auto()
         SELF = enum.auto()
         OBJECT = enum.auto() # for everything else
+
+#######################################################
+# utility function to find the first occurence of an element with a condition in e.g. a list
+# from: https://stackoverflow.com/questions/9542738/find-a-value-in-a-list
+def findFirstOccurence(iterable, default=False, pred=None):
+    """Returns the first true value in the iterable.
+
+    If no true value is found, returns *default*
+
+    If *pred* is not None, returns the first item
+    for which pred(item) is true.
+
+    :param iterable: The object (list, ...)
+    :type iterable: iterable object
+    :param default: The default returned, mostly None
+    :type default: depends
+    :param pred: A lambda function which an element of the list must fulfill
+    :type pred: function
+    :return: Element or default
+    :rtype: depends
+
+    """
+    # first_true([a,b,c], x) --> a or b or c or x
+    # first_true([a,b], x, f) --> a if f(a) else b if f(b) else x
+    return next(filter(pred, iterable), default)
