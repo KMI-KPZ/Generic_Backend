@@ -215,13 +215,13 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
 
         
-        response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/organizations/{orgID}/members/{userID}/roles', headers=headers) )
+        response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
         roles = response
         
         for entry in roles:
-            response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/roles/{entry["id"]}/permissions', headers=headers) )
+            response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
             if isinstance(response, Exception):
                 raise response
             else:
@@ -251,18 +251,18 @@ def retrieveRolesAndPermissionsForStandardUser(session):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
         
-        response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/users/{userID}/roles', headers=headers) )
+        response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
         roles = response
 
         # set default role
         if len(roles) == 0 and session[SessionContent.usertype] == "user":
-            response = basics.handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/api/v2/users/{userID}/roles', headers=headers, json={"roles": ["rol_jG8PAa9b9LUlSz3q"]}))
+            response = basics.handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers, json={"roles": [auth0.auth0Config["IDs"]["standard_role"]]}))
             roles = [{"id":settings.AUTH0_DEFAULT_ROLE_ID}]
         
         for entry in roles:
-            response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/roles/{entry["id"]}/permissions', headers=headers) )
+            response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
             if isinstance(response, Exception):
                 raise response
             else:
@@ -455,7 +455,6 @@ def getNewRoleAndPermissionsForUser(request):
     return getPermissionsOfUser(request)    
 
 #######################################################
-@basics.checkIfUserIsLoggedIn(json=False)
 @require_http_methods(["GET"])
 def logoutUser(request):
     """
@@ -467,6 +466,8 @@ def logoutUser(request):
     :rtype: HTTP URL
 
     """
+    if not basics.manualCheckifLoggedIn(request.session):
+        return HttpResponse("Not logged in!")
     mock = False
     if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
         mock = True

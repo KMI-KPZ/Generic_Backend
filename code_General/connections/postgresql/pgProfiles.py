@@ -172,6 +172,21 @@ class ProfileManagementBase():
             logger.error(f"Error getting orga name: {str(error)}")
 
         return orgaName
+
+    ##############################################
+    @staticmethod
+    def getOrganizationID(session):
+        """
+        Retrieve Organization ID
+
+        :param session: session
+        :type session: Str
+        :return: ID of the organization
+        :rtype: Str
+
+        """
+        orgaID = session["user"]["userinfo"]["org_id"]
+        return orgaID
     
     ##############################################
     @staticmethod

@@ -1,0 +1,13 @@
+{
+    "IDs": {
+        "connection_id": "con_t6i9YJzm5KLo4Jlf",
+        "standard_role": "rol_jG8PAa9b9LUlSz3q"
+    },
+    "APIPaths": {
+        "APIBasePath": "api/v2",
+        "organizations": "organizations",
+        "users": "users",
+        "roles": "roles",
+        "resource-servers": "resource-servers"
+    }
+}

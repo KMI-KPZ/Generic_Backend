@@ -6,15 +6,16 @@ Silvio Weging 2023
 Contains: Handling of database requests
 """
 
-import datetime
-import json, logging
+import datetime, json, logging, requests
+
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
+from django.conf import settings
 
 from ..utilities import basics
-
 from ..connections.postgresql import pgProfiles
-
+from ..connections import auth0
+from ..utilities.basics import handleTooManyRequestsError
 from ..definitions import SessionContent, ProfileClasses, UserDescription, OrganizationDescription
 
 logger = logging.getLogger("logToFile")
@@ -133,7 +134,7 @@ def updateDetailsOfOrganization(request):
 @basics.checkIfRightsAreSufficient()
 def deleteOrganization(request):
     """
-    Deletes an entry in the database corresponding to user name.
+    Deletes an organization from the database and auth0.
 
     :param request: DELETE request
     :type request: HTTP DELETE
@@ -141,9 +142,20 @@ def deleteOrganization(request):
     :rtype: HTTP status
 
     """
-    logger.info(f"{basics.Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{basics.Logging.Predicate.DELETED},deleted,{basics.Logging.Object.ORGANISATION},organization {pgProfiles.ProfileManagementOrganization.getOrganization(request.session)[OrganizationDescription.name]}," + str(datetime.datetime.now()))
-    flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session)
+    orgaID = pgProfiles.ProfileManagementOrganization.getOrganizationID(request.session)
+    orgaName = pgProfiles.ProfileManagementOrganization.getOrganizationName(pgProfiles.ProfileManagementOrganization.getOrganizationHashID(request.session))
+    flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
     if flag is True:
+        baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        headers = {
+            'authorization': f'Bearer {auth0.apiToken.accessToken}'
+        }
+        response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers) )
+        if isinstance(response, Exception):
+            loggerError.error(f"Error deleting organization: {str(response)}")
+            return HttpResponse("Failed", status=500)
+        
+        logger.info(f"{basics.Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{basics.Logging.Predicate.DELETED},deleted,{basics.Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
         return HttpResponse("Success")
     else:
         return HttpResponse("Failed", status=500)
@@ -204,7 +216,7 @@ def updateDetails(request):
 @require_http_methods(["DELETE"])
 def deleteUser(request):
     """
-    Deletes an entry in the database corresponding to user name.
+    Deletes a user from the database and auth0.
 
     :param request: DELETE request
     :type request: HTTP DELETE
@@ -212,9 +224,23 @@ def deleteUser(request):
     :rtype: HTTP status
 
     """
-    logger.info(f"{basics.Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{basics.Logging.Predicate.DELETED},deleted,{basics.Logging.Object.SELF},," + str(datetime.datetime.now()))
+    # delete in database
+    userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+    userID = pgProfiles.ProfileManagementBase.getUserKey(request.session)
     flag = pgProfiles.ProfileManagementUser.deleteUser(request.session)
     if flag is True:
+        baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        headers = {
+            'authorization': f'Bearer {auth0.apiToken.accessToken}',
+            "customScopeKey": "permissions", 
+            "customUserKey": "auth"
+        }
+        response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', headers=headers) )
+        if isinstance(response, Exception):
+            loggerError.error(f"Error deleting user: {str(response)}")
+            return HttpResponse("Failed", status=500)
+
+        logger.info(f"{basics.Logging.Subject.USER},{userName},{basics.Logging.Predicate.DELETED},deleted,{basics.Logging.Object.SELF},," + str(datetime.datetime.now()))
         return HttpResponse("Success")
     else:
         return HttpResponse("Failed", status=500)
