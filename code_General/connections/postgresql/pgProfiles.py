@@ -14,7 +14,7 @@ from ...modelFiles.userModel import User
 from ...utilities import crypto
 from logging import getLogger
 
-from ...definitions import SessionContent, UserDescription, OrganizationDescription, ProfileClasses, GlobalDefaults
+from ...definitions import SessionContent, UserDescription, OrganizationDescription, ProfileClasses, GlobalDefaults, UserDetails, OrganizationDetails
 
 logger = getLogger("errors")
 
@@ -136,11 +136,11 @@ class ProfileManagementBase():
     @staticmethod
     def getOrganizationHashID(session):
         """
-        Retrieve Organization name via hashID
+        Retrieve Organization object via hashID
 
         :param session: session
         :type session: Str
-        :return: Name of the organization
+        :return: Hashed ID of the organization
         :rtype: Str
 
         """
@@ -172,16 +172,31 @@ class ProfileManagementBase():
             logger.error(f"Error getting orga name: {str(error)}")
 
         return orgaName
+
+    ##############################################
+    @staticmethod
+    def getOrganizationID(session):
+        """
+        Retrieve Organization ID
+
+        :param session: session
+        :type session: Str
+        :return: ID of the organization
+        :rtype: Str
+
+        """
+        orgaID = session["user"]["userinfo"]["org_id"]
+        return orgaID
     
     ##############################################
     @staticmethod
     def getUserKeyViaHash(hashedID):
         """
-        Retrieve User ID via Database and hashkey
+        Retrieve User/Orga ID via hash ID
 
         :param hashedID: hashed ID
         :type hashedID: str
-        :return: Orga key from database
+        :return: Orga or User key from database
         :rtype: Str
 
         """
@@ -199,7 +214,7 @@ class ProfileManagementBase():
     @staticmethod
     def getUserViaHash(hashedID):
         """
-        Retrieve User Object via Database and hashkey
+        Retrieve User/Orga Object via Database and hashkey
 
         :param hashedID: hashed ID
         :type hashedID: str
@@ -233,6 +248,8 @@ class ProfileManagementBase():
         """
         ObjOfUserOrOrga = ""
         try:
+            if hashedID == "SYSTEM":
+                return "SYSTEM"
             ObjOfUserOrOrga = Organization.objects.get(hashedID=hashedID)
         except (ObjectDoesNotExist) as error:
             ObjOfUserOrOrga = User.objects.get(hashedID=hashedID)
@@ -312,8 +329,8 @@ class ProfileManagementBase():
         """
         Sets the last login Time to now. Used for 'Last Login'.
 
-        :param session: userID
-        :type session: str
+        :param userIDHash: userID
+        :type userIDHash: str
         :return: Nothing
         :rtype: None
 
@@ -324,13 +341,81 @@ class ProfileManagementBase():
 
     ##############################################
     @staticmethod
+    def setUserLocale(session):
+        """
+        Sets the locale of the user in the profile.
+
+        :param session: session
+        :type session: Dictionary-like object
+        :return: Nothing
+        :rtype: None
+        
+        """
+        try:
+            if "user" in session:
+                userID = session["user"]["userinfo"]["sub"]
+                userObj = User.objects.get(subID=userID)
+                if userObj != None:
+                    userObj.details[UserDetails.locale] = session[SessionContent.LOCALE]
+        except (Exception) as error:
+            logger.error(f"Error setting user locale: {str(error)}")
+
+    ##############################################
+    @staticmethod
+    def getUserLocale(session=None, hashedID=""):
+        """
+        Gets the locale of the user from the profile or session.
+
+        :param session: session
+        :type session: Dictionary-like object
+        :param hashedID: The hashed ID of the user/orga
+        :type hashedID: str
+        :return: Locale
+        :rtype: Str
+        
+        """
+        try:
+            if session != None:
+                if "user" in session:
+                    userID = session["user"]["userinfo"]["sub"]
+                    userObj = User.objects.get(subID=userID)
+                    if userObj != None and UserDetails.locale in userObj.details:
+                        return userObj.details[UserDetails.locale]
+                    else:
+                        return "de-DE"
+                elif SessionContent.LOCALE in session:
+                    return session[SessionContent.LOCALE]
+                else:
+                    return "de-DE"
+            elif hashedID != "":
+                if ProfileManagementBase.checkIfHashIDBelongsToOrganization(hashedID):
+                    orgaObj = Organization.objects.get(hashedID=hashedID)
+                    if orgaObj != None and OrganizationDetails.locale in orgaObj.details:
+                        return orgaObj.details[OrganizationDetails.locale]
+                    else:
+                        return "de-DE"
+                else:
+                    userObj = User.objects.get(subID=userID)
+                    if userObj != None and UserDetails.locale in userObj.details:
+                        return userObj.details[UserDetails.locale]
+                    else:
+                        return "de-DE"
+            else:
+                return "de-DE"
+        except (Exception) as error:
+            return "de-DE"
+
+
+
+    ##############################################
+    @staticmethod
     def deleteUser(session, uHashedID=""):
         """
         Delete User.
 
         :param session: GET request session
         :type session: Dictionary
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """
@@ -352,7 +437,7 @@ class ProfileManagementBase():
 
         :param session: GET request session
         :type session: Dictionary
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """
@@ -393,19 +478,53 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def checkIfUserIsInOrganization(session):
+    def checkIfUserIsInOrganization(session=None, hashID=""):
         """
         Check if a user is in an organization or not. Can be used to decide if additional code specific for orgas should be run
 
-        :param session: GET request session
-        :type session: Dictionary
+        :param session: Session
+        :type session: Dictionary-like object
+        :param hashID: The user ID
+        :type hashID: str
         :return: True if User is in organization, False if not
         :rtype: bool
         
         """
-        if "user" in session and "org_id" in session["user"]["userinfo"]:
+        try:
+            if session != None:
+                if "user" in session and "org_id" in session["user"]["userinfo"]:
+                    return True
+            elif hashID != "":
+                # search user and see if is in at least one orga
+                userObj = User.objects.get(hashedID=hashID)
+                if len(userObj.organizations.all()) > 0:
+                    return True
+
+            return False
+        except Exception as error:
+            logger.error(f"Error checkIfUserIsInOrganization: {str(error)}")
+            return False
+        
+    ##############################################
+    @staticmethod
+    def checkIfHashIDBelongsToOrganization(hashID):
+        """
+        Checks if the ID belongs to an organization or not
+
+        :param hashID: The ID in question
+        :type hashID: str
+        :return: True, if ID belongs to orga, False if not
+        :rtype: Bool
+        
+        """
+        try:
+            Organization.objects.get(hashedID=hashID)
             return True
-        return False
+        except (ObjectDoesNotExist) as error:
+            return False
+        except Exception as error:
+            logger.error(f"Error checking whether ID belongs to orga: {str(error)}")
+
 
 ####################################################################################
 class ProfileManagementUser(ProfileManagementBase):
@@ -436,7 +555,7 @@ class ProfileManagementUser(ProfileManagementBase):
             try:
                 userName = session["user"]["userinfo"]["nickname"]
                 userEmail = session["user"]["userinfo"]["email"]
-                details = {"email": userEmail}
+                details = {UserDetails.email: userEmail}
                 updated = timezone.now()
                 lastSeen = timezone.now()
                 idHash = crypto.generateSecureID(userID)
@@ -456,7 +575,7 @@ class ProfileManagementUser(ProfileManagementBase):
 
         :param session: GET request session
         :type session: Dictionary
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """
@@ -481,6 +600,7 @@ class ProfileManagementUser(ProfileManagementBase):
     def getClientID(session):
         """
         Get ID of current client (can be organization or user)
+
         :param session: request session
         :type session: dict
         :return: hashed ID
@@ -488,6 +608,28 @@ class ProfileManagementUser(ProfileManagementBase):
 
         """
         return ProfileManagementUser.getUserHashID(session)
+    
+    ##############################################
+    @staticmethod
+    def getEMailAddress(clientID:str) -> str | None:
+        """
+        Get Mail address of user if available
+
+        :param clientID: The hashed ID of the user
+        :type clientID: str
+        :return: E-Mail address or None
+        :rtype: str | None
+        """
+        try:
+            userObj = User.objects.get(hashedID=clientID)
+            if UserDetails.email in userObj.details:
+                return userObj.details[UserDetails.email]
+            
+            return None
+        except Exception as e:
+            logger.error(f"Error getting user email address: {str(e)}")
+            return None
+
 
 ####################################################################################
 class ProfileManagementOrganization(ProfileManagementBase):
@@ -513,7 +655,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
             try:
                 userName = session["user"]["userinfo"]["nickname"]
                 userEmail = session["user"]["userinfo"]["email"]
-                details = {"email": userEmail}
+                details = {OrganizationDetails.email: userEmail}
                 updated = timezone.now()
                 lastSeen = timezone.now()
                 idHash = crypto.generateSecureID(userID)
@@ -543,7 +685,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
         :type userToBeAdded: User
         :param organization: id of the organization
         :type organization: str
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """
@@ -567,7 +709,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
         :type session: Dictionary
         :param typeOfOrganization: type of the organization, can be: manufacturer, stakeholder
         :type typeOfOrganization: str
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """
@@ -580,7 +722,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
         except (ObjectDoesNotExist) as error:
             try:
                 orgaName = session[SessionContent.ORGANIZATION_NAME]
-                orgaDetails = {"email": "", "adress": "", "taxID": ""}
+                orgaDetails = {OrganizationDetails.email: "", OrganizationDetails.address: "", OrganizationDetails.taxID: ""}
                 idHash = crypto.generateSecureID(orgaID)
                 uri = ""
                 supportedServices = [0]
@@ -601,7 +743,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
         :param session: GET request session
         :type session: Dictionary
-        :return: Flag if it worked or not
+        :return: flag if it worked or not
         :rtype: Bool
 
         """
@@ -636,5 +778,26 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
         """
         return ProfileManagementBase.getOrganization(session)[OrganizationDescription.hashedID]
+
+    ##############################################
+    @staticmethod
+    def getEMailAddress(clientID:str) -> str | None:
+        """
+        Get Mail address of orga if available
+
+        :param clientID: The hashed ID of the orga
+        :type clientID: str
+        :return: E-Mail address or None
+        :rtype: str | None
+        """
+        try:
+            orgaObj = Organization.objects.get(hashedID=clientID)
+            if OrganizationDetails.email in orgaObj.details:
+                return orgaObj.details[OrganizationDetails.email]
+            
+            return None
+        except Exception as e:
+            logger.error(f"Error getting orga email address: {str(e)}")
+            return None
 
 profileManagement= {ProfileClasses.user: ProfileManagementUser(), ProfileClasses.organization: ProfileManagementOrganization()}

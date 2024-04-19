@@ -37,6 +37,7 @@ newPaths = {
     "getPermissions": ("public/getPermissions/",authentification.getPermissionsOfUser),
     "getNewPermissions": ("public/getNewPermissions/",authentification.getNewRoleAndPermissionsForUser),
     "getPermissionsFile": ("public/getPermissionMask/",authentification.provideRightsFile),
+    "setLocaleOfUser": ("public/setLocaleOfUser/", authentification.setLocaleOfUser),
 
     "deleteUser": ("public/profileDeleteUser/",profiles.deleteUser),
     "addUser": ("private/profile_addUser/",profiles.addUserTest),
@@ -75,7 +76,7 @@ newPaths = {
 
     "statistics": ("public/getStatistics/",statistics.getNumberOfUsers),
 
-    "contactForm": ("public/contact/",email.send_contact_form),
+    "contactForm": ("public/contact/",email.sendContactForm),
 }
 
 paths.update(newPaths)

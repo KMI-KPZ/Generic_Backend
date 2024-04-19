@@ -5,7 +5,7 @@ Silvio Weging 2023
 
 Contains: Services for oauth verification
 """
-import logging
+import logging, json, os
 
 import requests, datetime
 
@@ -14,25 +14,31 @@ from django.conf import settings
 from .redis import RedisConnection
 
 logger = logging.getLogger("django_debug")
+#######################################################
+# load auth0 configuration
+auth0Config = json.load(open(os.path.dirname(__file__)+"/../configs/auth0.json"))
 
-
+#######################################################
 class OAuthLazy(OAuth):
     lazy_fn = None
     lazy_fn_called = False
 
+    #######################################################
     def __init__(self):
         super().__init__()
 
+    #######################################################
     def __getattr__(self, item):
         if self.lazy_fn not in (None, False) and item not in ('shape', '__len__', ) and not self.lazy_fn_called:
             self.lazy_fn(self)
             self.lazy_fn_called = True
         return super().__getattr__(item)
 
+    #######################################################
     def setLazyFn(self, fn):
         self.lazy_fn = fn
 
-
+#######################################################
 def auth0Register(instance):
     logger.debug('initialisiere auth0')
     instance.register(
@@ -44,6 +50,7 @@ def auth0Register(instance):
         },
         server_metadata_url=f"https://{settings.AUTH0_DOMAIN}/.well-known/openid-configuration",
     )
+
 oauth_auth0 = OAuthLazy()
 oauth_auth0.setLazyFn(auth0Register)
 
@@ -80,7 +87,6 @@ def authorizeRedirect(request, callback):
     )
 
 #######################################################################################
-
 def auth0OrgaRegister(instance: OAuth):
     instance.register(
         "auth0Orga",
@@ -157,7 +163,7 @@ class ManageAPIToken:
         # check if token exists or has expired
         if not exists or "expires_at" not in self.savedToken or datetime.datetime.now() > datetime.datetime.strptime(self.savedToken["expires_at"],"%Y-%m-%d %H:%M:%S.%f"):
             # Configuration Values
-            audience = f'https://{settings.AUTH0_DOMAIN}/api/v2/'
+            audience = f'https://{settings.AUTH0_DOMAIN}/{auth0Config["APIPaths"]["APIBasePath"]}/'
 
             # Get an Access Token from Auth0
             base_url = f"https://{settings.AUTH0_DOMAIN}"

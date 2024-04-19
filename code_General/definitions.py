@@ -28,6 +28,7 @@ class FileObject():
     certificates = []
     URI = ""
     createdBy = ""
+    remote = False
 
 ###################################################
 # File object content as enum
@@ -41,6 +42,7 @@ class FileObjectContent(StrEnumExactylAsDefined):
     certificates = enum.auto()
     URI = enum.auto()
     createdBy = enum.auto()
+    remote = enum.auto()
 
 ###################################################
 # Enum for session content
@@ -62,6 +64,7 @@ class SessionContent(StrEnumExactylAsDefined):
     ORGANIZATION_NAME = enum.auto()
     USER_ROLES = enum.auto()
     USER_PERMISSIONS = enum.auto()
+    LOCALE = enum.auto()
 
 ###################################################
 # Enum for types of users
@@ -73,15 +76,26 @@ class ProfileClasses(StrEnumExactylAsDefined):
     organization = enum.auto()
 
 ###################################################
+# Enum for Content of details for users
+class UserDetails(StrEnumExactylAsDefined):
+    """
+    What details can a user have
+    
+    """
+    email = enum.auto()
+    locale = enum.auto()
+
+###################################################
 # Enum for Content of details for organizations
 class OrganizationDetails(StrEnumExactylAsDefined):
     """
     What details can an organization have?
     
     """
-    adress = enum.auto()
+    address = enum.auto()
     email = enum.auto()
     taxID = enum.auto()
+    locale = enum.auto()
 
 ###################################################
 # Class for default strings

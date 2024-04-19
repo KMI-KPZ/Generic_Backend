@@ -7,13 +7,15 @@ Contains: Authentification handling using Auth0
 """
 
 import json, datetime, requests, logging
+from urllib.parse import quote_plus, urlencode
+
+from django.views.decorators.http import require_http_methods
 from django.conf import settings
 from django.urls import reverse
-from urllib.parse import quote_plus, urlencode
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+
 from ..utilities import basics, rights, signals
 from ..connections.postgresql import pgProfiles
-from django.views.decorators.http import require_http_methods
 from ..connections import auth0, redis
 from ..definitions import SessionContent, ProfileClasses, UserDescription
 
@@ -30,7 +32,7 @@ def isLoggedIn(request):
     :param request: User session token
     :type request: Dictionary
     :return: True if the token is valid or False if not
-    :rtype: Bool
+    :rtype: HttpResponse
     """
     # Initialize session if not done already to generate session key
     if SessionContent.INITIALIZED not in request.session:
@@ -44,6 +46,36 @@ def isLoggedIn(request):
             return HttpResponse("Failed",status=200)
     
     return HttpResponse("Failed",status=200)
+
+#######################################################
+@require_http_methods(["POST"])
+def setLocaleOfUser(request):
+    """
+    Get the preferred language of the user from the frontend
+
+    :param request: Information from the frontend
+    :type request: Dictionary-like object (nonmutable)
+    :return: Success if language could be saved in session, failed if not
+    :rtype: HttpResponse
+    
+    """
+    try:
+        # Initialize session if not done already to generate session key
+        if SessionContent.INITIALIZED not in request.session:
+            request.session[SessionContent.INITIALIZED] = True
+        
+        info = json.loads(request.body.decode("utf-8"))
+        localeOfUser = info["locale"]
+        if "-" in localeOfUser: # test supported languages here
+            request.session[SessionContent.LOCALE] = localeOfUser
+            pgProfiles.ProfileManagementBase.setUserLocale(request.session)
+            return HttpResponse("Success",status=200)
+
+        return HttpResponse("Failed", status=200)
+    except Exception as e:
+        loggerError.error(f"getLocaleOfUser: {str(e)}")
+        return HttpResponse("Failed", status=500)
+
 
 #######################################################
 @require_http_methods(["GET"])
@@ -183,13 +215,13 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
 
         
-        response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/organizations/{orgID}/members/{userID}/roles', headers=headers) )
+        response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
         roles = response
         
         for entry in roles:
-            response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/roles/{entry["id"]}/permissions', headers=headers) )
+            response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
             if isinstance(response, Exception):
                 raise response
             else:
@@ -219,18 +251,18 @@ def retrieveRolesAndPermissionsForStandardUser(session):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
         
-        response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/users/{userID}/roles', headers=headers) )
+        response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
         roles = response
 
         # set default role
         if len(roles) == 0 and session[SessionContent.usertype] == "user":
-            response = basics.handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/api/v2/users/{userID}/roles', headers=headers, json={"roles": ["rol_jG8PAa9b9LUlSz3q"]}))
+            response = basics.handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers, json={"roles": [auth0.auth0Config["IDs"]["standard_role"]]}))
             roles = [{"id":settings.AUTH0_DEFAULT_ROLE_ID}]
         
         for entry in roles:
-            response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/api/v2/roles/{entry["id"]}/permissions', headers=headers) )
+            response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
             if isinstance(response, Exception):
                 raise response
             else:
@@ -423,7 +455,6 @@ def getNewRoleAndPermissionsForUser(request):
     return getPermissionsOfUser(request)    
 
 #######################################################
-@basics.checkIfUserIsLoggedIn(json=False)
 @require_http_methods(["GET"])
 def logoutUser(request):
     """
@@ -435,6 +466,8 @@ def logoutUser(request):
     :rtype: HTTP URL
 
     """
+    if not basics.manualCheckifLoggedIn(request.session):
+        return HttpResponse("Not logged in!")
     mock = False
     if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
         mock = True

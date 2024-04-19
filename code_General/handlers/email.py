@@ -10,7 +10,7 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
-from ..connections.mailer import KissMailer
+from ..connections.mailer import MailingClass
 from django.conf import settings
 from logging import getLogger
 
@@ -18,7 +18,7 @@ logger = getLogger("django_debug")
 
 #######################################################
 @require_http_methods(["POST"])
-def send_contact_form(request):
+def sendContactForm(request):
     """
     Send an email from the contact form from the front end
 
@@ -35,12 +35,12 @@ def send_contact_form(request):
     if not all(key in data for key in ["name", "email", "subject", "message"]):
         return JsonResponse({"status": "error", "result": "missing fields"})
 
-    mailer = KissMailer()
+    mailer = MailingClass()
     msg = ("Backendsettings: " + settings.BACKEND_SETTINGS +
            "\nName: " +
            data["name"] +
            "\n" +
            "Email: " +
            data["email"] + "\n" + "Message: " + data["message"])
-    result = mailer.sendmail(settings.EMAIL_ADDR_SUPPORT, data["subject"], msg)
+    result = mailer.sendMail(settings.EMAIL_ADDR_SUPPORT, data["subject"], msg)
     return JsonResponse({"status": "ok", "result": result})
