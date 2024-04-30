@@ -117,6 +117,7 @@ def loginUser(request):
     # check number of login attempts
     if mocked is False:
         if SessionContent.NUMBER_OF_LOGIN_ATTEMPTS in request.session:
+            assert request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] <= 0, f"In {loginUser.__name__}: Expected non-negative number of login attempts, got {request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS]}"
             if (datetime.datetime.now() - datetime.datetime.strptime(request.session[SessionContent.LAST_LOGIN_ATTEMPT],"%Y-%m-%d %H:%M:%S.%f")).seconds > 300:
                 request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] = 0
                 request.session[SessionContent.LAST_LOGIN_ATTEMPT] = str(datetime.datetime.now())
@@ -211,6 +212,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: AUTH0_DOMAIN in settings not set"
         orgID = session["user"]["userinfo"]["org_id"]
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
 
@@ -249,6 +251,7 @@ def retrieveRolesAndPermissionsForStandardUser(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN in settings not set"
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
         
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
@@ -260,6 +263,7 @@ def retrieveRolesAndPermissionsForStandardUser(session):
         if len(roles) == 0 and session[SessionContent.usertype] == "user":
             response = basics.handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers, json={"roles": [auth0.auth0Config["IDs"]["standard_role"]]}))
             roles = [{"id":settings.AUTH0_DEFAULT_ROLE_ID}]
+            #same as for Auth0_Domain
         
         for entry in roles:
             response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
@@ -300,6 +304,7 @@ def setRoleAndPermissionsOfUser(request):
         request.session[SessionContent.USER_PERMISSIONS] = {x["permission_name"]: "" for x in resultDict["permissions"] } # save only the permission names, the dict is for faster access
 
         # check if person is admin, global role so check works differently
+        #same as for Auth0_Domain
         if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
             if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
                 if "semper-admin" in request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]:
@@ -342,12 +347,14 @@ def callbackLogin(request):
             request.session["user"]["userinfo"]["nickname"] = "testuser"
             request.session["user"]["userinfo"]["email"] = "testuser@test.de"
             request.session[SessionContent.USER_ROLES] = [{"id":settings.AUTH0_DEFAULT_ROLE_ID}]
+            #same as for Auth0_Domain
             request.session[SessionContent.USER_PERMISSIONS] = {"processes:read": "", "processes:messages": "","processes:edit": "","processes:delete": "","processes:files": ""}
             
 
         # email of user was not verified yet, tell them that!
         if not mocked and token["userinfo"]["email_verified"] == False:
             return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
+            #same as for Auth0_Domain
 
         # convert expiration time to the corresponding date and time
         if not mocked:
@@ -403,7 +410,7 @@ def getRolesOfUser(request):
     :return: List of roles
     :rtype: JSONResponse
     """
-
+    #same as for Auth0_Domain
     if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
         if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
             return JsonResponse(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"], safe=False)
@@ -502,8 +509,10 @@ def logoutUser(request):
     # )
 
     callbackString = request.build_absolute_uri(settings.FORWARD_URL)
-    
-    if not mock:    
+    #same as for Auth0_Domain
+
+    if not mock:
+        #same as for Auth0_Domain    
         return HttpResponse(f"https://{settings.AUTH0_DOMAIN}/v2/logout?" + urlencode({"returnTo": request.build_absolute_uri(callbackString),"client_id": settings.AUTH0_CLIENT_ID,},quote_via=quote_plus,))
     else:
         return HttpResponse(callbackString)
