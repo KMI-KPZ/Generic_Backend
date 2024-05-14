@@ -167,6 +167,7 @@ def loginUser(request):
     request.session.modified = True
     if mocked:
         request.session[SessionContent.MOCKED_LOGIN] = True
+        #Check reverse callback login
         return HttpResponse("http://127.0.0.1:8000"+reverse("callbackLogin"))
     else:
         if isPartOfOrganization:
@@ -177,6 +178,7 @@ def loginUser(request):
         return HttpResponse(uri.url + register)
 
 #######################################################
+#Decorator needed here?
 def setOrganizationName(request):
     """
     Set's the Organization name based on the information of the token
@@ -196,6 +198,7 @@ def setOrganizationName(request):
         request.session[SessionContent.ORGANIZATION_NAME] = ""
 
 #######################################################
+#Decorator needed here?
 def retrieveRolesAndPermissionsForMemberOfOrganization(session):
     """
     Get the roles and the permissions via API from Auth0
@@ -235,6 +238,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
         return e
 
 #######################################################
+#Decorator needed here?
 def retrieveRolesAndPermissionsForStandardUser(session):
     """
     Get the roles and the permissions via API from Auth0
@@ -250,8 +254,10 @@ def retrieveRolesAndPermissionsForStandardUser(session):
             'content-Type': 'application/json',
             'Cache-Control': "no-cache"
         }
+        assert settings.AUTH0_DOMAIN, f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN in settings not set"
+        assert settings.AUTH0_DOMAIN != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN in settings is set to an empty string"
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN in settings not set"
+        
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
         
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
@@ -262,8 +268,9 @@ def retrieveRolesAndPermissionsForStandardUser(session):
         # set default role
         if len(roles) == 0 and session[SessionContent.usertype] == "user":
             response = basics.handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers, json={"roles": [auth0.auth0Config["IDs"]["standard_role"]]}))
+            assert settings.AUTH0_DEFAULT_ROLE_ID, f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DEFAULT_ROLE_ID in settings not set"
+            assert settings.AUTH0_DEFAULT_ROLE_ID != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DEFAULT_ROLE_ID in settings is set to an empty string"
             roles = [{"id":settings.AUTH0_DEFAULT_ROLE_ID}]
-            #same as for Auth0_Domain
         
         for entry in roles:
             response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
@@ -278,6 +285,7 @@ def retrieveRolesAndPermissionsForStandardUser(session):
         return e
 
 #######################################################
+#Decorator needed here?
 def setRoleAndPermissionsOfUser(request):
     """
     Set's the role and the permissions of the user based on the information of the token
