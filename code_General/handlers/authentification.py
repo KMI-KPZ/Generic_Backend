@@ -65,6 +65,7 @@ def setLocaleOfUser(request):
             request.session[SessionContent.INITIALIZED] = True
         
         info = json.loads(request.body.decode("utf-8"))
+        assert "locale" in info.keys(), f"In {setLocaleOfUser.__name__}: locale not present in request"
         localeOfUser = info["locale"]
         if "-" in localeOfUser: # test supported languages here
             request.session[SessionContent.LOCALE] = localeOfUser
@@ -178,7 +179,6 @@ def loginUser(request):
         return HttpResponse(uri.url + register)
 
 #######################################################
-#Decorator needed here?
 def setOrganizationName(request):
     """
     Set's the Organization name based on the information of the token
@@ -198,7 +198,6 @@ def setOrganizationName(request):
         request.session[SessionContent.ORGANIZATION_NAME] = ""
 
 #######################################################
-#Decorator needed here?
 def retrieveRolesAndPermissionsForMemberOfOrganization(session):
     """
     Get the roles and the permissions via API from Auth0
@@ -238,7 +237,6 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
         return e
 
 #######################################################
-#Decorator needed here?
 def retrieveRolesAndPermissionsForStandardUser(session):
     """
     Get the roles and the permissions via API from Auth0
@@ -259,6 +257,8 @@ def retrieveRolesAndPermissionsForStandardUser(session):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
+        #Format check string,
+        #emptienesscheck
         
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
@@ -285,7 +285,6 @@ def retrieveRolesAndPermissionsForStandardUser(session):
         return e
 
 #######################################################
-#Decorator needed here?
 def setRoleAndPermissionsOfUser(request):
     """
     Set's the role and the permissions of the user based on the information of the token

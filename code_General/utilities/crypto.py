@@ -10,6 +10,7 @@ from io import BytesIO
 from Cryptodome.Random import get_random_bytes
 from Cryptodome.Cipher import AES
 import psutil
+#version needed in requirements
 
 #######################################################
 def generateMD5(someString) -> str:
