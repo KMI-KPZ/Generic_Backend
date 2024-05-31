@@ -15,8 +15,8 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
-from ..utilities.basics import checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient, Logging
-from ..definitions import SessionContent
+from ..utilities.basics import checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient
+from ..definitions import SessionContent, Logging
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")

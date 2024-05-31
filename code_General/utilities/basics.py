@@ -226,31 +226,6 @@ def checkIfRightsAreSufficient(json=False):
 
     return decorator    
         
-#######################################################
-# logging vocabulary
-class Logging():
-    class Subject(StrEnumExactylAsDefined):
-        USER = enum.auto()
-        ADMIN = enum.auto()
-        ORGANISATION = enum.auto()
-        SYSTEM = enum.auto()
-        SUBJECT = enum.auto() # for everything else
-
-    class Predicate(StrEnumExactylAsDefined):
-        CREATED = enum.auto()
-        DEFINED = enum.auto()
-        FETCHED = enum.auto()
-        EDITED = enum.auto()
-        DELETED = enum.auto()
-        PREDICATE = enum.auto() # for everything else
-
-    class Object(StrEnumExactylAsDefined):
-        USER = enum.auto()
-        ADMIN = enum.auto()
-        ORGANISATION = enum.auto()
-        SYSTEM = enum.auto()
-        SELF = enum.auto()
-        OBJECT = enum.auto() # for everything else
 
 #######################################################
 # utility function to find the first occurence of an element with a condition in e.g. a list

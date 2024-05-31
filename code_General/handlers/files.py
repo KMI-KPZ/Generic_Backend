@@ -14,8 +14,9 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 
 from ..utilities import crypto
+from ..definitions import Logging
 from ..connections.postgresql import pgProfiles
-from ..utilities.basics import Logging, manualCheckifLoggedIn, manualCheckIfRightsAreSufficient, checkIfUserIsLoggedIn, checkIfRightsAreSufficient
+from ..utilities.basics import manualCheckifLoggedIn, manualCheckIfRightsAreSufficient, checkIfUserIsLoggedIn, checkIfRightsAreSufficient
 from ..utilities.files import createFileResponse
 from ..connections import s3
 
