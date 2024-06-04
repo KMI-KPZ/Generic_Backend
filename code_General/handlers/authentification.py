@@ -65,7 +65,7 @@ def setLocaleOfUser(request):
             request.session[SessionContent.INITIALIZED] = True
         
         info = json.loads(request.body.decode("utf-8"))
-        assert "locale" in info.keys(), f"In {setLocaleOfUser.__name__}: locale not present in request"
+        assert "locale" in info.keys(), f"In {setLocaleOfUser.__name__}: locale not in request"
         localeOfUser = info["locale"]
         if "-" in localeOfUser: # test supported languages here
             request.session[SessionContent.LOCALE] = localeOfUser
@@ -168,13 +168,15 @@ def loginUser(request):
     request.session.modified = True
     if mocked:
         request.session[SessionContent.MOCKED_LOGIN] = True
-        #Check reverse callback login
         return HttpResponse("http://127.0.0.1:8000"+reverse("callbackLogin"))
     else:
         if isPartOfOrganization:
             uri = auth0.authorizeRedirectOrga(request, reverse("callbackLogin"))
         else:
             uri = auth0.authorizeRedirect(request, reverse("callbackLogin"))
+        #TODO assertion via regex
+        # and only start regex in debug mode
+        #assert uri.url = 
         # return uri and redirect to register if desired
         return HttpResponse(uri.url + register)
 
@@ -214,7 +216,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: AUTH0_DOMAIN in settings not set"
+        #assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: AUTH0_DOMAIN in settings not set"
         orgID = session["user"]["userinfo"]["org_id"]
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
 
@@ -252,14 +254,15 @@ def retrieveRolesAndPermissionsForStandardUser(session):
             'content-Type': 'application/json',
             'Cache-Control': "no-cache"
         }
-        assert settings.AUTH0_DOMAIN, f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN in settings not set"
-        assert settings.AUTH0_DOMAIN != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN in settings is set to an empty string"
+        #assert settings.AUTH0_DOMAIN, f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN in settings not set"
+        #assert settings.AUTH0_DOMAIN != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN in settings is set to an empty string"
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN not added to baseURL"
         
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
-        #Format check string,
-        #emptienesscheck
-        
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: userID is not a String"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: non-empty userID expected"
+
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
@@ -268,8 +271,8 @@ def retrieveRolesAndPermissionsForStandardUser(session):
         # set default role
         if len(roles) == 0 and session[SessionContent.usertype] == "user":
             response = basics.handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers, json={"roles": [auth0.auth0Config["IDs"]["standard_role"]]}))
-            assert settings.AUTH0_DEFAULT_ROLE_ID, f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DEFAULT_ROLE_ID in settings not set"
-            assert settings.AUTH0_DEFAULT_ROLE_ID != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DEFAULT_ROLE_ID in settings is set to an empty string"
+            #assert settings.AUTH0_DEFAULT_ROLE_ID, f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DEFAULT_ROLE_ID in settings not set"
+            #assert settings.AUTH0_DEFAULT_ROLE_ID != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DEFAULT_ROLE_ID in settings is set to an empty string"
             roles = [{"id":settings.AUTH0_DEFAULT_ROLE_ID}]
         
         for entry in roles:
@@ -354,14 +357,12 @@ def callbackLogin(request):
             request.session["user"]["userinfo"]["nickname"] = "testuser"
             request.session["user"]["userinfo"]["email"] = "testuser@test.de"
             request.session[SessionContent.USER_ROLES] = [{"id":settings.AUTH0_DEFAULT_ROLE_ID}]
-            #same as for Auth0_Domain
             request.session[SessionContent.USER_PERMISSIONS] = {"processes:read": "", "processes:messages": "","processes:edit": "","processes:delete": "","processes:files": ""}
             
 
         # email of user was not verified yet, tell them that!
         if not mocked and token["userinfo"]["email_verified"] == False:
             return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
-            #same as for Auth0_Domain
 
         # convert expiration time to the corresponding date and time
         if not mocked:
@@ -392,6 +393,7 @@ def callbackLogin(request):
                 raise Exception("Organization could not be found or created!")
 
         userObj = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].addUserIfNotExists(request.session, orgaObj)
+        #assert userobj
         if isinstance(userObj, Exception):
             raise userObj
         
@@ -417,7 +419,6 @@ def getRolesOfUser(request):
     :return: List of roles
     :rtype: JSONResponse
     """
-    #same as for Auth0_Domain
     if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
         if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
             return JsonResponse(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"], safe=False)
@@ -490,6 +491,7 @@ def logoutUser(request):
     signals.signalDispatcher.userLoggedOut.send(None,request=request)
 
     user = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].getUser(request.session)
+    assert isinstance(user, dict), f"In {logoutUser.__name__}: expected user to be a dictionary instead got: {type(user)}"
     if user != {}:
         pgProfiles.ProfileManagementBase.setLoginTime(user[UserDescription.hashedID])
         logger.info(f"{basics.Logging.Subject.USER},{user['name']},{basics.Logging.Predicate.PREDICATE},logout,{basics.Logging.Object.SELF},," + str(datetime.datetime.now()))
