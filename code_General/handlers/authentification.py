@@ -6,7 +6,7 @@ Silvio Weging 2023
 Contains: Authentification handling using Auth0
 """
 
-import json, datetime, requests, logging
+import json, datetime, requests, logging, re
 from urllib.parse import quote_plus, urlencode
 
 from django.views.decorators.http import require_http_methods
@@ -174,9 +174,10 @@ def loginUser(request):
             uri = auth0.authorizeRedirectOrga(request, reverse("callbackLogin"))
         else:
             uri = auth0.authorizeRedirect(request, reverse("callbackLogin"))
-        #TODO assertion via regex
-        # and only start regex in debug mode
-        #assert uri.url = 
+        if __debug__:
+            regex = "^((http|https)://)[-a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)$"
+            url_regex = re.compile(regex)
+            assert url_regex.match(uri.url), f"In {loginUser.__name__}: Expected uri.url to be a http or https url, instead got: {uri.url}"
         # return uri and redirect to register if desired
         return HttpResponse(uri.url + register)
 
