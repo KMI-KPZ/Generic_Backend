@@ -219,13 +219,18 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         #assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: AUTH0_DOMAIN in settings not set"
         orgID = session["user"]["userinfo"]["org_id"]
+        assert isinstance(orgID, str), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected orgID to be a string, instead got: {type(orgID)}"
+        assert orgID != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: non-empty orgID expected"
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected userID to be a string, instead got: {type(userID)}"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: non-empty userID expected"
 
         
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
         roles = response
+        assert isinstance(roles, dict), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected roles to be a dictionary, instead got: {type(roles)}"
         
         for entry in roles:
             response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
@@ -233,6 +238,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
                 raise response
             else:
                 permissions = response
+                assert isinstance(permissions, dict), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected permissions to be a dictionary, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -258,10 +264,10 @@ def retrieveRolesAndPermissionsForStandardUser(session):
         #assert settings.AUTH0_DOMAIN, f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN in settings not set"
         #assert settings.AUTH0_DOMAIN != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN in settings is set to an empty string"
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN not added to baseURL"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN was not added to baseURL"
         
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
-        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: userID is not a String"
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected userID to be a string, instead got: {type(userID)}"
         assert userID != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: non-empty userID expected"
 
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
@@ -311,11 +317,11 @@ def setRoleAndPermissionsOfUser(request):
             if isinstance(resultDict, Exception):
                 raise resultDict
 
+        assert isinstance(resultDict, dict), f"In {setRoleAndPermissionsOfUser.__name__}: expected resultDict to be a dictionary, instead got: {type(resultDict)}"
         request.session[SessionContent.USER_ROLES] = resultDict["roles"]
         request.session[SessionContent.USER_PERMISSIONS] = {x["permission_name"]: "" for x in resultDict["permissions"] } # save only the permission names, the dict is for faster access
 
         # check if person is admin, global role so check works differently
-        #same as for Auth0_Domain
         if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
             if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
                 if "semper-admin" in request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]:
@@ -394,7 +400,6 @@ def callbackLogin(request):
                 raise Exception("Organization could not be found or created!")
 
         userObj = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].addUserIfNotExists(request.session, orgaObj)
-        #assert userobj
         if isinstance(userObj, Exception):
             raise userObj
         
@@ -492,7 +497,7 @@ def logoutUser(request):
     signals.signalDispatcher.userLoggedOut.send(None,request=request)
 
     user = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].getUser(request.session)
-    assert isinstance(user, dict), f"In {logoutUser.__name__}: expected user to be a dictionary instead got: {type(user)}"
+    assert isinstance(user, dict), f"In {logoutUser.__name__}: expected user to be a dictionary, instead got: {type(user)}"
     if user != {}:
         pgProfiles.ProfileManagementBase.setLoginTime(user[UserDescription.hashedID])
         logger.info(f"{basics.Logging.Subject.USER},{user['name']},{basics.Logging.Predicate.PREDICATE},logout,{basics.Logging.Object.SELF},," + str(datetime.datetime.now()))
