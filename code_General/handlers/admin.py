@@ -16,6 +16,7 @@ from channels.layers import get_channel_layer
 
 from ..utilities import basics
 from ..connections.postgresql import pgProfiles
+from ..definitions import Logging
 
 logger = logging.getLogger("logToFile")
 
@@ -39,7 +40,7 @@ def getAllAsAdmin(request):
     # get all information if you're an admin
     users, organizations = pgProfiles.ProfileManagementBase.getAll()
     outLists = { "user" : users, "organizations": organizations }
-    logger.info(f"{basics.Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{basics.Logging.Predicate.FETCHED},fetched,{basics.Logging.Object.SYSTEM}, all users and orgas," + str(datetime.datetime.now()))
+    logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.FETCHED},fetched,{Logging.Object.SYSTEM}, all users and orgas," + str(datetime.datetime.now()))
     return JsonResponse(outLists, safe=False)
 
 ##############################################
@@ -60,7 +61,7 @@ def updateDetailsOfUserAsAdmin(request):
     userHasedID = content["hashedID"]
     userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHasedID)
     userName = content["name"]
-    logger.info(f"{basics.Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{basics.Logging.Predicate.EDITED},updated,{basics.Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
+    logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
     flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, userID)
     if flag is True:
         return HttpResponse("Success")
@@ -86,7 +87,7 @@ def updateDetailsOfOrganizationAsAdmin(request):
     orgaHasedID = content["hashedID"]
     orgaID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(orgaHasedID)
     orgaName = content["name"]
-    logger.info(f"{basics.Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{basics.Logging.Predicate.EDITED},updated,{basics.Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
+    logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
     flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content, orgaID)
     if flag is True:
         return HttpResponse("Success")
@@ -113,7 +114,7 @@ def deleteOrganizationAsAdmin(request):
 
     flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
     if flag is True:
-        logger.info(f"{basics.Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{basics.Logging.Predicate.DELETED},deleted,{basics.Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
         return HttpResponse("Success")
     else:
         return HttpResponse("Failed", status=500)
@@ -145,7 +146,7 @@ def deleteUserAsAdmin(request):
 
     flag = pgProfiles.ProfileManagementUser.deleteUser(request.session, userHasedID)
     if flag is True:
-        logger.info(f"{basics.Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{basics.Logging.Predicate.DELETED},deleted,{basics.Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
         return HttpResponse("Success")
     else:
         return HttpResponse("Failed", status=500)

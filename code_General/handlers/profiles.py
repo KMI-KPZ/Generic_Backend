@@ -16,7 +16,7 @@ from ..utilities import basics
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
 from ..utilities.basics import handleTooManyRequestsError
-from ..definitions import SessionContent, ProfileClasses, UserDescription, OrganizationDescription
+from ..definitions import SessionContent, ProfileClasses, UserDescription, OrganizationDescription, Logging
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -121,7 +121,7 @@ def updateDetailsOfOrganization(request):
     """
 
     content = json.loads(request.body.decode("utf-8"))["data"]["content"]
-    logger.info(f"{basics.Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{basics.Logging.Predicate.EDITED},updated,{basics.Logging.Object.ORGANISATION},details of {pgProfiles.ProfileManagementOrganization.getOrganization(request.session)[OrganizationDescription.name]}," + str(datetime.datetime.now()))
+    logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},details of {pgProfiles.ProfileManagementOrganization.getOrganization(request.session)[OrganizationDescription.name]}," + str(datetime.datetime.now()))
     flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content)
     if flag is True:
         return HttpResponse("Success")
@@ -155,7 +155,7 @@ def deleteOrganization(request):
             loggerError.error(f"Error deleting organization: {str(response)}")
             return HttpResponse("Failed", status=500)
         
-        logger.info(f"{basics.Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{basics.Logging.Predicate.DELETED},deleted,{basics.Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
         return HttpResponse("Success")
     else:
         return HttpResponse("Failed", status=500)
@@ -203,7 +203,7 @@ def updateDetails(request):
     """
 
     content = json.loads(request.body.decode("utf-8"))
-    logger.info(f"{basics.Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{basics.Logging.Predicate.EDITED},updated,{basics.Logging.Object.SELF},details," + str(datetime.datetime.now()))
+    logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.SELF},details," + str(datetime.datetime.now()))
     flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content)
     if flag is True:
         return HttpResponse("Success")
@@ -240,7 +240,7 @@ def deleteUser(request):
             loggerError.error(f"Error deleting user: {str(response)}")
             return HttpResponse("Failed", status=500)
 
-        logger.info(f"{basics.Logging.Subject.USER},{userName},{basics.Logging.Predicate.DELETED},deleted,{basics.Logging.Object.SELF},," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.SELF},," + str(datetime.datetime.now()))
         return HttpResponse("Success")
     else:
         return HttpResponse("Failed", status=500)

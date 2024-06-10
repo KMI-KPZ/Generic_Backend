@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from ..utilities import basics, rights, signals
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0, redis
-from ..definitions import SessionContent, ProfileClasses, UserDescription
+from ..definitions import Logging, SessionContent, ProfileClasses, UserDescription
 
 
 logger = logging.getLogger("logToFile")
@@ -384,7 +384,7 @@ def callbackLogin(request):
         # communicate that user is logged in to other apps
         signals.signalDispatcher.userLoggedIn.send(None,request=request)
 
-        logger.info(f"{basics.Logging.Subject.USER},{request.session['user']['userinfo']['nickname']},{basics.Logging.Predicate.FETCHED},login,{basics.Logging.Object.SELF},," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.FETCHED},login,{Logging.Object.SELF},," + str(datetime.datetime.now()))
         return HttpResponseRedirect(request.session[SessionContent.PATH_AFTER_LOGIN])
     except Exception as e:
         returnObj = HttpResponseRedirect(request.session[SessionContent.PATH_AFTER_LOGIN])
@@ -478,9 +478,9 @@ def logoutUser(request):
     user = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].getUser(request.session)
     if user != {}:
         pgProfiles.ProfileManagementBase.setLoginTime(user[UserDescription.hashedID])
-        logger.info(f"{basics.Logging.Subject.USER},{user['name']},{basics.Logging.Predicate.PREDICATE},logout,{basics.Logging.Object.SELF},," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{user['name']},{Logging.Predicate.PREDICATE},logout,{Logging.Object.SELF},," + str(datetime.datetime.now()))
     else:
-        logger.info(f"{basics.Logging.Subject.SYSTEM},,{basics.Logging.Predicate.PREDICATE},logout,{basics.Logging.Object.USER},DELETED," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.SYSTEM},,{Logging.Predicate.PREDICATE},logout,{Logging.Object.USER},DELETED," + str(datetime.datetime.now()))
 
 
     # Delete saved files from redis
