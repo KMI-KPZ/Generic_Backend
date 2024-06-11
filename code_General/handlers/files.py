@@ -37,11 +37,16 @@ def genericUploadFiles(request):
     try:
         fileNames = list(request.FILES.keys())
         userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        assert isinstance(userName, str), f"In {genericUploadFiles.__name__}: expected userName to be of type string, instead got: {type(userName)}"
+        assert userName != "", f"In {genericUploadFiles.__name__}: non-empty userName expected"
 
         for fileName in fileNames:
             fileID = crypto.generateURLFriendlyRandomString()
+            assert isinstance(fileID, str), f"In {genericUploadFiles.__name__}: expected fileID to be of type string, instead got: {type(fileID)}"
+            assert fileID != "", f"In {genericUploadFiles.__name__}: non-empty fileID expected"
             filePath = userName+"/"+fileID
             returnVal = s3.manageLocalS3.uploadFile(filePath, request.FILES.getlist(fileName)[0])
+            assert isinstance(returnVal, bool), f"In {genericUploadFiles.__name__}: expected returnVal to be of type bool, instead got: {type(returnVal)}"
             if returnVal is not True:
                 return HttpResponse("Failed", status=500)
 
@@ -72,11 +77,17 @@ def genericDownloadFile(request, fileID):
     """
     try:
         userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        assert isinstance(userName, str), f"In {genericDownloadFile.__name__}: expected userName to be of type string, instead got: {type(userName)}"
+        assert userName != "", f"In {genericDownloadFile.__name__}: non-empty userName expected"
 
         # retrieve the correct file and download it from (local or remote) aws to the user
+        assert isinstance(fileID, str), f"In {genericDownloadFile.__name__}: expected fileID to be of type string, instead got: {type(fileID)}"
+        assert fileID != "", f"In {genericDownloadFile.__name__}: non-empty fileID expected" 
         content, flag = s3.manageLocalS3.downloadFile(userName+"/"+fileID)
+        assert isinstance(flag, bool), f"In {genericDownloadFile.__name__}: expected userName to be of type bool, instead got: {type(flag)}"
         if flag is False:
             content, flag = s3.manageRemoteS3.downloadFile(userName+"/"+fileID)
+            assert isinstance(flag, bool), f"In {genericDownloadFile.__name__}: expected userName to be of type bool, instead got: {type(flag)}"
             if flag is False:
                 return HttpResponse("Not found!", status=404)
             
@@ -105,12 +116,18 @@ def genericDownloadFilesAsZip(request):
         filesArray = []
 
         userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        assert isinstance(userName, str), f"In {genericDownloadFilesAsZip.__name__}: expected userName to be of type string, instead got: {type(userName)}"
+        assert userName != "", f"In {genericDownloadFilesAsZip.__name__}: non-empty userName expected"
 
         # get files, download them from aws, put them in an array together with their name
         for fileID in fileIDs:
+            assert isinstance(fileID, str), f"In {genericDownloadFilesAsZip.__name__}: expected fileID to be of type string, instead got: {type(fileID)}"
+            assert fileID != "", f"In {genericDownloadFilesAsZip.__name__}: non-empty fileID expected"
             content, flag = s3.manageLocalS3.downloadFile(userName+"/"+fileID)
+            assert isinstance(flag, bool), f"In {genericDownloadFilesAsZip.__name__}: expected userName to be of type bool, instead got: {type(flag)}"
             if flag is False:
                 content, flag = s3.manageRemoteS3.downloadFile(userName+"/"+fileID)
+                assert isinstance(flag, bool), f"In {genericDownloadFilesAsZip.__name__}: expected userName to be of type bool, instead got: {type(flag)}"
                 if flag is False:
                     return HttpResponse("Not found!", status=404)
                 
@@ -151,11 +168,15 @@ def genericDeleteFile(request, fileID):
     try:
 
         userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
-        
+        assert isinstance(userName, str), f"In {genericDeleteFile.__name__}: expected userName to be of type string, instead got: {type(userName)}"
+        assert userName != "", f"In {genericDeleteFile.__name__}: non-empty userName expected"
+
         returnVal = s3.manageLocalS3.deleteFile(userName+"/"+fileID)
+        assert isinstance(returnVal, bool), f"In {genericDeleteFile.__name__}: expected returnVal to be of type bool, instead got: {type(returnVal)}" #might need to be adjusted when deleteFile gets updated
         if returnVal is not True:
             raise Exception("Deletion of file" + fileID + " failed")
         returnVal = s3.manageRemoteS3.deleteFile(userName+"/"+fileID)
+        assert isinstance(returnVal, bool), f"In {genericDeleteFile.__name__}: expected returnVal to be of type bool, instead got: {type(returnVal)}" #might need to be adjusted when deleteFile gets updated
         if returnVal is not True:
             raise Exception("Deletion of file" + fileID + " failed")
 
