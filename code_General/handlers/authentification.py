@@ -118,7 +118,7 @@ def loginUser(request):
     # check number of login attempts
     if mocked is False:
         if SessionContent.NUMBER_OF_LOGIN_ATTEMPTS in request.session:
-            assert request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] <= 0, f"In {loginUser.__name__}: Expected non-negative number of login attempts, got {request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS]}"
+            assert request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] >= 0, f"In {loginUser.__name__}: Expected non-negative number of login attempts, got {request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS]}"
             if (datetime.datetime.now() - datetime.datetime.strptime(request.session[SessionContent.LAST_LOGIN_ATTEMPT],"%Y-%m-%d %H:%M:%S.%f")).seconds > 300:
                 request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] = 0
                 request.session[SessionContent.LAST_LOGIN_ATTEMPT] = str(datetime.datetime.now())
