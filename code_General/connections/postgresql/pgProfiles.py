@@ -799,5 +799,24 @@ class ProfileManagementOrganization(ProfileManagementBase):
         except Exception as e:
             logger.error(f"Error getting orga email address: {str(e)}")
             return None
+        
+    ##############################################
+    @staticmethod
+    def getSupportedServices(clientID:str) -> list[int]:
+        """
+        Get a list of all services of the organization
+
+        :param clientID: The hashed ID of the orga
+        :type clientID: str
+        :return: list of all services as integers (see services.py)
+        :rtype: list[int]
+        
+        """
+        try:
+            orgaObj = Organization.objects.get(hashedID=clientID)
+            return orgaObj.supportedServices
+        except Exception as e:
+            logger.error(f"Error getting orgas supported services: {str(e)}")
+            return []
 
 profileManagement= {ProfileClasses.user: ProfileManagementUser(), ProfileClasses.organization: ProfileManagementOrganization()}
