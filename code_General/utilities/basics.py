@@ -208,8 +208,9 @@ def checkIfRightsAreSufficient(json=False):
     def decorator(func):
         @wraps(func)
         def inner(request, *args, **kwargs):
+            functionName = func.cls.__name__ if func.__name__ == "view" else func.__name__
             if "user" in request.session and SessionContent.USER_PERMISSIONS in request.session:
-                if request.session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowed(request.session[SessionContent.USER_PERMISSIONS], func.__name__):
+                if request.session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowed(request.session[SessionContent.USER_PERMISSIONS], functionName):
                     return func(request, *args, **kwargs)
                 else:
                     if json:
