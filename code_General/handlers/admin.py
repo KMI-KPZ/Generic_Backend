@@ -34,7 +34,7 @@ def getAllAsAdmin(request):
     :param request: GET request
     :type request: HTTP GET
     :return: JSON response containing all entries of users
-    :rtype: JSON Respone
+    :rtype: JSON response
 
     """
     # get all information if you're an admin
@@ -58,11 +58,17 @@ def updateDetailsOfUserAsAdmin(request):
 
     """
     content = json.loads(request.body.decode("utf-8"))
-    userHasedID = content["hashedID"]
-    userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHasedID)
+    assert "hashedID" in content.keys(), f"In {updateDetailsOfUserAsAdmin.__name__}: hashedID not in request"
+    userHashedID = content["hashedID"]
+    userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
+    assert isinstance(userID, str), f"In {updateDetailsOfUserAsAdmin.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+    assert userID != "", f"In {updateDetailsOfUserAsAdmin.__name__}: non-empty userID expected"
+
+    assert "name" in content.keys(), f"In {deleteUserAsAdmin.__name__}: name not in request"
     userName = content["name"]
     logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
     flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, userID)
+    assert isinstance(flag, bool), f"In {updateDetailsOfUserAsAdmin.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
     if flag is True:
         return HttpResponse("Success")
     else:
@@ -84,11 +90,14 @@ def updateDetailsOfOrganizationAsAdmin(request):
     """
 
     content = json.loads(request.body.decode("utf-8"))["data"]["content"]
-    orgaHasedID = content["hashedID"]
-    orgaID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(orgaHasedID)
+    assert "hashedID" in content.keys(), f"In {updateDetailsOfOrganizationAsAdmin.__name__}: hashedID not in request"
+    orgaHashedID = content["hashedID"]
+    orgaID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(orgaHashedID)
+    assert "name" in content.keys(), f"In {deleteUserAsAdmin.__name__}: name not in request"
     orgaName = content["name"]
     logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
     flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content, orgaID)
+    assert isinstance(flag, bool), f"In {updateDetailsOfOrganizationAsAdmin.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
     if flag is True:
         return HttpResponse("Success")
     else:
@@ -109,10 +118,13 @@ def deleteOrganizationAsAdmin(request):
 
     """
     content = json.loads(request.body.decode("utf-8"))
+    assert "hashedID" in content.keys(), f"In {deleteOrganizationAsAdmin.__name__}: hashedID not in request"
     orgaID = content["hashedID"]
+    assert "name" in content.keys(), f"In {deleteUserAsAdmin.__name__}: name not in request"
     orgaName = content["name"]
 
     flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
+    assert isinstance(flag, bool), f"In {updateDetailsOfOrganizationAsAdmin.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
     if flag is True:
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
         return HttpResponse("Success")
@@ -134,8 +146,10 @@ def deleteUserAsAdmin(request):
 
     """
     content = json.loads(request.body.decode("utf-8"))
-    userHasedID = content["hashedID"]
-    userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHasedID)
+    assert "hashedID" in content.keys(), f"In {deleteUserAsAdmin.__name__}: hashedID not in request"
+    userHashedID = content["hashedID"]
+    userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
+    assert "name" in content.keys(), f"In {deleteUserAsAdmin.__name__}: name not in request"
     userName = content["name"]
     # websocket event for that user
     channel_layer = get_channel_layer()
@@ -144,7 +158,8 @@ def deleteUserAsAdmin(request):
             "dict": {"eventType": "accountEvent", "context": "deleteUser"},
         })
 
-    flag = pgProfiles.ProfileManagementUser.deleteUser(request.session, userHasedID)
+    flag = pgProfiles.ProfileManagementUser.deleteUser(request.session, userHashedID)
+    assert isinstance(flag, bool), f"In {deleteUserAsAdmin.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
     if flag is True:
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
         return HttpResponse("Success")

@@ -72,7 +72,8 @@ def checkRedis(app_configs=None, **kwargs):
 
     for app in app_configs:
         if issubclass(type(app), ConfigHelper):
-            from Generic_Backend.code_General.connections.redis import RedisConnection
+            #from Generic_Backend.code_General.connections.redis import RedisConnection
+            from code_General.connections.redis import RedisConnection
             try:
                 redisConn = RedisConnection()
                 redisConn.addContent("_test", "test")

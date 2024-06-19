@@ -6,7 +6,7 @@ Silvio Weging 2023
 Contains: Authentification handling using Auth0
 """
 
-import json, datetime, requests, logging
+import json, datetime, requests, logging, re
 from urllib.parse import quote_plus, urlencode
 
 from django.views.decorators.http import require_http_methods
@@ -65,6 +65,7 @@ def setLocaleOfUser(request):
             request.session[SessionContent.INITIALIZED] = True
         
         info = json.loads(request.body.decode("utf-8"))
+        assert "locale" in info.keys(), f"In {setLocaleOfUser.__name__}: locale not in request"
         localeOfUser = info["locale"]
         if "-" in localeOfUser: # test supported languages here
             request.session[SessionContent.LOCALE] = localeOfUser
@@ -117,6 +118,7 @@ def loginUser(request):
     # check number of login attempts
     if mocked is False:
         if SessionContent.NUMBER_OF_LOGIN_ATTEMPTS in request.session:
+            assert request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] >= 0, f"In {loginUser.__name__}: Expected non-negative number of login attempts, got {request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS]}"
             if (datetime.datetime.now() - datetime.datetime.strptime(request.session[SessionContent.LAST_LOGIN_ATTEMPT],"%Y-%m-%d %H:%M:%S.%f")).seconds > 300:
                 request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] = 0
                 request.session[SessionContent.LAST_LOGIN_ATTEMPT] = str(datetime.datetime.now())
@@ -172,6 +174,10 @@ def loginUser(request):
             uri = auth0.authorizeRedirectOrga(request, reverse("callbackLogin"))
         else:
             uri = auth0.authorizeRedirect(request, reverse("callbackLogin"))
+        if __debug__:
+            regex = "^((http|https)://)[-a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)$"
+            url_regex = re.compile(regex)
+            assert url_regex.match(uri.url), f"In {loginUser.__name__}: Expected uri.url to be a http or https url, instead got: {uri.url}"
         # return uri and redirect to register if desired
         return HttpResponse(uri.url + register)
 
@@ -211,14 +217,20 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: AUTH0_DOMAIN was not added to baseURL"
         orgID = session["user"]["userinfo"]["org_id"]
+        assert isinstance(orgID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected orgID to be of type string, instead got: {type(orgID)}"
+        assert orgID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: non-empty orgID expected"
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: non-empty userID expected"
 
         
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
         roles = response
+        assert isinstance(roles, dict), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected roles to be of type dictionary, instead got: {type(roles)}"
         
         for entry in roles:
             response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
@@ -226,6 +238,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
                 raise response
             else:
                 permissions = response
+                assert isinstance(permissions, dict), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected permissions to be of type dictionary, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -249,8 +262,12 @@ def retrieveRolesAndPermissionsForStandardUser(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN was not added to baseURL"
         
+        userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: non-empty userID expected"
+
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
@@ -267,6 +284,7 @@ def retrieveRolesAndPermissionsForStandardUser(session):
                 raise response
             else:
                 permissions = response
+                assert isinstance(permissions, dict), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected permissions to be of type dictionary, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -296,6 +314,7 @@ def setRoleAndPermissionsOfUser(request):
             if isinstance(resultDict, Exception):
                 raise resultDict
 
+        assert isinstance(resultDict, dict), f"In {setRoleAndPermissionsOfUser.__name__}: expected resultDict to be of type dictionary, instead got: {type(resultDict)}"
         request.session[SessionContent.USER_ROLES] = resultDict["roles"]
         request.session[SessionContent.USER_PERMISSIONS] = {x["permission_name"]: "" for x in resultDict["permissions"] } # save only the permission names, the dict is for faster access
 
@@ -403,7 +422,6 @@ def getRolesOfUser(request):
     :return: List of roles
     :rtype: JSONResponse
     """
-
     if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
         if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
             return JsonResponse(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"], safe=False)
@@ -476,6 +494,7 @@ def logoutUser(request):
     signals.signalDispatcher.userLoggedOut.send(None,request=request)
 
     user = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].getUser(request.session)
+    assert isinstance(user, dict), f"In {logoutUser.__name__}: expected user to be of type dictionary, instead got: {type(user)}"
     if user != {}:
         pgProfiles.ProfileManagementBase.setLoginTime(user[UserDescription.hashedID])
         logger.info(f"{Logging.Subject.USER},{user['name']},{Logging.Predicate.PREDICATE},logout,{Logging.Object.SELF},," + str(datetime.datetime.now()))
@@ -502,8 +521,8 @@ def logoutUser(request):
     # )
 
     callbackString = request.build_absolute_uri(settings.FORWARD_URL)
-    
-    if not mock:    
+
+    if not mock:
         return HttpResponse(f"https://{settings.AUTH0_DOMAIN}/v2/logout?" + urlencode({"returnTo": request.build_absolute_uri(callbackString),"client_id": settings.AUTH0_CLIENT_ID,},quote_via=quote_plus,))
     else:
         return HttpResponse(callbackString)
