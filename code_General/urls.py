@@ -12,6 +12,7 @@ from django.conf import settings
 from django.conf.urls import handler404
 
 from main.urls import paths, urlpatterns, websockets
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 ##############################################################################
 ### WSGI
@@ -23,6 +24,9 @@ newPaths = {
     "landingPage": ("",frontpage.landingPage),
     "benchyPage": ("private/benchy/",frontpage.benchyPage),
     "benchyMcMarkface": ("private/benchyMcMarkface/",startFromDjango),
+    
+    "schema": ('api/schema/', SpectacularAPIView.as_view(api_version='v1')),
+    "swagger-ui": ('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema')),
 
     "test": ('public/test/',testResponse.testResponse),
     "csrfTest": ('public/testCsrf/',testResponse.testResponseCsrf),
