@@ -12,6 +12,9 @@ from django.http import HttpResponse, JsonResponse
 
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
 ###################################################
 @csrf_exempt # ONLY FOR TESTING!!!!
 def testResponse(request):
@@ -105,3 +108,8 @@ def dynamic(request):
             templateEdit["payload"]["number"] += 1
             dynamicObject["Buttons"].append(templateEdit)
         return JsonResponse(dynamicObject)
+    
+@api_view(["GET"])
+def testrestframework(request):
+    test = {"testDictionary": "testworks"}
+    return Response(test)

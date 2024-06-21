@@ -32,7 +32,8 @@ newPaths = {
     "csrfTest": ('public/testCsrf/',testResponse.testResponseCsrf),
     "csrfCookie": ('public/csrfCookie/',testResponse.testResponseCsrf),
     "dynamicTest": ('public/dynamic/',testResponse.dynamic),
-
+    "testrest": ('public/testRest/',testResponse.testrestframework),
+    
     "login" : ("public/login/",authentification.loginUser),
     "logout": ("public/logout/",authentification.logoutUser),
     "callbackLogin": ("public/callback/",authentification.callbackLogin),
