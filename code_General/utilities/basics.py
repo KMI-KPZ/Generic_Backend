@@ -18,6 +18,11 @@ from ..utilities.customStrEnum import StrEnumExactylAsDefined
 from ..connections.redis import RedisConnection
 from ..definitions import SessionContent
 
+from rest_framework import serializers
+from rest_framework.versioning import AcceptHeaderVersioning
+from rest_framework.response import Response
+from rest_framework import status
+
 #######################################################
 def checkIfTokenValid(token):
     """
@@ -252,3 +257,9 @@ def findFirstOccurence(iterable, default=False, pred=None):
     # first_true([a,b,c], x) --> a or b or c or x
     # first_true([a,b], x, f) --> a if f(a) else b if f(b) else x
     return next(filter(pred, iterable), default)
+
+
+#####################################################################
+class ExceptionSerializer(serializers.Serializer):
+    message = serializers.CharField()
+    exception = serializers.CharField()
