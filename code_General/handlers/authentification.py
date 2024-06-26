@@ -15,16 +15,36 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from ..utilities import basics, rights, signals
+from ..utilities.basics import ExceptionSerializer
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0, redis
 from ..definitions import Logging, SessionContent, ProfileClasses, UserDescription
+
+from rest_framework import status, serializers
+from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
+from rest_framework.decorators import api_view
+from rest_framework.request import Request
+from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiParameter
 
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
 
 #######################################################
-@require_http_methods(["GET"])
+
+@extend_schema(
+    summary="Check whether the token of a user has expired and a new login is necessary",
+    description=" ",
+    request=None,
+    tags=['authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializer
+    },
+)
+@api_view(["GET"])
 def isLoggedIn(request):
     """
     Check whether the token of a user has expired and a new login is necessary
@@ -41,14 +61,24 @@ def isLoggedIn(request):
     # Check if user is already logged in
     if "user" in request.session:
         if basics.checkIfTokenValid(request.session["user"]):
-            return HttpResponse("Success",status=200)
+            return Response("Success",status=status.HTTP_200_OK)
         else:
-            return HttpResponse("Failed",status=200)
+            return Response("Failed",status=status.HTTP_200_OK)
     
-    return HttpResponse("Failed",status=200)
+    return Response("Failed",status=status.HTTP_200_OK)
 
 #######################################################
-@require_http_methods(["POST"])
+@extend_schema(
+    summary="Get the preferred language of the user from the frontend .",
+    description=" ",
+    request=None,
+    tags=['authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializer
+    },
+)
+@api_view(["POST"])
 def setLocaleOfUser(request):
     """
     Get the preferred language of the user from the frontend
@@ -65,7 +95,7 @@ def setLocaleOfUser(request):
             request.session[SessionContent.INITIALIZED] = True
         
         info = json.loads(request.body.decode("utf-8"))
-        assert "locale" in info.keys(), f"In {setLocaleOfUser.__name__}: locale not in request"
+        assert "locale" in info.keys(), f"In {setLocaleOfUser.cls.__name__}: locale not in request"
         localeOfUser = info["locale"]
         if "-" in localeOfUser: # test supported languages here
             request.session[SessionContent.LOCALE] = localeOfUser
@@ -79,7 +109,17 @@ def setLocaleOfUser(request):
 
 
 #######################################################
-@require_http_methods(["GET"])
+@extend_schema(
+    summary="Returns the json file containing the rights for the frontend",
+    description=" ",
+    request=None,
+    tags=['authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializer
+    },
+)
+@api_view(["GET"])
 @basics.checkIfUserIsLoggedIn(json=True)
 def provideRightsFile(request):
     """
@@ -95,7 +135,19 @@ def provideRightsFile(request):
     return JsonResponse(rights.rightsManagement.getFile(), safe=False)
 
 #######################################################
-@require_http_methods(["GET"])
+@extend_schema(
+    summary="Return a link for redirection to Auth0",
+    description=" ",
+    request=None,
+    tags=['authentification'],
+    responses={
+        200: None,
+        429: ExceptionSerializer,
+        500: ExceptionSerializer,
+        
+    },
+)
+@api_view(["GET"])
 def loginUser(request):
     """
     Return a link for redirection to Auth0.
@@ -118,7 +170,7 @@ def loginUser(request):
     # check number of login attempts
     if mocked is False:
         if SessionContent.NUMBER_OF_LOGIN_ATTEMPTS in request.session:
-            assert request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] >= 0, f"In {loginUser.__name__}: Expected non-negative number of login attempts, got {request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS]}"
+            assert request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] >= 0, f"In {loginUser.cls.__name__}: Expected non-negative number of login attempts, got {request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS]}"
             if (datetime.datetime.now() - datetime.datetime.strptime(request.session[SessionContent.LAST_LOGIN_ATTEMPT],"%Y-%m-%d %H:%M:%S.%f")).seconds > 300:
                 request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] = 0
                 request.session[SessionContent.LAST_LOGIN_ATTEMPT] = str(datetime.datetime.now())
@@ -126,7 +178,7 @@ def loginUser(request):
                 request.session[SessionContent.LAST_LOGIN_ATTEMPT] = str(datetime.datetime.now())
 
             if request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] > 10:
-                return HttpResponse("Too many login attempts! Please wait 5 Minutes.", status=429)
+                return Response("Too many login attempts! Please wait 5 Minutes.", status=status.HTTP_429_TOO_MANY_REQUESTS)
             else:
                 request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] += 1
         else:
@@ -168,7 +220,7 @@ def loginUser(request):
     request.session.modified = True
     if mocked:
         request.session[SessionContent.MOCKED_LOGIN] = True
-        return HttpResponse("http://127.0.0.1:8000"+reverse("callbackLogin"))
+        return Response("http://127.0.0.1:8000"+reverse("callbackLogin"))
     else:
         if isPartOfOrganization:
             uri = auth0.authorizeRedirectOrga(request, reverse("callbackLogin"))
@@ -177,9 +229,9 @@ def loginUser(request):
         if __debug__:
             regex = "^((http|https)://)[-a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)$"
             url_regex = re.compile(regex)
-            assert url_regex.match(uri.url), f"In {loginUser.__name__}: Expected uri.url to be a http or https url, instead got: {uri.url}"
+            assert url_regex.match(uri.url), f"In {loginUser.cls.__name__}: Expected uri.url to be a http or https url, instead got: {uri.url}"
         # return uri and redirect to register if desired
-        return HttpResponse(uri.url + register)
+        return Response(uri.url + register)
 
 #######################################################
 def setOrganizationName(request):
@@ -217,20 +269,20 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: AUTH0_DOMAIN was not added to baseURL"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: AUTH0_DOMAIN was not added to baseURL"
         orgID = session["user"]["userinfo"]["org_id"]
-        assert isinstance(orgID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected orgID to be of type string, instead got: {type(orgID)}"
-        assert orgID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: non-empty orgID expected"
+        assert isinstance(orgID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected orgID to be of type string, instead got: {type(orgID)}"
+        assert orgID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: non-empty orgID expected"
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
-        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected userID to be of type string, instead got: {type(userID)}"
-        assert userID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: non-empty userID expected"
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: non-empty userID expected"
 
         
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
         roles = response
-        assert isinstance(roles, dict), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected roles to be of type dictionary, instead got: {type(roles)}"
+        assert isinstance(roles, dict), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected roles to be of type dictionary, instead got: {type(roles)}"
         
         for entry in roles:
             response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
@@ -238,7 +290,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
                 raise response
             else:
                 permissions = response
-                assert isinstance(permissions, dict), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected permissions to be of type dictionary, instead got: {type(permissions)}"
+                assert isinstance(permissions, dict), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected permissions to be of type dictionary, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -262,11 +314,11 @@ def retrieveRolesAndPermissionsForStandardUser(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN was not added to baseURL"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: AUTH0_DOMAIN was not added to baseURL"
         
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
-        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected userID to be of type string, instead got: {type(userID)}"
-        assert userID != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: non-empty userID expected"
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: non-empty userID expected"
 
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
@@ -284,7 +336,7 @@ def retrieveRolesAndPermissionsForStandardUser(session):
                 raise response
             else:
                 permissions = response
-                assert isinstance(permissions, dict), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected permissions to be of type dictionary, instead got: {type(permissions)}"
+                assert isinstance(permissions, dict), f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: expected permissions to be of type dictionary, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -314,7 +366,7 @@ def setRoleAndPermissionsOfUser(request):
             if isinstance(resultDict, Exception):
                 raise resultDict
 
-        assert isinstance(resultDict, dict), f"In {setRoleAndPermissionsOfUser.__name__}: expected resultDict to be of type dictionary, instead got: {type(resultDict)}"
+        assert isinstance(resultDict, dict), f"In {setRoleAndPermissionsOfUser.cls.__name__}: expected resultDict to be of type dictionary, instead got: {type(resultDict)}"
         request.session[SessionContent.USER_ROLES] = resultDict["roles"]
         request.session[SessionContent.USER_PERMISSIONS] = {x["permission_name"]: "" for x in resultDict["permissions"] } # save only the permission names, the dict is for faster access
 
@@ -330,7 +382,18 @@ def setRoleAndPermissionsOfUser(request):
         return e
 
 #######################################################
-@require_http_methods(["POST", "GET"])
+@extend_schema(
+    summary="Check if user really is part of an organization or not",
+    description="check if misclick at login, and set flags and instances here.  Get information back from Auth0.  Add user to database if entry doesn't exist. ",
+    request=None,
+    tags=['authentification'],
+    responses={
+        200: None,
+        401: ExceptionSerializer,
+        500: ExceptionSerializer
+    },
+)
+@api_view(["POST" ,"GET"])
 def callbackLogin(request):
     """
     TODO: Check if user really is part of an organization or not -> check if misclick at login, and set flags and instances here
@@ -366,7 +429,8 @@ def callbackLogin(request):
 
         # email of user was not verified yet, tell them that!
         if not mocked and token["userinfo"]["email_verified"] == False:
-            return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
+            # return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
+            return Response(settings.FORWARD_URL+"/verifyEMail", status=status.status.HTTP_401_UNAUTHORIZED)
 
         # convert expiration time to the corresponding date and time
         if not mocked:
@@ -411,8 +475,19 @@ def callbackLogin(request):
         return returnObj
 
 #######################################################
+
+@extend_schema(
+    summary=" Get Roles of User.",
+    description=" ",
+    request=None,
+    tags=['authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializer
+    },
+)
 @basics.checkIfUserIsLoggedIn(json=True)
-@require_http_methods("GET")
+@api_view(["GET"])
 def getRolesOfUser(request):
     """
     Get Roles of User.
@@ -431,8 +506,18 @@ def getRolesOfUser(request):
         return JsonResponse([], safe=False, status=400)
 
 #######################################################
+@extend_schema(
+    summary="Get Permissions of User.",
+    description=" ",
+    request=None,
+    tags=['authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializer
+    },
+)
 @basics.checkIfUserIsLoggedIn(json=True)
-@require_http_methods(["GET"])
+@api_view(["GET"])
 def getPermissionsOfUser(request):
     """
     Get Permissions of User.
@@ -456,8 +541,18 @@ def getPermissionsOfUser(request):
         return JsonResponse([], safe=False, status=400)
 
 #######################################################
+@extend_schema(
+    summary="In case the role changed, get new role and new permissions from auth0.",
+    description=" ",
+    request=None,
+    tags=['authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializer
+    },
+)
 @basics.checkIfUserIsLoggedIn(json=True)
-@require_http_methods(["GET"])
+@api_view(["GET"])
 def getNewRoleAndPermissionsForUser(request):
     """
     In case the role changed, get new role and new permissions from auth0
@@ -472,8 +567,20 @@ def getNewRoleAndPermissionsForUser(request):
         return HttpResponse(retVal, status=500)
     return getPermissionsOfUser(request)    
 
+
+
 #######################################################
-@require_http_methods(["GET"])
+@extend_schema(
+    summary="Delete session for this user and log out.",
+    description=" ",
+    request=None,
+    tags=['authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializer
+    },
+)
+@api_view(["GET"])
 def logoutUser(request):
     """
     Delete session for this user and log out.
@@ -494,7 +601,7 @@ def logoutUser(request):
     signals.signalDispatcher.userLoggedOut.send(None,request=request)
 
     user = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].getUser(request.session)
-    assert isinstance(user, dict), f"In {logoutUser.__name__}: expected user to be of type dictionary, instead got: {type(user)}"
+    assert isinstance(user, dict), f"In {logoutUser.cls.__name__}: expected user to be of type dictionary, instead got: {type(user)}"
     if user != {}:
         pgProfiles.ProfileManagementBase.setLoginTime(user[UserDescription.hashedID])
         logger.info(f"{Logging.Subject.USER},{user['name']},{Logging.Predicate.PREDICATE},logout,{Logging.Object.SELF},," + str(datetime.datetime.now()))
