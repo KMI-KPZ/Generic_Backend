@@ -14,9 +14,26 @@ from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import status
+
+
+from ..utilities.basics import ExceptionSerializer
+from drf_spectacular.utils import extend_schema
 
 ###################################################
+@extend_schema(
+    summary="Tests whether request and response scheme works.",
+    description=" ",
+    request=None,
+    tags=['test'],
+    responses={
+        200: None,
+        500: ExceptionSerializer,
+        
+    },
+)
 @csrf_exempt # ONLY FOR TESTING!!!!
+@api_view(['GET'])
 def testResponse(request):
     """
     Tests whether request and response scheme works.
@@ -34,7 +51,18 @@ def testResponse(request):
 
 ###################################################
 #@csrf_protect
+@extend_schema(
+    summary="Ensures that the csrf cookie is set correctly.",
+    description=" ",
+    request=None,
+    tags=['test'],
+    responses={
+        200: None,
+        500: ExceptionSerializer,  
+    },
+)
 @ensure_csrf_cookie
+@api_view(['GET'])
 def testResponseCsrf(request):
     """
     Ensures that the csrf cookie is set correctly.
@@ -66,6 +94,19 @@ class testWebSocket(AsyncWebsocketConsumer):
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from ..connections.postgresql import pgProfiles
+
+########################################
+@extend_schema(
+    summary="test call to websocket",
+    description=" ",
+    request=None,
+    tags=['test'],
+    responses={
+        200: None,
+        401: ExceptionSerializer,  
+    },
+)
+@api_view(["GET"])
 def testCallToWebsocket(request):
     if "user" in request.session:
         channel_layer = get_channel_layer()
@@ -74,8 +115,8 @@ def testCallToWebsocket(request):
     "text": "Hello there!",
 })
 
-        return HttpResponse("Success", status=200)
-    return HttpResponse("Not Logged In", status=401)
+        return Response("Success", status=status.HTTP_200_OK)
+    return Response("Not Logged In", status=status.HTTP_401_UNAUTHORIZED)
 
 ###################################################
 class Counter():
@@ -83,6 +124,18 @@ class Counter():
 counter = Counter
 
 ###################################################
+@extend_schema(
+    summary="Dynamically generate buttons just for fun",
+    description=" ",
+    request=None,
+    tags=['test'],
+    responses={
+        200: None,
+        500: ExceptionSerializer,
+        
+    },
+)
+@api_view(["GET"])
 def dynamic(request):
     """
     Dynamically generate buttons just for fun
@@ -107,7 +160,7 @@ def dynamic(request):
         for i in range(counter.counter):
             templateEdit["payload"]["number"] += 1
             dynamicObject["Buttons"].append(templateEdit)
-        return JsonResponse(dynamicObject)
+        return Response(dynamicObject)
     
 @api_view(["GET"])
 def testrestframework(request):
