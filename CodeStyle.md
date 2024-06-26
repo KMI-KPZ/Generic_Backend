@@ -1,10 +1,10 @@
-# Code Style Guide for the backend of SEMPER-KI
+# Code Style Guide for the generic backend
 This style guide is more of a "I think this can work" than a hard rule set. Take it with a grain of salt please! There are also some How-To's here, hope it helps.
 
 If you want a good Style Guide for Python, please refer to: [this](https://peps.python.org/pep-0008/).
 
 ## Table of content
-- [Code Style Guide for the backend of SEMPER-KI](#code-style-guide-for-the-backend-of-semper-ki)
+- [Code Style Guide for the generic backend](#code-style-guide-for-the-generic-backend)
   - [Table of content](#table-of-content)
   - [General](#general)
   - [Folder structure](#folder-structure)

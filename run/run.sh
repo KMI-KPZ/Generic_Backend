@@ -1,6 +1,6 @@
 #!/bin/bash
 pwd
-echo "Starting SemperKI-Backend"
+echo "Starting Backend"
 ENV="production"
 MIGRATIONS=1
 CHECKS=1
