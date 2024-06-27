@@ -69,24 +69,37 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getOrganization(session):
+    def getOrganization(session = {}, hashedID:str=""):
         """
         Check whether an organization exists or not and retrieve information.
 
         :param session: session
         :type session: Dictionary
+        :param hashedID: The hash ID can be used instead
+        :type hashedID: str
         :return: Organization details from database
         :rtype: Dictionary
 
         """
-        orgaID = session["user"]["userinfo"]["org_id"]
-        obj = {}
-        try:
-            obj = Organization.objects.get(subID=orgaID).toDict()
-        except (Exception) as error:
-            logger.error(f"Error getting organization: {str(error)}")
+        if session != {}:
+            orgaID = session["user"]["userinfo"]["org_id"]
+            obj = {}
+            try:
+                obj = Organization.objects.get(subID=orgaID).toDict()
+            except (Exception) as error:
+                logger.error(f"Error getting organization: {str(error)}")
 
-        return obj
+            return obj
+        if hashedID != "":
+            obj = {}
+            try:
+                obj = Organization.objects.get(hashedID=hashedID).toDict()
+            except (Exception) as error:
+                logger.error(f"Error getting organization: {str(error)}")
+
+            return obj
+        logger.error(f"Error getting organization because no parameter was given!")
+        return {}
     
     ##############################################
     @staticmethod
