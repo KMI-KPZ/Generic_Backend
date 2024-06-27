@@ -100,7 +100,7 @@ for entry in newPaths:
     urlpatterns.append(path(pathItself, handler, name=key))
 
 # any illegitimate requests are given a fu and their ip will be logged. Works only if DEBUG=False
-handler404 = statistics.getIpAdress
+handler404 = statistics.getIpAddress
 
 ##############################################################################
 ### ASGI
