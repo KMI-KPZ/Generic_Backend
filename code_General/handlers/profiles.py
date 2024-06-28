@@ -22,7 +22,7 @@ from rest_framework.request import Request
 from ..utilities import basics, crypto
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
-from ..utilities.basics import handleTooManyRequestsError, ExceptionSerializer
+from ..utilities.basics import handleTooManyRequestsError, ExceptionSerializerGeneric
 from ..definitions import SessionContent, ProfileClasses, UserDescription, OrganizationDescription, Logging, UserDetails
 
 logger = logging.getLogger("logToFile")
@@ -225,19 +225,16 @@ def updateDetails(request):
     
 ##############################################
 #######################################################
-class SAddressContent(serializers.Serializer):
+class SReqNewAddress(serializers.Serializer):
     standard = serializers.BooleanField()
     country = serializers.CharField(max_length=200)
     city = serializers.CharField(max_length=200)
     zipcode = serializers.CharField(max_length=200)
     houseNumber = serializers.IntegerField()
     street = serializers.CharField(max_length=200)
-    company = serializers.CharField(max_length=200)
+    company = serializers.CharField(max_length=200, required=False, default="")
     lastName = serializers.CharField(max_length=200)
     firstName = serializers.CharField(max_length=200)
-#######################################################
-class SReqNewAddress(serializers.Serializer):
-    address = SAddressContent()
 #######################################################
 @extend_schema(
     summary="Create new address for user",
@@ -245,8 +242,8 @@ class SReqNewAddress(serializers.Serializer):
     request=SReqNewAddress,
     responses={
         200: None,
-        400: ExceptionSerializer,
-        500: ExceptionSerializer
+        400: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
     }
 )
 @basics.checkIfUserIsLoggedIn()
@@ -269,22 +266,26 @@ def createAddress(request:Request):
             message = f"Creating address failed in {createAddress.cls.__name__}"
             exception = "Creation of address failed"
             logger.error(message)
-            exceptionSerializer = ExceptionSerializer(data={"message": message, "exception": exception})
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         address = inSerializer.data
+        setToStandardAddress = address["standard"] # if the new address will be the standard address
         userObj = pgProfiles.ProfileManagementBase.getUser(request.session) #deepcopy not necessary as changes to this dict are not saved
         newContentInDB = {UserDetails.addresses: {}}
         if UserDetails.addresses in userObj[UserDescription.details]: # add old content
             newContentInDB[UserDetails.addresses] = userObj[UserDescription.details][UserDetails.addresses]
+            if setToStandardAddress:
+                for key in newContentInDB[UserDetails.addresses]:
+                    newContentInDB[UserDetails.addresses][key]["standard"] = False
 
         # add new content
         idForNewAddress = crypto.generateURLFriendlyRandomString()
-        address["address"]["id"] = idForNewAddress
-        newContentInDB[UserDetails.addresses][idForNewAddress] = address["address"]
+        address["id"] = idForNewAddress
+        newContentInDB[UserDetails.addresses][idForNewAddress] = address
         logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.SELF},details," + str(datetime.datetime.now()))
         flag = pgProfiles.ProfileManagementUser.updateContent(request.session, newContentInDB, UserDescription.details)
         if flag is True:
@@ -296,7 +297,7 @@ def createAddress(request:Request):
         message = f"Error in {createAddress.cls.__name__}: {str(error)}"
         exception = str(error)
         loggerError.error(message)
-        exceptionSerializer = ExceptionSerializer(data={"message": message, "exception": exception})
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
         if exceptionSerializer.is_valid():
             return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
@@ -307,7 +308,7 @@ class SReqUpdateContent(serializers.Serializer):
     id = serializers.CharField(max_length=200)
     firstName = serializers.CharField(max_length=200)
     lastName = serializers.CharField(max_length=200)
-    company = serializers.CharField(max_length=200)
+    company = serializers.CharField(max_length=200, required=False, default="")
     street = serializers.CharField(max_length=200)
     houseNumber = serializers.IntegerField()
     zipcode = serializers.CharField(max_length=200)
@@ -321,9 +322,9 @@ class SReqUpdateContent(serializers.Serializer):
     request=SReqUpdateContent,
     responses={
         200: None,
-        400: ExceptionSerializer,
-        404: ExceptionSerializer,
-        500: ExceptionSerializer
+        400: ExceptionSerializerGeneric,
+        404: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
     }
 )
 @basics.checkIfUserIsLoggedIn()
@@ -346,15 +347,21 @@ def updateAddress(request:Request):
             message = f"Updating address failed in {updateAddress.cls.__name__}"
             exception = "Updating the address failed"
             logger.error(message)
-            exceptionSerializer = ExceptionSerializer(data={"message": message, "exception": exception})
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         address = inSerializer.data
+        setToStandardAddress = address["standard"] # if the new one will be the new standard address or not
         existingAddresses = pgProfiles.ProfileManagementBase.getUser(request.session)[UserDescription.details][UserDetails.addresses]
+    
         if address["id"] in existingAddresses:
+            if setToStandardAddress: # set all others to False for not being the standard address anymore
+                for key in existingAddresses:
+                    existingAddresses[key]["standard"] = False
+
             existingAddresses[address["id"]] = address
             flag = pgProfiles.ProfileManagementUser.updateContent(request.session, {UserDetails.addresses: existingAddresses}, UserDescription.details)
             if flag is True:
@@ -368,7 +375,7 @@ def updateAddress(request:Request):
         message = f"Error in {updateAddress.cls.__name__}: {str(error)}"
         exception = str(error)
         loggerError.error(message)
-        exceptionSerializer = ExceptionSerializer(data={"message": message, "exception": exception})
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
         if exceptionSerializer.is_valid():
             return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
@@ -382,8 +389,8 @@ def updateAddress(request:Request):
     request=None,
     responses={
         200: None,
-        401: ExceptionSerializer,
-        500: ExceptionSerializer
+        401: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
     }
 )
 @basics.checkIfUserIsLoggedIn()
@@ -416,7 +423,7 @@ def deleteAddress(request:Request,addressID:str):
         message = f"Error in {deleteAddress.cls.__name__}: {str(error)}"
         exception = str(error)
         loggerError.error(message)
-        exceptionSerializer = ExceptionSerializer(data={"message": message, "exception": exception})
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
         if exceptionSerializer.is_valid():
             return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:

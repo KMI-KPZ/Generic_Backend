@@ -318,7 +318,7 @@ def getNestedValue(dictionary:dict, *keys):
     return _dictionary
 
 #####################################################################
-class ExceptionSerializer(serializers.Serializer):
+class ExceptionSerializerGeneric(serializers.Serializer):
     message = serializers.CharField()
     exception = serializers.CharField()
 
