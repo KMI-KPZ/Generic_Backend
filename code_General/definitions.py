@@ -109,6 +109,7 @@ class UserDetails(StrEnumExactylAsDefined):
     
     """
     email = enum.auto()
+    addresses = enum.auto()
     locale = enum.auto()
 
 ###################################################

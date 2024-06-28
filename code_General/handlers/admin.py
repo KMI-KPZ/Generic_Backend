@@ -14,6 +14,8 @@ from django.views.decorators.http import require_http_methods
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
+from Generic_Backend.code_General.modelFiles.userModel import UserDescription
+
 from ..utilities import basics
 from ..connections.postgresql import pgProfiles
 from ..definitions import Logging
@@ -67,7 +69,7 @@ def updateDetailsOfUserAsAdmin(request):
     assert "name" in content.keys(), f"In {deleteUserAsAdmin.__name__}: name not in request"
     userName = content["name"]
     logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
-    flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, userID)
+    flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, UserDescription.name, userID)
     assert isinstance(flag, bool), f"In {updateDetailsOfUserAsAdmin.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
     if flag is True:
         return HttpResponse("Success")

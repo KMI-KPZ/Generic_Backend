@@ -582,7 +582,7 @@ class ProfileManagementUser(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def updateContent(session, details, userID=""):
+    def updateContent(session, details, updateType:str, userID=""):
         """
         Update user details.
 
@@ -600,8 +600,16 @@ class ProfileManagementUser(ProfileManagementBase):
         try:
             existingObj = User.objects.get(subID=subID)
             existingInfo = {UserDescription.name: existingObj.name, UserDescription.details: existingObj.details}
-            for key in details:
-                existingInfo[key] = details[key]
+            
+            if updateType == UserDescription.details:
+                for key in details:
+                    existingInfo[UserDescription.details][key] = details[key]
+            elif updateType == UserDescription.name:
+                if isinstance(details, str):
+                    existingInfo[UserDescription.name] = details
+                else:
+                    raise Exception("Wrong type for details when changing name!")
+            
             affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
         except (Exception) as error:
             logger.error(f"Error updating user details: {str(error)}")
