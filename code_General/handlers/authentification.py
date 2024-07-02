@@ -230,7 +230,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
         if isinstance(response, Exception):
             raise response
         roles = response
-        assert isinstance(roles, dict), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected roles to be of type dictionary, instead got: {type(roles)}"
+        assert isinstance(roles, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected roles to be of type list, instead got: {type(roles)}"
         
         for entry in roles:
             response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
@@ -238,7 +238,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
                 raise response
             else:
                 permissions = response
-                assert isinstance(permissions, dict), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected permissions to be of type dictionary, instead got: {type(permissions)}"
+                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict

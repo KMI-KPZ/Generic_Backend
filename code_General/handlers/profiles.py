@@ -232,7 +232,7 @@ class SReqNewAddress(serializers.Serializer):
     zipcode = serializers.CharField(max_length=200)
     houseNumber = serializers.IntegerField()
     street = serializers.CharField(max_length=200)
-    company = serializers.CharField(max_length=200, required=False, default="")
+    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
     lastName = serializers.CharField(max_length=200)
     firstName = serializers.CharField(max_length=200)
 #######################################################
@@ -308,7 +308,7 @@ class SReqUpdateContent(serializers.Serializer):
     id = serializers.CharField(max_length=200)
     firstName = serializers.CharField(max_length=200)
     lastName = serializers.CharField(max_length=200)
-    company = serializers.CharField(max_length=200, required=False, default="")
+    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
     street = serializers.CharField(max_length=200)
     houseNumber = serializers.IntegerField()
     zipcode = serializers.CharField(max_length=200)
