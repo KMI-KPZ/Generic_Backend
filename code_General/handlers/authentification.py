@@ -100,14 +100,19 @@ def setLocaleOfUser(request):
         if "-" in localeOfUser: # test supported languages here
             request.session[SessionContent.LOCALE] = localeOfUser
             pgProfiles.ProfileManagementBase.setUserLocale(request.session)
-            return HttpResponse("Success",status=200)
+            return Response("Success",status=status.HTTP_200_OK)
 
-        return HttpResponse("Failed", status=200)
-    except Exception as e:
-        loggerError.error(f"getLocaleOfUser: {str(e)}")
-        return HttpResponse("Failed", status=500)
-
-
+        return Response("Failed", status=status.HTTP_200_OK)
+    except Exception as error:
+        message = f"Error in {setLocaleOfUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializer(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
 #######################################################
 @extend_schema(
     summary="Returns the json file containing the rights for the frontend",
@@ -142,9 +147,7 @@ def provideRightsFile(request):
     tags=['authentification'],
     responses={
         200: None,
-        429: ExceptionSerializer,
         500: ExceptionSerializer,
-        
     },
 )
 @api_view(["GET"])
