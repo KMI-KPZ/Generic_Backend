@@ -34,6 +34,13 @@ loggerError = logging.getLogger("errors")
 
 #######################################################
 
+#########################################################################
+# isLoggedIn
+#"isLoggedIn": ("public/isLoggedIn/",authentification.isLoggedIn)
+#########################################################################
+#TODO Add serializer for isLoggedIn
+#########################################################################
+# Handler  
 @extend_schema(
     summary="Check whether the token of a user has expired and a new login is necessary",
     description=" ",
@@ -63,11 +70,17 @@ def isLoggedIn(request):
         if basics.checkIfTokenValid(request.session["user"]):
             return Response("Success",status=status.HTTP_200_OK)
         else:
-            return Response("Failed",status=status.HTTP_200_OK)
+            return Response("Failed",status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-    return Response("Failed",status=status.HTTP_200_OK)
+    return Response("Failed",status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
+#########################################################################
+# setLocaleOfUser
+#"setLocaleOfUser": ("public/setLocaleOfUser/", authentification.setLocaleOfUser)
+#########################################################################
+#TODO Add serializer for setLocaleOfUser
+#########################################################################
+# Handler  
 @extend_schema(
     summary="Get the preferred language of the user from the frontend .",
     description=" ",
@@ -113,7 +126,13 @@ def setLocaleOfUser(request):
         else:
             return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-#######################################################
+#########################################################################
+# provideRightsFile
+#"getPermissionsFile": ("public/getPermissionMask/",authentification.provideRightsFile)
+#########################################################################
+#TODO Add serializer for provideRightsFile
+#########################################################################
+# Handler  
 @extend_schema(
     summary="Returns the json file containing the rights for the frontend",
     description=" ",
@@ -139,7 +158,13 @@ def provideRightsFile(request):
     
     return JsonResponse(rights.rightsManagement.getFile(), safe=False)
 
-#######################################################
+#########################################################################
+# loginUser
+#"login" : ("public/login/",authentification.loginUser)
+#########################################################################
+#TODO Add serializer for loginUser
+#########################################################################
+# Handler  
 @extend_schema(
     summary="Return a link for redirection to Auth0",
     description=" ",
@@ -384,7 +409,13 @@ def setRoleAndPermissionsOfUser(request):
         loggerError.error(f'Generic Exception: {e}')
         return e
 
-#######################################################
+#########################################################################
+# callbackLogin
+#"callbackLogin": ("public/callback/",authentification.callbackLogin)
+#########################################################################
+#TODO Add serializer for callbackLogin
+#########################################################################
+# Handler  
 @extend_schema(
     summary="Check if user really is part of an organization or not",
     description="check if misclick at login, and set flags and instances here.  Get information back from Auth0.  Add user to database if entry doesn't exist. ",
@@ -477,8 +508,13 @@ def callbackLogin(request):
         returnObj.write(str(e))
         return returnObj
 
-#######################################################
-
+#########################################################################
+# getRolesOfUser
+#"getRoles": ("public/getRoles/",authentification.getRolesOfUser)
+#########################################################################
+#TODO Add serializer for getRolesOfUser
+#########################################################################
+# Handler  
 @extend_schema(
     summary=" Get Roles of User.",
     description=" ",
@@ -486,7 +522,7 @@ def callbackLogin(request):
     tags=['authentification'],
     responses={
         200: None,
-        500: ExceptionSerializer
+        400: ExceptionSerializer
     },
 )
 @basics.checkIfUserIsLoggedIn(json=True)
@@ -504,11 +540,17 @@ def getRolesOfUser(request):
         if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
             return JsonResponse(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"], safe=False)
         else:
-            return JsonResponse([], safe=False, status=200)
+            return Response([], safe=False, status=status.HTTP_200_OK)
     else:
-        return JsonResponse([], safe=False, status=400)
+        return Response([], safe=False, status=status.HTTP_400_BAD_REQUEST)
 
-#######################################################
+#########################################################################
+# getPermissionsOfUser
+#"getPermissions": ("public/getPermissions/",authentification.getPermissionsOfUser)
+#########################################################################
+#TODO Add serializer for getPermissionsOfUser
+#########################################################################
+# Handler  
 @extend_schema(
     summary="Get Permissions of User.",
     description=" ",
@@ -516,7 +558,7 @@ def getRolesOfUser(request):
     tags=['authentification'],
     responses={
         200: None,
-        500: ExceptionSerializer
+        400: ExceptionSerializer
     },
 )
 @basics.checkIfUserIsLoggedIn(json=True)
@@ -536,14 +578,19 @@ def getPermissionsOfUser(request):
             for entry in request.session[SessionContent.USER_PERMISSIONS]:
                 context, permission = entry.split(":")
                 outArray.append({"context": context, "permission": permission})
-
-            return JsonResponse(outArray, safe=False)
+            return Response(outArray, status=status.HTTP_200_OK)
         else:
-            return JsonResponse([], safe=False, status=200)
+            return Response([], status=status.HTTP_200_OK)
     else:
-        return JsonResponse([], safe=False, status=400)
+        return Response([], status=status.HTTP_400_BAD_REQUEST)
 
-#######################################################
+#########################################################################
+# getNewRoleAndPermissionsForUser
+#"getNewPermissions": ("public/getNewPermissions/",authentification.getNewRoleAndPermissionsForUser)
+#########################################################################
+#TODO Add serializer for getNewRoleAndPermissionsForUser
+#########################################################################
+# Handler  
 @extend_schema(
     summary="In case the role changed, get new role and new permissions from auth0.",
     description=" ",
@@ -567,12 +614,16 @@ def getNewRoleAndPermissionsForUser(request):
     """
     retVal = setRoleAndPermissionsOfUser(request)
     if isinstance(retVal, Exception):
-        return HttpResponse(retVal, status=500)
+        return Response(retVal, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     return getPermissionsOfUser(request)    
 
-
-
-#######################################################
+#########################################################################
+# logoutUser
+#"logout": ("public/logout/",authentification.logoutUser)
+#########################################################################
+#TODO Add serializer for logoutUser
+#########################################################################
+# Handler  
 @extend_schema(
     summary="Delete session for this user and log out.",
     description=" ",
