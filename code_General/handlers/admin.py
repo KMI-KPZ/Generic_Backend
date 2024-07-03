@@ -15,18 +15,40 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 from ..utilities import basics
+from  ..utilities.basics import ExceptionSerializer
 from ..connections.postgresql import pgProfiles
 from ..definitions import Logging
+
+from rest_framework import status, serializers
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema
 
 logger = logging.getLogger("logToFile")
 
 
 # Profiles #############################################################################################################
 
-##############################################
+#########################################################################
+# getAllAsAdmin
+#"adminGetAll": ("public/admin/getAll/",admin.getAllAsAdmin)
+#########################################################################
+#TODO Add serializer for getAllAsAdmin
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Generic file upload",
+    description=" ",
+    request=None,
+    tags=['admin'],
+    responses={
+        200: None,
+        500: ExceptionSerializer,
+    },
+)
 @basics.checkIfUserIsLoggedIn(json=True)
 @basics.checkIfUserIsAdmin(json=True)
-@require_http_methods(["GET"])
+@api_view(["GET"])
 def getAllAsAdmin(request):
     """
     Drop all information (of the DB) about all users for admin view.
@@ -37,16 +59,36 @@ def getAllAsAdmin(request):
     :rtype: JSON response
 
     """
-    # get all information if you're an admin
-    users, organizations = pgProfiles.ProfileManagementBase.getAll()
-    outLists = { "user" : users, "organizations": organizations }
-    logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.FETCHED},fetched,{Logging.Object.SYSTEM}, all users and orgas," + str(datetime.datetime.now()))
-    return JsonResponse(outLists, safe=False)
+    try:
+        # get all information if you're an admin
+        users, organizations = pgProfiles.ProfileManagementBase.getAll()
+        outLists = { "user" : users, "organizations": organizations }
+        logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.FETCHED},fetched,{Logging.Object.SYSTEM}, all users and orgas," + str(datetime.datetime.now()))
+        return JsonResponse(outLists, safe=False)
+    except Exception as e:
+        logger.error(f"In {getAllAsAdmin.cls.__name__} : {e}")
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-##############################################
+#########################################################################
+# updateDetailsOfUserAsAdmin
+#"adminUpdateUser": ("public/admin/updateUser/",admin.updateDetailsOfUserAsAdmin)
+#########################################################################
+#TODO Add serializer for updateDetailsOfUserAsAdmin
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Update user details.",
+    description=" ",
+    request=None,
+    tags=['admin'],
+    responses={
+        200: None,
+        500: ExceptionSerializer,
+    },
+)
 @basics.checkIfUserIsLoggedIn()
 @basics.checkIfUserIsAdmin()
-@require_http_methods(["PATCH"])
+@api_view(["PATCH"])
 def updateDetailsOfUserAsAdmin(request):
     """
     Update user details.
@@ -70,13 +112,29 @@ def updateDetailsOfUserAsAdmin(request):
     flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, userID)
     assert isinstance(flag, bool), f"In {updateDetailsOfUserAsAdmin.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
     if flag is True:
-        return HttpResponse("Success")
+        return Response("Success", status=status.HTTP_200_OK)
     else:
-        return HttpResponse("Failed", status=500)
+        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-##############################################
+#########################################################################
+# updateDetailsOfOrganizationAsAdmin
+#"adminUpdateOrga": ("public/admin/updateOrganization/",admin.updateDetailsOfOrganizationAsAdmin)
+#########################################################################
+#TODO Add serializer for updateDetailsOfOrganizationAsAdmin
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Update details of organization of that user.",
+    description=" ",
+    request=None,
+    tags=['admin'],
+    responses={
+        200: None,
+        500: ExceptionSerializer,
+    },
+)
 @basics.checkIfUserIsLoggedIn()
-@require_http_methods(["PATCH"])
+@api_view(["PATCH"])
 @basics.checkIfRightsAreSufficient()
 def updateDetailsOfOrganizationAsAdmin(request):
     """
@@ -99,14 +157,30 @@ def updateDetailsOfOrganizationAsAdmin(request):
     flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content, orgaID)
     assert isinstance(flag, bool), f"In {updateDetailsOfOrganizationAsAdmin.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
     if flag is True:
-        return HttpResponse("Success")
+        return Response("Success", status=status.HTTP_200_OK)
     else:
-        return HttpResponse("Failed", status=500)
+        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-##############################################
+#########################################################################
+# deleteOrganizationAsAdmin
+#"adminDeleteOrga": ("public/admin/deleteOrganization/",admin.deleteOrganizationAsAdmin)
+#########################################################################
+#TODO Add serializer for deleteOrganizationAsAdmin
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Deletes an entry in the database corresponding to orga id.",
+    description=" ",
+    request=None,
+    tags=['admin'],
+    responses={
+        200: None,
+        500: ExceptionSerializer,
+    },
+)
 @basics.checkIfUserIsLoggedIn()
 @basics.checkIfUserIsAdmin()
-@require_http_methods(["DELETE"])
+@api_view(["DELETE"])
 def deleteOrganizationAsAdmin(request):
     """
     Deletes an entry in the database corresponding to orga id.
@@ -127,14 +201,30 @@ def deleteOrganizationAsAdmin(request):
     assert isinstance(flag, bool), f"In {updateDetailsOfOrganizationAsAdmin.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
     if flag is True:
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
-        return HttpResponse("Success")
+        return Response("Success", status=status.HTTP_200_OK)
     else:
-        return HttpResponse("Failed", status=500)
+        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-##############################################
+#########################################################################
+# deleteUserAsAdmin
+#"adminDelete": ("public/admin/deleteUser/",admin.deleteUserAsAdmin)
+#########################################################################
+#TODO Add serializer for deleteUserAsAdmin
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Deletes an entry in the database corresponding to user id.",
+    description=" ",
+    request=None,
+    tags=['admin'],
+    responses={
+        200: None,
+        500: ExceptionSerializer,
+    },
+)
 @basics.checkIfUserIsLoggedIn()
 @basics.checkIfUserIsAdmin()
-@require_http_methods(["DELETE"])
+@api_view(["DELETE"])
 def deleteUserAsAdmin(request):
     """
     Deletes an entry in the database corresponding to user id.
@@ -162,7 +252,7 @@ def deleteUserAsAdmin(request):
     assert isinstance(flag, bool), f"In {deleteUserAsAdmin.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
     if flag is True:
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
-        return HttpResponse("Success")
+        return Response("Success", status=status.HTTP_200_OK)
     else:
-        return HttpResponse("Failed", status=500)
+        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
