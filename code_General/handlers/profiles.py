@@ -12,12 +12,6 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.conf import settings
 
-from ..utilities import basics
-from ..connections.postgresql import pgProfiles
-from ..connections import auth0
-from ..utilities.basics import handleTooManyRequestsError, ExceptionSerializer
-from ..definitions import SessionContent, ProfileClasses, UserDescription, OrganizationDescription, Logging
-
 from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
@@ -25,6 +19,12 @@ from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import OpenApiParameter
+
+from ..utilities import basics
+from ..connections.postgresql import pgProfiles
+from ..connections import auth0
+from ..utilities.basics import handleTooManyRequestsError, ExceptionSerializer
+from ..definitions import SessionContent, ProfileClasses, UserDescription, OrganizationDescription, Logging
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -49,7 +49,7 @@ loggerError = logging.getLogger("errors")
 )
 @basics.checkIfUserIsLoggedIn(json=True)
 @api_view(["POST"])
-def addUserTest(request):
+def addUserTest(request:Request):
     """
     For testing.
 
@@ -100,7 +100,7 @@ def addUserTest(request):
 )
 @basics.checkIfUserIsLoggedIn(json=True)
 @api_view(["POST"])
-def addOrganizationTest(request):
+def addOrganizationTest(request:Request):
     """
     For testing.
 
@@ -155,7 +155,7 @@ def addOrganizationTest(request):
 )
 @basics.checkIfUserIsLoggedIn(json=True)
 @api_view(["GET"])
-def getOrganizationDetails(request):
+def getOrganizationDetails(request:Request):
     """
     Return details about organization. 
 
@@ -193,7 +193,7 @@ def getOrganizationDetails(request):
 @basics.checkIfUserIsLoggedIn()
 @api_view(["PATCH"])
 @basics.checkIfRightsAreSufficient()
-def updateDetailsOfOrganization(request):
+def updateDetailsOfOrganization(request:Request):
     """
     Update details of organization of that user.
 
@@ -231,7 +231,7 @@ def updateDetailsOfOrganization(request):
 @basics.checkIfUserIsLoggedIn()
 @api_view(["DELETE"])
 @basics.checkIfRightsAreSufficient()
-def deleteOrganization(request):
+def deleteOrganization(request:Request):
     """
     Deletes an organization from the database and auth0.
 
@@ -278,7 +278,7 @@ def deleteOrganization(request):
 )
 @basics.checkIfUserIsLoggedIn(json=True)
 @api_view(["GET"])
-def getUserDetails(request):
+def getUserDetails(request:Request):
     """
     Return details about user. 
 
@@ -326,7 +326,7 @@ def getUserDetails(request):
 )
 @basics.checkIfUserIsLoggedIn()
 @api_view(["PATCH"])
-def updateDetails(request):
+def updateDetails(request:Request):
     """
     Update user details.
 
@@ -364,7 +364,7 @@ def updateDetails(request):
 )
 @basics.checkIfUserIsLoggedIn()
 @api_view(["DELETE"])
-def deleteUser(request):
+def deleteUser(request:Request):
     """
     Deletes a user from the database and auth0.
 

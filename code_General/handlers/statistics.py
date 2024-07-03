@@ -16,6 +16,7 @@ from functools import reduce
 
 from rest_framework import status, serializers
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
@@ -69,7 +70,7 @@ async def getNumOfLoggedInUsers(activeSessions):
     },
 )
 @api_view(["GET"])
-def getNumberOfUsers(request):
+def getNumberOfUsers(request:Request):
     """
     Return number of currently logged in users and 
     number of users that have an active session 

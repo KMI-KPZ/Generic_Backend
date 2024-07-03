@@ -13,6 +13,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework.decorators import api_view
 from rest_framework import status
 
@@ -33,7 +34,7 @@ from drf_spectacular.utils import extend_schema
 )
 @csrf_exempt # ONLY FOR TESTING!!!!
 @api_view(['GET'])
-def testResponse(request):
+def testResponse(request:Request):
     """
     Tests whether request and response scheme works.
 
@@ -62,7 +63,7 @@ def testResponse(request):
 )
 @ensure_csrf_cookie
 @api_view(['GET'])
-def testResponseCsrf(request):
+def testResponseCsrf(request:Request):
     """
     Ensures that the csrf cookie is set correctly.
 
@@ -106,7 +107,7 @@ from ..connections.postgresql import pgProfiles
     },
 )
 @api_view(["GET"])
-def testCallToWebsocket(request):
+def testCallToWebsocket(request:Request):
     if "user" in request.session:
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserKeyWOSC(session=request.session), {
@@ -135,7 +136,7 @@ counter = Counter
     },
 )
 @api_view(["GET"])
-def dynamic(request):
+def dynamic(request:Request):
     """
     Dynamically generate buttons just for fun
     

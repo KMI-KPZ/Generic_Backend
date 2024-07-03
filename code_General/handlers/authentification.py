@@ -14,12 +14,6 @@ from django.conf import settings
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
-from ..utilities import basics, rights, signals
-from ..utilities.basics import ExceptionSerializer
-from ..connections.postgresql import pgProfiles
-from ..connections import auth0, redis
-from ..definitions import Logging, SessionContent, ProfileClasses, UserDescription
-
 from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
@@ -28,6 +22,11 @@ from rest_framework.request import Request
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import OpenApiParameter
 
+from ..utilities import basics, rights, signals
+from ..utilities.basics import ExceptionSerializer
+from ..connections.postgresql import pgProfiles
+from ..connections import auth0, redis
+from ..definitions import Logging, SessionContent, ProfileClasses, UserDescription
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -52,7 +51,7 @@ loggerError = logging.getLogger("errors")
     },
 )
 @api_view(["GET"])
-def isLoggedIn(request):
+def isLoggedIn(request:Request):
     """
     Check whether the token of a user has expired and a new login is necessary
 
@@ -92,7 +91,7 @@ def isLoggedIn(request):
     },
 )
 @api_view(["POST"])
-def setLocaleOfUser(request):
+def setLocaleOfUser(request:Request):
     """
     Get the preferred language of the user from the frontend
 
@@ -145,7 +144,7 @@ def setLocaleOfUser(request):
 )
 @api_view(["GET"])
 @basics.checkIfUserIsLoggedIn(json=True)
-def provideRightsFile(request):
+def provideRightsFile(request:Request):
     """
     Returns the json file containing the rights for the frontend
 
@@ -176,7 +175,7 @@ def provideRightsFile(request):
     },
 )
 @api_view(["GET"])
-def loginUser(request):
+def loginUser(request:Request):
     """
     Return a link for redirection to Auth0.
 
@@ -428,7 +427,7 @@ def setRoleAndPermissionsOfUser(request):
     },
 )
 @api_view(["POST" ,"GET"])
-def callbackLogin(request):
+def callbackLogin(request:Request):
     """
     TODO: Check if user really is part of an organization or not -> check if misclick at login, and set flags and instances here
     Get information back from Auth0.
@@ -527,7 +526,7 @@ def callbackLogin(request):
 )
 @basics.checkIfUserIsLoggedIn(json=True)
 @api_view(["GET"])
-def getRolesOfUser(request):
+def getRolesOfUser(request:Request):
     """
     Get Roles of User.
 
@@ -563,7 +562,7 @@ def getRolesOfUser(request):
 )
 @basics.checkIfUserIsLoggedIn(json=True)
 @api_view(["GET"])
-def getPermissionsOfUser(request):
+def getPermissionsOfUser(request:Request):
     """
     Get Permissions of User.
 
@@ -603,7 +602,7 @@ def getPermissionsOfUser(request):
 )
 @basics.checkIfUserIsLoggedIn(json=True)
 @api_view(["GET"])
-def getNewRoleAndPermissionsForUser(request):
+def getNewRoleAndPermissionsForUser(request:Request):
     """
     In case the role changed, get new role and new permissions from auth0
 
@@ -635,7 +634,7 @@ def getNewRoleAndPermissionsForUser(request):
     },
 )
 @api_view(["GET"])
-def logoutUser(request):
+def logoutUser(request:Request):
     """
     Delete session for this user and log out.
 

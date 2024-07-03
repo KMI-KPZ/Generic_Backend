@@ -20,6 +20,7 @@ from ..definitions import Logging
 
 from rest_framework import status, serializers
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
@@ -48,7 +49,7 @@ logger = logging.getLogger("logToFile")
 @basics.checkIfUserIsLoggedIn(json=True)
 @basics.checkIfUserIsAdmin(json=True)
 @api_view(["GET"])
-def getAllAsAdmin(request):
+def getAllAsAdmin(request:Request):
     """
     Drop all information (of the DB) about all users for admin view.
 
@@ -88,7 +89,7 @@ def getAllAsAdmin(request):
 @basics.checkIfUserIsLoggedIn()
 @basics.checkIfUserIsAdmin()
 @api_view(["PATCH"])
-def updateDetailsOfUserAsAdmin(request):
+def updateDetailsOfUserAsAdmin(request:Request):
     """
     Update user details.
 
@@ -135,7 +136,7 @@ def updateDetailsOfUserAsAdmin(request):
 @basics.checkIfUserIsLoggedIn()
 @api_view(["PATCH"])
 @basics.checkIfRightsAreSufficient()
-def updateDetailsOfOrganizationAsAdmin(request):
+def updateDetailsOfOrganizationAsAdmin(request:Request):
     """
     Update details of organization of that user.
 
@@ -180,7 +181,7 @@ def updateDetailsOfOrganizationAsAdmin(request):
 @basics.checkIfUserIsLoggedIn()
 @basics.checkIfUserIsAdmin()
 @api_view(["DELETE"])
-def deleteOrganizationAsAdmin(request):
+def deleteOrganizationAsAdmin(request:Request):
     """
     Deletes an entry in the database corresponding to orga id.
 
@@ -224,7 +225,7 @@ def deleteOrganizationAsAdmin(request):
 @basics.checkIfUserIsLoggedIn()
 @basics.checkIfUserIsAdmin()
 @api_view(["DELETE"])
-def deleteUserAsAdmin(request):
+def deleteUserAsAdmin(request:Request):
     """
     Deletes an entry in the database corresponding to user id.
 

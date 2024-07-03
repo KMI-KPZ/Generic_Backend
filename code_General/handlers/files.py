@@ -13,6 +13,12 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 
+from rest_framework import status, serializers
+from rest_framework.response import Response
+from rest_framework.request import Request
+from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema
+
 from ..utilities import crypto
 from ..definitions import Logging
 from ..connections.postgresql import pgProfiles
@@ -20,10 +26,6 @@ from ..utilities.basics import manualCheckifLoggedIn, manualCheckIfRightsAreSuff
 from ..utilities.files import createFileResponse
 from ..connections import s3
 
-from rest_framework import status, serializers
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from drf_spectacular.utils import extend_schema
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -48,7 +50,7 @@ loggerError = logging.getLogger("errors")
     },
 )
 @api_view(["POST"])
-def genericUploadFiles(request):
+def genericUploadFiles(request:Request):
     """
     Generic file upload
 
@@ -102,7 +104,7 @@ def genericUploadFiles(request):
     },
 )
 @api_view(["GET"])
-def genericDownloadFile(request, fileID):
+def genericDownloadFile(request:Request, fileID):
     """
     Send file to user from storage
 
@@ -157,7 +159,7 @@ def genericDownloadFile(request, fileID):
     },
 )
 @api_view(["GET"])
-def genericDownloadFilesAsZip(request):
+def genericDownloadFilesAsZip(request:Request):
     """
     Send files to user as zip
 
@@ -224,7 +226,7 @@ def genericDownloadFilesAsZip(request):
     },
 )
 @api_view(["DELETE"])
-def genericDeleteFile(request, fileID):
+def genericDeleteFile(request:Request, fileID):
     """
     Delete a file from storage
 

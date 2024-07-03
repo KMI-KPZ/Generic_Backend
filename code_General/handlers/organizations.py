@@ -10,18 +10,19 @@ import datetime
 import json, requests, logging
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
-from django.views.decorators.http import require_http_methods
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+
+from rest_framework import status, serializers
+from rest_framework.response import Response
+from rest_framework.request import Request
+from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema
+
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
 from ..utilities.basics import checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient, ExceptionSerializer
 from ..definitions import SessionContent, Logging
-
-from rest_framework import status, serializers
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from drf_spectacular.utils import extend_schema
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -129,7 +130,7 @@ def getOrganizationName(session, orgID, baseURL, baseHeader):
 @checkIfUserIsLoggedIn()
 @api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_getInviteLink(request):
+def organizations_getInviteLink(request:Request):
     """
     Ask Auth0 API to invite someone via e-mail and retrieve the link
 
@@ -192,7 +193,7 @@ def organizations_getInviteLink(request):
 @checkIfUserIsLoggedIn()
 @api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_addUser(request):
+def organizations_addUser(request:Request):
     """
     Ask Auth0 API to invite someone via e-mail
 
@@ -255,7 +256,7 @@ def organizations_addUser(request):
 @checkIfUserIsLoggedIn()
 @api_view(["GET"])
 @checkIfRightsAreSufficient(json=True)
-def organizations_fetchUsers(request):
+def organizations_fetchUsers(request:Request):
     """
     Ask Auth0 API for all users of an organization
 
@@ -323,7 +324,7 @@ def organizations_fetchUsers(request):
 @checkIfUserIsLoggedIn()
 @api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_deleteUser(request):
+def organizations_deleteUser(request:Request):
     """
     Ask Auth0 API to delete someone from an organization via their name
 
@@ -396,7 +397,7 @@ def organizations_deleteUser(request):
 @checkIfUserIsLoggedIn()
 @api_view(["POST"])
 @checkIfRightsAreSufficient(json=True)
-def organizations_createRole(request):
+def organizations_createRole(request:Request):
     """
     Ask Auth0 API to create a new role
 
@@ -464,7 +465,7 @@ def organizations_createRole(request):
 @checkIfUserIsLoggedIn()
 @api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_assignRole(request):
+def organizations_assignRole(request:Request):
     """
     Assign a role to a person
 
@@ -536,7 +537,7 @@ def organizations_assignRole(request):
 @checkIfUserIsLoggedIn()
 @api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_removeRole(request):
+def organizations_removeRole(request:Request):
     """
     Remove a role from a person
 
@@ -607,7 +608,7 @@ def organizations_removeRole(request):
 @checkIfUserIsLoggedIn()
 @api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_editRole(request):
+def organizations_editRole(request:Request):
     """
     Ask Auth0 API to edit a role
 
@@ -678,7 +679,7 @@ def organizations_editRole(request):
 @checkIfUserIsLoggedIn()
 @api_view(["GET"])
 @checkIfRightsAreSufficient(json=True)
-def organizations_getRoles(request):
+def organizations_getRoles(request:Request):
     """
     Fetch all roles for the organization
 
@@ -744,7 +745,7 @@ def organizations_getRoles(request):
 @checkIfUserIsLoggedIn()
 @api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_deleteRole(request):
+def organizations_deleteRole(request:Request):
     """
     Delete role via ID
 
@@ -804,7 +805,7 @@ def organizations_deleteRole(request):
 @checkIfUserIsLoggedIn()
 @api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_setPermissionsForRole(request):
+def organizations_setPermissionsForRole(request:Request):
     """
     Add Permissions to role
 
@@ -883,7 +884,7 @@ def organizations_setPermissionsForRole(request):
 @checkIfUserIsLoggedIn()
 @api_view(["GET"])
 @checkIfRightsAreSufficient(json=True)
-def organizations_getPermissions(request):
+def organizations_getPermissions(request:Request):
     """
     Get all Permissions
 
@@ -937,7 +938,7 @@ def organizations_getPermissions(request):
 @checkIfUserIsLoggedIn()
 @api_view(["POST"])
 @checkIfRightsAreSufficient(json=True)
-def organizations_getPermissionsForRole(request):
+def organizations_getPermissionsForRole(request:Request):
     """
     Get Permissions of role
 
@@ -991,7 +992,7 @@ def organizations_getPermissionsForRole(request):
     }
 )
 @api_view(["POST"])
-def organizations_createNewOrganization(request):
+def organizations_createNewOrganization(request:Request):
     """
     Create a new organization, create an admin role, invite a person via email as admin.
     All via Auth0s API.

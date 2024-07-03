@@ -12,11 +12,14 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
 from ..connections.mailer import MailingClass
 from django.conf import settings
-from ..utilities.basics import ExceptionSerializer
+
 from rest_framework import status, serializers
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
+
+from ..utilities.basics import ExceptionSerializer
 
 from logging import getLogger
 
@@ -40,7 +43,7 @@ logger = getLogger("django_debug")
     },
 )
 @api_view(["POST"])
-def sendContactForm(request):
+def sendContactForm(request:Request):
     """
     Send an email from the contact form from the front end
 
