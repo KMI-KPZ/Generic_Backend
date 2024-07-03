@@ -29,7 +29,6 @@ from drf_spectacular.utils import extend_schema
     responses={
         200: None,
         500: ExceptionSerializer,
-        
     },
 )
 @csrf_exempt # ONLY FOR TESTING!!!!
