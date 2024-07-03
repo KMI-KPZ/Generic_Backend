@@ -15,8 +15,7 @@ from django.conf import settings
 from ..utilities import basics
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
-from ..utilities.basics import handleTooManyRequestsError
-from ..utilities.basics import ExceptionSerializer
+from ..utilities.basics import handleTooManyRequestsError, ExceptionSerializer
 from ..definitions import SessionContent, ProfileClasses, UserDescription, OrganizationDescription, Logging
 
 from rest_framework import status, serializers
