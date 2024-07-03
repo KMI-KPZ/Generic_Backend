@@ -85,7 +85,7 @@ def getNumberOfUsers(request):
         numOfActiveSessions = len(activeSessions)
         numOfLoggedInUsers = asyncio.run(getNumOfLoggedInUsers(activeSessions))
         output = {"active": numOfActiveSessions, "loggedIn": numOfLoggedInUsers}
-        return JsonResponse(output)
+        return Response(output, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
