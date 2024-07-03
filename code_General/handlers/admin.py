@@ -10,7 +10,6 @@ Contains: Handling of admin view requests
 import datetime, json, logging
 
 from django.http import HttpResponse, JsonResponse
-from django.views.decorators.http import require_http_methods
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
