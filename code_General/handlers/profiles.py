@@ -239,6 +239,7 @@ class SReqNewAddress(serializers.Serializer):
 @extend_schema(
     summary="Create new address for user",
     description=" ",
+    tags=['GB - Profiles'],
     request=SReqNewAddress,
     responses={
         200: None,
@@ -319,6 +320,7 @@ class SReqUpdateContent(serializers.Serializer):
 @extend_schema(
     summary="Changes content of an address",
     description=" ",
+    tags=['GB - Profiles'],
     request=SReqUpdateContent,
     responses={
         200: None,
@@ -386,6 +388,7 @@ def updateAddress(request:Request):
 @extend_schema(
     summary="Remove an address for a user",
     description=" ",
+    tags=['GB - Profiles'],
     request=None,
     responses={
         200: None,
