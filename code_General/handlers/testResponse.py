@@ -162,7 +162,3 @@ def dynamic(request):
             dynamicObject["Buttons"].append(templateEdit)
         return Response(dynamicObject)
     
-@api_view(["GET"])
-def testrestframework(request):
-    test = {"testDictionary": "testworks"}
-    return Response(test)

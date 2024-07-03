@@ -11,6 +11,9 @@ from django.shortcuts import render
 from django.conf import settings
 from logging import getLogger
 
+from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema
+
 logger = getLogger("django")
 
 
@@ -87,6 +90,16 @@ def benchyPage(request):
 
 
 #######################################################
+@extend_schema(
+    summary=" Return Settings of django",
+    description=" ",
+    request=None,
+    tags=['test'],
+    responses={
+        200: None,
+    },
+)
+@api_view(["GET"])
 def getSettingsToken(request):
     """
     Return Settings of django
