@@ -20,7 +20,7 @@ from rest_framework.request import Request
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
-from ..utilities.basics import checkIfTokenValid, ExceptionSerializer
+from ..utilities.basics import checkIfTokenValid, ExceptionSerializerGeneric
 
 ##############################################
 async def checkSession(session):
@@ -66,7 +66,7 @@ async def getNumOfLoggedInUsers(activeSessions):
     tags=['Statistics'],
     responses={
         200: None,
-        500: ExceptionSerializer
+        500: ExceptionSerializerGeneric
     },
 )
 @api_view(["GET"])
@@ -91,9 +91,9 @@ def getNumberOfUsers(request:Request):
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 ##############################################
-def getIpAdress(request, *args, **kwargs):
+def getIpAddress(request, *args, **kwargs):
     """
-    Get the IP Adress of any illegit request and write it to a log file
+    Get the IP Address of any illegit request and write it to a log file
 
     :param request: GET request
     :type request: HTTP GET

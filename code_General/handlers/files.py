@@ -22,7 +22,7 @@ from drf_spectacular.utils import extend_schema
 from ..utilities import crypto
 from ..definitions import Logging
 from ..connections.postgresql import pgProfiles
-from ..utilities.basics import manualCheckifLoggedIn, manualCheckIfRightsAreSufficient, checkIfUserIsLoggedIn, checkIfRightsAreSufficient, ExceptionSerializer
+from ..utilities.basics import manualCheckifLoggedIn, manualCheckIfRightsAreSufficient, checkIfUserIsLoggedIn, checkIfRightsAreSufficient, ExceptionSerializerGeneric
 from ..utilities.files import createFileResponse
 from ..connections import s3
 
@@ -46,7 +46,7 @@ loggerError = logging.getLogger("errors")
     tags=['Files'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @api_view(["POST"])
@@ -78,8 +78,14 @@ def genericUploadFiles(request:Request):
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},uploaded,{Logging.Object.OBJECT},files,"+str(datetime.now()))
         return Response("Sucess", status=status.HTTP_200_OK)
     except (Exception) as error:
-        loggerError.error(f"Error while uploading files: {str(error)}")
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        message = f"Error in {genericUploadFiles.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #######################################################
 # TODO Transfer from local to remote
@@ -99,8 +105,8 @@ def genericUploadFiles(request:Request):
     tags=['Files'],
     responses={
         200: None,
-        404: ExceptionSerializer,
-        500: ExceptionSerializer,
+        404: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     },
 )
 @api_view(["GET"])
@@ -137,8 +143,14 @@ def genericDownloadFile(request:Request, fileID):
         return createFileResponse(content, filename=fileID)
 
     except (Exception) as error:
-        loggerError.error(f"Error while downloading file: {str(error)}")
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        message = f"Error in {genericDownloadFile.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # genericDownloadFilesAsZip
@@ -154,8 +166,8 @@ def genericDownloadFile(request:Request, fileID):
     tags=['Files'],
     responses={
         200: None,
-        404: ExceptionSerializer,
-        500: ExceptionSerializer,
+        404: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     },
 )
 @api_view(["GET"])
@@ -205,8 +217,14 @@ def genericDownloadFilesAsZip(request:Request):
         return createFileResponse(zipFile, filename=userName+".zip")
 
     except (Exception) as error:
-        loggerError.error(f"Error while downloading files as zip: {str(error)}")
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        message = f"Error in {genericDownloadFilesAsZip.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 #########################################################################
 # genericDeleteFile
@@ -222,7 +240,7 @@ def genericDownloadFilesAsZip(request:Request):
     tags=['Files'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @api_view(["DELETE"])
@@ -256,5 +274,11 @@ def genericDeleteFile(request:Request, fileID):
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.OBJECT},file {fileID}," + str(datetime.now()))        
         return Response("Success", status=status.HTTP_200_OK)
     except (Exception) as error:
-        loggerError.error(f"Error while deleting file: {str(error)}")
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        message = f"Error in {genericDeleteFile.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

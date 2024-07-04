@@ -13,8 +13,10 @@ from django.http import HttpResponse, JsonResponse
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
+from Generic_Backend.code_General.modelFiles.userModel import UserDescription
+
 from ..utilities import basics
-from  ..utilities.basics import ExceptionSerializer
+from  ..utilities.basics import ExceptionSerializerGeneric
 from ..connections.postgresql import pgProfiles
 from ..definitions import Logging
 
@@ -25,6 +27,7 @@ from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
 logger = logging.getLogger("logToFile")
+loggerError = logging.getLogger("errors")
 
 
 # Profiles #############################################################################################################
@@ -37,13 +40,13 @@ logger = logging.getLogger("logToFile")
 #########################################################################
 # Handler  
 @extend_schema(
-    summary="Generic file upload",
+    summary="Drop all information (of the DB) about all users for admin view.",
     description=" ",
     request=None,
     tags=['Admin'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn(json=True)
@@ -64,10 +67,16 @@ def getAllAsAdmin(request:Request):
         users, organizations = pgProfiles.ProfileManagementBase.getAll()
         outLists = { "user" : users, "organizations": organizations }
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.FETCHED},fetched,{Logging.Object.SYSTEM}, all users and orgas," + str(datetime.datetime.now()))
-        return JsonResponse(outLists, safe=False)
-    except Exception as e:
-        logger.error(f"In {getAllAsAdmin.cls.__name__} : {e}")
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(outLists)
+    except Exception as error:
+        message = f"Error in {getAllAsAdmin.cls.__name__} : {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # updateDetailsOfUserAsAdmin
@@ -83,7 +92,7 @@ def getAllAsAdmin(request:Request):
     tags=['Admin'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn()
@@ -99,22 +108,33 @@ def updateDetailsOfUserAsAdmin(request:Request):
     :rtype: HTTP status
 
     """
-    content = json.loads(request.body.decode("utf-8"))
-    assert "hashedID" in content.keys(), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: hashedID not in request"
-    userHashedID = content["hashedID"]
-    userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
-    assert isinstance(userID, str), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
-    assert userID != "", f"In {updateDetailsOfUserAsAdmin.cls.__name__}: non-empty userID expected"
+    try:
+        content = json.loads(request.body.decode("utf-8"))
+        assert "hashedID" in content.keys(), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: hashedID not in request"
+        userHashedID = content["hashedID"]
+        userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
+        assert isinstance(userID, str), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {updateDetailsOfUserAsAdmin.cls.__name__}: non-empty userID expected"
 
-    assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
-    userName = content["name"]
-    logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
-    flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, userID)
-    assert isinstance(flag, bool), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
-    if flag is True:
-        return Response("Success", status=status.HTTP_200_OK)
-    else:
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
+        userName = content["name"]
+        logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
+        flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, UserDescription.name, userID)
+        assert isinstance(flag, bool), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
+        if flag is True:
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
+            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    except (Exception) as error:
+        message = f"Error in {updateDetailsOfUserAsAdmin.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 #########################################################################
 # updateDetailsOfOrganizationAsAdmin
@@ -130,7 +150,7 @@ def updateDetailsOfUserAsAdmin(request:Request):
     tags=['Admin'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn()
@@ -146,20 +166,29 @@ def updateDetailsOfOrganizationAsAdmin(request:Request):
     :rtype: HTTP status
 
     """
-
-    content = json.loads(request.body.decode("utf-8"))["data"]["content"]
-    assert "hashedID" in content.keys(), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: hashedID not in request"
-    orgaHashedID = content["hashedID"]
-    orgaID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(orgaHashedID)
-    assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
-    orgaName = content["name"]
-    logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
-    flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content, orgaID)
-    assert isinstance(flag, bool), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
-    if flag is True:
-        return Response("Success", status=status.HTTP_200_OK)
-    else:
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    try:
+        content = json.loads(request.body.decode("utf-8"))["data"]["content"]
+        assert "hashedID" in content.keys(), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: hashedID not in request"
+        orgaHashedID = content["hashedID"]
+        orgaID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(orgaHashedID)
+        assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
+        orgaName = content["name"]
+        logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
+        flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content, orgaID)
+        assert isinstance(flag, bool), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
+        if flag is True:
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
+            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except (Exception) as error:
+        message = f"Error in {updateDetailsOfOrganizationAsAdmin.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # deleteOrganizationAsAdmin
@@ -175,7 +204,7 @@ def updateDetailsOfOrganizationAsAdmin(request:Request):
     tags=['Admin'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn()
@@ -191,19 +220,29 @@ def deleteOrganizationAsAdmin(request:Request):
     :rtype: HTTP status
 
     """
-    content = json.loads(request.body.decode("utf-8"))
-    assert "hashedID" in content.keys(), f"In {deleteOrganizationAsAdmin.cls.__name__}: hashedID not in request"
-    orgaID = content["hashedID"]
-    assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
-    orgaName = content["name"]
+    try:
+        content = json.loads(request.body.decode("utf-8"))
+        assert "hashedID" in content.keys(), f"In {deleteOrganizationAsAdmin.cls.__name__}: hashedID not in request"
+        orgaID = content["hashedID"]
+        assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
+        orgaName = content["name"]
 
-    flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
-    assert isinstance(flag, bool), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
-    if flag is True:
-        logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
-        return Response("Success", status=status.HTTP_200_OK)
-    else:
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
+        assert isinstance(flag, bool), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
+        if flag is True:
+            logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
+            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except (Exception) as error:
+        message = f"Error in {deleteOrganizationAsAdmin.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # deleteUserAsAdmin
@@ -219,7 +258,7 @@ def deleteOrganizationAsAdmin(request:Request):
     tags=['Admin'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn()
@@ -235,24 +274,35 @@ def deleteUserAsAdmin(request:Request):
     :rtype: HTTP status
 
     """
-    content = json.loads(request.body.decode("utf-8"))
-    assert "hashedID" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: hashedID not in request"
-    userHashedID = content["hashedID"]
-    userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
-    assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
-    userName = content["name"]
-    # websocket event for that user
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserKeyWOSC(uID=userID), {
-            "type": "sendMessageJSON",
-            "dict": {"eventType": "accountEvent", "context": "deleteUser"},
-        })
+    try:
 
-    flag = pgProfiles.ProfileManagementUser.deleteUser(request.session, userHashedID)
-    assert isinstance(flag, bool), f"In {deleteUserAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
-    if flag is True:
-        logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
-        return Response("Success", status=status.HTTP_200_OK)
-    else:
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        content = json.loads(request.body.decode("utf-8"))
+        assert "hashedID" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: hashedID not in request"
+        userHashedID = content["hashedID"]
+        userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
+        assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
+        userName = content["name"]
+        # websocket event for that user
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserKeyWOSC(uID=userID), {
+                "type": "sendMessageJSON",
+                "dict": {"eventType": "accountEvent", "context": "deleteUser"},
+            })
+
+        flag = pgProfiles.ProfileManagementUser.deleteUser(request.session, userHashedID)
+        assert isinstance(flag, bool), f"In {deleteUserAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
+        if flag is True:
+            logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
+            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except (Exception) as error:
+        message = f"Error in {deleteUserAsAdmin.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     

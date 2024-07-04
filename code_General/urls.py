@@ -22,63 +22,67 @@ from Benchy.BenchyMcMarkface import startFromDjango
 
 newPaths = { 
     "landingPage": ("",frontpage.landingPage),
-    "benchyPage": ("private/benchy/",frontpage.benchyPage),
-    "benchyMcMarkface": ("private/benchyMcMarkface/",startFromDjango),
+    "benchyPage": ("private/test/benchy/",frontpage.benchyPage),
+    "benchyMcMarkface": ("private/test/benchyMcMarkface/",startFromDjango),
     
-    "schema": ('api/schema/', SpectacularAPIView.as_view(api_version='v1')),
+    "schema": ('api/schema/', SpectacularAPIView.as_view(api_version='0.3')),
     "swagger-ui": ('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema')),
 
     "test": ('public/test/',testResponse.testResponse),
-    "csrfTest": ('public/testCsrf/',testResponse.testResponseCsrf),
-    "csrfCookie": ('public/csrfCookie/',testResponse.testResponseCsrf),
-    "dynamicTest": ('public/dynamic/',testResponse.dynamic),
+    "csrfTest": ('public/test/csrf/',testResponse.testResponseCsrf),
+    "dynamicTest": ('private/test/dynamic/',testResponse.dynamic),
     
-    "login" : ("public/login/",authentification.loginUser),
-    "logout": ("public/logout/",authentification.logoutUser),
-    "callbackLogin": ("public/callback/",authentification.callbackLogin),
-    "isLoggedIn": ("public/isLoggedIn/",authentification.isLoggedIn),
-    "getRoles": ("public/getRoles/",authentification.getRolesOfUser),
-    "getPermissions": ("public/getPermissions/",authentification.getPermissionsOfUser),
-    "getNewPermissions": ("public/getNewPermissions/",authentification.getNewRoleAndPermissionsForUser),
-    "getPermissionsFile": ("public/getPermissionMask/",authentification.provideRightsFile),
-    "setLocaleOfUser": ("public/setLocaleOfUser/", authentification.setLocaleOfUser),
+    "login" : ("public/auth/login/",authentification.loginUser),
+    "csrfCookie": ('public/auth/csrfCookie/',authentification.createCsrfCookie),
+    "loginAsTestUser": ("private/auth/login/testUser/", authentification.loginAsTestUser),
+    "logout": ("public/auth/logout/",authentification.logoutUser),
+    "callbackLogin": ("public/auth/callback/",authentification.callbackLogin),
+    "isLoggedIn": ("public/auth/isLoggedIn/",authentification.isLoggedIn),
+    "getRoles": ("public/auth/get/roles/",authentification.getRolesOfUser),
+    "getPermissions": ("public/auth/get/permissions/",authentification.getPermissionsOfUser),
+    "getNewPermissions": ("public/auth/get/newPermissions/",authentification.getNewRoleAndPermissionsForUser),
+    "getPermissionsFile": ("public/auth/get/permissionMask/",authentification.provideRightsFile),
+    "setLocaleOfUser": ("public/auth/set/localeOfUser/", authentification.setLocaleOfUser),
 
-    "deleteUser": ("public/profileDeleteUser/",profiles.deleteUser),
-    "addUser": ("private/profile_addUser/",profiles.addUserTest),
-    "addOrga": ("private/profile_addOrga/",profiles.addOrganizationTest),
-    "getUser": ("public/getUser/",profiles.getUserDetails),
-    "getOrganization": ("public/getOrganization/",profiles.getOrganizationDetails),
-    "updateDetails": ("public/updateUserDetails/",profiles.updateDetails),
-    "updateDetailsOfOrga": ("public/updateOrganizationDetails/",profiles.updateDetailsOfOrganization),
-    "deleteOrganization": ("public/deleteOrganization/",profiles.deleteOrganization),
+    "deleteUser": ("public/profile/user/delete/",profiles.deleteUser),
+    #"addUser": ("private/profile_addUser/",profiles.addUserTest),
+    #"addOrga": ("private/profile_addOrga/",profiles.addOrganizationTest),
+    "getUser": ("public/profile/user/get/",profiles.getUserDetails),
+    "updateDetails": ("public/profile/user/update/",profiles.updateDetails),
+    "createAddress": ("public/profile/address/create/", profiles.createAddress),
+    "updateAddress": ("public/profile/address/update/", profiles.updateAddress),
+    "deleteAddress": ("public/profile/address/delete/<str:addressID>/", profiles.deleteAddress),
+    "getOrganization": ("public/profile/organization/get/",profiles.getOrganizationDetails),
+    "updateDetailsOfOrga": ("public/profile/organization/update/",profiles.updateDetailsOfOrganization),
+    "deleteOrganization": ("public/profile/organization/delete/",profiles.deleteOrganization),
 
-    "genericUploadFiles": ("private/genericUploadFiles/",files.genericUploadFiles),
-    "genericDownloadFile": ("private/genericDownloadFile/",files.genericDownloadFile),
-    "genericDownloadFilesAsZip": ("private/genericDownloadFilesAsZip/",files.genericDownloadFilesAsZip),
-    "genericDeleteFile": ("private/genericDeleteFile/",files.genericDeleteFile),
+    "genericUploadFiles": ("private/generic/files/upload/",files.genericUploadFiles),
+    "genericDownloadFile": ("private/generic/files/download/",files.genericDownloadFile),
+    "genericDownloadFilesAsZip": ("private/generic/files/download/asZip/",files.genericDownloadFilesAsZip),
+    "genericDeleteFile": ("private/generic/files/delete/",files.genericDeleteFile),
 
-    "adminGetAll": ("public/admin/getAll/",admin.getAllAsAdmin),
-    "adminDelete": ("public/admin/deleteUser/",admin.deleteUserAsAdmin),
-    "adminDeleteOrga": ("public/admin/deleteOrganization/",admin.deleteOrganizationAsAdmin),
-    "adminUpdateUser": ("public/admin/updateUser/",admin.updateDetailsOfUserAsAdmin),
-    "adminUpdateOrga": ("public/admin/updateOrganization/",admin.updateDetailsOfOrganizationAsAdmin),
+    "adminGetAll": ("public/admin/all/get/",admin.getAllAsAdmin),
+    "adminDelete": ("public/admin/user/delete/",admin.deleteUserAsAdmin),
+    "adminDeleteOrga": ("public/admin/organization/delete/",admin.deleteOrganizationAsAdmin),
+    "adminUpdateUser": ("public/admin/user/update",admin.updateDetailsOfUserAsAdmin),
+    "adminUpdateOrga": ("public/admin/organization/update/",admin.updateDetailsOfOrganizationAsAdmin),
 
-    "organizations_addUser": ("public/organizations/addUser/",organizations.organizations_addUser),
-    "organizations_getInviteLink": ("public/organizations/getInviteLink/",organizations.organizations_getInviteLink),
-    "organizations_fetchUsers": ("public/organizations/fetchUsers/",organizations.organizations_fetchUsers),
-    "organizations_deleteUser": ("public/organizations/deleteUser/",organizations.organizations_deleteUser),
-    "organizations_createRole": ("public/organizations/createRole/",organizations.organizations_createRole),
-    "organizations_getRoles": ("public/organizations/getRoles/",organizations.organizations_getRoles),
-    "organizations_assignRole": ("public/organizations/assignRole/",organizations.organizations_assignRole),
-    "organizations_removeRole": ("public/organizations/removeRole/",organizations.organizations_removeRole),
-    "organizations_editRole": ("public/organizations/editRole/",organizations.organizations_editRole),
-    "organizations_deleteRole": ("public/organizations/deleteRole/",organizations.organizations_deleteRole),
-    "organizations_getPermissions": ("public/organizations/getPermissions/",organizations.organizations_getPermissions),
-    "organizations_getPermissionsForRole": ("public/organizations/getPermissionsForRole/",organizations.organizations_getPermissionsForRole),
-    "organizations_setPermissionsForRole": ("public/organizations/setPermissionsForRole/",organizations.organizations_setPermissionsForRole),
-    "organizations_createOrganization": ("public/organizations/createNew/",organizations.organizations_createNewOrganization),
+    "organizations_addUser": ("public/organizations/users/add/",organizations.organizations_addUser),
+    "organizations_getInviteLink": ("public/organizations/users/inviteLink/",organizations.organizations_getInviteLink),
+    "organizations_fetchUsers": ("public/organizations/users/get/",organizations.organizations_fetchUsers),
+    "organizations_deleteUser": ("public/organizations/users/delete/",organizations.organizations_deleteUser),
+    "organizations_createRole": ("public/organizations/roles/create/",organizations.organizations_createRole),
+    "organizations_getRoles": ("public/organizations/roles/get/",organizations.organizations_getRoles),
+    "organizations_assignRole": ("public/organizations/roles/assign/",organizations.organizations_assignRole),
+    "organizations_removeRole": ("public/organizations/roles/remove/",organizations.organizations_removeRole),
+    "organizations_editRole": ("public/organizations/roles/edit/",organizations.organizations_editRole),
+    "organizations_deleteRole": ("public/organizations/roles/delete/",organizations.organizations_deleteRole),
+    "organizations_getPermissions": ("public/organizations/permissions/get/",organizations.organizations_getPermissions),
+    "organizations_getPermissionsForRole": ("public/organizations/permissions/role/get/",organizations.organizations_getPermissionsForRole),
+    "organizations_setPermissionsForRole": ("public/organizations/permissions/role/set/",organizations.organizations_setPermissionsForRole),
+    "organizations_createOrganization": ("public/organizations/create/",organizations.organizations_createNewOrganization),
 
-    "statistics": ("public/getStatistics/",statistics.getNumberOfUsers),
+    "statistics": ("public/statistics/get/",statistics.getNumberOfUsers),
 
     "contactForm": ("public/contact/",email.sendContactForm),
 }
@@ -93,7 +97,7 @@ urlpatterns.extend([
 ])
 
 if settings.DEBUG:
-    urlpatterns.append(path('private/settings', frontpage.getSettingsToken, name='getSettingsToken'))
+    urlpatterns.append(path('private/settings/', frontpage.getSettingsToken, name='getSettingsToken'))
 
 # add paths
 for entry in newPaths:
@@ -104,7 +108,7 @@ for entry in newPaths:
     urlpatterns.append(path(pathItself, handler, name=key))
 
 # any illegitimate requests are given a fu and their ip will be logged. Works only if DEBUG=False
-handler404 = statistics.getIpAdress
+handler404 = statistics.getIpAddress
 
 ##############################################################################
 ### ASGI

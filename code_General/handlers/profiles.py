@@ -20,11 +20,11 @@ from rest_framework.request import Request
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import OpenApiParameter
 
-from ..utilities import basics
+from ..utilities import basics, crypto
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
-from ..utilities.basics import handleTooManyRequestsError, ExceptionSerializer
-from ..definitions import SessionContent, ProfileClasses, UserDescription, OrganizationDescription, Logging
+from ..utilities.basics import handleTooManyRequestsError, ExceptionSerializerGeneric
+from ..definitions import SessionContent, ProfileClasses, UserDescription, OrganizationDescription, Logging, UserDetails
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -44,7 +44,7 @@ loggerError = logging.getLogger("errors")
     tags=['Profiles'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn(json=True)
@@ -76,7 +76,7 @@ def addUserTest(request:Request):
         message = f"Error in addUserTest : {str(error)}"
         exception = str(error)
         loggerError.error(message)
-        exceptionSerializer = ExceptionSerializer(data={"message": message, "exception": exception})
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
         if exceptionSerializer.is_valid():
             return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
@@ -95,7 +95,7 @@ def addUserTest(request:Request):
     tags=['Profiles'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn(json=True)
@@ -150,7 +150,7 @@ def addOrganizationTest(request:Request):
     tags=['Profiles'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn(json=True)
@@ -187,7 +187,7 @@ def getOrganizationDetails(request:Request):
     tags=['Profiles'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn()
@@ -203,13 +203,24 @@ def updateDetailsOfOrganization(request:Request):
     :rtype: HTTP status
 
     """
-    content = json.loads(request.body.decode("utf-8"))["data"]["content"]
-    logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},details of {pgProfiles.ProfileManagementOrganization.getOrganization(request.session)[OrganizationDescription.name]}," + str(datetime.datetime.now()))
-    flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content)
-    if flag is True:
-        return Response("Success", status=status.HTTP_200_OK)
-    else:
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    try:
+        content = json.loads(request.body.decode("utf-8"))["data"]["content"]
+        logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},details of {pgProfiles.ProfileManagementOrganization.getOrganization(request.session)[OrganizationDescription.name]}," + str(datetime.datetime.now()))
+        flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content)
+        if flag is True:
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
+            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except (Exception) as error:
+        message = f"Error in {updateDetailsOfOrganization.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 #########################################################################
 # deleteOrganization
@@ -225,7 +236,7 @@ def updateDetailsOfOrganization(request:Request):
     tags=['Profiles'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn()
@@ -241,23 +252,33 @@ def deleteOrganization(request:Request):
     :rtype: HTTP status
 
     """
-    orgaID = pgProfiles.ProfileManagementOrganization.getOrganizationID(request.session)
-    orgaName = pgProfiles.ProfileManagementOrganization.getOrganizationName(pgProfiles.ProfileManagementOrganization.getOrganizationHashID(request.session))
-    flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
-    if flag is True:
-        baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        headers = {
-            'authorization': f'Bearer {auth0.apiToken.accessToken}'
-        }
-        response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers) )
-        if isinstance(response, Exception):
-            loggerError.error(f"Error deleting organization: {str(response)}")
+    try:
+        orgaID = pgProfiles.ProfileManagementOrganization.getOrganizationID(request.session)
+        orgaName = pgProfiles.ProfileManagementOrganization.getOrganizationName(pgProfiles.ProfileManagementOrganization.getOrganizationHashID(request.session))
+        flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
+        if flag is True:
+            baseURL = f"https://{settings.AUTH0_DOMAIN}"
+            headers = {
+                'authorization': f'Bearer {auth0.apiToken.accessToken}'
+            }
+            response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers) )
+            if isinstance(response, Exception):
+                loggerError.error(f"Error deleting organization: {str(response)}")
+                return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+            logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
             return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
-        return Response("Success", status=status.HTTP_200_OK)
-    else:
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as error:
+        message = f"Error in {deleteOrganization.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # getUserDetails
@@ -273,7 +294,7 @@ def deleteOrganization(request:Request):
     tags=['Profiles'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn(json=True)
@@ -301,11 +322,26 @@ def getUserDetails(request:Request):
                 if elem == currentOrganizationOfUser[OrganizationDescription.hashedID]:
                     userObj["organization"] = elem
                     break
-    except Exception as e:
-        loggerError.error(f"Error getting user details: {str(e)}")
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            del userObj[UserDescription.organizations] # users who logged in as users don't need the organization info leaked
+        
+        # parse addresses 
+        if basics.checkIfNestedKeyExists(userObj, UserDescription.details, UserDetails.addresses):
+            userObj[UserDescription.details][UserDetails.addresses] = list(userObj[UserDescription.details][UserDetails.addresses].values())
+        
+        return Response(userObj, status=status.HTTP_200_OK)
     
-    return JsonResponse(userObj)
+    except Exception as error:
+        message = f"Error in {getUserDetails.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    
 
 #########################################################################
 # updateDetails
@@ -321,7 +357,7 @@ def getUserDetails(request:Request):
     tags=['Profiles'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn()
@@ -336,15 +372,233 @@ def updateDetails(request:Request):
     :rtype: HTTP status
 
     """
-
-    content = json.loads(request.body.decode("utf-8"))
-    logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.SELF},details," + str(datetime.datetime.now()))
-    flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content)
-    if flag is True:
-        return Response("Success", status=status.HTTP_200_OK)
-    else:
-        return HttpResponse("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    try:
+        content = json.loads(request.body.decode("utf-8"))
+        logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.SELF},details," + str(datetime.datetime.now()))
+        flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, UserDescription.name)
+        if flag is True:
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
+            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except (Exception) as error:
+        message = f"Error in {updateDetails.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+    
+##############################################
+#######################################################
+class SReqNewAddress(serializers.Serializer):
+    standard = serializers.BooleanField()
+    country = serializers.CharField(max_length=200)
+    city = serializers.CharField(max_length=200)
+    zipcode = serializers.CharField(max_length=200)
+    houseNumber = serializers.IntegerField()
+    street = serializers.CharField(max_length=200)
+    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
+    lastName = serializers.CharField(max_length=200)
+    firstName = serializers.CharField(max_length=200)
+#######################################################
+@extend_schema(
+    summary="Create new address for user",
+    description=" ",
+    tags=['Profiles'],
+    request=SReqNewAddress,
+    responses={
+        200: None,
+        400: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
+    }
+)
+@basics.checkIfUserIsLoggedIn()
+@require_http_methods(["POST"])
+@api_view(["POST"])
+@basics.checkVersion(0.3)
+def createAddress(request:Request):
+    """
+    Create new address for user
+
+    :param request: POST Request
+    :type request: HTTP POST
+    :return: Success or not
+    :rtype: Response
+
+    """
+    try:
+        inSerializer = SReqNewAddress(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Creating address failed in {createAddress.cls.__name__}"
+            exception = "Creation of address failed"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        address = inSerializer.data
+        setToStandardAddress = address["standard"] # if the new address will be the standard address
+        userObj = pgProfiles.ProfileManagementBase.getUser(request.session) #deepcopy not necessary as changes to this dict are not saved
+        newContentInDB = {UserDetails.addresses: {}}
+        if UserDetails.addresses in userObj[UserDescription.details]: # add old content
+            newContentInDB[UserDetails.addresses] = userObj[UserDescription.details][UserDetails.addresses]
+            if setToStandardAddress:
+                for key in newContentInDB[UserDetails.addresses]:
+                    newContentInDB[UserDetails.addresses][key]["standard"] = False
+
+        # add new content
+        idForNewAddress = crypto.generateURLFriendlyRandomString()
+        address["id"] = idForNewAddress
+        newContentInDB[UserDetails.addresses][idForNewAddress] = address
+        logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.SELF},details," + str(datetime.datetime.now()))
+        flag = pgProfiles.ProfileManagementUser.updateContent(request.session, newContentInDB, UserDescription.details)
+        if flag is True:
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
+            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    except (Exception) as error:
+        message = f"Error in {createAddress.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+#######################################################
+class SReqUpdateContent(serializers.Serializer):
+    id = serializers.CharField(max_length=200)
+    firstName = serializers.CharField(max_length=200)
+    lastName = serializers.CharField(max_length=200)
+    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
+    street = serializers.CharField(max_length=200)
+    houseNumber = serializers.IntegerField()
+    zipcode = serializers.CharField(max_length=200)
+    city = serializers.CharField(max_length=200)
+    country = serializers.CharField(max_length=200)
+    standard = serializers.BooleanField()
+#######################################################
+@extend_schema(
+    summary="Changes content of an address",
+    description=" ",
+    tags=['Profiles'],
+    request=SReqUpdateContent,
+    responses={
+        200: None,
+        400: ExceptionSerializerGeneric,
+        404: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
+    }
+)
+@basics.checkIfUserIsLoggedIn()
+@require_http_methods(["PATCH"])
+@api_view(["PATCH"])
+@basics.checkVersion(0.3)
+def updateAddress(request:Request):
+    """
+    Changes content of an address
+
+    :param request: PATCH Request
+    :type request: HTTP PATCH
+    :return: Success or not
+    :rtype: Response
+
+    """
+    try:
+        inSerializer = SReqUpdateContent(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Updating address failed in {updateAddress.cls.__name__}"
+            exception = "Updating the address failed"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        address = inSerializer.data
+        setToStandardAddress = address["standard"] # if the new one will be the new standard address or not
+        existingAddresses = pgProfiles.ProfileManagementBase.getUser(request.session)[UserDescription.details][UserDetails.addresses]
+    
+        if address["id"] in existingAddresses:
+            if setToStandardAddress: # set all others to False for not being the standard address anymore
+                for key in existingAddresses:
+                    existingAddresses[key]["standard"] = False
+
+            existingAddresses[address["id"]] = address
+            flag = pgProfiles.ProfileManagementUser.updateContent(request.session, {UserDetails.addresses: existingAddresses}, UserDescription.details)
+            if flag is True:
+                return Response("Success", status=status.HTTP_200_OK)
+            else:
+                return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response("Failed", status=status.HTTP_404_NOT_FOUND)
+
+    except (Exception) as error:
+        message = f"Error in {updateAddress.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+#######################################################
+@extend_schema(
+    summary="Remove an address for a user",
+    description=" ",
+    tags=['Profiles'],
+    request=None,
+    responses={
+        200: None,
+        401: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
+    }
+)
+@basics.checkIfUserIsLoggedIn()
+@require_http_methods(["DELETE"])
+@api_view(["DELETE"])
+@basics.checkVersion(0.3)
+def deleteAddress(request:Request,addressID:str):
+    """
+    Remove an address for a user
+
+    :param request: DELETE Request
+    :type request: HTTP DELETE
+    :return: Success or not
+    :rtype: Response
+
+    """
+    try:
+        existingAddresses = pgProfiles.ProfileManagementBase.getUser(request.session)[UserDescription.details][UserDetails.addresses]
+        if addressID in existingAddresses:
+            del existingAddresses[addressID]
+            flag = pgProfiles.ProfileManagementUser.updateContent(request.session, {UserDetails.addresses: existingAddresses}, UserDescription.details)
+            if flag is True:
+                return Response("Success", status=status.HTTP_200_OK)
+            else:
+                return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response("Failed", status=status.HTTP_404_NOT_FOUND)
+        
+    except (Exception) as error:
+        message = f"Error in {deleteAddress.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 #########################################################################
 # deleteUser
 #"deleteUser": ("public/profileDeleteUser/",profiles.deleteUser)
@@ -359,7 +613,7 @@ def updateDetails(request:Request):
     tags=['Profiles'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @basics.checkIfUserIsLoggedIn()
@@ -374,23 +628,33 @@ def deleteUser(request:Request):
     :rtype: HTTP status
 
     """
-    # delete in database
-    userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
-    userID = pgProfiles.ProfileManagementBase.getUserKey(request.session)
-    flag = pgProfiles.ProfileManagementUser.deleteUser(request.session)
-    if flag is True:
-        baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        headers = {
-            'authorization': f'Bearer {auth0.apiToken.accessToken}',
-            "customScopeKey": "permissions", 
-            "customUserKey": "auth"
-        }
-        response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', headers=headers) )
-        if isinstance(response, Exception):
-            loggerError.error(f"Error deleting user: {str(response)}")
-            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    try:
+        # delete in database
+        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        userID = pgProfiles.ProfileManagementBase.getUserKey(request.session)
+        flag = pgProfiles.ProfileManagementUser.deleteUser(request.session)
+        if flag is True:
+            baseURL = f"https://{settings.AUTH0_DOMAIN}"
+            headers = {
+                'authorization': f'Bearer {auth0.apiToken.accessToken}',
+                "customScopeKey": "permissions", 
+                "customUserKey": "auth"
+            }
+            response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', headers=headers) )
+            if isinstance(response, Exception):
+                loggerError.error(f"Error deleting user: {str(response)}")
+                return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.SELF},," + str(datetime.datetime.now()))
-        return Response("Success", status=status.HTTP_200_OK)
-    else:
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.SELF},," + str(datetime.datetime.now()))
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
+            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except (Exception) as error:
+        message = f"Error in {deleteUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

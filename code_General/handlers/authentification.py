@@ -10,9 +10,10 @@ import json, datetime, requests, logging, re
 from urllib.parse import quote_plus, urlencode
 
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.conf import settings
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 
 from rest_framework import status, serializers
 from rest_framework.response import Response
@@ -20,10 +21,10 @@ from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from drf_spectacular.utils import extend_schema
-from drf_spectacular.utils import OpenApiParameter
+from drf_spectacular.utils import OpenApiParameter, inline_serializer
 
 from ..utilities import basics, rights, signals
-from ..utilities.basics import ExceptionSerializer
+from ..utilities.basics import ExceptionSerializerGeneric
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0, redis
 from ..definitions import Logging, SessionContent, ProfileClasses, UserDescription
@@ -32,6 +33,45 @@ logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
 
 #######################################################
+
+###################################################
+# CSRF protection
+#@csrf_protect
+@extend_schema(
+    summary="Ensures that the csrf cookie is set correctly.",
+    description=" ",
+    request=None,
+    tags=['Authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric,  
+    },
+)
+@ensure_csrf_cookie
+@api_view(['GET'])
+def createCsrfCookie(request:Request):
+    """
+    Ensures that the csrf cookie is set correctly.
+
+    :param request: GET request
+    :type request: HTTP GET
+    :return: Response with cookie
+    :rtype: HTTP Response
+
+    """
+    try:
+        response = Response("CSRF cookie set", status=status.HTTP_200_OK)
+        return response
+    except (Exception) as error:
+        message = f"Error in {createCsrfCookie.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 
 #########################################################################
 # isLoggedIn
@@ -47,7 +87,7 @@ loggerError = logging.getLogger("errors")
     tags=['Authentification'],
     responses={
         200: None,
-        500: ExceptionSerializer
+        500: ExceptionSerializerGeneric
     },
 )
 @api_view(["GET"])
@@ -87,7 +127,7 @@ def isLoggedIn(request:Request):
     tags=['Authentification'],
     responses={
         200: None,
-        500: ExceptionSerializer
+        500: ExceptionSerializerGeneric
     },
 )
 @api_view(["POST"])
@@ -119,7 +159,7 @@ def setLocaleOfUser(request:Request):
         message = f"Error in {setLocaleOfUser.cls.__name__}: {str(error)}"
         exception = str(error)
         loggerError.error(message)
-        exceptionSerializer = ExceptionSerializer(data={"message": message, "exception": exception})
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
         if exceptionSerializer.is_valid():
             return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
@@ -139,7 +179,7 @@ def setLocaleOfUser(request:Request):
     tags=['Authentification'],
     responses={
         200: None,
-        500: ExceptionSerializer
+        500: ExceptionSerializerGeneric
     },
 )
 @api_view(["GET"])
@@ -155,7 +195,51 @@ def provideRightsFile(request:Request):
 
     """
     
-    return JsonResponse(rights.rightsManagement.getFile(), safe=False)
+    return Response(rights.rightsManagement.getFile())
+
+
+#######################################################
+@extend_schema(
+    summary="Use fakeUser, fakeOrganization or fakeAdmin to log in from the swagger interface",
+    description=" ",
+    tags=["Authentification"],
+    request=None,
+    parameters=[OpenApiParameter(
+        name='Usertype',
+        type={'type': 'string'},
+        location=OpenApiParameter.HEADER,
+    )],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric
+    }
+)
+@api_view(["GET"])
+@basics.checkVersion(0.3)
+def loginAsTestUser(request:Request):
+    """
+    Use fakeUser, fakeOrganization or fakeAdmin to log in from the swagger interface.
+
+    :param request: GET Request
+    :type request: HTTP GET
+    :return: Nothing
+    :rtype: None
+
+    """
+    try:
+        loginUser(request._request)
+        callbackLogin(request._request)
+        return Response("Success", status=status.HTTP_200_OK)
+
+    except (Exception) as error:
+        message = f"Error in {loginAsTestUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # loginUser
@@ -171,7 +255,7 @@ def provideRightsFile(request:Request):
     tags=['Authentification'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @api_view(["GET"])
@@ -309,7 +393,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
         if isinstance(response, Exception):
             raise response
         roles = response
-        assert isinstance(roles, dict), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected roles to be of type dictionary, instead got: {type(roles)}"
+        assert isinstance(roles, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected roles to be of type list, instead got: {type(roles)}"
         
         for entry in roles:
             response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
@@ -317,7 +401,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
                 raise response
             else:
                 permissions = response
-                assert isinstance(permissions, dict), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected permissions to be of type dictionary, instead got: {type(permissions)}"
+                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -422,8 +506,8 @@ def setRoleAndPermissionsOfUser(request):
     tags=['Authentification'],
     responses={
         200: None,
-        401: ExceptionSerializer,
-        500: ExceptionSerializer
+        401: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
     },
 )
 @api_view(["POST" ,"GET"])
@@ -498,7 +582,7 @@ def callbackLogin(request:Request):
             raise userObj
         
         # communicate that user is logged in to other apps
-        signals.signalDispatcher.userLoggedIn.send(None,request=request)
+        signals.signalDispatcher.userLoggedIn.send(None,request=request._request)
 
         logger.info(f"{Logging.Subject.USER},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.FETCHED},login,{Logging.Object.SELF},," + str(datetime.datetime.now()))
         return HttpResponseRedirect(request.session[SessionContent.PATH_AFTER_LOGIN])
@@ -521,7 +605,7 @@ def callbackLogin(request:Request):
     tags=['Authentification'],
     responses={
         200: None,
-        400: ExceptionSerializer
+        400: ExceptionSerializerGeneric
     },
 )
 @basics.checkIfUserIsLoggedIn(json=True)
@@ -535,13 +619,24 @@ def getRolesOfUser(request:Request):
     :return: List of roles
     :rtype: JSONResponse
     """
-    if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
-        if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
-            return JsonResponse(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"], safe=False)
+    try:
+    
+        if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
+            if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
+                return Response(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"])
+            else:
+                return Response([], status=status.HTTP_200_OK)
         else:
-            return Response([], safe=False, status=status.HTTP_200_OK)
-    else:
-        return Response([], safe=False, status=status.HTTP_400_BAD_REQUEST)
+            return Response([], status=status.HTTP_400_BAD_REQUEST)
+    except (Exception) as error:
+        message = f"Error in {getRolesOfUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # getPermissionsOfUser
@@ -557,7 +652,8 @@ def getRolesOfUser(request:Request):
     tags=['Authentification'],
     responses={
         200: None,
-        400: ExceptionSerializer
+        400: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
     },
 )
 @basics.checkIfUserIsLoggedIn(json=True)
@@ -571,17 +667,28 @@ def getPermissionsOfUser(request:Request):
     :return: List of roles
     :rtype: JSONResponse
     """
-    if SessionContent.USER_PERMISSIONS in request.session:
-        if len(request.session[SessionContent.USER_PERMISSIONS]) != 0:
-            outArray = []
-            for entry in request.session[SessionContent.USER_PERMISSIONS]:
-                context, permission = entry.split(":")
-                outArray.append({"context": context, "permission": permission})
-            return Response(outArray, status=status.HTTP_200_OK)
+    try:
+        if SessionContent.USER_PERMISSIONS in request.session:
+            if len(request.session[SessionContent.USER_PERMISSIONS]) != 0:
+                outArray = []
+                for entry in request.session[SessionContent.USER_PERMISSIONS]:
+                    context, permission = entry.split(":")
+                    outArray.append({"context": context, "permission": permission})
+                return Response(outArray, status=status.HTTP_200_OK)
+            else:
+                return Response([], status=status.HTTP_200_OK)
         else:
-            return Response([], status=status.HTTP_200_OK)
-    else:
-        return Response([], status=status.HTTP_400_BAD_REQUEST)
+            return Response([], status=status.HTTP_400_BAD_REQUEST)
+
+    except (Exception) as error:
+        message = f"Error in {getPermissionsOfUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # getNewRoleAndPermissionsForUser
@@ -597,7 +704,7 @@ def getPermissionsOfUser(request:Request):
     tags=['Authentification'],
     responses={
         200: None,
-        500: ExceptionSerializer
+        500: ExceptionSerializerGeneric
     },
 )
 @basics.checkIfUserIsLoggedIn(json=True)
@@ -611,10 +718,21 @@ def getNewRoleAndPermissionsForUser(request:Request):
     :return: New Permissions for User
     :rtype: JSONResponse
     """
-    retVal = setRoleAndPermissionsOfUser(request)
-    if isinstance(retVal, Exception):
-        return Response(retVal, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    return getPermissionsOfUser(request)    
+    try:
+        retVal = setRoleAndPermissionsOfUser(request)
+        if isinstance(retVal, Exception):
+            return Response(retVal, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return getPermissionsOfUser(request)  
+    except (Exception) as error:
+        message = f"Error in {getNewRoleAndPermissionsForUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+      
 
 #########################################################################
 # logoutUser
@@ -630,7 +748,7 @@ def getNewRoleAndPermissionsForUser(request:Request):
     tags=['Authentification'],
     responses={
         200: None,
-        500: ExceptionSerializer
+        500: ExceptionSerializerGeneric
     },
 )
 @api_view(["GET"])
@@ -644,45 +762,55 @@ def logoutUser(request:Request):
     :rtype: HTTP URL
 
     """
-    if not basics.manualCheckifLoggedIn(request.session):
-        return HttpResponse("Not logged in!")
-    mock = False
-    if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-        mock = True
+    try:
+        if not basics.manualCheckifLoggedIn(request.session):
+            return HttpResponse("Not logged in!")
+        mock = False
+        if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
+            mock = True
 
-    # Send signal to other apps that logout is occuring
-    signals.signalDispatcher.userLoggedOut.send(None,request=request)
+        # Send signal to other apps that logout is occuring
+        signals.signalDispatcher.userLoggedOut.send(None,request=request._request)
 
-    user = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].getUser(request.session)
-    assert isinstance(user, dict), f"In {logoutUser.cls.__name__}: expected user to be of type dictionary, instead got: {type(user)}"
-    if user != {}:
-        pgProfiles.ProfileManagementBase.setLoginTime(user[UserDescription.hashedID])
-        logger.info(f"{Logging.Subject.USER},{user['name']},{Logging.Predicate.PREDICATE},logout,{Logging.Object.SELF},," + str(datetime.datetime.now()))
-    else:
-        logger.info(f"{Logging.Subject.SYSTEM},,{Logging.Predicate.PREDICATE},logout,{Logging.Object.USER},DELETED," + str(datetime.datetime.now()))
+        user = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].getUser(request.session)
+        assert isinstance(user, dict), f"In {logoutUser.cls.__name__}: expected user to be of type dictionary, instead got: {type(user)}"
+        if user != {}:
+            pgProfiles.ProfileManagementBase.setLoginTime(user[UserDescription.hashedID])
+            logger.info(f"{Logging.Subject.USER},{user['name']},{Logging.Predicate.PREDICATE},logout,{Logging.Object.SELF},," + str(datetime.datetime.now()))
+        else:
+            logger.info(f"{Logging.Subject.SYSTEM},,{Logging.Predicate.PREDICATE},logout,{Logging.Object.USER},DELETED," + str(datetime.datetime.now()))
 
 
-    # Delete saved files from redis
-    redis.RedisConnection().deleteKey(request.session.session_key)
+        # Delete saved files from redis
+        redis.RedisConnection().deleteKey(request.session.session_key)
 
-    request.session.clear()
-    request.session.flush()
+        request.session.clear()
+        request.session.flush()
 
-    # return redirect(
-    #     f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
-    #     + urlencode(
-    #         {
-    #             #"returnTo": request.build_absolute_uri(reverse("index")),
-    #             "returnTo": request.build_absolute_uri('http://localhost:3000/callback/logout'),
-    #             "client_id": settings.AUTH0_CLIENT_ID,
-    #         },
-    #         quote_via=quote_plus,
-    #     ),
-    # )
+        # return redirect(
+        #     f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
+        #     + urlencode(
+        #         {
+        #             #"returnTo": request.build_absolute_uri(reverse("index")),
+        #             "returnTo": request.build_absolute_uri('http://localhost:3000/callback/logout'),
+        #             "client_id": settings.AUTH0_CLIENT_ID,
+        #         },
+        #         quote_via=quote_plus,
+        #     ),
+        # )
 
-    callbackString = request.build_absolute_uri(settings.FORWARD_URL)
+        callbackString = request.build_absolute_uri(settings.FORWARD_URL)
 
-    if not mock:
-        return HttpResponse(f"https://{settings.AUTH0_DOMAIN}/v2/logout?" + urlencode({"returnTo": request.build_absolute_uri(callbackString),"client_id": settings.AUTH0_CLIENT_ID,},quote_via=quote_plus,))
-    else:
-        return HttpResponse(callbackString)
+        if not mock:
+            return HttpResponse(f"https://{settings.AUTH0_DOMAIN}/v2/logout?" + urlencode({"returnTo": request.build_absolute_uri(callbackString),"client_id": settings.AUTH0_CLIENT_ID,},quote_via=quote_plus,))
+        else:
+            return HttpResponse(callbackString)
+    except Exception as error:
+        message = f"Error in {logoutUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

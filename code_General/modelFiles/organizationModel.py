@@ -37,7 +37,7 @@ class Organization(models.Model):
     :subID: Unique ID for that person returned by Auth0, primary key
     :hashedID: SHA-512 hashed value of the subID for anonymous identification
     :name: Nickname returned by Auth0, used for filter searches in DB
-    :details: Adress, tax id and so on
+    :details: Address, tax id and so on
     :users: Link to users belonging to that organization
     :supportedServices: Array of service codes that this organization supports
     :uri: Representation link inside the knowledge graph

@@ -18,7 +18,7 @@ BACKEND_SETTINGS= "production"
 # for nginx
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-CSRF_COOKIE_DOMAIN = '.semper-ki.org' 
+CSRF_COOKIE_DOMAIN = '.*' # TODO 
 
 
 CACHES = {

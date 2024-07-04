@@ -6,7 +6,7 @@ Thomas Skodawessely 2023
 Contains: handlers for sending emails out of different front end forms
 """
 
-import json
+import json, logging
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
@@ -19,11 +19,10 @@ from rest_framework.request import Request
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
-from ..utilities.basics import ExceptionSerializer
+from ..utilities.basics import ExceptionSerializerGeneric
 
-from logging import getLogger
-
-logger = getLogger("django_debug")
+logger = logging.getLogger("django_debug")
+loggerError = logging.getLogger("errors")
 
 #########################################################################
 # sendContactForm
@@ -38,8 +37,8 @@ logger = getLogger("django_debug")
     tags=['Email'],
     responses={
         200: None,
-        400: ExceptionSerializer,
-        500: ExceptionSerializer
+        400: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
     },
 )
 @api_view(["POST"])
@@ -71,6 +70,12 @@ def sendContactForm(request:Request):
         result = mailer.sendMail(settings.EMAIL_ADDR_SUPPORT, data["subject"], msg)
         return Response({"status": "ok", "result": result}, status=status.HTTP_200_OK)
 
-    except Exception as e:
-        logger.error(f'error sending contact form: {e}')
-        return Response({"status": "error", "result": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as error:
+        message = f"Error in {sendContactForm.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

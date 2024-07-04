@@ -7,21 +7,25 @@ Contains: Basic stuff that is imported everywhere
 """
 
 import datetime, enum, json
+from time import sleep
 from functools import wraps
+
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 
-from time import sleep
+from rest_framework import serializers
+from rest_framework import exceptions
+from rest_framework.versioning import AcceptHeaderVersioning
+from rest_framework.response import Response
+from rest_framework import status
+
 
 from ..utilities import rights
 from ..utilities.customStrEnum import StrEnumExactylAsDefined
 from ..connections.redis import RedisConnection
 from ..definitions import SessionContent
 
-from rest_framework import serializers
-from rest_framework.versioning import AcceptHeaderVersioning
-from rest_framework.response import Response
-from rest_framework import status
+
 
 #######################################################
 def checkIfTokenValid(token):
@@ -175,7 +179,9 @@ def manualCheckIfRightsAreSufficient(session, funcName):
     :rtype: Bool
     """
     if "user" in session and SessionContent.USER_PERMISSIONS in session:
-        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowed(session[SessionContent.USER_PERMISSIONS],funcName):
+        if funcName == "view":
+            raise Exception("Funcname is view!")
+        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowed(session[SessionContent.USER_PERMISSIONS], funcName):
             return True
 
     return False
@@ -193,7 +199,9 @@ def manualCheckIfRightsAreSufficientForSpecificOperation(session, funcName, oper
     :rtype: Bool
     """
     if "user" in session and SessionContent.USER_PERMISSIONS in session:
-        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowedWithOperation(session[SessionContent.USER_PERMISSIONS],funcName, operation):
+        if funcName == "view":
+            raise Exception("Funcname is view!")
+        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowedWithOperation(session[SessionContent.USER_PERMISSIONS], funcName, operation):
             return True
 
     return False
@@ -237,7 +245,8 @@ def checkIfRightsAreSufficient(json=False):
 # utility function to find the first occurence of an element with a condition in e.g. a list
 # from: https://stackoverflow.com/questions/9542738/find-a-value-in-a-list
 def findFirstOccurence(iterable, default=False, pred=None):
-    """Returns the first true value in the iterable.
+    """
+    Returns the first true value in the iterable.
 
     If no true value is found, returns *default*
 
@@ -258,8 +267,106 @@ def findFirstOccurence(iterable, default=False, pred=None):
     # first_true([a,b], x, f) --> a if f(a) else b if f(b) else x
     return next(filter(pred, iterable), default)
 
+#######################################################
+# from: https://stackoverflow.com/questions/43491287/elegant-way-to-check-if-a-nested-key-exists-in-a-dict
+def checkIfNestedKeyExists(dictionary:dict, *keys) -> bool:
+    """
+    Check if nested keys exist in a dictionary.
+    Equivalent to: if key1 in dictionary and key2 in dictionary[key1] and ...
+
+    :param dictionary: The dictionary in question
+    :type dictionary: dict
+    :param keys: Key Parameters, must be in order
+    :type keys: Any
+    :return: True if all keys are in Dictionary
+    :rtype: bool
+    
+    """
+    if not isinstance(dictionary, dict):
+        raise AttributeError('checkIfNestedKeyExists() expects dict as first argument.')
+    if len(keys) == 0:
+        raise AttributeError('checkIfNestedKeyExists() expects at least two arguments, one given.')
+
+    _dictionary = dictionary
+    for key in keys:
+        try:
+            _dictionary = _dictionary[key]
+        except KeyError:
+            return False
+    return True
+
+#######################################################
+def getNestedValue(dictionary:dict, *keys):
+    """
+    Check if nested keys exist in a dictionary and return the final value.
+    Equivalent to: if key1 in dictionary and key2 in dictionary[key1] and ... dictionary[key1][key2]...[keyN]
+
+    :param dictionary: The dictionary in question
+    :type dictionary: dict
+    :param keys: Key Parameters, must be in order
+    :type keys: Any
+    :return: The last value if all keys are in Dictionary, None if not
+    :rtype: Any | None
+    
+    """
+    if not isinstance(dictionary, dict):
+        raise AttributeError('getNestedValue() expects dict as first argument.')
+    if len(keys) == 0:
+        raise AttributeError('getNestedValue() expects at least two arguments, one given.')
+
+    _dictionary = dictionary
+    for key in keys:
+        try:
+            _dictionary = _dictionary[key]
+        except KeyError:
+            return None
+    if isinstance(_dictionary, dict):
+        raise AttributeError("Not enough keys given in getNestedValue!")
+    return _dictionary
 
 #####################################################################
-class ExceptionSerializer(serializers.Serializer):
+class ExceptionSerializerGeneric(serializers.Serializer):
     message = serializers.CharField()
     exception = serializers.CharField()
+
+#################### DECORATOR ###################################
+class VersioningForHandlers(AcceptHeaderVersioning):
+    allowed_versions = ["0.3"] # default for swagger
+
+    def __init__(self, allowedVersions) -> None:
+        super().__init__()
+        if str(allowedVersions) not in self.allowed_versions:
+            self.allowed_versions = [str(allowedVersions)]
+            
+######################################################
+def checkVersion(version=0.3):
+    """
+    Checks if the version is supported or not. If not, returns an error message.
+
+    :param version: Version of the API to check if it is supported or not
+    :type version: Float
+    :return: Response whether the version is supported or not
+    :rtype: HTTPRespone
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def inner(request, *args, **kwargs):
+            try:
+                if request.version == None:
+                    #getting really tired of swaggers bullshit (of sometimes not sending the correct header)
+                    return func(request, *args, **kwargs)
+                versioning = VersioningForHandlers(version)
+                versionOfReq = versioning.determine_version(request)
+                return func(request, *args, **kwargs)
+            except exceptions.NotAcceptable as e:
+                return Response(f"Version mismatch! {version} required!", status=status.HTTP_406_NOT_ACCEPTABLE)
+            except Exception as e:
+                if func.__name__ == "view":
+                    return Response(f"Exception in {func.cls.__name__}: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                else:
+                    return Response(f"Exception in {func.__name__}: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return inner
+
+    return decorator
+

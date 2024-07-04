@@ -18,7 +18,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 
 
-from ..utilities.basics import ExceptionSerializer
+from ..utilities.basics import ExceptionSerializerGeneric
 from drf_spectacular.utils import extend_schema
 
 ###################################################
@@ -29,7 +29,7 @@ from drf_spectacular.utils import extend_schema
     tags=['Test'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @csrf_exempt # ONLY FOR TESTING!!!!
@@ -58,7 +58,7 @@ def testResponse(request:Request):
     tags=['Test'],
     responses={
         200: None,
-        500: ExceptionSerializer,  
+        500: ExceptionSerializerGeneric,  
     },
 )
 @ensure_csrf_cookie
@@ -103,7 +103,7 @@ from ..connections.postgresql import pgProfiles
     tags=['Test'],
     responses={
         200: None,
-        401: ExceptionSerializer,  
+        401: ExceptionSerializerGeneric,  
     },
 )
 @api_view(["GET"])
@@ -121,7 +121,7 @@ def testCallToWebsocket(request:Request):
 ###################################################
 class Counter():
     counter = 1
-counter = Counter
+counter = Counter()
 
 ###################################################
 @extend_schema(
@@ -131,7 +131,7 @@ counter = Counter
     tags=['Test'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
         
     },
 )

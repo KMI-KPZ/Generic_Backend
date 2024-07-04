@@ -21,7 +21,7 @@ from drf_spectacular.utils import extend_schema
 
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
-from ..utilities.basics import checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient, ExceptionSerializer
+from ..utilities.basics import checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient, ExceptionSerializerGeneric
 from ..definitions import SessionContent, Logging
 
 logger = logging.getLogger("logToFile")
@@ -124,7 +124,7 @@ def getOrganizationName(session, orgID, baseURL, baseHeader):
     tags=['Organizations'],
     responses={
         200: None,
-        500: ExceptionSerializer,
+        500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
@@ -153,16 +153,16 @@ def organizations_getInviteLink(request:Request):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         orgID = request.session["user"]["userinfo"]["org_id"]
         userName = request.session["user"]["userinfo"]["nickname"]
-        emailAdressOfUserToBeAdded = content["content"]["email"]
+        emailAddressOfUserToBeAdded = content["content"]["email"]
         roleID = content["content"]["roleID"]
 
-        data = { "inviter": { "name": userName }, "invitee": { "email": emailAdressOfUserToBeAdded }, "client_id": settings.AUTH0_ORGA_CLIENT_ID, "connection_id": auth0.auth0Config["IDs"]["connection_id"], "ttl_sec": 0, "roles": [roleID], "send_invitation_email": False }
+        data = { "inviter": { "name": userName }, "invitee": { "email": emailAddressOfUserToBeAdded }, "client_id": settings.AUTH0_ORGA_CLIENT_ID, "connection_id": auth0.auth0Config["IDs"]["connection_id"], "ttl_sec": 0, "roles": [roleID], "send_invitation_email": False }
         
         response = handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/invitations', headers=headers, json=data))
         if isinstance(response, Exception):
             raise response
         
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},invite,{Logging.Object.USER},user {emailAdressOfUserToBeAdded} to {orgID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},invite,{Logging.Object.USER},user {emailAddressOfUserToBeAdded} to {orgID}," + str(datetime.datetime.now()))
         return HttpResponse(response["invitation_url"])
     
     except Exception as e:
@@ -186,8 +186,8 @@ def organizations_getInviteLink(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
@@ -216,16 +216,16 @@ def organizations_addUser(request:Request):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         orgID = request.session["user"]["userinfo"]["org_id"]
         userName = request.session["user"]["userinfo"]["nickname"]
-        emailAdressOfUserToBeAdded = content["content"]["email"]
+        emailAddressOfUserToBeAdded = content["content"]["email"]
         roleID = content["content"]["roleID"]
 
-        data = { "inviter": { "name": userName }, "invitee": { "email": emailAdressOfUserToBeAdded }, "client_id": settings.AUTH0_ORGA_CLIENT_ID, "connection_id": auth0.auth0Config["IDs"]["connection_id"], "ttl_sec": 0, "roles":[roleID], "send_invitation_email": True }
+        data = { "inviter": { "name": userName }, "invitee": { "email": emailAddressOfUserToBeAdded }, "client_id": settings.AUTH0_ORGA_CLIENT_ID, "connection_id": auth0.auth0Config["IDs"]["connection_id"], "ttl_sec": 0, "roles":[roleID], "send_invitation_email": True }
         
         response = handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/invitations', headers=headers, json=data))
         if isinstance(response, Exception):
             raise response
         
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},invite,{Logging.Object.USER},user {emailAdressOfUserToBeAdded} to {orgID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},invite,{Logging.Object.USER},user {emailAddressOfUserToBeAdded} to {orgID}," + str(datetime.datetime.now()))
         return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
@@ -249,8 +249,8 @@ def organizations_addUser(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
@@ -295,7 +295,7 @@ def organizations_fetchUsers(request:Request):
                 responseDict[idx]["roles"][elemIdx]["name"] = responseDict[idx]["roles"][elemIdx]["name"].replace(orgaName+"-", "")
             entry.pop("user_id")
 
-        return JsonResponse(responseDict, safe=False)
+        return Response(responseDict)
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching users: {e}')
         if "many requests" in e.args[0]:
@@ -317,8 +317,8 @@ def organizations_fetchUsers(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
@@ -346,10 +346,10 @@ def organizations_deleteUser(request:Request):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         orgID = request.session["user"]["userinfo"]["org_id"]
         userName = request.session["user"]["userinfo"]["nickname"]
-        emailAdressOfUserToBeAdded = content["content"]["email"]
+        emailAddressOfUserToBeAdded = content["content"]["email"]
 
         # fetch user id via E-Mail of the user
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAdressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
+        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAddressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
         if isinstance(response, Exception):
             raise response
         userID = response[0]["user_id"]
@@ -360,7 +360,7 @@ def organizations_deleteUser(request:Request):
         if isinstance(response, Exception):
             raise response
         pgProfiles.ProfileManagementUser.deleteUser("", uID=userID)
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},user {emailAdressOfUserToBeAdded} from {orgID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},user {emailAddressOfUserToBeAdded} from {orgID}," + str(datetime.datetime.now()))
         
         # Send event to websocket
         retVal = sendEventViaWebsocket(orgID, baseURL, headers, "deleteUserFromOrganization", userID)
@@ -390,8 +390,8 @@ def organizations_deleteUser(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
@@ -435,7 +435,7 @@ def organizations_createRole(request:Request):
             raise response
         
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},created,{Logging.Object.OBJECT},role {roleName} in {orgID}," + str(datetime.datetime.now()))
-        return JsonResponse(response, safe=False)
+        return Response(response)
     
     except Exception as e:
         loggerError.error(f'Generic Exception while creating role: {e}')
@@ -458,8 +458,8 @@ def organizations_createRole(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
@@ -488,11 +488,11 @@ def organizations_assignRole(request:Request):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         orgID = request.session["user"]["userinfo"]["org_id"]
         userName = request.session["user"]["userinfo"]["nickname"]
-        emailAdressOfUserToBeAdded = content["content"]["email"]
+        emailAddressOfUserToBeAdded = content["content"]["email"]
         roleID = content["content"]["roleID"]
 
         # fetch user id via E-Mail of the user
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAdressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
+        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAddressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
         if isinstance(response, Exception):
             raise response
         userID = response[0]["user_id"]
@@ -506,7 +506,7 @@ def organizations_assignRole(request:Request):
         if isinstance(retVal, Exception):
             raise retVal
         
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DEFINED},assigned,{Logging.Object.OBJECT},role {roleID} to {emailAdressOfUserToBeAdded} in {orgID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DEFINED},assigned,{Logging.Object.OBJECT},role {roleID} to {emailAddressOfUserToBeAdded} in {orgID}," + str(datetime.datetime.now()))
         return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
@@ -530,8 +530,8 @@ def organizations_assignRole(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
@@ -560,11 +560,11 @@ def organizations_removeRole(request:Request):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         orgID = request.session["user"]["userinfo"]["org_id"]
         userName = request.session["user"]["userinfo"]["nickname"]
-        emailAdressOfUserToBeAdded = content["content"]["email"]
+        emailAddressOfUserToBeAdded = content["content"]["email"]
         roleID = content["content"]["roleID"]
 
         # fetch user id via E-Mail of the user
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAdressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
+        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAddressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
         if isinstance(response, Exception):
             raise response
         userID = response[0]["user_id"]
@@ -574,7 +574,7 @@ def organizations_removeRole(request:Request):
         if isinstance(response, Exception):
             raise response
         
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},removed,{Logging.Object.OBJECT},role {roleID} from {emailAdressOfUserToBeAdded} in {orgID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},removed,{Logging.Object.OBJECT},role {roleID} from {emailAddressOfUserToBeAdded} in {orgID}," + str(datetime.datetime.now()))
         # retVal = sendEventViaWebsocket(orgID, baseURL, headers, "removeRole", result)
         # if isinstance(retVal, Exception):
         #     raise retVal
@@ -601,8 +601,8 @@ def organizations_removeRole(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     }
 )
 @checkIfUserIsLoggedIn()
@@ -672,8 +672,8 @@ def organizations_editRole(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
@@ -715,7 +715,7 @@ def organizations_getRoles(request:Request):
                 entry["name"] = entry["name"].replace(orgaName+"-", "")
                 rolesOut.append(entry)
 
-        return JsonResponse(rolesOut, safe=False)
+        return Response(rolesOut)
     
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching roles: {e}')
@@ -738,8 +738,8 @@ def organizations_getRoles(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
@@ -798,8 +798,8 @@ def organizations_deleteRole(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     },
 ) 
 @checkIfUserIsLoggedIn()
@@ -877,8 +877,8 @@ def organizations_setPermissionsForRole(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     }
 )
 @checkIfUserIsLoggedIn()
@@ -908,7 +908,7 @@ def organizations_getPermissions(request:Request):
         if isinstance(response, Exception):
             raise response
         
-        return JsonResponse(response["scopes"],safe=False)
+        return Response(response["scopes"])
 
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching permissions: {e}')
@@ -931,8 +931,8 @@ def organizations_getPermissions(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     }
 )
 @checkIfUserIsLoggedIn()
@@ -964,7 +964,7 @@ def organizations_getPermissionsForRole(request:Request):
         response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}/permissions', headers=headers) )
         if isinstance(response, Exception):
             raise response
-        return JsonResponse(response,safe=False)
+        return Response(response)
 
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching permissions for role: {e}')
@@ -987,8 +987,8 @@ def organizations_getPermissionsForRole(request:Request):
     tags=['Organizations'],
     responses={
         200: None,
-        429: ExceptionSerializer,
-        500: ExceptionSerializer,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
     }
 )
 @api_view(["POST"])

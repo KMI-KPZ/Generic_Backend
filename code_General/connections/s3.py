@@ -52,7 +52,7 @@ class ManageS3():
         """
         Initialize instance with settings for either local or remote storage
 
-        :param endpoint: IP Adress of storage
+        :param endpoint: IP Address of storage
         :type endpoint: URL Str
         :param key: The access key
         :type key: Str

@@ -69,24 +69,37 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getOrganization(session):
+    def getOrganization(session = {}, hashedID:str=""):
         """
         Check whether an organization exists or not and retrieve information.
 
         :param session: session
         :type session: Dictionary
+        :param hashedID: The hash ID can be used instead
+        :type hashedID: str
         :return: Organization details from database
         :rtype: Dictionary
 
         """
-        orgaID = session["user"]["userinfo"]["org_id"]
-        obj = {}
-        try:
-            obj = Organization.objects.get(subID=orgaID).toDict()
-        except (Exception) as error:
-            logger.error(f"Error getting organization: {str(error)}")
+        if session != {}:
+            orgaID = session["user"]["userinfo"]["org_id"]
+            obj = {}
+            try:
+                obj = Organization.objects.get(subID=orgaID).toDict()
+            except (Exception) as error:
+                logger.error(f"Error getting organization: {str(error)}")
 
-        return obj
+            return obj
+        if hashedID != "":
+            obj = {}
+            try:
+                obj = Organization.objects.get(hashedID=hashedID).toDict()
+            except (Exception) as error:
+                logger.error(f"Error getting organization: {str(error)}")
+
+            return obj
+        logger.error(f"Error getting organization because no parameter was given!")
+        return {}
     
     ##############################################
     @staticmethod
@@ -569,7 +582,7 @@ class ProfileManagementUser(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def updateContent(session, details, userID=""):
+    def updateContent(session, details, updateType:str, userID=""):
         """
         Update user details.
 
@@ -587,8 +600,16 @@ class ProfileManagementUser(ProfileManagementBase):
         try:
             existingObj = User.objects.get(subID=subID)
             existingInfo = {UserDescription.name: existingObj.name, UserDescription.details: existingObj.details}
-            for key in details:
-                existingInfo[key] = details[key]
+            
+            if updateType == UserDescription.details:
+                for key in details:
+                    existingInfo[UserDescription.details][key] = details[key]
+            elif updateType == UserDescription.name:
+                if isinstance(details, str):
+                    existingInfo[UserDescription.name] = details
+                else:
+                    raise Exception("Wrong type for details when changing name!")
+            
             affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
         except (Exception) as error:
             logger.error(f"Error updating user details: {str(error)}")

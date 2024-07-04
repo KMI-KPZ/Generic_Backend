@@ -94,7 +94,7 @@ def benchyPage(request):
     summary=" Return Settings of django",
     description=" ",
     request=None,
-    tags=['test'],
+    tags=['Test'],
     responses={
         200: None,
     },
