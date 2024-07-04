@@ -7,11 +7,11 @@ Contains: Basic stuff that is imported everywhere
 """
 
 import datetime, enum, json
+from time import sleep
 from functools import wraps
+
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
-
-from time import sleep
 
 from rest_framework import serializers
 from rest_framework import exceptions
@@ -19,10 +19,13 @@ from rest_framework.versioning import AcceptHeaderVersioning
 from rest_framework.response import Response
 from rest_framework import status
 
+
 from ..utilities import rights
 from ..utilities.customStrEnum import StrEnumExactylAsDefined
 from ..connections.redis import RedisConnection
 from ..definitions import SessionContent
+
+
 
 #######################################################
 def checkIfTokenValid(token):
@@ -176,8 +179,9 @@ def manualCheckIfRightsAreSufficient(session, funcName):
     :rtype: Bool
     """
     if "user" in session and SessionContent.USER_PERMISSIONS in session:
-        functionName = funcName.cls.__name__ if funcName.__name__ == "view" else funcName.__name__
-        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowed(session[SessionContent.USER_PERMISSIONS], functionName):
+        if funcName == "view":
+            raise Exception("Funcname is view!")
+        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowed(session[SessionContent.USER_PERMISSIONS], funcName):
             return True
 
     return False
@@ -195,8 +199,9 @@ def manualCheckIfRightsAreSufficientForSpecificOperation(session, funcName, oper
     :rtype: Bool
     """
     if "user" in session and SessionContent.USER_PERMISSIONS in session:
-        functionName = funcName.cls.__name__ if funcName.__name__ == "view" else funcName.__name__
-        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowedWithOperation(session[SessionContent.USER_PERMISSIONS], functionName, operation):
+        if funcName == "view":
+            raise Exception("Funcname is view!")
+        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowedWithOperation(session[SessionContent.USER_PERMISSIONS], funcName, operation):
             return True
 
     return False
@@ -357,7 +362,11 @@ def checkVersion(version=0.3):
             except exceptions.NotAcceptable as e:
                 return Response(f"Version mismatch! {version} required!", status=status.HTTP_406_NOT_ACCEPTABLE)
             except Exception as e:
-                return Response(f"Exception in {func.__name__}: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                if func.__name__ == "view":
+                    return Response(f"Exception in {func.cls.__name__}: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                else:
+                    return Response(f"Exception in {func.__name__}: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return inner
 
     return decorator
+

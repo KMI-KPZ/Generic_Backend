@@ -10,12 +10,18 @@ import datetime
 import json, requests, logging
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
-from django.views.decorators.http import require_http_methods
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+
+from rest_framework import status, serializers
+from rest_framework.response import Response
+from rest_framework.request import Request
+from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema
+
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
-from ..utilities.basics import checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient
+from ..utilities.basics import checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient, ExceptionSerializerGeneric
 from ..definitions import SessionContent, Logging
 
 logger = logging.getLogger("logToFile")
@@ -104,11 +110,27 @@ def getOrganizationName(session, orgID, baseURL, baseHeader):
     except Exception as e:
         return e
 
-#######################################################
+#########################################################################
+# organizations_getInviteLink
+#"organizations_getInviteLink": ("public/organizations/getInviteLink/",organizations.organizations_getInviteLink)
+#########################################################################
+#TODO Add serializer for organizations_getInviteLink
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Ask Auth0 API to invite someone via e-mail and retrieve the link",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric,
+    },
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["POST"])
+@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_getInviteLink(request):
+def organizations_getInviteLink(request:Request):
     """
     Ask Auth0 API to invite someone via e-mail and retrieve the link
 
@@ -119,7 +141,7 @@ def organizations_getInviteLink(request):
     """
     try:
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            return HttpResponse("Mock")
+            return Response("Mock")
         
         content = json.loads(request.body.decode("utf-8"))["data"]
 
@@ -146,15 +168,32 @@ def organizations_getInviteLink(request):
     except Exception as e:
         loggerError.error(f'Generic Exception while obtaining invite link: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
+#########################################################################
+# organizations_addUser
+#"organizations_addUser": ("public/organizations/addUser/",organizations.organizations_addUser)
+#########################################################################
+#TODO Add serializer for organizations_addUser
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Ask Auth0 API to invite someone via e-mail",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    },
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["POST"])
+@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_addUser(request):
+def organizations_addUser(request:Request):
     """
     Ask Auth0 API to invite someone via e-mail
 
@@ -165,7 +204,7 @@ def organizations_addUser(request):
     """
     try:
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            return HttpResponse("Mock")
+            return Response("Mock")
 
         content = json.loads(request.body.decode("utf-8"))["data"]
 
@@ -187,20 +226,37 @@ def organizations_addUser(request):
             raise response
         
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},invite,{Logging.Object.USER},user {emailAddressOfUserToBeAdded} to {orgID}," + str(datetime.datetime.now()))
-        return HttpResponse("Success", status=200)
+        return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
         loggerError.error(f'Generic Exception while adding user: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
+#########################################################################
+# organizations_fetchUsers
+#"organizations_fetchUsers": ("public/organizations/fetchUsers/",organizations.organizations_fetchUsers)
+#########################################################################
+#TODO Add serializer for organizations_fetchUsers
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Ask Auth0 API for all users of an organization",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    },
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["GET"])
+@api_view(["GET"])
 @checkIfRightsAreSufficient(json=True)
-def organizations_fetchUsers(request):
+def organizations_fetchUsers(request:Request):
     """
     Ask Auth0 API for all users of an organization
 
@@ -239,19 +295,36 @@ def organizations_fetchUsers(request):
                 responseDict[idx]["roles"][elemIdx]["name"] = responseDict[idx]["roles"][elemIdx]["name"].replace(orgaName+"-", "")
             entry.pop("user_id")
 
-        return JsonResponse(responseDict, safe=False)
+        return Response(responseDict)
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching users: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
+#########################################################################
+# organizations_deleteUser
+#"organizations_deleteUser": ("public/organizations/deleteUser/",organizations.organizations_deleteUser)
+#########################################################################
+#TODO Add serializer for organizations_deleteUser
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Ask Auth0 API to delete someone from an organization via their name",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    },
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["POST"])
+@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_deleteUser(request):
+def organizations_deleteUser(request:Request):
     """
     Ask Auth0 API to delete someone from an organization via their name
 
@@ -262,7 +335,7 @@ def organizations_deleteUser(request):
     """
     try:
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            return HttpResponse("Mock")
+            return Response("Mock")
 
         content = json.loads(request.body.decode("utf-8"))["data"]
         headers = {
@@ -294,20 +367,37 @@ def organizations_deleteUser(request):
         if isinstance(retVal, Exception):
             raise retVal
         
-        return HttpResponse("Success", status=200)
+        return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
         loggerError.error(f'Generic Exception while deleting user: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-#######################################################
+#########################################################################
+# organizations_createRole
+#"organizations_createRole": ("public/organizations/createRole/",organizations.organizations_createRole)
+#########################################################################
+#TODO Add serializer for organizations_createRole
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Ask Auth0 API to create a new role",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    },
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["POST"])
+@api_view(["POST"])
 @checkIfRightsAreSufficient(json=True)
-def organizations_createRole(request):
+def organizations_createRole(request:Request):
     """
     Ask Auth0 API to create a new role
 
@@ -345,20 +435,37 @@ def organizations_createRole(request):
             raise response
         
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},created,{Logging.Object.OBJECT},role {roleName} in {orgID}," + str(datetime.datetime.now()))
-        return JsonResponse(response, safe=False)
+        return Response(response)
     
     except Exception as e:
         loggerError.error(f'Generic Exception while creating role: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
+#########################################################################
+# organizations_assignRole
+#"organizations_assignRole": ("public/organizations/assignRole/",organizations.organizations_assignRole)
+#########################################################################
+#TODO Add serializer for organizations_assignRole
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Assign a role to a person",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    },
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["POST"])
+@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_assignRole(request):
+def organizations_assignRole(request:Request):
     """
     Assign a role to a person
 
@@ -369,7 +476,7 @@ def organizations_assignRole(request):
     """
     try:
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            return HttpResponse("Mock")
+            return Response("Mock")
 
         content = json.loads(request.body.decode("utf-8"))["data"]
 
@@ -400,20 +507,37 @@ def organizations_assignRole(request):
             raise retVal
         
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DEFINED},assigned,{Logging.Object.OBJECT},role {roleID} to {emailAddressOfUserToBeAdded} in {orgID}," + str(datetime.datetime.now()))
-        return HttpResponse("Success", status=200)
+        return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
         loggerError.error(f'Generic Exception while assigning role: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-#######################################################
+#########################################################################
+# organizations_removeRole
+#"organizations_removeRole": ("public/organizations/removeRole/",organizations.organizations_removeRole)
+#########################################################################
+#TODO Add serializer for organizations_removeRole
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Remove a role from a person",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    },
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["POST"])
+@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_removeRole(request):
+def organizations_removeRole(request:Request):
     """
     Remove a role from a person
 
@@ -424,7 +548,7 @@ def organizations_removeRole(request):
     """
     try:
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            return HttpResponse("Mock")
+            return Response("Mock")
 
         content = json.loads(request.body.decode("utf-8"))["data"]
 
@@ -454,20 +578,37 @@ def organizations_removeRole(request):
         # retVal = sendEventViaWebsocket(orgID, baseURL, headers, "removeRole", result)
         # if isinstance(retVal, Exception):
         #     raise retVal
-        return HttpResponse("Success", status=200)
+        return Response("Success", status=status.HTTP_200_OK)
         
     except Exception as e:
         loggerError.error(f'Generic Exception while removing role: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
+#########################################################################
+# organizations_editRole
+#"organizations_editRole": ("public/organizations/editRole/",organizations.organizations_editRole)
+#########################################################################
+#TODO Add serializer for organizations_editRole
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Ask Auth0 API to edit a role",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    }
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["POST"])
+@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_editRole(request):
+def organizations_editRole(request:Request):
     """
     Ask Auth0 API to edit a role
 
@@ -478,7 +619,7 @@ def organizations_editRole(request):
     """
     try:
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            return HttpResponse("Mock")
+            return Response("Mock")
 
         content = json.loads(request.body.decode("utf-8"))["data"]
 
@@ -508,21 +649,37 @@ def organizations_editRole(request):
         if isinstance(retVal, Exception):
             raise retVal
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.EDITED},edited,{Logging.Object.OBJECT},role {roleName} for {orgID}," + str(datetime.datetime.now()))
-        return HttpResponse("Success", status=200)
+        return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
         loggerError.error(f'Generic Exception while editing role: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-#######################################################
+#########################################################################
+# organizations_getRoles
+#"organizations_getRoles": ("public/organizations/getRoles/",organizations.organizations_getRoles)
+#########################################################################
+#TODO Add serializer for organizations_getRoles
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Fetch all roles for the organization",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    },
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["GET"])
+@api_view(["GET"])
 @checkIfRightsAreSufficient(json=True)
-def organizations_getRoles(request):
+def organizations_getRoles(request:Request):
     """
     Fetch all roles for the organization
 
@@ -558,20 +715,37 @@ def organizations_getRoles(request):
                 entry["name"] = entry["name"].replace(orgaName+"-", "")
                 rolesOut.append(entry)
 
-        return JsonResponse(rolesOut, safe=False)
+        return Response(rolesOut)
     
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching roles: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
+#########################################################################
+# organizations_deleteRole
+#"organizations_deleteRole": ("public/organizations/deleteRole/",organizations.organizations_deleteRole)
+#########################################################################
+#TODO Add serializer for organizations_deleteRole
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Delete role via ID",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    },
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["POST"])
+@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_deleteRole(request):
+def organizations_deleteRole(request:Request):
     """
     Delete role via ID
 
@@ -582,7 +756,7 @@ def organizations_deleteRole(request):
     """
     try:
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            return HttpResponse("Mock")
+            return Response("Mock")
 
         content = json.loads(request.body.decode("utf-8"))["data"]
 
@@ -601,20 +775,37 @@ def organizations_deleteRole(request):
             raise response
         
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.OBJECT},role {roleID} from {orgID}," + str(datetime.datetime.now()))
-        return HttpResponse("Success", status=200)
+        return Response("Success", status=status.HTTP_200_OK)
         
     except Exception as e:
         loggerError.error(f'Generic Exception while deleting role: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
+#########################################################################
+# organizations_setPermissionsForRole
+#"organizations_setPermissionsForRole": ("public/organizations/setPermissionsForRole/",organizations.organizations_setPermissionsForRole)
+#########################################################################
+#TODO Add serializer for organizations_setPermissionsForRole
+#########################################################################
+# Handler 
+@extend_schema(
+    summary="Add Permissions to role",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    },
+) 
 @checkIfUserIsLoggedIn()
-@require_http_methods(["POST"])
+@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_setPermissionsForRole(request):
+def organizations_setPermissionsForRole(request:Request):
     """
     Add Permissions to role
 
@@ -625,7 +816,7 @@ def organizations_setPermissionsForRole(request):
     """    
     try:
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            return HttpResponse("Mock")
+            return Response("Mock")
 
         content = json.loads(request.body.decode("utf-8"))["data"]
 
@@ -663,20 +854,37 @@ def organizations_setPermissionsForRole(request):
         if isinstance(retVal, Exception):
             raise retVal
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DEFINED},set,{Logging.Object.OBJECT},permissions of role {roleID} in {orgID}," + str(datetime.datetime.now()))
-        return HttpResponse("Success", status=200)
+        return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
         loggerError.error(f'Generic Exception while setting permissions for role: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
+#########################################################################
+# organizations_getPermissions
+#"organizations_getPermissions": ("public/organizations/getPermissions/",organizations.organizations_getPermissions)
+#########################################################################
+#TODO Add serializer for organizations_getPermissions
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Get all Permissions",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    }
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["GET"])
+@api_view(["GET"])
 @checkIfRightsAreSufficient(json=True)
-def organizations_getPermissions(request):
+def organizations_getPermissions(request:Request):
     """
     Get all Permissions
 
@@ -700,20 +908,37 @@ def organizations_getPermissions(request):
         if isinstance(response, Exception):
             raise response
         
-        return JsonResponse(response["scopes"],safe=False)
+        return Response(response["scopes"])
 
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching permissions: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
+#########################################################################
+# organizations_getPermissionsForRole
+#"organizations_getPermissionsForRole": ("public/organizations/getPermissionsForRole/",organizations.organizations_getPermissionsForRole)
+#########################################################################
+#TODO Add serializer for organizations_getPermissionsForRole
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Get Permissions of role",
+    description=" ",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    }
+)
 @checkIfUserIsLoggedIn()
-@require_http_methods(["POST"])
+@api_view(["POST"])
 @checkIfRightsAreSufficient(json=True)
-def organizations_getPermissionsForRole(request):
+def organizations_getPermissionsForRole(request:Request):
     """
     Get Permissions of role
 
@@ -739,18 +964,35 @@ def organizations_getPermissionsForRole(request):
         response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}/permissions', headers=headers) )
         if isinstance(response, Exception):
             raise response
-        return JsonResponse(response,safe=False)
+        return Response(response)
 
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching permissions for role: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
-@require_http_methods(["POST"])
-def organizations_createNewOrganization(request):
+#########################################################################
+# organizations_createNewOrganization
+#"organizations_createOrganization": ("public/organizations/createNew/",organizations.organizations_createNewOrganization)
+#########################################################################
+#TODO Add serializer for organizations_createNewOrganization
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Create a new organization",
+    description="Create a new organization, create an admin role, invite a person via email as admin. All via Auth0s API.",
+    request=None,
+    tags=['Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    }
+)
+@api_view(["POST"])
+def organizations_createNewOrganization(request:Request):
     """
     Create a new organization, create an admin role, invite a person via email as admin.
     All via Auth0s API.
@@ -763,7 +1005,7 @@ def organizations_createNewOrganization(request):
 
     try:
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            return HttpResponse("Mock")
+            return Response("Mock")
 
         content = json.loads(request.body.decode("utf-8"))["data"]
 
@@ -827,12 +1069,12 @@ def organizations_createNewOrganization(request):
         
         logger.info(f"{Logging.Subject.SYSTEM},Semper-KI,{Logging.Predicate.CREATED},created,{Logging.Object.ORGANISATION},{content['content']['name']} through user {email}," + str(datetime.datetime.now()))
         
-        return HttpResponse("Success", status=200)
+        return Response("Success", status=status.HTTP_200_OK)
     
     except Exception as e:
         loggerError.error(f'Generic Exception while creating organization: {e}')
         if "many requests" in e.args[0]:
-            return HttpResponse("Failed - " + str(e), status=429)
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
-            return HttpResponse("Failed - " + str(e), status=500)    
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
 

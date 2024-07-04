@@ -14,7 +14,13 @@ import asyncio
 import time
 from functools import reduce
 
-from ..utilities.basics import checkIfTokenValid
+from rest_framework import status, serializers
+from rest_framework.response import Response
+from rest_framework.request import Request
+from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema
+
+from ..utilities.basics import checkIfTokenValid, ExceptionSerializerGeneric
 
 ##############################################
 async def checkSession(session):
@@ -47,8 +53,24 @@ async def getNumOfLoggedInUsers(activeSessions):
 
     return reduce(lambda x,y: x+y, results)
 
-##############################################
-def getNumberOfUsers(request):
+#########################################################################
+# getNumberOfUsers
+#"statistics": ("public/getStatistics/",statistics.getNumberOfUsers)
+#########################################################################
+#TODO Add serializer for getNumberOfUsers
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Return number of currently logged in users and number of users that have an active session",
+    request=None,
+    tags=['Statistics'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric
+    },
+)
+@api_view(["GET"])
+def getNumberOfUsers(request:Request):
     """
     Return number of currently logged in users and 
     number of users that have an active session 
@@ -59,16 +81,14 @@ def getNumberOfUsers(request):
     :rtype: JSONResponse
 
     """
-    activeSessions = Session.objects.filter(expire_date__gte=timezone.now())
-    numOfActiveSessions = len(activeSessions)
-
-    
-    numOfLoggedInUsers = asyncio.run(getNumOfLoggedInUsers(activeSessions))
-    
-    
-    output = {"active": numOfActiveSessions, "loggedIn": numOfLoggedInUsers}
-    return JsonResponse(output)
-
+    try:
+        activeSessions = Session.objects.filter(expire_date__gte=timezone.now())
+        numOfActiveSessions = len(activeSessions)
+        numOfLoggedInUsers = asyncio.run(getNumOfLoggedInUsers(activeSessions))
+        output = {"active": numOfActiveSessions, "loggedIn": numOfLoggedInUsers}
+        return Response(output, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 ##############################################
 def getIpAddress(request, *args, **kwargs):
