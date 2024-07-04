@@ -41,7 +41,7 @@ loggerError = logging.getLogger("errors")
     summary="For testing",
     description=" ",
     request=None,
-    tags=['profiles'],
+    tags=['Profiles'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -92,7 +92,7 @@ def addUserTest(request:Request):
     summary="For testing",
     description=" ",
     request=None,
-    tags=['profiles'],
+    tags=['Profiles'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -147,7 +147,7 @@ def addOrganizationTest(request:Request):
     summary="Returns details about organization.",
     description=" ",
     request=None,
-    tags=['profiles'],
+    tags=['Profiles'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -184,7 +184,7 @@ def getOrganizationDetails(request:Request):
     summary="Update details of organization of that user.",
     description=" ",
     request=None,
-    tags=['profiles'],
+    tags=['Profiles'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -222,7 +222,7 @@ def updateDetailsOfOrganization(request:Request):
     summary="Deletes an organization from the database and auth0.",
     description=" ",
     request=None,
-    tags=['profiles'],
+    tags=['Profiles'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -270,7 +270,7 @@ def deleteOrganization(request:Request):
     summary="Returns details about user.",
     description=" ",
     request=None,
-    tags=['profiles'],
+    tags=['Profiles'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -318,7 +318,7 @@ def getUserDetails(request:Request):
     summary="Updates user details.",
     description=" ",
     request=None,
-    tags=['profiles'],
+    tags=['Profiles'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -356,7 +356,7 @@ def updateDetails(request:Request):
     summary="Deletes a user from the database and auth0.",
     description=" ",
     request=None,
-    tags=['profiles'],
+    tags=['Profiles'],
     responses={
         200: None,
         500: ExceptionSerializer,

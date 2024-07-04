@@ -43,7 +43,7 @@ loggerError = logging.getLogger("errors")
     summary="Generic file upload",
     description=" ",
     request=None,
-    tags=['files'],
+    tags=['Files'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -96,7 +96,7 @@ def genericUploadFiles(request:Request):
     summary="Send file to user from storage",
     description=" ",
     request=None,
-    tags=['files'],
+    tags=['Files'],
     responses={
         200: None,
         404: ExceptionSerializer,
@@ -151,7 +151,7 @@ def genericDownloadFile(request:Request, fileID):
     summary="Send files to user as zip",
     description=" ",
     request=None,
-    tags=['files'],
+    tags=['Files'],
     responses={
         200: None,
         404: ExceptionSerializer,
@@ -219,7 +219,7 @@ def genericDownloadFilesAsZip(request:Request):
     summary="Delete a file from storage",
     description=" ",
     request=None,
-    tags=['files'],
+    tags=['Files'],
     responses={
         200: None,
         500: ExceptionSerializer,

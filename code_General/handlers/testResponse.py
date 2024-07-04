@@ -26,7 +26,7 @@ from drf_spectacular.utils import extend_schema
     summary="Tests whether request and response scheme works.",
     description=" ",
     request=None,
-    tags=['test'],
+    tags=['Test'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -55,7 +55,7 @@ def testResponse(request:Request):
     summary="Ensures that the csrf cookie is set correctly.",
     description=" ",
     request=None,
-    tags=['test'],
+    tags=['Test'],
     responses={
         200: None,
         500: ExceptionSerializer,  
@@ -100,7 +100,7 @@ from ..connections.postgresql import pgProfiles
     summary="test call to websocket",
     description=" ",
     request=None,
-    tags=['test'],
+    tags=['Test'],
     responses={
         200: None,
         401: ExceptionSerializer,  
@@ -128,7 +128,7 @@ counter = Counter
     summary="Dynamically generate buttons just for fun",
     description=" ",
     request=None,
-    tags=['test'],
+    tags=['Test'],
     responses={
         200: None,
         500: ExceptionSerializer,

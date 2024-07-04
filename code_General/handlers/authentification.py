@@ -44,7 +44,7 @@ loggerError = logging.getLogger("errors")
     summary="Check whether the token of a user has expired and a new login is necessary",
     description=" ",
     request=None,
-    tags=['authentification'],
+    tags=['Authentification'],
     responses={
         200: None,
         500: ExceptionSerializer
@@ -84,7 +84,7 @@ def isLoggedIn(request:Request):
     summary="Get the preferred language of the user from the frontend .",
     description=" ",
     request=None,
-    tags=['authentification'],
+    tags=['Authentification'],
     responses={
         200: None,
         500: ExceptionSerializer
@@ -136,7 +136,7 @@ def setLocaleOfUser(request:Request):
     summary="Returns the json file containing the rights for the frontend",
     description=" ",
     request=None,
-    tags=['authentification'],
+    tags=['Authentification'],
     responses={
         200: None,
         500: ExceptionSerializer
@@ -168,7 +168,7 @@ def provideRightsFile(request:Request):
     summary="Return a link for redirection to Auth0",
     description=" ",
     request=None,
-    tags=['authentification'],
+    tags=['Authentification'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -419,7 +419,7 @@ def setRoleAndPermissionsOfUser(request):
     summary="Check if user really is part of an organization or not",
     description="check if misclick at login, and set flags and instances here.  Get information back from Auth0.  Add user to database if entry doesn't exist. ",
     request=None,
-    tags=['authentification'],
+    tags=['Authentification'],
     responses={
         200: None,
         401: ExceptionSerializer,
@@ -518,7 +518,7 @@ def callbackLogin(request:Request):
     summary=" Get Roles of User.",
     description=" ",
     request=None,
-    tags=['authentification'],
+    tags=['Authentification'],
     responses={
         200: None,
         400: ExceptionSerializer
@@ -554,7 +554,7 @@ def getRolesOfUser(request:Request):
     summary="Get Permissions of User.",
     description=" ",
     request=None,
-    tags=['authentification'],
+    tags=['Authentification'],
     responses={
         200: None,
         400: ExceptionSerializer
@@ -594,7 +594,7 @@ def getPermissionsOfUser(request:Request):
     summary="In case the role changed, get new role and new permissions from auth0.",
     description=" ",
     request=None,
-    tags=['authentification'],
+    tags=['Authentification'],
     responses={
         200: None,
         500: ExceptionSerializer
@@ -627,7 +627,7 @@ def getNewRoleAndPermissionsForUser(request:Request):
     summary="Delete session for this user and log out.",
     description=" ",
     request=None,
-    tags=['authentification'],
+    tags=['Authentification'],
     responses={
         200: None,
         500: ExceptionSerializer

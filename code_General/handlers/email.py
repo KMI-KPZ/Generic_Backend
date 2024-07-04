@@ -35,7 +35,7 @@ logger = getLogger("django_debug")
 @extend_schema(
     summary="Send an email from the contact form from the front end",
     request=None,
-    tags=['email'],
+    tags=['Email'],
     responses={
         200: None,
         400: ExceptionSerializer,

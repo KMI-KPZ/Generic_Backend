@@ -40,7 +40,7 @@ logger = logging.getLogger("logToFile")
     summary="Generic file upload",
     description=" ",
     request=None,
-    tags=['admin'],
+    tags=['Admin'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -80,7 +80,7 @@ def getAllAsAdmin(request:Request):
     summary="Update user details.",
     description=" ",
     request=None,
-    tags=['admin'],
+    tags=['Admin'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -127,7 +127,7 @@ def updateDetailsOfUserAsAdmin(request:Request):
     summary="Update details of organization of that user.",
     description=" ",
     request=None,
-    tags=['admin'],
+    tags=['Admin'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -172,7 +172,7 @@ def updateDetailsOfOrganizationAsAdmin(request:Request):
     summary="Deletes an entry in the database corresponding to orga id.",
     description=" ",
     request=None,
-    tags=['admin'],
+    tags=['Admin'],
     responses={
         200: None,
         500: ExceptionSerializer,
@@ -216,7 +216,7 @@ def deleteOrganizationAsAdmin(request:Request):
     summary="Deletes an entry in the database corresponding to user id.",
     description=" ",
     request=None,
-    tags=['admin'],
+    tags=['Admin'],
     responses={
         200: None,
         500: ExceptionSerializer,
