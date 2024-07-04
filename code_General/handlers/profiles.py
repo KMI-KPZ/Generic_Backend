@@ -418,7 +418,6 @@ class SReqNewAddress(serializers.Serializer):
 @basics.checkIfUserIsLoggedIn()
 @require_http_methods(["POST"])
 @api_view(["POST"])
-@basics.checkVersion(0.3)
 def createAddress(request:Request):
     """
     Create new address for user
@@ -500,7 +499,6 @@ class SReqUpdateContent(serializers.Serializer):
 @basics.checkIfUserIsLoggedIn()
 @require_http_methods(["PATCH"])
 @api_view(["PATCH"])
-@basics.checkVersion(0.3)
 def updateAddress(request:Request):
     """
     Changes content of an address
@@ -567,7 +565,6 @@ def updateAddress(request:Request):
 @basics.checkIfUserIsLoggedIn()
 @require_http_methods(["DELETE"])
 @api_view(["DELETE"])
-@basics.checkVersion(0.3)
 def deleteAddress(request:Request,addressID:str):
     """
     Remove an address for a user

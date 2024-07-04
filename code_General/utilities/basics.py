@@ -329,6 +329,10 @@ class ExceptionSerializerGeneric(serializers.Serializer):
     message = serializers.CharField()
     exception = serializers.CharField()
 
+####################################################
+# The following two are for version checking if that is desired.
+# For this to work, the frontend has to change the accept header 
+# and add "version=0.3" whereas the 0.3 is just an example
 #################### DECORATOR ###################################
 class VersioningForHandlers(AcceptHeaderVersioning):
     allowed_versions = ["0.3"] # default for swagger

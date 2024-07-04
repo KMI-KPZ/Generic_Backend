@@ -215,7 +215,6 @@ def provideRightsFile(request:Request):
     }
 )
 @api_view(["GET"])
-@basics.checkVersion(0.3)
 def loginAsTestUser(request:Request):
     """
     Use fakeUser, fakeOrganization or fakeAdmin to log in from the swagger interface.
