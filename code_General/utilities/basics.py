@@ -176,7 +176,8 @@ def manualCheckIfRightsAreSufficient(session, funcName):
     :rtype: Bool
     """
     if "user" in session and SessionContent.USER_PERMISSIONS in session:
-        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowed(session[SessionContent.USER_PERMISSIONS],funcName):
+        functionName = funcName.cls.__name__ if funcName.__name__ == "view" else funcName.__name__
+        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowed(session[SessionContent.USER_PERMISSIONS], functionName):
             return True
 
     return False
@@ -194,7 +195,8 @@ def manualCheckIfRightsAreSufficientForSpecificOperation(session, funcName, oper
     :rtype: Bool
     """
     if "user" in session and SessionContent.USER_PERMISSIONS in session:
-        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowedWithOperation(session[SessionContent.USER_PERMISSIONS],funcName, operation):
+        functionName = funcName.cls.__name__ if funcName.__name__ == "view" else funcName.__name__
+        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowedWithOperation(session[SessionContent.USER_PERMISSIONS], functionName, operation):
             return True
 
     return False
@@ -330,6 +332,7 @@ class VersioningForHandlers(AcceptHeaderVersioning):
         super().__init__()
         if str(allowedVersions) not in self.allowed_versions:
             self.allowed_versions = [str(allowedVersions)]
+            
 ######################################################
 def checkVersion(version=0.3):
     """
