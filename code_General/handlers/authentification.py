@@ -109,9 +109,9 @@ def isLoggedIn(request:Request):
         if basics.checkIfTokenValid(request.session["user"]):
             return Response("Success",status=status.HTTP_200_OK)
         else:
-            return Response("Failed",status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response("Failed",status=status.HTTP_200_OK)
     
-    return Response("Failed",status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response("Failed",status=status.HTTP_200_OK)
 
 #########################################################################
 # setLocaleOfUser
