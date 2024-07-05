@@ -34,7 +34,7 @@ loggerError = logging.getLogger("errors")
 @extend_schema(
     summary="Send an email from the contact form from the front end",
     request=None,
-    tags=['Email'],
+    tags=['FE - E-Mail'],
     responses={
         200: None,
         400: ExceptionSerializerGeneric,

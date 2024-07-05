@@ -38,11 +38,11 @@ newPaths = {
     "logout": ("public/auth/logout/",authentification.logoutUser),
     "callbackLogin": ("public/auth/callback/",authentification.callbackLogin),
     "isLoggedIn": ("public/auth/isLoggedIn/",authentification.isLoggedIn),
-    "getRoles": ("public/auth/get/roles/",authentification.getRolesOfUser),
-    "getPermissions": ("public/auth/get/permissions/",authentification.getPermissionsOfUser),
-    "getNewPermissions": ("public/auth/get/newPermissions/",authentification.getNewRoleAndPermissionsForUser),
-    "getPermissionsFile": ("public/auth/get/permissionMask/",authentification.provideRightsFile),
-    "setLocaleOfUser": ("public/auth/set/localeOfUser/", authentification.setLocaleOfUser),
+    "getRoles": ("public/auth/roles/get/",authentification.getRolesOfUser),
+    "getPermissions": ("public/auth/permissions/get/",authentification.getPermissionsOfUser),
+    "getNewPermissions": ("public/auth/permissions/new/get/",authentification.getNewRoleAndPermissionsForUser),
+    "getPermissionsFile": ("public/auth/permissions/mask/get/",authentification.provideRightsFile),
+    "setLocaleOfUser": ("public/auth/localeOfUser/set/", authentification.setLocaleOfUser),
 
     "deleteUser": ("public/profile/user/delete/",profiles.deleteUser),
     #"addUser": ("private/profile_addUser/",profiles.addUserTest),
@@ -97,7 +97,7 @@ urlpatterns.extend([
 ])
 
 if settings.DEBUG:
-    urlpatterns.append(path('private/settings/', frontpage.getSettingsToken, name='getSettingsToken'))
+    urlpatterns.append(path('private/settings/', testResponse.getSettingsToken, name='getSettingsToken'))
 
 # add paths
 for entry in newPaths:

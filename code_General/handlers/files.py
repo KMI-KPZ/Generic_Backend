@@ -43,7 +43,7 @@ loggerError = logging.getLogger("errors")
     summary="Generic file upload",
     description=" ",
     request=None,
-    tags=['Files'],
+    tags=['FE - Files'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -99,10 +99,10 @@ def genericUploadFiles(request:Request):
 #########################################################################
 # Handler  
 @extend_schema(
-    summary="Send file to user from storage",
+    summary="Generic file download",
     description=" ",
     request=None,
-    tags=['Files'],
+    tags=['FE - Files'],
     responses={
         200: None,
         404: ExceptionSerializerGeneric,
@@ -160,10 +160,10 @@ def genericDownloadFile(request:Request, fileID):
 #########################################################################
 # Handler  
 @extend_schema(
-    summary="Send files to user as zip",
+    summary="Generic file download as zip",
     description=" ",
     request=None,
-    tags=['Files'],
+    tags=['FE - Files'],
     responses={
         200: None,
         404: ExceptionSerializerGeneric,
@@ -234,10 +234,10 @@ def genericDownloadFilesAsZip(request:Request):
 #########################################################################
 # Handler  
 @extend_schema(
-    summary="Delete a file from storage",
+    summary="Generic file deletion",
     description=" ",
     request=None,
-    tags=['Files'],
+    tags=['FE - Files'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,

@@ -87,26 +87,3 @@ def benchyPage(request):
         # "pretty": json.dumps(request.session.get("user"), indent=4),
         # },
     )
-
-
-#######################################################
-@extend_schema(
-    summary=" Return Settings of django",
-    description=" ",
-    request=None,
-    tags=['Test'],
-    responses={
-        200: None,
-    },
-)
-@api_view(["GET"])
-def getSettingsToken(request):
-    """
-    Return Settings of django
-
-    :param request: GET request
-    :type request: HTTP GET
-    :return: JSON with Settings
-    :rtype: JSONResponse
-    """
-    return JsonResponse({"token": settings.BACKEND_SETTINGS})

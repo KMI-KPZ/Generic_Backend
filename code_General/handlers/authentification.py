@@ -41,7 +41,7 @@ loggerError = logging.getLogger("errors")
     summary="Ensures that the csrf cookie is set correctly.",
     description=" ",
     request=None,
-    tags=['Authentification'],
+    tags=['FE - Authentification'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,  
@@ -84,7 +84,7 @@ def createCsrfCookie(request:Request):
     summary="Check whether the token of a user has expired and a new login is necessary",
     description=" ",
     request=None,
-    tags=['Authentification'],
+    tags=['FE - Authentification'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric
@@ -124,7 +124,7 @@ def isLoggedIn(request:Request):
     summary="Get the preferred language of the user from the frontend .",
     description=" ",
     request=None,
-    tags=['Authentification'],
+    tags=['FE - Authentification'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric
@@ -176,7 +176,7 @@ def setLocaleOfUser(request:Request):
     summary="Returns the json file containing the rights for the frontend",
     description=" ",
     request=None,
-    tags=['Authentification'],
+    tags=['FE - Authentification'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric
@@ -202,7 +202,7 @@ def provideRightsFile(request:Request):
 @extend_schema(
     summary="Use fakeUser, fakeOrganization or fakeAdmin to log in from the swagger interface",
     description=" ",
-    tags=["Authentification"],
+    tags=["BE - Authentification"],
     request=None,
     parameters=[OpenApiParameter(
         name='Usertype',
@@ -251,7 +251,7 @@ def loginAsTestUser(request:Request):
     summary="Return a link for redirection to Auth0",
     description=" ",
     request=None,
-    tags=['Authentification'],
+    tags=['FE - Authentification'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -502,7 +502,7 @@ def setRoleAndPermissionsOfUser(request):
     summary="Check if user really is part of an organization or not",
     description="check if misclick at login, and set flags and instances here.  Get information back from Auth0.  Add user to database if entry doesn't exist. ",
     request=None,
-    tags=['Authentification'],
+    tags=['BE - Authentification'],
     responses={
         200: None,
         401: ExceptionSerializerGeneric,
@@ -601,7 +601,7 @@ def callbackLogin(request:Request):
     summary=" Get Roles of User.",
     description=" ",
     request=None,
-    tags=['Authentification'],
+    tags=['FE - Authentification'],
     responses={
         200: None,
         400: ExceptionSerializerGeneric
@@ -648,7 +648,7 @@ def getRolesOfUser(request:Request):
     summary="Get Permissions of User.",
     description=" ",
     request=None,
-    tags=['Authentification'],
+    tags=['FE - Authentification'],
     responses={
         200: None,
         400: ExceptionSerializerGeneric,
@@ -700,7 +700,7 @@ def getPermissionsOfUser(request:Request):
     summary="In case the role changed, get new role and new permissions from auth0.",
     description=" ",
     request=None,
-    tags=['Authentification'],
+    tags=['FE - Authentification'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric
@@ -744,7 +744,7 @@ def getNewRoleAndPermissionsForUser(request:Request):
     summary="Delete session for this user and log out.",
     description=" ",
     request=None,
-    tags=['Authentification'],
+    tags=['FE - Authentification'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric

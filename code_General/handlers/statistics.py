@@ -63,7 +63,7 @@ async def getNumOfLoggedInUsers(activeSessions):
 @extend_schema(
     summary="Return number of currently logged in users and number of users that have an active session",
     request=None,
-    tags=['Statistics'],
+    tags=['BE - Statistics'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric

@@ -121,7 +121,7 @@ def getOrganizationName(session, orgID, baseURL, baseHeader):
     summary="Ask Auth0 API to invite someone via e-mail and retrieve the link",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -183,7 +183,7 @@ def organizations_getInviteLink(request:Request):
     summary="Ask Auth0 API to invite someone via e-mail",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -246,7 +246,7 @@ def organizations_addUser(request:Request):
     summary="Ask Auth0 API for all users of an organization",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -314,7 +314,7 @@ def organizations_fetchUsers(request:Request):
     summary="Ask Auth0 API to delete someone from an organization via their name",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -387,7 +387,7 @@ def organizations_deleteUser(request:Request):
     summary="Ask Auth0 API to create a new role",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -455,7 +455,7 @@ def organizations_createRole(request:Request):
     summary="Assign a role to a person",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -527,7 +527,7 @@ def organizations_assignRole(request:Request):
     summary="Remove a role from a person",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -598,7 +598,7 @@ def organizations_removeRole(request:Request):
     summary="Ask Auth0 API to edit a role",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -669,7 +669,7 @@ def organizations_editRole(request:Request):
     summary="Fetch all roles for the organization",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -735,7 +735,7 @@ def organizations_getRoles(request:Request):
     summary="Delete role via ID",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -795,7 +795,7 @@ def organizations_deleteRole(request:Request):
     summary="Add Permissions to role",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -874,7 +874,7 @@ def organizations_setPermissionsForRole(request:Request):
     summary="Get all Permissions",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -928,7 +928,7 @@ def organizations_getPermissions(request:Request):
     summary="Get Permissions of role",
     description=" ",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,
@@ -984,7 +984,7 @@ def organizations_getPermissionsForRole(request:Request):
     summary="Create a new organization",
     description="Create a new organization, create an admin role, invite a person via email as admin. All via Auth0s API.",
     request=None,
-    tags=['Organizations'],
+    tags=['FE - Organizations'],
     responses={
         200: None,
         429: ExceptionSerializerGeneric,

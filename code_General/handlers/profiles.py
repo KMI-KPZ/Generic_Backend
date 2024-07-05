@@ -41,7 +41,7 @@ loggerError = logging.getLogger("errors")
     summary="For testing",
     description=" ",
     request=None,
-    tags=['Profiles'],
+    tags=['Test'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -92,7 +92,7 @@ def addUserTest(request:Request):
     summary="For testing",
     description=" ",
     request=None,
-    tags=['Profiles'],
+    tags=['Test'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -147,7 +147,7 @@ def addOrganizationTest(request:Request):
     summary="Returns details about organization.",
     description=" ",
     request=None,
-    tags=['Profiles'],
+    tags=['FE - Profiles'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -184,7 +184,7 @@ def getOrganizationDetails(request:Request):
     summary="Update details of organization of that user.",
     description=" ",
     request=None,
-    tags=['Profiles'],
+    tags=['FE - Profiles'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -233,7 +233,7 @@ def updateDetailsOfOrganization(request:Request):
     summary="Deletes an organization from the database and auth0.",
     description=" ",
     request=None,
-    tags=['Profiles'],
+    tags=['FE - Profiles'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -291,7 +291,7 @@ def deleteOrganization(request:Request):
     summary="Returns details about user.",
     description=" ",
     request=None,
-    tags=['Profiles'],
+    tags=['FE - Profiles'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -354,7 +354,7 @@ def getUserDetails(request:Request):
     summary="Updates user details.",
     description=" ",
     request=None,
-    tags=['Profiles'],
+    tags=['FE - Profiles'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -407,7 +407,7 @@ class SReqNewAddress(serializers.Serializer):
 @extend_schema(
     summary="Create new address for user",
     description=" ",
-    tags=['Profiles'],
+    tags=['FE - Profiles'],
     request=SReqNewAddress,
     responses={
         200: None,
@@ -487,7 +487,7 @@ class SReqUpdateContent(serializers.Serializer):
 @extend_schema(
     summary="Changes content of an address",
     description=" ",
-    tags=['Profiles'],
+    tags=['FE - Profiles'],
     request=SReqUpdateContent,
     responses={
         200: None,
@@ -554,7 +554,7 @@ def updateAddress(request:Request):
 @extend_schema(
     summary="Remove an address for a user",
     description=" ",
-    tags=['Profiles'],
+    tags=['FE - Profiles'],
     request=None,
     responses={
         200: None,
@@ -607,7 +607,7 @@ def deleteAddress(request:Request,addressID:str):
     summary="Deletes a user from the database and auth0.",
     description=" ",
     request=None,
-    tags=['Profiles'],
+    tags=['FE - Profiles'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,

@@ -43,7 +43,7 @@ loggerError = logging.getLogger("errors")
     summary="Drop all information (of the DB) about all users for admin view.",
     description=" ",
     request=None,
-    tags=['Admin'],
+    tags=['FE - Admin'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -89,7 +89,7 @@ def getAllAsAdmin(request:Request):
     summary="Update user details.",
     description=" ",
     request=None,
-    tags=['Admin'],
+    tags=['FE - Admin'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -147,7 +147,7 @@ def updateDetailsOfUserAsAdmin(request:Request):
     summary="Update details of organization of that user.",
     description=" ",
     request=None,
-    tags=['Admin'],
+    tags=['FE - Admin'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -201,7 +201,7 @@ def updateDetailsOfOrganizationAsAdmin(request:Request):
     summary="Deletes an entry in the database corresponding to orga id.",
     description=" ",
     request=None,
-    tags=['Admin'],
+    tags=['FE - Admin'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -255,7 +255,7 @@ def deleteOrganizationAsAdmin(request:Request):
     summary="Deletes an entry in the database corresponding to user id.",
     description=" ",
     request=None,
-    tags=['Admin'],
+    tags=['FE - Admin'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,

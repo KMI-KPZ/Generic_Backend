@@ -8,6 +8,7 @@ Contains: Handling test calls and getting a csrf cookie
 
 import json
 
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
@@ -26,7 +27,7 @@ from drf_spectacular.utils import extend_schema
     summary="Tests whether request and response scheme works.",
     description=" ",
     request=None,
-    tags=['Test'],
+    tags=['BE - Test'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -55,7 +56,7 @@ def testResponse(request:Request):
     summary="Ensures that the csrf cookie is set correctly.",
     description=" ",
     request=None,
-    tags=['Test'],
+    tags=['BE - Test'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,  
@@ -100,7 +101,7 @@ from ..connections.postgresql import pgProfiles
     summary="test call to websocket",
     description=" ",
     request=None,
-    tags=['Test'],
+    tags=['BE - Test'],
     responses={
         200: None,
         401: ExceptionSerializerGeneric,  
@@ -128,7 +129,7 @@ counter = Counter()
     summary="Dynamically generate buttons just for fun",
     description=" ",
     request=None,
-    tags=['Test'],
+    tags=['BE - Test'],
     responses={
         200: None,
         500: ExceptionSerializerGeneric,
@@ -162,3 +163,25 @@ def dynamic(request:Request):
             dynamicObject["Buttons"].append(templateEdit)
         return Response(dynamicObject)
     
+
+#######################################################
+@extend_schema(
+    summary=" Return Settings of django",
+    description=" ",
+    request=None,
+    tags=['BE - Test'],
+    responses={
+        200: None,
+    },
+)
+@api_view(["GET"])
+def getSettingsToken(request):
+    """
+    Return Settings of django
+
+    :param request: GET request
+    :type request: HTTP GET
+    :return: JSON with Settings
+    :rtype: JSONResponse
+    """
+    return JsonResponse({"token": settings.BACKEND_SETTINGS})
