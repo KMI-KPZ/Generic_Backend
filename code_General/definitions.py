@@ -59,16 +59,32 @@ class FileObject():
 ###################################################
 # File object content as enum
 class FileObjectContent(StrEnumExactylAsDefined):
+    """
+    What can be the metadata of a file?
+    """
     id = enum.auto()
     path = enum.auto()
     fileName = enum.auto()
+    imgPath = enum.auto()
     tags = enum.auto()
-    date = enum.auto()
     licenses = enum.auto()
     certificates = enum.auto()
-    URI = enum.auto()
+    date = enum.auto()
     createdBy = enum.auto()
     remote = enum.auto()
+    size = enum.auto()
+    type = enum.auto()
+    origin = enum.auto()
+
+###################################################
+# File object content as enum
+class FileTypes(StrEnumExactylAsDefined):
+    """
+    What types are there (see FileObjectContent.type)
+
+    """
+    Model = enum.auto()
+    File = enum.auto()
 
 ###################################################
 # Enum for session content
