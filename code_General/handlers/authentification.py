@@ -284,7 +284,7 @@ def retrieveRolesAndPermissionsForStandardUser(session):
                 raise response
             else:
                 permissions = response
-                assert isinstance(permissions, dict), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected permissions to be of type dictionary, instead got: {type(permissions)}"
+                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict

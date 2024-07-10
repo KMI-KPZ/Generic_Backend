@@ -39,7 +39,7 @@ class User(models.Model):
     :hashedID: SHA-512 hashed value of the subID for anonymous identification
     :name: Nickname returned by Auth0, used for filter searches in DB
     :organizations: The organizations that the user belongs to
-    :details: Adress, E-Mail, ...
+    :details: Address, E-Mail, ...
     :createdWhen: Automatically assigned date and time(UTC+0) when the user first registered
     :updatedWhen: Date and time at which the entry was updated
     :accessedWhen: Last date and time the user was fetched from the database, automatically set

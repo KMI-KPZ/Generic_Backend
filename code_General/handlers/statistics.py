@@ -71,9 +71,9 @@ def getNumberOfUsers(request):
 
 
 ##############################################
-def getIpAdress(request, *args, **kwargs):
+def getIpAddress(request, *args, **kwargs):
     """
-    Get the IP Adress of any illegit request and write it to a log file
+    Get the IP Address of any illegit request and write it to a log file
 
     :param request: GET request
     :type request: HTTP GET

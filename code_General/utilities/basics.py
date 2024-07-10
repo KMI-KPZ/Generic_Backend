@@ -232,7 +232,8 @@ def checkIfRightsAreSufficient(json=False):
 # utility function to find the first occurence of an element with a condition in e.g. a list
 # from: https://stackoverflow.com/questions/9542738/find-a-value-in-a-list
 def findFirstOccurence(iterable, default=False, pred=None):
-    """Returns the first true value in the iterable.
+    """
+    Returns the first true value in the iterable.
 
     If no true value is found, returns *default*
 
@@ -252,3 +253,60 @@ def findFirstOccurence(iterable, default=False, pred=None):
     # first_true([a,b,c], x) --> a or b or c or x
     # first_true([a,b], x, f) --> a if f(a) else b if f(b) else x
     return next(filter(pred, iterable), default)
+
+#######################################################
+# from: https://stackoverflow.com/questions/43491287/elegant-way-to-check-if-a-nested-key-exists-in-a-dict
+def checkIfNestedKeyExists(dictionary:dict, *keys) -> bool:
+    """
+    Check if nested keys exist in a dictionary.
+    Equivalent to: if key1 in dictionary and key2 in dictionary[key1] and ...
+
+    :param dictionary: The dictionary in question
+    :type dictionary: dict
+    :param keys: Key Parameters, must be in order
+    :type keys: Any
+    :return: True if all keys are in Dictionary
+    :rtype: bool
+    
+    """
+    if not isinstance(dictionary, dict):
+        raise AttributeError('checkIfNestedKeyExists() expects dict as first argument.')
+    if len(keys) == 0:
+        raise AttributeError('checkIfNestedKeyExists() expects at least two arguments, one given.')
+
+    _dictionary = dictionary
+    for key in keys:
+        try:
+            _dictionary = _dictionary[key]
+        except KeyError:
+            return False
+    return True
+
+#######################################################
+def getNestedValue(dictionary:dict, *keys):
+    """
+    Check if nested keys exist in a dictionary and return the final value.
+    Equivalent to: if key1 in dictionary and key2 in dictionary[key1] and ... dictionary[key1][key2]...[keyN]
+
+    :param dictionary: The dictionary in question
+    :type dictionary: dict
+    :param keys: Key Parameters, must be in order
+    :type keys: Any
+    :return: The last value if all keys are in Dictionary, None if not
+    :rtype: Any | None
+    
+    """
+    if not isinstance(dictionary, dict):
+        raise AttributeError('getNestedValue() expects dict as first argument.')
+    if len(keys) == 0:
+        raise AttributeError('getNestedValue() expects at least two arguments, one given.')
+
+    _dictionary = dictionary
+    for key in keys:
+        try:
+            _dictionary = _dictionary[key]
+        except KeyError:
+            return None
+    if isinstance(_dictionary, dict):
+        raise AttributeError("Not enough keys given in getNestedValue!")
+    return _dictionary

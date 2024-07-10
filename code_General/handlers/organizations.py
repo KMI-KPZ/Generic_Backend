@@ -131,16 +131,16 @@ def organizations_getInviteLink(request):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         orgID = request.session["user"]["userinfo"]["org_id"]
         userName = request.session["user"]["userinfo"]["nickname"]
-        emailAdressOfUserToBeAdded = content["content"]["email"]
+        emailAddressOfUserToBeAdded = content["content"]["email"]
         roleID = content["content"]["roleID"]
 
-        data = { "inviter": { "name": userName }, "invitee": { "email": emailAdressOfUserToBeAdded }, "client_id": settings.AUTH0_ORGA_CLIENT_ID, "connection_id": auth0.auth0Config["IDs"]["connection_id"], "ttl_sec": 0, "roles": [roleID], "send_invitation_email": False }
+        data = { "inviter": { "name": userName }, "invitee": { "email": emailAddressOfUserToBeAdded }, "client_id": settings.AUTH0_ORGA_CLIENT_ID, "connection_id": auth0.auth0Config["IDs"]["connection_id"], "ttl_sec": 0, "roles": [roleID], "send_invitation_email": False }
         
         response = handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/invitations', headers=headers, json=data))
         if isinstance(response, Exception):
             raise response
         
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},invite,{Logging.Object.USER},user {emailAdressOfUserToBeAdded} to {orgID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},invite,{Logging.Object.USER},user {emailAddressOfUserToBeAdded} to {orgID}," + str(datetime.datetime.now()))
         return HttpResponse(response["invitation_url"])
     
     except Exception as e:
@@ -177,16 +177,16 @@ def organizations_addUser(request):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         orgID = request.session["user"]["userinfo"]["org_id"]
         userName = request.session["user"]["userinfo"]["nickname"]
-        emailAdressOfUserToBeAdded = content["content"]["email"]
+        emailAddressOfUserToBeAdded = content["content"]["email"]
         roleID = content["content"]["roleID"]
 
-        data = { "inviter": { "name": userName }, "invitee": { "email": emailAdressOfUserToBeAdded }, "client_id": settings.AUTH0_ORGA_CLIENT_ID, "connection_id": auth0.auth0Config["IDs"]["connection_id"], "ttl_sec": 0, "roles":[roleID], "send_invitation_email": True }
+        data = { "inviter": { "name": userName }, "invitee": { "email": emailAddressOfUserToBeAdded }, "client_id": settings.AUTH0_ORGA_CLIENT_ID, "connection_id": auth0.auth0Config["IDs"]["connection_id"], "ttl_sec": 0, "roles":[roleID], "send_invitation_email": True }
         
         response = handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/invitations', headers=headers, json=data))
         if isinstance(response, Exception):
             raise response
         
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},invite,{Logging.Object.USER},user {emailAdressOfUserToBeAdded} to {orgID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},invite,{Logging.Object.USER},user {emailAddressOfUserToBeAdded} to {orgID}," + str(datetime.datetime.now()))
         return HttpResponse("Success", status=200)
 
     except Exception as e:
@@ -273,10 +273,10 @@ def organizations_deleteUser(request):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         orgID = request.session["user"]["userinfo"]["org_id"]
         userName = request.session["user"]["userinfo"]["nickname"]
-        emailAdressOfUserToBeAdded = content["content"]["email"]
+        emailAddressOfUserToBeAdded = content["content"]["email"]
 
         # fetch user id via E-Mail of the user
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAdressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
+        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAddressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
         if isinstance(response, Exception):
             raise response
         userID = response[0]["user_id"]
@@ -287,7 +287,7 @@ def organizations_deleteUser(request):
         if isinstance(response, Exception):
             raise response
         pgProfiles.ProfileManagementUser.deleteUser("", uID=userID)
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},user {emailAdressOfUserToBeAdded} from {orgID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},user {emailAddressOfUserToBeAdded} from {orgID}," + str(datetime.datetime.now()))
         
         # Send event to websocket
         retVal = sendEventViaWebsocket(orgID, baseURL, headers, "deleteUserFromOrganization", userID)
@@ -381,11 +381,11 @@ def organizations_assignRole(request):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         orgID = request.session["user"]["userinfo"]["org_id"]
         userName = request.session["user"]["userinfo"]["nickname"]
-        emailAdressOfUserToBeAdded = content["content"]["email"]
+        emailAddressOfUserToBeAdded = content["content"]["email"]
         roleID = content["content"]["roleID"]
 
         # fetch user id via E-Mail of the user
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAdressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
+        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAddressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
         if isinstance(response, Exception):
             raise response
         userID = response[0]["user_id"]
@@ -399,7 +399,7 @@ def organizations_assignRole(request):
         if isinstance(retVal, Exception):
             raise retVal
         
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DEFINED},assigned,{Logging.Object.OBJECT},role {roleID} to {emailAdressOfUserToBeAdded} in {orgID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DEFINED},assigned,{Logging.Object.OBJECT},role {roleID} to {emailAddressOfUserToBeAdded} in {orgID}," + str(datetime.datetime.now()))
         return HttpResponse("Success", status=200)
 
     except Exception as e:
@@ -436,11 +436,11 @@ def organizations_removeRole(request):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
         orgID = request.session["user"]["userinfo"]["org_id"]
         userName = request.session["user"]["userinfo"]["nickname"]
-        emailAdressOfUserToBeAdded = content["content"]["email"]
+        emailAddressOfUserToBeAdded = content["content"]["email"]
         roleID = content["content"]["roleID"]
 
         # fetch user id via E-Mail of the user
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAdressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
+        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAddressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
         if isinstance(response, Exception):
             raise response
         userID = response[0]["user_id"]
@@ -450,7 +450,7 @@ def organizations_removeRole(request):
         if isinstance(response, Exception):
             raise response
         
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},removed,{Logging.Object.OBJECT},role {roleID} from {emailAdressOfUserToBeAdded} in {orgID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},removed,{Logging.Object.OBJECT},role {roleID} from {emailAddressOfUserToBeAdded} in {orgID}," + str(datetime.datetime.now()))
         # retVal = sendEventViaWebsocket(orgID, baseURL, headers, "removeRole", result)
         # if isinstance(retVal, Exception):
         #     raise retVal
