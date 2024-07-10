@@ -5,7 +5,7 @@ services:
     image: backend-production
     build:
       context: .
-      dockerfile: ./Dockerfile.Testing
+      dockerfile: ./Dockerfile.Server
     command: ["bash", "run/runtests.sh"]
     env_file:
       - .env.production
