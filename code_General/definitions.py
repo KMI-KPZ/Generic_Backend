@@ -71,6 +71,7 @@ class FileObjectContent(StrEnumExactylAsDefined):
     certificates = enum.auto()
     date = enum.auto()
     createdBy = enum.auto()
+    createdByID = enum.auto()
     remote = enum.auto()
     size = enum.auto()
     type = enum.auto()

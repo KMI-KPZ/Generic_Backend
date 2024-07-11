@@ -19,6 +19,8 @@ from rest_framework.request import Request
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
+from Generic_Backend.code_General.modelFiles.organizationModel import OrganizationDescription
+
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
 from ..utilities.basics import checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient, ExceptionSerializerGeneric
@@ -82,6 +84,190 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
         return True
     except Exception as e:
         return e
+
+
+#########################################################################
+# addOrganizationTest
+#########################################################################
+#TODO Add serializer for addOrganizationTest
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="For testing",
+    description=" ",
+    request=None,
+    tags=['Test'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric,
+    },
+)
+@checkIfUserIsLoggedIn(json=True)
+@api_view(["POST"])
+def addOrganizationTest(request:Request):
+    """
+    For testing.
+
+    :param request: GET request
+    :type request: HTTP GET
+    :return: HTTP response
+    :rtype: HTTP status
+
+    """
+    try:
+        returnVal = pgProfiles.ProfileManagementOrganization.addOrGetOrganization(request.session)
+        if returnVal is not None:
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
+            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except (Exception) as exc:
+        loggerError.error(f"Error creating organization: {str(exc)}")
+        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#######################################################
+#########################################################################
+# getOrganizationDetails
+#"getOrganization": ("public/getOrganization/",profiles.getOrganizationDetails)
+#########################################################################
+#TODO Add serializer for getOrganizationDetails
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Returns details about organization.",
+    description=" ",
+    request=None,
+    tags=['FE - Profiles'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric,
+    },
+)
+@checkIfUserIsLoggedIn(json=True)
+@api_view(["GET"])
+def getOrganizationDetails(request:Request):
+    """
+    Return details about organization. 
+
+    :param request: GET request
+    :type request: HTTP GET
+    :return: Organization details
+    :rtype: Json
+
+    """
+    # Read organization details from Database
+    try:
+        returnVal = pgProfiles.ProfileManagementOrganization.getOrganization(request.session)
+        return Response(returnVal, status=status.HTTP_200_OK)
+    except (Exception) as error:
+        loggerError.error(f"Error in getOrganizationDetails : {str(error)}")
+        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#########################################################################
+# updateDetailsOfOrganization
+#"updateDetailsOfOrga": ("public/updateOrganizationDetails/",profiles.updateDetailsOfOrganization)
+#########################################################################
+#TODO Add serializer for updateDetailsOfOrganization
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Update details of organization of that user.",
+    description=" ",
+    request=None,
+    tags=['FE - Profiles'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric,
+    },
+)
+@checkIfUserIsLoggedIn()
+@api_view(["PATCH"])
+@checkIfRightsAreSufficient()
+def updateDetailsOfOrganization(request:Request):
+    """
+    Update details of organization of that user.
+
+    :param request: PATCH request
+    :type request: HTTP PATCH
+    :return: HTTP response
+    :rtype: HTTP status
+
+    """
+    try:
+        content = json.loads(request.body.decode("utf-8"))["data"]["content"]
+        logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},details of {pgProfiles.ProfileManagementOrganization.getOrganization(request.session)[OrganizationDescription.name]}," + str(datetime.datetime.now()))
+        flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content)
+        if flag is True:
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
+            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except (Exception) as error:
+        message = f"Error in {updateDetailsOfOrganization.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+#########################################################################
+# deleteOrganization
+#"deleteOrganization": ("public/deleteOrganization/",profiles.deleteOrganization)
+#########################################################################
+#TODO Add serializer for deleteOrganization
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Deletes an organization from the database and auth0.",
+    description=" ",
+    request=None,
+    tags=['FE - Profiles'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric,
+    },
+)
+@checkIfUserIsLoggedIn()
+@api_view(["DELETE"])
+@checkIfRightsAreSufficient()
+def deleteOrganization(request:Request):
+    """
+    Deletes an organization from the database and auth0.
+
+    :param request: DELETE request
+    :type request: HTTP DELETE
+    :return: HTTP response
+    :rtype: HTTP status
+
+    """
+    try:
+        orgaID = pgProfiles.ProfileManagementOrganization.getOrganizationID(request.session)
+        orgaName = pgProfiles.ProfileManagementOrganization.getOrganizationName(pgProfiles.ProfileManagementOrganization.getOrganizationHashID(request.session))
+        flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
+        if flag is True:
+            baseURL = f"https://{settings.AUTH0_DOMAIN}"
+            headers = {
+                'authorization': f'Bearer {auth0.apiToken.accessToken}'
+            }
+            response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers) )
+            if isinstance(response, Exception):
+                loggerError.error(f"Error deleting organization: {str(response)}")
+                return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+            logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
+            return Response("Success", status=status.HTTP_200_OK)
+        else:
+            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as error:
+        message = f"Error in {deleteOrganization.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 #######################################################

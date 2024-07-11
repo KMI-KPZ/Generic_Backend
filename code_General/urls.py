@@ -46,16 +46,13 @@ newPaths = {
 
     "deleteUser": ("public/profile/user/delete/",profiles.deleteUser),
     #"addUser": ("private/profile_addUser/",profiles.addUserTest),
-    #"addOrga": ("private/profile_addOrga/",profiles.addOrganizationTest),
+    
     "getUser": ("public/profile/user/get/",profiles.getUserDetails),
     "updateDetails": ("public/profile/user/update/",profiles.updateDetails),
     "createAddress": ("public/profile/address/create/", profiles.createAddress),
     "updateAddress": ("public/profile/address/update/", profiles.updateAddress),
     "deleteAddress": ("public/profile/address/delete/<str:addressID>/", profiles.deleteAddress),
-    "getOrganization": ("public/profile/organization/get/",profiles.getOrganizationDetails),
-    "updateDetailsOfOrga": ("public/profile/organization/update/",profiles.updateDetailsOfOrganization),
-    "deleteOrganization": ("public/profile/organization/delete/",profiles.deleteOrganization),
-
+    
     "genericUploadFiles": ("private/generic/files/upload/",files.genericUploadFiles),
     "genericDownloadFile": ("private/generic/files/download/",files.genericDownloadFile),
     "genericDownloadFilesAsZip": ("private/generic/files/download/asZip/",files.genericDownloadFilesAsZip),
@@ -67,6 +64,10 @@ newPaths = {
     "adminUpdateUser": ("public/admin/user/update",admin.updateDetailsOfUserAsAdmin),
     "adminUpdateOrga": ("public/admin/organization/update/",admin.updateDetailsOfOrganizationAsAdmin),
 
+    #"addOrga": ("private/profile_addOrga/",organizations.addOrganizationTest),
+    "getOrganization": ("public/organizations/get/",organizations.getOrganizationDetails),
+    "updateDetailsOfOrga": ("public/organizations/update/",organizations.updateDetailsOfOrganization),
+    "deleteOrganization": ("public/organizations/delete/",organizations.deleteOrganization),
     "organizations_addUser": ("public/organizations/users/add/",organizations.organizations_addUser),
     "organizations_getInviteLink": ("public/organizations/users/inviteLink/",organizations.organizations_getInviteLink),
     "organizations_fetchUsers": ("public/organizations/users/get/",organizations.organizations_fetchUsers),
