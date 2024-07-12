@@ -14,7 +14,7 @@ from ...modelFiles.userModel import User
 from ...utilities import crypto
 from logging import getLogger
 
-from ...definitions import SessionContent, UserDescription, OrganizationDescription, ProfileClasses, GlobalDefaults, UserDetails, OrganizationDetails
+from ...definitions import *
 
 logger = getLogger("errors")
 
@@ -582,14 +582,18 @@ class ProfileManagementUser(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def updateContent(session, details, updateType:str, userID=""):
+    def updateContent(session, updates, userID=""):
         """
         Update user details.
 
         :param session: GET request session
         :type session: Dictionary
-        :return: flag if it worked or not
-        :rtype: Bool
+        :param updates: The user details to update
+        :type updates: differs
+        :param userID: The user ID who updates. If not given, the subID will be used	
+        :type userID: str
+        :return: If it worked or not
+        :rtype: None | Exception
 
         """
         if userID == "":
@@ -600,21 +604,71 @@ class ProfileManagementUser(ProfileManagementBase):
         try:
             existingObj = User.objects.get(subID=subID)
             existingInfo = {UserDescription.name: existingObj.name, UserDescription.details: existingObj.details}
-            
-            if updateType == UserDescription.details:
-                for key in details:
-                    existingInfo[UserDescription.details][key] = details[key]
-            elif updateType == UserDescription.name:
-                if isinstance(details, str):
+            for updateType in updates:
+                details = updates[updateType]
+                if updateType == UserUpdateType.displayName:
+                    assert isinstance(details, str), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[UserDescription.name] = details
+                elif updateType == UserUpdateType.email:
+                    assert isinstance(details, str), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str"
+                    existingInfo[UserDescription.details][UserDetails.email] = details
+                    #TODO send to auth0
+                elif updateType == UserUpdateType.address:
+                    # TODO
+                    pass
+                elif updateType == UserUpdateType.locale:
+                    assert isinstance(details, str) and "-" in details, f"updateUser failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
+                    existingInfo[UserDescription.details][UserDetails.locale] = details
+                elif updateType == UserUpdateType.notifications:
+                    # TODO
+                    pass
                 else:
-                    raise Exception("Wrong type for details when changing name!")
+                    raise Exception("updateType not defined")
             
             affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
+            return None
         except (Exception) as error:
             logger.error(f"Error updating user details: {str(error)}")
-            return False
-        return True
+            return error
+        
+    ##############################################
+    @staticmethod
+    def deleteContent(session, updates, userID=""):
+        """
+        Delete certain user details.
+
+        :param session: GET request session
+        :type session: Dictionary
+        :param updates: The user details to update
+        :type updates: differs
+        :param userID: The user ID to update. If not given, the subID will be used	
+        :type userID: str
+        :return: If it worked or not
+        :rtype: None | Exception
+
+        """
+        if userID == "":
+            subID = session["user"]["userinfo"]["sub"]
+        else:
+            subID = userID
+        updated = timezone.now()
+        try:
+            existingObj = User.objects.get(subID=subID)
+            existingInfo = {UserDescription.name: existingObj.name, UserDescription.details: existingObj.details}
+            for updateType in updates:
+                details = updates[updateType]
+                
+                if updateType == UserUpdateType.address:
+                    # TODO
+                    pass
+                else:
+                    raise Exception("updateType not defined")
+            
+            affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
+            return None
+        except (Exception) as error:
+            logger.error(f"Error updating user details: {str(error)}")
+            return error
     
     ##############################################
     @staticmethod
@@ -758,14 +812,18 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def updateContent(session, content, orgaID=""):
+    def updateContent(session, updates, orgaID=""):
         """
         Update user details and more.
 
         :param session: GET request session
         :type session: Dictionary
-        :return: flag if it worked or not
-        :rtype: Bool
+        :param updates: The orga details to update
+        :type updates: differs
+        :param orgaID: The orga ID who updates. If not given, the org_id will be used	
+        :type orgaID: str
+        :return: Worked or not
+        :rtype: None | Exception
 
         """
         if orgaID == "":
@@ -775,17 +833,60 @@ class ProfileManagementOrganization(ProfileManagementBase):
         updated = timezone.now()
         try:
             existingObj = Organization.objects.get(subID=orgID)
-            existingInfo = {OrganizationDescription.details: existingObj.details, OrganizationDescription.supportedServices: existingObj.supportedServices, OrganizationDescription.name: existingObj.name, OrganizationDescription.uri: existingObj.uri}
-            for key in content:
-                if key == OrganizationDescription.supportedServices:
-                    existingInfo[OrganizationDescription.supportedServices] = content[key]
+            existingInfo = {OrganizationDescription.details: existingObj.details, OrganizationDescription.supportedServices: existingObj.supportedServices, OrganizationDescription.name: existingObj.name}
+            
+            for updateType in updates:
+                details = updates[updateType]
+                if updateType == OrganizationUpdateType.services:
+                    assert isinstance(details, list), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of list"
+                    existingInfo[OrganizationDescription.supportedServices] = details
+                elif updateType == OrganizationUpdateType.address:
+                    #TODO
+                    pass
+                elif updateType == OrganizationUpdateType.displayName:
+                    assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
+                    existingInfo[OrganizationDescription.name] = details
+                elif updateType == OrganizationUpdateType.email:
+                    assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
+                    existingInfo[OrganizationDescription.details][OrganizationDetails.email] = details
+                elif updateType == OrganizationUpdateType.locale:
+                    assert isinstance(details, str) and "-" in details, f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
+                    existingInfo[OrganizationDescription.details][OrganizationDetails.locale] = details
+                elif updateType == OrganizationUpdateType.taxID:
+                    assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
+                    existingInfo[OrganizationDescription.details][OrganizationDetails.taxID] = details
+                elif updateType == OrganizationUpdateType.notifications:
+                    # TODO
+                    pass
+                elif updateType == OrganizationUpdateType.priorities:
+                    # TODO
+                    pass
                 else:
-                    existingInfo[key] = content[key]
+                    raise Exception("updateType not defined")
+                
             affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], uri=existingInfo[OrganizationDescription.uri], updatedWhen=updated)
+            return None
         except (Exception) as error:
             logger.error(f"Error updating organization details: {str(error)}")
-            return False
-        return True
+            return error
+        
+    ##############################################
+    @staticmethod
+    def deleteContent(session, updates, orgaID=""):
+        """
+        Delete certain user details.
+
+        :param session: GET request session
+        :type session: Dictionary
+        :param updates: The user details to update
+        :type updates: differs
+        :param orgaID: The user ID to update. If not given, the subID will be used	
+        :type orgaID: str
+        :return: If it worked or not
+        :rtype: None | Exception
+
+        """
+        pass #TODO
 
     ##############################################
     @staticmethod

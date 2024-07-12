@@ -128,6 +128,42 @@ class UserDetails(StrEnumExactylAsDefined):
     email = enum.auto()
     addresses = enum.auto()
     locale = enum.auto()
+    notificationSettings = enum.auto()
+    statistics = enum.auto()
+
+###################################################
+# Enum what can be updated for a user
+class UserUpdateType(StrEnumExactylAsDefined):
+    """
+    What updated can happen to a user?
+    
+    """
+    displayName = enum.auto()
+    email = enum.auto()
+    notifications = enum.auto()
+    locale = enum.auto()
+    address = enum.auto()
+
+###################################################
+# Enum for notification settings for users
+class NotificationSettingsUser(StrEnumExactylAsDefined):
+    """
+    Which notifications can be received?
+    Some can be set here but most are specific to the plattform itself (just inherit from this class)
+    
+    """
+    newsletter = enum.auto() 
+
+###################################################
+# Enum for statistics settings for user profiles
+class StatisticsForProfiles(StrEnumExactylAsDefined):
+    """
+    Which statistics are measured?
+    
+    """
+    lastLogin = enum.auto()
+    numberOfLoginsTotal = enum.auto()
+    locationOfLastLogin = enum.auto()
 
 ###################################################
 # Enum for Content of details for organizations
@@ -139,7 +175,35 @@ class OrganizationDetails(StrEnumExactylAsDefined):
     address = enum.auto()
     email = enum.auto()
     taxID = enum.auto()
+    locale = enum.auto() # preferred communication language
+    notificationSettings = enum.auto()
+    priorities = enum.auto()
+
+###################################################
+# Enum what can be updated for a user
+class OrganizationUpdateType(StrEnumExactylAsDefined):
+    """
+    What updated can happen to a user?
+    
+    """
+    displayName = enum.auto()
+    email = enum.auto()
+    notifications = enum.auto()
+    services = enum.auto()
     locale = enum.auto()
+    address = enum.auto()
+    priorities = enum.auto()
+    taxID = enum.auto()
+
+###################################################
+# Enum for notification settings for orgas
+class NotificationSettingsOrganizations(StrEnumExactylAsDefined):
+    """
+    Which notifications can be received?
+    Some can be set here but most are specific to the plattform itself (just inherit from this class)
+    
+    """
+    newsletter = enum.auto() 
 
 ###################################################
 # Class for default strings

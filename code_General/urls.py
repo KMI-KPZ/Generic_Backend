@@ -17,7 +17,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 ##############################################################################
 ### WSGI
 
-from .handlers import admin, authentification, email, files, frontpage, organizations, profiles, statistics, testResponse, files
+from .handlers import admin, authentification, email, files, frontpage, organizations, statistics, testResponse, files, users
 from Benchy.BenchyMcMarkface import startFromDjango
 
 newPaths = { 
@@ -44,14 +44,14 @@ newPaths = {
     "getPermissionsFile": ("public/auth/permissions/mask/get/",authentification.provideRightsFile),
     "setLocaleOfUser": ("public/auth/localeOfUser/set/", authentification.setLocaleOfUser),
 
-    "deleteUser": ("public/profile/user/delete/",profiles.deleteUser),
+    "deleteUser": ("public/profile/user/delete/",users.deleteUser),
     #"addUser": ("private/profile_addUser/",profiles.addUserTest),
     
-    "getUser": ("public/profile/user/get/",profiles.getUserDetails),
-    "updateDetails": ("public/profile/user/update/",profiles.updateDetails),
-    "createAddress": ("public/profile/address/create/", profiles.createAddress),
-    "updateAddress": ("public/profile/address/update/", profiles.updateAddress),
-    "deleteAddress": ("public/profile/address/delete/<str:addressID>/", profiles.deleteAddress),
+    "getUser": ("public/profile/user/get/",users.getUserDetails),
+    "updateDetails": ("public/profile/user/update/",users.updateDetails),
+    "createAddress": ("public/profile/address/create/", users.createAddress),
+    "updateAddress": ("public/profile/address/update/", users.updateAddress),
+    "deleteAddress": ("public/profile/address/delete/<str:addressID>/", users.deleteAddress),
     
     "genericUploadFiles": ("private/generic/files/upload/",files.genericUploadFiles),
     "genericDownloadFile": ("private/generic/files/download/",files.genericDownloadFile),

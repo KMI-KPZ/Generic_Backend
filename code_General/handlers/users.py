@@ -24,7 +24,7 @@ from ..utilities import basics, crypto
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
 from ..utilities.basics import handleTooManyRequestsError, ExceptionSerializerGeneric
-from ..definitions import SessionContent, ProfileClasses, UserDescription, OrganizationDescription, Logging, UserDetails
+from ..definitions import *
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -176,12 +176,19 @@ def updateDetails(request:Request):
     """
     try:
         content = json.loads(request.body.decode("utf-8"))
+        # TODO serializers and validation
+        if "changes" in content:
+            flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content["changes"])
+            if isinstance(flag, Exception):
+                raise flag
+        if "deletions" in content:
+            flag = pgProfiles.ProfileManagementUser.deleteContent(request.session, content["deletions"])
+            if isinstance(flag, Exception):
+                raise flag
+        
         logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.SELF},details," + str(datetime.datetime.now()))
-        flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, UserDescription.name)
-        if flag is True:
-            return Response("Success", status=status.HTTP_200_OK)
-        else:
-            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("Success", status=status.HTTP_200_OK)
+
     except (Exception) as error:
         message = f"Error in {updateDetails.cls.__name__}: {str(error)}"
         exception = str(error)

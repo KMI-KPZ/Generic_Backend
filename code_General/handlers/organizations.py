@@ -194,12 +194,17 @@ def updateDetailsOfOrganization(request:Request):
     """
     try:
         content = json.loads(request.body.decode("utf-8"))["data"]["content"]
+        if "changes" in content:
+            flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content["changes"])
+            if isinstance(flag, Exception):
+                raise flag
+        if "deletions" in content:
+            flag = pgProfiles.ProfileManagementOrganization.deleteContent(request.session, content["deletions"])
+            if isinstance(flag, Exception):
+                raise flag
+        
         logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},details of {pgProfiles.ProfileManagementOrganization.getOrganization(request.session)[OrganizationDescription.name]}," + str(datetime.datetime.now()))
-        flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content)
-        if flag is True:
-            return Response("Success", status=status.HTTP_200_OK)
-        else:
-            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("Success", status=status.HTTP_200_OK)
     except (Exception) as error:
         message = f"Error in {updateDetailsOfOrganization.cls.__name__}: {str(error)}"
         exception = str(error)

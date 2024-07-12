@@ -51,7 +51,7 @@ class Organization(models.Model):
     details = models.JSONField()
     users = models.ManyToManyField("User")
     supportedServices = ArrayField(models.IntegerField())
-    uri = models.CharField(max_length=200)
+    uri = models.CharField(max_length=200) #maybe use this for api key instead
     createdWhen = models.DateTimeField(auto_now_add=True)
     updatedWhen = models.DateTimeField()
     accessedWhen = models.DateTimeField(auto_now=True)
