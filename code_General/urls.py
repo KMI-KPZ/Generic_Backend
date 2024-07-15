@@ -49,9 +49,9 @@ newPaths = {
     
     "getUser": ("public/profile/user/get/",users.getUserDetails),
     "updateDetails": ("public/profile/user/update/",users.updateDetails),
-    "createAddress": ("public/profile/address/create/", users.createAddress),
-    "updateAddress": ("public/profile/address/update/", users.updateAddress),
-    "deleteAddress": ("public/profile/address/delete/<str:addressID>/", users.deleteAddress),
+    #"createAddress": ("public/profile/address/create/", users.createAddress),
+    #"updateAddress": ("public/profile/address/update/", users.updateAddress),
+    #"deleteAddress": ("public/profile/address/delete/<str:addressID>/", users.deleteAddress),
     
     "genericUploadFiles": ("private/generic/files/upload/",files.genericUploadFiles),
     "genericDownloadFile": ("private/generic/files/download/",files.genericDownloadFile),

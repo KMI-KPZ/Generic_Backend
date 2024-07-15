@@ -5,10 +5,14 @@ Silvio Weging 2023
 
 Contains: Services for database calls to manage a user/organization profile
 """
-import types, json, enum, re
+from django.conf import settings
+import types, json, enum, re, requests
 
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
+
+from Generic_Backend.code_General.connections import auth0
+from Generic_Backend.code_General.utilities.basics import handleTooManyRequestsError
 from ...modelFiles.organizationModel import Organization
 from ...modelFiles.userModel import User
 from ...utilities import crypto
@@ -612,16 +616,45 @@ class ProfileManagementUser(ProfileManagementBase):
                 elif updateType == UserUpdateType.email:
                     assert isinstance(details, str), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[UserDescription.details][UserDetails.email] = details
-                    #TODO send to auth0
+                    # send to id manager
+                    headers = {
+                        'authorization': f'Bearer {auth0.apiToken.accessToken}',
+                        'content-Type': 'application/json',
+                        "Accept": "application/json",
+                        "Cache-Control": "no-cache"
+                    }
+                    baseURL = f"https://{settings.AUTH0_DOMAIN}"
+                    payload = json.dumps({"email": details})
+                    response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', data=payload, headers=headers) )
+                    if isinstance(response, Exception):
+                        raise response
                 elif updateType == UserUpdateType.address:
-                    # TODO
-                    pass
+                    assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
+                    setToStandardAddress = details["standard"] # if the new address will be the standard address
+                    addressAlreadyExists = False
+                    newContentInDB = {}
+                    if UserDetails.addresses in existingInfo[UserDescription.details]: # add old content
+                        newContentInDB = existingInfo[UserDescription.details][UserDetails.addresses] 
+                        for key in newContentInDB:
+                            if "id" in details and details["id"] == newContentInDB[key]["id"]:
+                                addressAlreadyExists = True
+                            if setToStandardAddress:
+                                newContentInDB[key]["standard"] = False
+                    if addressAlreadyExists == False:
+                        # add new content
+                        idForNewAddress = crypto.generateURLFriendlyRandomString()
+                        details["id"] = idForNewAddress
+                    else:
+                        # overwrite existing entry
+                        idForNewAddress = details["id"]
+                    newContentInDB[idForNewAddress] = details
+                    existingInfo[UserDescription.details][UserDetails.addresses] = newContentInDB
                 elif updateType == UserUpdateType.locale:
                     assert isinstance(details, str) and "-" in details, f"updateUser failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
                     existingInfo[UserDescription.details][UserDetails.locale] = details
                 elif updateType == UserUpdateType.notifications:
-                    # TODO
-                    pass
+                    assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
+                    existingInfo[UserDescription.details][UserDetails.notificationSettings] = details
                 else:
                     raise Exception("updateType not defined")
             
@@ -659,8 +692,8 @@ class ProfileManagementUser(ProfileManagementBase):
                 details = updates[updateType]
                 
                 if updateType == UserUpdateType.address:
-                    # TODO
-                    pass
+                    assert isinstance(details, str), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of str"
+                    del existingInfo[UserDescription.details][UserDetails.addresses][details]
                 else:
                     raise Exception("updateType not defined")
             
@@ -752,7 +785,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def addUserToOrganization(userToBeAdded, organizationID):
+    def addUserToOrganization(userToBeAdded:User, organizationID:str):
         """
         Add user to organization.
 
@@ -767,6 +800,11 @@ class ProfileManagementOrganization(ProfileManagementBase):
         try:
             result = Organization.objects.get(subID=organizationID)
             result.users.add(userToBeAdded)
+            if OrganizationDetails.addresses in result.details: # add addresses of the orga to the user
+                for key in result.details[OrganizationDetails.addresses]:
+                    userToBeAdded.details[UserDetails.addresses][key] = result.details[OrganizationDetails.addresses][key]
+                userToBeAdded.save()
+            result.save()
         except (ObjectDoesNotExist) as error:
             logger.error(f"Error adding user to organization, organization does not exist: {str(error)}")
 
@@ -797,7 +835,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
         except (ObjectDoesNotExist) as error:
             try:
                 orgaName = session[SessionContent.ORGANIZATION_NAME]
-                orgaDetails = {OrganizationDetails.email: "", OrganizationDetails.address: "", OrganizationDetails.taxID: ""}
+                orgaDetails = {OrganizationDetails.email: "", OrganizationDetails.addresses: {}, OrganizationDetails.taxID: "", OrganizationDetails.locale: "", OrganizationDetails.notificationSettings: {}, OrganizationDetails.priorities: {}}
                 idHash = crypto.generateSecureID(orgaID)
                 uri = ""
                 supportedServices = [0]
@@ -837,18 +875,67 @@ class ProfileManagementOrganization(ProfileManagementBase):
             
             for updateType in updates:
                 details = updates[updateType]
-                if updateType == OrganizationUpdateType.services:
+                if updateType == OrganizationUpdateType.supportedServices:
                     assert isinstance(details, list), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of list"
                     existingInfo[OrganizationDescription.supportedServices] = details
                 elif updateType == OrganizationUpdateType.address:
-                    #TODO
-                    pass
+                    assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
+                    setToStandardAddress = details["standard"] # if the new address will be the standard address
+                    addressAlreadyExists = False
+                    newContentInDB = {}
+                    if OrganizationDetails.addresses in existingInfo[OrganizationDescription.details]: # add old content
+                        newContentInDB = existingInfo[OrganizationDescription.details][OrganizationDetails.addresses]
+                        for key in newContentInDB:
+                            if "id" in details and details["id"] == newContentInDB[key]["id"]:
+                                addressAlreadyExists = True
+                            if setToStandardAddress:
+                                newContentInDB[key]["standard"] = False
+
+                    if addressAlreadyExists == False:
+                        # add new content
+                        idForNewAddress = crypto.generateURLFriendlyRandomString()
+                        details["id"] = idForNewAddress
+                    else:
+                        # overwrite existing entry
+                        idForNewAddress = details["id"]
+                    newContentInDB[idForNewAddress] = details
+                    existingInfo[OrganizationDescription.details][OrganizationDetails.addresses] = newContentInDB
                 elif updateType == OrganizationUpdateType.displayName:
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.name] = details
+                    # send to id manager
+                    headers = {
+                        'authorization': f'Bearer {auth0.apiToken.accessToken}',
+                        'content-Type': 'application/json',
+                        "Cache-Control": "no-cache"
+                    }
+                    baseURL = f"https://{settings.AUTH0_DOMAIN}"
+                    payload = json.dumps({"display_name": details})
+                    response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers, data=payload) )
+                    if isinstance(response, Exception):
+                        raise response
                 elif updateType == OrganizationUpdateType.email:
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.email] = details
+                elif updateType == OrganizationUpdateType.branding:
+                    assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
+                    # send to id manager
+                    headers = {
+                        'authorization': f'Bearer {auth0.apiToken.accessToken}',
+                        'content-Type': 'application/json',
+                        "Cache-Control": "no-cache"
+                    }
+                    baseURL = f"https://{settings.AUTH0_DOMAIN}"
+                    payload = json.dumps({"branding": details})
+                    #{
+                        # "logo_url": "string",
+                        # "colors": {
+                        # "primary": "string",
+                        # "page_background": "string"
+                    # }
+                    response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers, data=payload) )
+                    if isinstance(response, Exception):
+                        raise response
                 elif updateType == OrganizationUpdateType.locale:
                     assert isinstance(details, str) and "-" in details, f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.locale] = details
@@ -856,11 +943,11 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.taxID] = details
                 elif updateType == OrganizationUpdateType.notifications:
-                    # TODO
-                    pass
+                    assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
+                    existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings] = details
                 elif updateType == OrganizationUpdateType.priorities:
-                    # TODO
-                    pass
+                    assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
+                    existingInfo[OrganizationDescription.details][OrganizationDetails.priorities] = details
                 else:
                     raise Exception("updateType not defined")
                 
@@ -874,19 +961,44 @@ class ProfileManagementOrganization(ProfileManagementBase):
     @staticmethod
     def deleteContent(session, updates, orgaID=""):
         """
-        Delete certain user details.
+        Delete certain orga details.
 
         :param session: GET request session
         :type session: Dictionary
-        :param updates: The user details to update
+        :param updates: The orga details to update
         :type updates: differs
-        :param orgaID: The user ID to update. If not given, the subID will be used	
+        :param orgaID: The orga ID to update. If not given, the subID will be used	
         :type orgaID: str
         :return: If it worked or not
         :rtype: None | Exception
 
         """
-        pass #TODO
+        if orgaID == "":
+            orgID = session["user"]["userinfo"]["org_id"]
+        else:
+            orgID = orgaID
+        updated = timezone.now()
+        try:
+            existingObj = Organization.objects.get(subID=orgID)
+            existingInfo = {OrganizationDescription.details: existingObj.details, OrganizationDescription.supportedServices: existingObj.supportedServices, OrganizationDescription.name: existingObj.name}
+            for updateType in updates:
+                details = updates[updateType]
+                
+                if updateType == OrganizationUpdateType.address:
+                    assert isinstance(details, str), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of str"
+                    del existingInfo[OrganizationDescription.details][OrganizationDetails.addresses][details]
+                elif updateType == OrganizationUpdateType.supportedServices:
+                    assert isinstance(details, list), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of list"
+                    for serviceNumber in details:
+                        del existingInfo[OrganizationDescription.supportedServices][serviceNumber]
+                else:
+                    raise Exception("updateType not defined")
+            
+            affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], uri=existingInfo[OrganizationDescription.uri], updatedWhen=updated)
+            return None
+        except (Exception) as error:
+            logger.error(f"Error deleting orga details: {str(error)}")
+            return error
 
     ##############################################
     @staticmethod

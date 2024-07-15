@@ -166,13 +166,64 @@ def getOrganizationDetails(request:Request):
 # updateDetailsOfOrganization
 #"updateDetailsOfOrga": ("public/updateOrganizationDetails/",profiles.updateDetailsOfOrganization)
 #########################################################################
-#TODO Add serializer for updateDetailsOfOrganization
+# Serializers
+#######################################################
+class SReqNewAddressOrga(serializers.Serializer):
+    id = serializers.CharField(max_length=200, required=False, allow_blank=True)
+    standard = serializers.BooleanField()
+    country = serializers.CharField(max_length=200)
+    city = serializers.CharField(max_length=200)
+    zipcode = serializers.CharField(max_length=200)
+    houseNumber = serializers.IntegerField()
+    street = serializers.CharField(max_length=200)
+    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
+    lastName = serializers.CharField(max_length=200)
+    firstName = serializers.CharField(max_length=200)
+#######################################################
+class SReqNotificationsContentOrga(serializers.Serializer):
+    event = serializers.BooleanField(required=False)
+    email = serializers.BooleanField(required=False)
+#######################################################
+class SReqNotificationsOrga(serializers.Serializer):
+    newsletter = SReqNotificationsContentOrga(required=False)
+#######################################################
+class SReqBrandingColor(serializers.Serializer):
+    primary = serializers.CharField(max_length=200, default="HEX Color")
+    page_background = serializers.CharField(max_length=200, default="HEX Color")
+#######################################################
+class SReqBrandingOrga(serializers.Serializer):
+    logo_url = serializers.URLField()
+    colors = SReqBrandingColor()
+#######################################################
+class SReqPriorities(serializers.Serializer):
+    dummyLow = serializers.IntegerField(default=1)
+    dummyHigh = serializers.IntegerField(default=7)
+#######################################################
+class SReqChangesOrga(serializers.Serializer):
+    displayName = serializers.CharField(max_length=200, required=False)
+    email = serializers.EmailField(required=False)
+    address = SReqNewAddressOrga(required=False)
+    locale = serializers.CharField(max_length=200, required=False, default="de-DE")
+    notifications = SReqNotificationsOrga(required=False)
+    supportedServices = serializers.ListField(child=serializers.IntegerField(), required=False)
+    branding = SReqBrandingOrga(required=False)
+    taxID = serializers.CharField(max_length=200, required=False)
+    priorities = SReqPriorities(required=False)
+
+#######################################################
+class SReqDeletionsOrga(serializers.Serializer):
+    address = serializers.CharField(max_length=200, required=False, default="id")
+    services = serializers.ListField(child=serializers.IntegerField(), required=False)
+#######################################################
+class SReqUpdateOrga(serializers.Serializer):
+    changes = SReqChangesOrga()
+    deletions = SReqDeletionsOrga()
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Update details of organization of that user.",
     description=" ",
-    request=None,
+    request=SReqUpdateOrga,
     tags=['FE - Profiles'],
     responses={
         200: None,
@@ -1211,12 +1262,6 @@ def organizations_createNewOrganization(request:Request):
         metadata = {} if "metadata" not in content["content"] else content["content"]["metadata"]
         data = { "name": content["content"]["name"], 
                 "display_name": content["content"]["display_name"], 
-                "branding":
-                    { "logo_url": content["content"]["logo_url"], 
-                     "colors": 
-                     { "primary": content["content"]["primary_color"], 
-                        "page_background": content["content"]["background_color"] }
-                    },
                 "metadata": metadata,
                 "enabled_connections": [ { "connection_id": auth0.auth0Config["IDs"]["connection_id"], "assign_membership_on_login": False } ] }
 

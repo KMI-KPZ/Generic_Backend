@@ -149,13 +149,48 @@ def getUserDetails(request:Request):
 # updateDetails
 #"updateDetails": ("public/updateUserDetails/",profiles.updateDetails)
 #########################################################################
-#TODO Add serializer for updateDetails
+# Serializers
+#######################################################
+class SReqNewAddress(serializers.Serializer):
+    id = serializers.CharField(max_length=200, required=False, allow_blank=True)
+    standard = serializers.BooleanField()
+    country = serializers.CharField(max_length=200)
+    city = serializers.CharField(max_length=200)
+    zipcode = serializers.CharField(max_length=200)
+    houseNumber = serializers.IntegerField()
+    street = serializers.CharField(max_length=200)
+    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
+    lastName = serializers.CharField(max_length=200)
+    firstName = serializers.CharField(max_length=200)
+#######################################################
+class SReqNotificationsContent(serializers.Serializer):
+    event = serializers.BooleanField(required=False)
+    email = serializers.BooleanField(required=False)
+#######################################################
+class SReqNotifications(serializers.Serializer):
+    newsletter = SReqNotificationsContent(required=False)
+#######################################################
+class SReqChanges(serializers.Serializer):
+    displayName = serializers.CharField(max_length=200, required=False)
+    email = serializers.EmailField(required=False)
+    address = SReqNewAddress(required=False)
+    locale = serializers.CharField(max_length=200, required=False, default="de-DE")
+    notifications = SReqNotifications(required=False)
+
+#######################################################
+class SReqDeletions(serializers.Serializer):
+    address = serializers.CharField(max_length=200, required=False, default="id")
+
+#######################################################
+class SReqUpdateUser(serializers.Serializer):
+    changes = SReqChanges()
+    deletions = SReqDeletions()
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Updates user details.",
     description=" ",
-    request=None,
+    request=SReqUpdateUser,
     tags=['FE - Profiles'],
     responses={
         200: None,
@@ -202,209 +237,209 @@ def updateDetails(request:Request):
     
 ##############################################
 #######################################################
-class SReqNewAddress(serializers.Serializer):
-    standard = serializers.BooleanField()
-    country = serializers.CharField(max_length=200)
-    city = serializers.CharField(max_length=200)
-    zipcode = serializers.CharField(max_length=200)
-    houseNumber = serializers.IntegerField()
-    street = serializers.CharField(max_length=200)
-    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
-    lastName = serializers.CharField(max_length=200)
-    firstName = serializers.CharField(max_length=200)
-#######################################################
-@extend_schema(
-    summary="Create new address for user",
-    description=" ",
-    tags=['FE - Profiles'],
-    request=SReqNewAddress,
-    responses={
-        200: None,
-        400: ExceptionSerializerGeneric,
-        500: ExceptionSerializerGeneric
-    }
-)
-@basics.checkIfUserIsLoggedIn()
-@require_http_methods(["POST"])
-@api_view(["POST"])
-def createAddress(request:Request):
-    """
-    Create new address for user
+# class SReqNewAddress(serializers.Serializer):
+#     standard = serializers.BooleanField()
+#     country = serializers.CharField(max_length=200)
+#     city = serializers.CharField(max_length=200)
+#     zipcode = serializers.CharField(max_length=200)
+#     houseNumber = serializers.IntegerField()
+#     street = serializers.CharField(max_length=200)
+#     company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
+#     lastName = serializers.CharField(max_length=200)
+#     firstName = serializers.CharField(max_length=200)
+# #######################################################
+# @extend_schema(
+#     summary="Create new address for user",
+#     description=" ",
+#     tags=['FE - Profiles'],
+#     request=SReqNewAddress,
+#     responses={
+#         200: None,
+#         400: ExceptionSerializerGeneric,
+#         500: ExceptionSerializerGeneric
+#     }
+# )
+# @basics.checkIfUserIsLoggedIn()
+# @require_http_methods(["POST"])
+# @api_view(["POST"])
+# def createAddress(request:Request):
+#     """
+#     Create new address for user
 
-    :param request: POST Request
-    :type request: HTTP POST
-    :return: Success or not
-    :rtype: Response
+#     :param request: POST Request
+#     :type request: HTTP POST
+#     :return: Success or not
+#     :rtype: Response
 
-    """
-    try:
-        inSerializer = SReqNewAddress(data=request.data)
-        if not inSerializer.is_valid():
-            message = f"Creating address failed in {createAddress.cls.__name__}"
-            exception = "Creation of address failed"
-            logger.error(message)
-            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
-            if exceptionSerializer.is_valid():
-                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#     """
+#     try:
+#         inSerializer = SReqNewAddress(data=request.data)
+#         if not inSerializer.is_valid():
+#             message = f"Creating address failed in {createAddress.cls.__name__}"
+#             exception = "Creation of address failed"
+#             logger.error(message)
+#             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+#             if exceptionSerializer.is_valid():
+#                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+#             else:
+#                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        address = inSerializer.data
-        setToStandardAddress = address["standard"] # if the new address will be the standard address
-        userObj = pgProfiles.ProfileManagementBase.getUser(request.session) #deepcopy not necessary as changes to this dict are not saved
-        newContentInDB = {UserDetails.addresses: {}}
-        if UserDetails.addresses in userObj[UserDescription.details]: # add old content
-            newContentInDB[UserDetails.addresses] = userObj[UserDescription.details][UserDetails.addresses]
-            if setToStandardAddress:
-                for key in newContentInDB[UserDetails.addresses]:
-                    newContentInDB[UserDetails.addresses][key]["standard"] = False
+#         address = inSerializer.data
+#         setToStandardAddress = address["standard"] # if the new address will be the standard address
+#         userObj = pgProfiles.ProfileManagementBase.getUser(request.session) #deepcopy not necessary as changes to this dict are not saved
+#         newContentInDB = {UserDetails.addresses: {}}
+#         if UserDetails.addresses in userObj[UserDescription.details]: # add old content
+#             newContentInDB[UserDetails.addresses] = userObj[UserDescription.details][UserDetails.addresses]
+#             if setToStandardAddress:
+#                 for key in newContentInDB[UserDetails.addresses]:
+#                     newContentInDB[UserDetails.addresses][key]["standard"] = False
 
-        # add new content
-        idForNewAddress = crypto.generateURLFriendlyRandomString()
-        address["id"] = idForNewAddress
-        newContentInDB[UserDetails.addresses][idForNewAddress] = address
-        logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.SELF},details," + str(datetime.datetime.now()))
-        flag = pgProfiles.ProfileManagementUser.updateContent(request.session, newContentInDB, UserDescription.details)
-        if flag is True:
-            return Response("Success", status=status.HTTP_200_OK)
-        else:
-            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#         # add new content
+#         idForNewAddress = crypto.generateURLFriendlyRandomString()
+#         address["id"] = idForNewAddress
+#         newContentInDB[UserDetails.addresses][idForNewAddress] = address
+#         logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.EDITED},updated,{Logging.Object.SELF},details," + str(datetime.datetime.now()))
+#         flag = pgProfiles.ProfileManagementUser.updateContent(request.session, newContentInDB, UserDescription.details)
+#         if flag is True:
+#             return Response("Success", status=status.HTTP_200_OK)
+#         else:
+#             return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    except (Exception) as error:
-        message = f"Error in {createAddress.cls.__name__}: {str(error)}"
-        exception = str(error)
-        loggerError.error(message)
-        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
-        if exceptionSerializer.is_valid():
-            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        else:
-            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#     except (Exception) as error:
+#         message = f"Error in {createAddress.cls.__name__}: {str(error)}"
+#         exception = str(error)
+#         loggerError.error(message)
+#         exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+#         if exceptionSerializer.is_valid():
+#             return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#         else:
+#             return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-#######################################################
-class SReqUpdateContent(serializers.Serializer):
-    id = serializers.CharField(max_length=200)
-    firstName = serializers.CharField(max_length=200)
-    lastName = serializers.CharField(max_length=200)
-    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
-    street = serializers.CharField(max_length=200)
-    houseNumber = serializers.IntegerField()
-    zipcode = serializers.CharField(max_length=200)
-    city = serializers.CharField(max_length=200)
-    country = serializers.CharField(max_length=200)
-    standard = serializers.BooleanField()
-#######################################################
-@extend_schema(
-    summary="Changes content of an address",
-    description=" ",
-    tags=['FE - Profiles'],
-    request=SReqUpdateContent,
-    responses={
-        200: None,
-        400: ExceptionSerializerGeneric,
-        404: ExceptionSerializerGeneric,
-        500: ExceptionSerializerGeneric
-    }
-)
-@basics.checkIfUserIsLoggedIn()
-@require_http_methods(["PATCH"])
-@api_view(["PATCH"])
-def updateAddress(request:Request):
-    """
-    Changes content of an address
+# #######################################################
+# class SReqUpdateContent(serializers.Serializer):
+#     id = serializers.CharField(max_length=200)
+#     firstName = serializers.CharField(max_length=200)
+#     lastName = serializers.CharField(max_length=200)
+#     company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
+#     street = serializers.CharField(max_length=200)
+#     houseNumber = serializers.IntegerField()
+#     zipcode = serializers.CharField(max_length=200)
+#     city = serializers.CharField(max_length=200)
+#     country = serializers.CharField(max_length=200)
+#     standard = serializers.BooleanField()
+# #######################################################
+# @extend_schema(
+#     summary="Changes content of an address",
+#     description=" ",
+#     tags=['FE - Profiles'],
+#     request=SReqUpdateContent,
+#     responses={
+#         200: None,
+#         400: ExceptionSerializerGeneric,
+#         404: ExceptionSerializerGeneric,
+#         500: ExceptionSerializerGeneric
+#     }
+# )
+# @basics.checkIfUserIsLoggedIn()
+# @require_http_methods(["PATCH"])
+# @api_view(["PATCH"])
+# def updateAddress(request:Request):
+#     """
+#     Changes content of an address
 
-    :param request: PATCH Request
-    :type request: HTTP PATCH
-    :return: Success or not
-    :rtype: Response
+#     :param request: PATCH Request
+#     :type request: HTTP PATCH
+#     :return: Success or not
+#     :rtype: Response
 
-    """
-    try:
-        inSerializer = SReqUpdateContent(data=request.data)
-        if not inSerializer.is_valid():
-            message = f"Updating address failed in {updateAddress.cls.__name__}"
-            exception = "Updating the address failed"
-            logger.error(message)
-            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
-            if exceptionSerializer.is_valid():
-                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#     """
+#     try:
+#         inSerializer = SReqUpdateContent(data=request.data)
+#         if not inSerializer.is_valid():
+#             message = f"Updating address failed in {updateAddress.cls.__name__}"
+#             exception = "Updating the address failed"
+#             logger.error(message)
+#             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+#             if exceptionSerializer.is_valid():
+#                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+#             else:
+#                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        address = inSerializer.data
-        setToStandardAddress = address["standard"] # if the new one will be the new standard address or not
-        existingAddresses = pgProfiles.ProfileManagementBase.getUser(request.session)[UserDescription.details][UserDetails.addresses]
+#         address = inSerializer.data
+#         setToStandardAddress = address["standard"] # if the new one will be the new standard address or not
+#         existingAddresses = pgProfiles.ProfileManagementBase.getUser(request.session)[UserDescription.details][UserDetails.addresses]
     
-        if address["id"] in existingAddresses:
-            if setToStandardAddress: # set all others to False for not being the standard address anymore
-                for key in existingAddresses:
-                    existingAddresses[key]["standard"] = False
+#         if address["id"] in existingAddresses:
+#             if setToStandardAddress: # set all others to False for not being the standard address anymore
+#                 for key in existingAddresses:
+#                     existingAddresses[key]["standard"] = False
 
-            existingAddresses[address["id"]] = address
-            flag = pgProfiles.ProfileManagementUser.updateContent(request.session, {UserDetails.addresses: existingAddresses}, UserDescription.details)
-            if flag is True:
-                return Response("Success", status=status.HTTP_200_OK)
-            else:
-                return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        else:
-            return Response("Failed", status=status.HTTP_404_NOT_FOUND)
+#             existingAddresses[address["id"]] = address
+#             flag = pgProfiles.ProfileManagementUser.updateContent(request.session, {UserDetails.addresses: existingAddresses}, UserDescription.details)
+#             if flag is True:
+#                 return Response("Success", status=status.HTTP_200_OK)
+#             else:
+#                 return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#         else:
+#             return Response("Failed", status=status.HTTP_404_NOT_FOUND)
 
-    except (Exception) as error:
-        message = f"Error in {updateAddress.cls.__name__}: {str(error)}"
-        exception = str(error)
-        loggerError.error(message)
-        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
-        if exceptionSerializer.is_valid():
-            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        else:
-            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#     except (Exception) as error:
+#         message = f"Error in {updateAddress.cls.__name__}: {str(error)}"
+#         exception = str(error)
+#         loggerError.error(message)
+#         exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+#         if exceptionSerializer.is_valid():
+#             return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#         else:
+#             return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-#######################################################
-@extend_schema(
-    summary="Remove an address for a user",
-    description=" ",
-    tags=['FE - Profiles'],
-    request=None,
-    responses={
-        200: None,
-        401: ExceptionSerializerGeneric,
-        500: ExceptionSerializerGeneric
-    }
-)
-@basics.checkIfUserIsLoggedIn()
-@require_http_methods(["DELETE"])
-@api_view(["DELETE"])
-def deleteAddress(request:Request,addressID:str):
-    """
-    Remove an address for a user
+# #######################################################
+# @extend_schema(
+#     summary="Remove an address for a user",
+#     description=" ",
+#     tags=['FE - Profiles'],
+#     request=None,
+#     responses={
+#         200: None,
+#         401: ExceptionSerializerGeneric,
+#         500: ExceptionSerializerGeneric
+#     }
+# )
+# @basics.checkIfUserIsLoggedIn()
+# @require_http_methods(["DELETE"])
+# @api_view(["DELETE"])
+# def deleteAddress(request:Request,addressID:str):
+#     """
+#     Remove an address for a user
 
-    :param request: DELETE Request
-    :type request: HTTP DELETE
-    :return: Success or not
-    :rtype: Response
+#     :param request: DELETE Request
+#     :type request: HTTP DELETE
+#     :return: Success or not
+#     :rtype: Response
 
-    """
-    try:
-        existingAddresses = pgProfiles.ProfileManagementBase.getUser(request.session)[UserDescription.details][UserDetails.addresses]
-        if addressID in existingAddresses:
-            del existingAddresses[addressID]
-            flag = pgProfiles.ProfileManagementUser.updateContent(request.session, {UserDetails.addresses: existingAddresses}, UserDescription.details)
-            if flag is True:
-                return Response("Success", status=status.HTTP_200_OK)
-            else:
-                return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        else:
-            return Response("Failed", status=status.HTTP_404_NOT_FOUND)
+#     """
+#     try:
+#         existingAddresses = pgProfiles.ProfileManagementBase.getUser(request.session)[UserDescription.details][UserDetails.addresses]
+#         if addressID in existingAddresses:
+#             del existingAddresses[addressID]
+#             flag = pgProfiles.ProfileManagementUser.updateContent(request.session, {UserDetails.addresses: existingAddresses}, UserDescription.details)
+#             if flag is True:
+#                 return Response("Success", status=status.HTTP_200_OK)
+#             else:
+#                 return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#         else:
+#             return Response("Failed", status=status.HTTP_404_NOT_FOUND)
         
-    except (Exception) as error:
-        message = f"Error in {deleteAddress.cls.__name__}: {str(error)}"
-        exception = str(error)
-        loggerError.error(message)
-        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
-        if exceptionSerializer.is_valid():
-            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        else:
-            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#     except (Exception) as error:
+#         message = f"Error in {deleteAddress.cls.__name__}: {str(error)}"
+#         exception = str(error)
+#         loggerError.error(message)
+#         exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+#         if exceptionSerializer.is_valid():
+#             return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#         else:
+#             return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 #########################################################################
 # deleteUser
 #"deleteUser": ("public/profileDeleteUser/",profiles.deleteUser)

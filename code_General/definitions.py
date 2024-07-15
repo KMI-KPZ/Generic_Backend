@@ -172,7 +172,7 @@ class OrganizationDetails(StrEnumExactylAsDefined):
     What details can an organization have?
     
     """
-    address = enum.auto()
+    addresses = enum.auto()
     email = enum.auto()
     taxID = enum.auto()
     locale = enum.auto() # preferred communication language
@@ -188,8 +188,9 @@ class OrganizationUpdateType(StrEnumExactylAsDefined):
     """
     displayName = enum.auto()
     email = enum.auto()
+    branding = enum.auto()
+    supportedServices = enum.auto()
     notifications = enum.auto()
-    services = enum.auto()
     locale = enum.auto()
     address = enum.auto()
     priorities = enum.auto()
@@ -200,10 +201,19 @@ class OrganizationUpdateType(StrEnumExactylAsDefined):
 class NotificationSettingsOrganizations(StrEnumExactylAsDefined):
     """
     Which notifications can be received?
-    Some can be set here but most are specific to the plattform itself (just inherit from this class)
+    Some can be set here but most are specific to the plattform itself
     
     """
     newsletter = enum.auto() 
+
+###################################################
+# Enum for priorities for orgas
+class PrioritiesForOrganization(StrEnumExactylAsDefined):
+    """
+    If the organization has some priorities, they can be set here
+    Is used in Semper-KI for calculations, can be used here for whatever
+    """
+    pass
 
 ###################################################
 # Class for default strings
