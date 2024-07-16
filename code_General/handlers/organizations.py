@@ -184,9 +184,6 @@ class SReqNotificationsContentOrga(serializers.Serializer):
     event = serializers.BooleanField(required=False)
     email = serializers.BooleanField(required=False)
 #######################################################
-class SReqNotificationsOrga(serializers.Serializer):
-    newsletter = SReqNotificationsContentOrga(required=False)
-#######################################################
 class SReqBrandingColor(serializers.Serializer):
     primary = serializers.CharField(max_length=200, default="HEX Color")
     page_background = serializers.CharField(max_length=200, default="HEX Color")
@@ -204,11 +201,11 @@ class SReqChangesOrga(serializers.Serializer):
     email = serializers.EmailField(required=False)
     address = SReqNewAddressOrga(required=False)
     locale = serializers.CharField(max_length=200, required=False, default="de-DE")
-    notifications = SReqNotificationsOrga(required=False)
+    notifications = serializers.DictField(child=SReqNotificationsContentOrga(), required=False)
     supportedServices = serializers.ListField(child=serializers.IntegerField(), required=False)
     branding = SReqBrandingOrga(required=False)
     taxID = serializers.CharField(max_length=200, required=False)
-    priorities = SReqPriorities(required=False)
+    priorities = serializers.DictField(child=SReqPriorities(), required=False)
 
 #######################################################
 class SReqDeletionsOrga(serializers.Serializer):
@@ -244,7 +241,18 @@ def updateDetailsOfOrganization(request:Request):
 
     """
     try:
-        content = json.loads(request.body.decode("utf-8"))["data"]["content"]
+        inSerializer = SReqUpdateOrga(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {updateDetailsOfOrganization.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        content = inSerializer.data
         if "changes" in content:
             flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content["changes"])
             if isinstance(flag, Exception):

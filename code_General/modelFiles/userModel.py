@@ -10,10 +10,10 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
-from ..utilities.customStrEnum import StrEnumExactylAsDefined
+from ..utilities.customStrEnum import StrEnumExactlyAsDefined
 
 ###################################################
-class UserDescription(StrEnumExactylAsDefined):
+class UserDescription(StrEnumExactlyAsDefined):
     """
     What does a user consists of?
     

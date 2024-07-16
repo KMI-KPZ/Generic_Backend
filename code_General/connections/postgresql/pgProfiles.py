@@ -374,6 +374,7 @@ class ProfileManagementBase():
                 userObj = User.objects.get(subID=userID)
                 if userObj != None:
                     userObj.details[UserDetails.locale] = session[SessionContent.LOCALE]
+                userObj.save()
         except (Exception) as error:
             logger.error(f"Error setting user locale: {str(error)}")
 
@@ -565,14 +566,19 @@ class ProfileManagementUser(ProfileManagementBase):
         try:
             # first get, then create
             result = User.objects.get(subID=userID)
-
+            if UserDetails.statistics not in result.details:
+                result.details[UserDetails.statistics] = {}
+                result.details[UserDetails.statistics][StatisticsForProfiles.numberOfLoginsTotal] = 0
+            result.details[UserDetails.statistics][StatisticsForProfiles.lastLogin] = str(timezone.now())
+            result.details[UserDetails.statistics][StatisticsForProfiles.numberOfLoginsTotal] += 1
+            result.save()
             return result
 
         except (ObjectDoesNotExist) as error:
             try:
                 userName = session["user"]["userinfo"]["nickname"]
                 userEmail = session["user"]["userinfo"]["email"]
-                details = {UserDetails.email: userEmail}
+                details = {UserDetails.email: userEmail, UserDetails.statistics: {StatisticsForProfiles.lastLogin: str(timezone.now()), StatisticsForProfiles.numberOfLoginsTotal: 1, StatisticsForProfiles.locationOfLastLogin: ""}, UserDetails.addresses: {}, UserDetails.notificationSettings: {}, UserDetails.locale: session[SessionContent.LOCALE]}
                 updated = timezone.now()
                 lastSeen = timezone.now()
                 idHash = crypto.generateSecureID(userID)
@@ -581,6 +587,9 @@ class ProfileManagementUser(ProfileManagementBase):
 
                 return createdUser
             except (Exception) as error:
+                logger.error(f"Error adding user : {str(error)}")
+                return error
+        except (Exception) as error:
                 logger.error(f"Error adding user : {str(error)}")
                 return error
 
@@ -759,17 +768,27 @@ class ProfileManagementOrganization(ProfileManagementBase):
         try:
             # first get, if it fails, create
             existingUser = User.objects.get(subID=userID)
+            if UserDetails.statistics not in existingUser.details:
+                existingUser.details[UserDetails.statistics] = {}
+                existingUser.details[UserDetails.statistics][StatisticsForProfiles.numberOfLoginsTotal] = 0
+            existingUser.details[UserDetails.statistics][StatisticsForProfiles.lastLogin] = str(timezone.now())
+            existingUser.details[UserDetails.statistics][StatisticsForProfiles.numberOfLoginsTotal] += 1
+
+            existingUser.save()
         except (ObjectDoesNotExist) as error:
             try:
                 userName = session["user"]["userinfo"]["nickname"]
                 userEmail = session["user"]["userinfo"]["email"]
-                details = {OrganizationDetails.email: userEmail}
+                details = {UserDetails.email: userEmail, UserDetails.statistics: {StatisticsForProfiles.lastLogin: str(timezone.now()), StatisticsForProfiles.numberOfLoginsTotal: 1, StatisticsForProfiles.locationOfLastLogin: ""}, UserDetails.addresses: {}, UserDetails.notificationSettings: {}, UserDetails.locale: session[SessionContent.LOCALE]}
                 updated = timezone.now()
                 lastSeen = timezone.now()
                 idHash = crypto.generateSecureID(userID)
                  
                 existingUser = User.objects.create(subID=userID, hashedID=idHash, name=userName, details=details, updatedWhen=updated, lastSeen=lastSeen)
             except (Exception) as error:
+                logger.error(f"Error adding user : {str(error)}")
+                return error
+        except (Exception) as error:
                 logger.error(f"Error adding user : {str(error)}")
                 return error
         try:

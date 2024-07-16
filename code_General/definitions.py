@@ -7,7 +7,7 @@ Contains: Definitions, Classes, Enums to describe Elements in the Backend as wel
 """
 import enum
 
-from .utilities.customStrEnum import StrEnumExactylAsDefined
+from .utilities.customStrEnum import StrEnumExactlyAsDefined
 
 from .modelFiles.organizationModel import OrganizationDescription
 from .modelFiles.userModel import UserDescription
@@ -15,14 +15,14 @@ from .modelFiles.userModel import UserDescription
 #######################################################
 # logging vocabulary
 class Logging():
-    class Subject(StrEnumExactylAsDefined):
+    class Subject(StrEnumExactlyAsDefined):
         USER = enum.auto()
         ADMIN = enum.auto()
         ORGANISATION = enum.auto()
         SYSTEM = enum.auto()
         SUBJECT = enum.auto() # for everything else
 
-    class Predicate(StrEnumExactylAsDefined):
+    class Predicate(StrEnumExactlyAsDefined):
         CREATED = enum.auto()
         DEFINED = enum.auto()
         FETCHED = enum.auto()
@@ -30,7 +30,7 @@ class Logging():
         DELETED = enum.auto()
         PREDICATE = enum.auto() # for everything else
 
-    class Object(StrEnumExactylAsDefined):
+    class Object(StrEnumExactlyAsDefined):
         USER = enum.auto()
         ADMIN = enum.auto()
         ORGANISATION = enum.auto()
@@ -58,7 +58,7 @@ class FileObject():
 
 ###################################################
 # File object content as enum
-class FileObjectContent(StrEnumExactylAsDefined):
+class FileObjectContent(StrEnumExactlyAsDefined):
     """
     What can be the metadata of a file?
     """
@@ -79,7 +79,7 @@ class FileObjectContent(StrEnumExactylAsDefined):
 
 ###################################################
 # File object content as enum
-class FileTypes(StrEnumExactylAsDefined):
+class FileTypes(StrEnumExactlyAsDefined):
     """
     What types are there (see FileObjectContent.type)
 
@@ -89,7 +89,7 @@ class FileTypes(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum for session content
-class SessionContent(StrEnumExactylAsDefined):
+class SessionContent(StrEnumExactlyAsDefined):
     """
     What is saved into the session?
 
@@ -111,7 +111,7 @@ class SessionContent(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum for types of users
-class ProfileClasses(StrEnumExactylAsDefined):
+class ProfileClasses(StrEnumExactlyAsDefined):
     """
     Which classes exist?
     """
@@ -120,7 +120,7 @@ class ProfileClasses(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum for Content of details for users
-class UserDetails(StrEnumExactylAsDefined):
+class UserDetails(StrEnumExactlyAsDefined):
     """
     What details can a user have
     
@@ -133,7 +133,7 @@ class UserDetails(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum what can be updated for a user
-class UserUpdateType(StrEnumExactylAsDefined):
+class UserUpdateType(StrEnumExactlyAsDefined):
     """
     What updated can happen to a user?
     
@@ -146,7 +146,7 @@ class UserUpdateType(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum for notification settings for users
-class NotificationSettingsUser(StrEnumExactylAsDefined):
+class NotificationSettingsUser(StrEnumExactlyAsDefined):
     """
     Which notifications can be received?
     Some can be set here but most are specific to the plattform itself (just inherit from this class)
@@ -156,7 +156,7 @@ class NotificationSettingsUser(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum for statistics settings for user profiles
-class StatisticsForProfiles(StrEnumExactylAsDefined):
+class StatisticsForProfiles(StrEnumExactlyAsDefined):
     """
     Which statistics are measured?
     
@@ -167,7 +167,7 @@ class StatisticsForProfiles(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum for Content of details for organizations
-class OrganizationDetails(StrEnumExactylAsDefined):
+class OrganizationDetails(StrEnumExactlyAsDefined):
     """
     What details can an organization have?
     
@@ -181,7 +181,7 @@ class OrganizationDetails(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum what can be updated for a user
-class OrganizationUpdateType(StrEnumExactylAsDefined):
+class OrganizationUpdateType(StrEnumExactlyAsDefined):
     """
     What updated can happen to a user?
     
@@ -198,7 +198,7 @@ class OrganizationUpdateType(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum for notification settings for orgas
-class NotificationSettingsOrganizations(StrEnumExactylAsDefined):
+class NotificationSettingsOrganizations(StrEnumExactlyAsDefined):
     """
     Which notifications can be received?
     Some can be set here but most are specific to the plattform itself
@@ -208,7 +208,7 @@ class NotificationSettingsOrganizations(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum for priorities for orgas
-class PrioritiesForOrganization(StrEnumExactylAsDefined):
+class PrioritiesForOrganization(StrEnumExactlyAsDefined):
     """
     If the organization has some priorities, they can be set here
     Is used in Semper-KI for calculations, can be used here for whatever
@@ -217,7 +217,7 @@ class PrioritiesForOrganization(StrEnumExactylAsDefined):
 
 ###################################################
 # Class for default strings
-class GlobalDefaults(StrEnumExactylAsDefined):
+class GlobalDefaults(StrEnumExactlyAsDefined):
     """
     Some things need to be defined globally in name
 

@@ -1,3 +1,4 @@
+from __future__ import annotations 
 """
 Part of Semper-KI software
 
@@ -86,7 +87,45 @@ def addUserTest(request:Request):
 # getUserDetails
 #"getUser": ("public/getUser/",profiles.getUserDetails)
 #########################################################################
-#TODO Add serializer for getUserDetails
+# Serializers
+#######################################################
+class SReqAddressContent(serializers.Serializer):
+    id = serializers.CharField(max_length=200, required=False, allow_blank=True)
+    standard = serializers.BooleanField()
+    country = serializers.CharField(max_length=200)
+    city = serializers.CharField(max_length=200)
+    zipcode = serializers.CharField(max_length=200)
+    houseNumber = serializers.IntegerField()
+    street = serializers.CharField(max_length=200)
+    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
+    lastName = serializers.CharField(max_length=200)
+    firstName = serializers.CharField(max_length=200)
+#######################################################
+class SResStatistics(serializers.Serializer):
+    lastLogin = serializers.CharField(max_length=200,required=False)
+    numberOfLoginsTotal = serializers.IntegerField(required=False)
+    locationOfLastLogin = serializers.CharField(max_length=200,required=False)
+#######################################################
+class SReqNotificationsContent(serializers.Serializer):
+    event = serializers.BooleanField(required=False)
+    email = serializers.BooleanField(required=False)
+
+#######################################################
+class SResUserDetails(serializers.Serializer):
+    email = serializers.CharField(max_length=200)
+    locale = serializers.CharField(max_length=200, required=False)
+    addresses = SReqAddressContent(many=True, required=False)
+    statistics = SResStatistics(required=False)
+    notificationSettings = serializers.DictField(child=SReqNotificationsContent(), required=False)
+#######################################################
+class SResUserProfile(serializers.Serializer):
+    hashedID = serializers.CharField(max_length=200)
+    name = serializers.CharField(max_length=200)	
+    details = SResUserDetails()
+    createdWhen = serializers.CharField(max_length=200)
+    updatedWhen = serializers.CharField(max_length=200)
+    lastSeen = serializers.CharField(max_length=200)
+    usertype = serializers.CharField(max_length=200)
 #########################################################################
 # Handler  
 @extend_schema(
@@ -95,7 +134,7 @@ def addUserTest(request:Request):
     request=None,
     tags=['FE - Profiles'],
     responses={
-        200: None,
+        200: SResUserProfile,
         500: ExceptionSerializerGeneric,
     },
 )
@@ -130,8 +169,12 @@ def getUserDetails(request:Request):
         # parse addresses 
         if basics.checkIfNestedKeyExists(userObj, UserDescription.details, UserDetails.addresses):
             userObj[UserDescription.details][UserDetails.addresses] = list(userObj[UserDescription.details][UserDetails.addresses].values())
-        
-        return Response(userObj, status=status.HTTP_200_OK)
+
+        outSerializer = SResUserProfile(data=userObj)
+        if outSerializer.is_valid():
+            return Response(outSerializer.data, status=status.HTTP_200_OK)
+        else:
+            raise Exception(outSerializer.errors)
     
     except Exception as error:
         message = f"Error in {getUserDetails.cls.__name__}: {str(error)}"
@@ -151,40 +194,21 @@ def getUserDetails(request:Request):
 #########################################################################
 # Serializers
 #######################################################
-class SReqNewAddress(serializers.Serializer):
-    id = serializers.CharField(max_length=200, required=False, allow_blank=True)
-    standard = serializers.BooleanField()
-    country = serializers.CharField(max_length=200)
-    city = serializers.CharField(max_length=200)
-    zipcode = serializers.CharField(max_length=200)
-    houseNumber = serializers.IntegerField()
-    street = serializers.CharField(max_length=200)
-    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
-    lastName = serializers.CharField(max_length=200)
-    firstName = serializers.CharField(max_length=200)
-#######################################################
-class SReqNotificationsContent(serializers.Serializer):
-    event = serializers.BooleanField(required=False)
-    email = serializers.BooleanField(required=False)
-#######################################################
-class SReqNotifications(serializers.Serializer):
-    newsletter = SReqNotificationsContent(required=False)
-#######################################################
 class SReqChanges(serializers.Serializer):
     displayName = serializers.CharField(max_length=200, required=False)
     email = serializers.EmailField(required=False)
-    address = SReqNewAddress(required=False)
-    locale = serializers.CharField(max_length=200, required=False, default="de-DE")
-    notifications = SReqNotifications(required=False)
+    address = SReqAddressContent(required=False)
+    locale = serializers.CharField(max_length=200, required=False)
+    notifications = serializers.DictField(child=SReqNotificationsContent(), required=False)
 
 #######################################################
 class SReqDeletions(serializers.Serializer):
-    address = serializers.CharField(max_length=200, required=False, default="id")
+    address = serializers.CharField(max_length=200, required=False)
 
 #######################################################
 class SReqUpdateUser(serializers.Serializer):
-    changes = SReqChanges()
-    deletions = SReqDeletions()
+    changes = SReqChanges(required=False)
+    deletions = SReqDeletions(required=False)
 #########################################################################
 # Handler  
 @extend_schema(
@@ -210,8 +234,18 @@ def updateDetails(request:Request):
 
     """
     try:
-        content = json.loads(request.body.decode("utf-8"))
-        # TODO serializers and validation
+        inSerializer = SReqUpdateUser(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {updateDetails.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        content = inSerializer.data
         if "changes" in content:
             flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content["changes"])
             if isinstance(flag, Exception):
