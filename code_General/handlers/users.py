@@ -124,6 +124,8 @@ class SResUserProfile(serializers.Serializer):
     details = SResUserDetails()
     createdWhen = serializers.CharField(max_length=200)
     updatedWhen = serializers.CharField(max_length=200)
+    accessedWhen = serializers.CharField(max_length=200)
+    organization = serializers.CharField(max_length=200, required=False)
     lastSeen = serializers.CharField(max_length=200)
     usertype = serializers.CharField(max_length=200)
 #########################################################################

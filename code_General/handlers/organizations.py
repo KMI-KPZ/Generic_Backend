@@ -23,8 +23,8 @@ from Generic_Backend.code_General.modelFiles.organizationModel import Organizati
 
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
-from ..utilities.basics import checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient, ExceptionSerializerGeneric
-from ..definitions import SessionContent, Logging
+from ..utilities.basics import checkIfNestedKeyExists, checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient, ExceptionSerializerGeneric
+from ..definitions import SessionContent, Logging, OrganizationDetails
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -129,7 +129,43 @@ def addOrganizationTest(request:Request):
 # getOrganizationDetails
 #"getOrganization": ("public/getOrganization/",profiles.getOrganizationDetails)
 #########################################################################
-#TODO Add serializer for getOrganizationDetails
+#######################################################
+class SReqAddressOrga(serializers.Serializer):
+    id = serializers.CharField(max_length=200, required=False, allow_blank=True)
+    standard = serializers.BooleanField()
+    country = serializers.CharField(max_length=200)
+    city = serializers.CharField(max_length=200)
+    zipcode = serializers.CharField(max_length=200)
+    houseNumber = serializers.IntegerField()
+    street = serializers.CharField(max_length=200)
+    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
+    lastName = serializers.CharField(max_length=200)
+    firstName = serializers.CharField(max_length=200)
+#######################################################
+class SReqNotificationsContentOrga(serializers.Serializer):
+    event = serializers.BooleanField(required=False)
+    email = serializers.BooleanField(required=False)
+#######################################################
+class SReqPriorities(serializers.Serializer):
+    dummyLow = serializers.IntegerField(default=1)
+    dummyHigh = serializers.IntegerField(default=7)
+#######################################################
+class SResOrgaDetails(serializers.Serializer):
+    addresses = SReqAddressOrga(many=True, required=False)
+    email = serializers.EmailField()
+    locale = serializers.CharField(max_length=200, required=False)
+    notificationSettings = serializers.DictField(child=SReqNotificationsContentOrga(), required=False)
+    priorities = serializers.DictField(child=SReqPriorities(), required=False)
+    taxID = serializers.CharField(max_length=200)
+#######################################################
+class SResOrga(serializers.Serializer):
+    hashedID = serializers.CharField(max_length=200)
+    name = serializers.CharField(max_length=200)
+    details = SResOrgaDetails()
+    accessedWhen = serializers.CharField(max_length=200)
+    createdWhen = serializers.CharField(max_length=200)
+    updatedWhen = serializers.CharField(max_length=200)
+    supportedServices = serializers.ListField(child=serializers.IntegerField())
 #########################################################################
 # Handler  
 @extend_schema(
@@ -138,7 +174,7 @@ def addOrganizationTest(request:Request):
     request=None,
     tags=['FE - Profiles'],
     responses={
-        200: None,
+        200: SResOrga,
         500: ExceptionSerializerGeneric,
     },
 )
@@ -157,32 +193,30 @@ def getOrganizationDetails(request:Request):
     # Read organization details from Database
     try:
         returnVal = pgProfiles.ProfileManagementOrganization.getOrganization(request.session)
-        return Response(returnVal, status=status.HTTP_200_OK)
+        # parse addresses 
+        if checkIfNestedKeyExists(returnVal, OrganizationDescription.details, OrganizationDetails.addresses):
+            returnVal[OrganizationDescription.details][OrganizationDetails.addresses] = list(returnVal[OrganizationDescription.details][OrganizationDetails.addresses].values())
+
+        outSerializer = SResOrga(data=returnVal)
+        if outSerializer.is_valid():
+            return Response(outSerializer.data, status=status.HTTP_200_OK)
+        else:
+            raise Exception(outSerializer.errors)
     except (Exception) as error:
-        loggerError.error(f"Error in getOrganizationDetails : {str(error)}")
-        return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        message = f"Error in {getOrganizationDetails.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # updateDetailsOfOrganization
 #"updateDetailsOfOrga": ("public/updateOrganizationDetails/",profiles.updateDetailsOfOrganization)
 #########################################################################
 # Serializers
-#######################################################
-class SReqNewAddressOrga(serializers.Serializer):
-    id = serializers.CharField(max_length=200, required=False, allow_blank=True)
-    standard = serializers.BooleanField()
-    country = serializers.CharField(max_length=200)
-    city = serializers.CharField(max_length=200)
-    zipcode = serializers.CharField(max_length=200)
-    houseNumber = serializers.IntegerField()
-    street = serializers.CharField(max_length=200)
-    company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
-    lastName = serializers.CharField(max_length=200)
-    firstName = serializers.CharField(max_length=200)
-#######################################################
-class SReqNotificationsContentOrga(serializers.Serializer):
-    event = serializers.BooleanField(required=False)
-    email = serializers.BooleanField(required=False)
 #######################################################
 class SReqBrandingColor(serializers.Serializer):
     primary = serializers.CharField(max_length=200, default="HEX Color")
@@ -192,14 +226,10 @@ class SReqBrandingOrga(serializers.Serializer):
     logo_url = serializers.URLField()
     colors = SReqBrandingColor()
 #######################################################
-class SReqPriorities(serializers.Serializer):
-    dummyLow = serializers.IntegerField(default=1)
-    dummyHigh = serializers.IntegerField(default=7)
-#######################################################
 class SReqChangesOrga(serializers.Serializer):
     displayName = serializers.CharField(max_length=200, required=False)
     email = serializers.EmailField(required=False)
-    address = SReqNewAddressOrga(required=False)
+    address = SReqAddressOrga(required=False)
     locale = serializers.CharField(max_length=200, required=False, default="de-DE")
     notifications = serializers.DictField(child=SReqNotificationsContentOrga(), required=False)
     supportedServices = serializers.ListField(child=serializers.IntegerField(), required=False)
