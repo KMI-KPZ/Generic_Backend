@@ -112,7 +112,7 @@ class SReqNotificationsContent(serializers.Serializer):
 
 #######################################################
 class SResUserDetails(serializers.Serializer):
-    email = serializers.CharField(max_length=200)
+    email = serializers.CharField(max_length=200, required=False)
     locale = serializers.CharField(max_length=200, required=False)
     addresses = SReqAddressContent(many=True, required=False)
     statistics = SResStatistics(required=False)
