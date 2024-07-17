@@ -117,13 +117,15 @@ def isLoggedIn(request:Request):
 # setLocaleOfUser
 #"setLocaleOfUser": ("public/setLocaleOfUser/", authentification.setLocaleOfUser)
 #########################################################################
-#TODO Add serializer for setLocaleOfUser
+#######################################################
+class SReq(serializers.Serializer):
+    locale = serializers.CharField(max_length=200, default="de-DE")
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Get the preferred language of the user from the frontend .",
     description=" ",
-    request=None,
+    request=SReq,
     tags=['FE - Authentification'],
     responses={
         200: None,
