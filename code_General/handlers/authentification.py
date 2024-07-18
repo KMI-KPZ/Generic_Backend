@@ -329,6 +329,10 @@ def loginUser(request:Request):
     if "Register" in request.headers and mocked is False:
         if request.headers["Register"] == "true":
             register = "&screen_hint=signup"
+    
+    localization = "&ui_locales=de"
+    if SessionContent.LOCALE in request.session:
+         localization = f"&ui_locales={request.session[SessionContent.LOCALE].split('-')[0]}"
 
     request.session.modified = True
     if mocked:
@@ -344,7 +348,7 @@ def loginUser(request:Request):
             url_regex = re.compile(regex)
             assert url_regex.match(uri.url), f"In {loginUser.cls.__name__}: Expected uri.url to be a http or https url, instead got: {uri.url}"
         # return uri and redirect to register if desired
-        return Response(uri.url + register)
+        return Response(uri.url + register + localization)
 
 #######################################################
 def setOrganizationName(request):

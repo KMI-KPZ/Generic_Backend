@@ -155,6 +155,16 @@ class NotificationSettingsUser(StrEnumExactlyAsDefined):
     newsletter = enum.auto() 
 
 ###################################################
+# Enum for notification targets for users
+class NotificationTargets(StrEnumExactlyAsDefined):
+    """
+    What is the target for each notification?
+    
+    """
+    email = enum.auto()	
+    event = enum.auto()
+
+###################################################
 # Enum for statistics settings for user profiles
 class StatisticsForProfiles(StrEnumExactlyAsDefined):
     """

@@ -16,10 +16,10 @@ from Generic_Backend.code_General.utilities.basics import handleTooManyRequestsE
 from ...modelFiles.organizationModel import Organization
 from ...modelFiles.userModel import User
 from ...utilities import crypto
-from logging import getLogger
-
+from ...utilities.basics import checkIfNestedKeyExists
 from ...definitions import *
 
+from logging import getLogger
 logger = getLogger("errors")
 
 #TODO: switch to async versions at some point
@@ -664,7 +664,14 @@ class ProfileManagementUser(ProfileManagementBase):
                     existingInfo[UserDescription.details][UserDetails.locale] = details
                 elif updateType == UserUpdateType.notifications:
                     assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
-                    existingInfo[UserDescription.details][UserDetails.notificationSettings] = details
+                    for notification in details:    
+                        email = False
+                        event = True    
+                        if checkIfNestedKeyExists(details, notification, NotificationTargets.event):
+                            email = details[notification][NotificationTargets.event]
+                        if checkIfNestedKeyExists(details, notification, NotificationTargets.email):
+                            event = details[notification][NotificationTargets.email]
+                        existingInfo[UserDescription.details][UserDetails.notificationSettings][notification] = {NotificationTargets.email: email, NotificationTargets.event: event} 
                 else:
                     raise Exception("updateType not defined")
             
@@ -941,7 +948,15 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     existingInfo[OrganizationDescription.details][OrganizationDetails.taxID] = details
                 elif updateType == OrganizationUpdateType.notifications:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
-                    existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings] = details
+                    for notification in details:    
+                        email = False
+                        event = True    
+                        if checkIfNestedKeyExists(details, notification, NotificationTargets.event):
+                            email = details[notification][NotificationTargets.event]
+                        if checkIfNestedKeyExists(details, notification, NotificationTargets.email):
+                            event = details[notification][NotificationTargets.email]
+                        existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings][notification] = {NotificationTargets.email: email, NotificationTargets.event: event} 
+
                 elif updateType == OrganizationUpdateType.priorities:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.priorities] = details
