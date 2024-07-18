@@ -23,7 +23,7 @@ from rest_framework.request import Request
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import OpenApiParameter, inline_serializer
 
-from ..utilities import basics, rights, signals
+from ..utilities import basics, rights, signals, mocks
 from ..utilities.basics import ExceptionSerializerGeneric
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0, redis
@@ -277,7 +277,7 @@ def loginUser(request:Request):
         mocked = True
 
     if settings.PRODUCTION or settings.STAGING:
-        mocked = False
+        mocked = False # this disables the possibility of h4(|<0|2Z logging in as fakeAdmin
         #return HttpResponse("Currently, logging in is not allowed. Sorry.", status=403)
 
     # check number of login attempts
@@ -527,51 +527,37 @@ def callbackLogin(request:Request):
     """
     try:
         # Check if mocked
-        mocked = False
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            mocked = True
-
-        # authorize callback token or write fake data
-        if not mocked:
+            match request.session[SessionContent.usertype]:
+                case "user":
+                    mocks.createMockUserInSession(request.session)
+                case "organization":
+                    mocks.createMockOrganizationInSession(request.session)
+                case "admin":
+                    mocks.createMockAdminInSession(request.session)
+        else:
+            # authorize callback token 
             if request.session[SessionContent.IS_PART_OF_ORGANIZATION]:
                 token = auth0.authorizeTokenOrga(request)
             else:
                 token = auth0.authorizeToken(request)
-        else:
-            request.session["user"] = {"userinfo": {"sub": "", "nickname": "", "email": "", "type": ""}}
-            request.session["user"]["userinfo"]["sub"] = "auth0|testuser"
-            request.session["user"]["userinfo"]["nickname"] = "testuser"
-            request.session["user"]["userinfo"]["email"] = "testuser@test.de"
-            request.session[SessionContent.USER_ROLES] = [{"id":settings.AUTH0_DEFAULT_ROLE_ID}]
-            request.session[SessionContent.USER_PERMISSIONS] = {"processes:read": "", "processes:messages": "","processes:edit": "","processes:delete": "","processes:files": ""}
-            
 
-        # email of user was not verified yet, tell them that!
-        if not mocked and token["userinfo"]["email_verified"] == False:
-            # return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
-            return Response(settings.FORWARD_URL+"/verifyEMail", status=status.status.HTTP_401_UNAUTHORIZED)
+            # email of user was not verified yet, tell them that!
+            if token["userinfo"]["email_verified"] == False:
+                # return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
+                return Response(settings.FORWARD_URL+"/verifyEMail", status=status.status.HTTP_401_UNAUTHORIZED)
 
-        # convert expiration time to the corresponding date and time
-        if not mocked:
+            # convert expiration time to the corresponding date and time
             now = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc) + datetime.timedelta(seconds=token["expires_at"])
             request.session["user"] = token
             request.session["user"]["tokenExpiresOn"] = str(now)
-        else:
-            currentTime = datetime.datetime.now()
-            request.session["user"]["tokenExpiresOn"] = str(datetime.datetime(currentTime.year+1, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute, currentTime.second, tzinfo=datetime.timezone.utc))
-        
 
-        # get roles and permissions
-        if not mocked:
+            # get roles and permissions
             setOrganizationName(request)
             retVal = setRoleAndPermissionsOfUser(request)
             if isinstance(retVal, Exception):
                 raise retVal
-        elif request.session[SessionContent.IS_PART_OF_ORGANIZATION]:
-                request.session[SessionContent.ORGANIZATION_NAME] = "testOrganization"
-                request.session["user"]["userinfo"]["org_id"] = "id123"
-                request.session[SessionContent.USER_PERMISSIONS].update({"orga:read": "", "orga:edit": "", "orga:delete": "", "resources:read": "", "resources:edit": ""})
-
+            
         # Get Data from Database or create entry in it for logged in User
         orgaObj = None
         if request.session[SessionContent.IS_PART_OF_ORGANIZATION]:

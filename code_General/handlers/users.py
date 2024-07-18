@@ -104,7 +104,7 @@ class SReqAddressContent(serializers.Serializer):
 class SResStatistics(serializers.Serializer):
     lastLogin = serializers.CharField(max_length=200,required=False)
     numberOfLoginsTotal = serializers.IntegerField(required=False)
-    locationOfLastLogin = serializers.CharField(max_length=200,required=False)
+    locationOfLastLogin = serializers.CharField(max_length=200,required=False, allow_blank=True)
 #######################################################
 class SReqNotificationsContent(serializers.Serializer):
     event = serializers.BooleanField(required=False)

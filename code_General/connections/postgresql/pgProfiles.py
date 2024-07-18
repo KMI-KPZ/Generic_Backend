@@ -578,7 +578,8 @@ class ProfileManagementUser(ProfileManagementBase):
             try:
                 userName = session["user"]["userinfo"]["nickname"]
                 userEmail = session["user"]["userinfo"]["email"]
-                details = {UserDetails.email: userEmail, UserDetails.statistics: {StatisticsForProfiles.lastLogin: str(timezone.now()), StatisticsForProfiles.numberOfLoginsTotal: 1, StatisticsForProfiles.locationOfLastLogin: ""}, UserDetails.addresses: {}, UserDetails.notificationSettings: {}, UserDetails.locale: session[SessionContent.LOCALE]}
+                userLocale = session[SessionContent.LOCALE] if SessionContent.LOCALE in session else "de-DE"
+                details = {UserDetails.email: userEmail, UserDetails.statistics: {StatisticsForProfiles.lastLogin: str(timezone.now()), StatisticsForProfiles.numberOfLoginsTotal: 1, StatisticsForProfiles.locationOfLastLogin: ""}, UserDetails.addresses: {}, UserDetails.notificationSettings: {}, UserDetails.locale: userLocale}
                 updated = timezone.now()
                 lastSeen = timezone.now()
                 idHash = crypto.generateSecureID(userID)
@@ -763,35 +764,12 @@ class ProfileManagementOrganization(ProfileManagementBase):
         :rtype: User object
 
         """
-
-        userID = session["user"]["userinfo"]["sub"]
         try:
-            # first get, if it fails, create
-            existingUser = User.objects.get(subID=userID)
-            if UserDetails.statistics not in existingUser.details:
-                existingUser.details[UserDetails.statistics] = {}
-                existingUser.details[UserDetails.statistics][StatisticsForProfiles.numberOfLoginsTotal] = 0
-            existingUser.details[UserDetails.statistics][StatisticsForProfiles.lastLogin] = str(timezone.now())
-            existingUser.details[UserDetails.statistics][StatisticsForProfiles.numberOfLoginsTotal] += 1
-
-            existingUser.save()
-        except (ObjectDoesNotExist) as error:
-            try:
-                userName = session["user"]["userinfo"]["nickname"]
-                userEmail = session["user"]["userinfo"]["email"]
-                details = {UserDetails.email: userEmail, UserDetails.statistics: {StatisticsForProfiles.lastLogin: str(timezone.now()), StatisticsForProfiles.numberOfLoginsTotal: 1, StatisticsForProfiles.locationOfLastLogin: ""}, UserDetails.addresses: {}, UserDetails.notificationSettings: {}, UserDetails.locale: session[SessionContent.LOCALE]}
-                updated = timezone.now()
-                lastSeen = timezone.now()
-                idHash = crypto.generateSecureID(userID)
-                 
-                existingUser = User.objects.create(subID=userID, hashedID=idHash, name=userName, details=details, updatedWhen=updated, lastSeen=lastSeen)
-            except (Exception) as error:
-                logger.error(f"Error adding user : {str(error)}")
-                return error
-        except (Exception) as error:
-                logger.error(f"Error adding user : {str(error)}")
-                return error
-        try:
+            # create or fetch user as usual
+            existingUser = ProfileManagementUser.addUserIfNotExists(session)
+            if isinstance(existingUser, Exception):
+                raise existingUser
+            # then add this user to the organization
             existingUser.organizations.add(organization)
             if ProfileManagementOrganization.addUserToOrganization(existingUser, session["user"]["userinfo"]["org_id"]) == False:
                 raise Exception(f"User could not be added to organization!, {existingUser}, {organization}")
