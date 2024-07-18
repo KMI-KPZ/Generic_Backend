@@ -616,6 +616,9 @@ class ProfileManagementUser(ProfileManagementBase):
             subID = userID
         updated = timezone.now()
         try:
+            mocked = False
+            if SessionContent.MOCKED_LOGIN in session and session[SessionContent.MOCKED_LOGIN] is True:
+                mocked = True
             existingObj = User.objects.get(subID=subID)
             existingInfo = {UserDescription.name: existingObj.name, UserDescription.details: existingObj.details}
             for updateType in updates:
@@ -626,18 +629,19 @@ class ProfileManagementUser(ProfileManagementBase):
                 elif updateType == UserUpdateType.email:
                     assert isinstance(details, str), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[UserDescription.details][UserDetails.email] = details
-                    # send to id manager
-                    headers = {
-                        'authorization': f'Bearer {auth0.apiToken.accessToken}',
-                        'content-Type': 'application/json',
-                        "Accept": "application/json",
-                        "Cache-Control": "no-cache"
-                    }
-                    baseURL = f"https://{settings.AUTH0_DOMAIN}"
-                    payload = json.dumps({"email": details})
-                    response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', data=payload, headers=headers) )
-                    if isinstance(response, Exception):
-                        raise response
+                    if not mocked:
+                        # send to id manager
+                        headers = {
+                            'authorization': f'Bearer {auth0.apiToken.accessToken}',
+                            'content-Type': 'application/json',
+                            "Accept": "application/json",
+                            "Cache-Control": "no-cache"
+                        }
+                        baseURL = f"https://{settings.AUTH0_DOMAIN}"
+                        payload = json.dumps({"email": details})
+                        response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{subID}', data=payload, headers=headers) )
+                        if isinstance(response, Exception):
+                            raise response
                 elif updateType == UserUpdateType.address:
                     assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
                     setToStandardAddress = details["standard"] # if the new address will be the standard address
@@ -662,6 +666,19 @@ class ProfileManagementUser(ProfileManagementBase):
                 elif updateType == UserUpdateType.locale:
                     assert isinstance(details, str) and "-" in details, f"updateUser failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
                     existingInfo[UserDescription.details][UserDetails.locale] = details
+                    if not mocked:
+                        # send to id manager
+                        headers = {
+                            'authorization': f'Bearer {auth0.apiToken.accessToken}',
+                            'content-Type': 'application/json',
+                            "Accept": "application/json",
+                            "Cache-Control": "no-cache"
+                        }
+                        baseURL = f"https://{settings.AUTH0_DOMAIN}"
+                        payload = json.dumps({"user_metadata": {"language": details}})
+                        response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{subID}', data=payload, headers=headers) )
+                        if isinstance(response, Exception):
+                            raise response
                 elif updateType == UserUpdateType.notifications:
                     assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
                     for notification in details:    
@@ -877,6 +894,10 @@ class ProfileManagementOrganization(ProfileManagementBase):
             existingObj = Organization.objects.get(subID=orgID)
             existingInfo = {OrganizationDescription.details: existingObj.details, OrganizationDescription.supportedServices: existingObj.supportedServices, OrganizationDescription.name: existingObj.name}
             
+            mocked = False
+            if SessionContent.MOCKED_LOGIN in session and session[SessionContent.MOCKED_LOGIN] is True:
+                mocked = True
+
             for updateType in updates:
                 details = updates[updateType]
                 if updateType == OrganizationUpdateType.supportedServices:
@@ -907,42 +928,56 @@ class ProfileManagementOrganization(ProfileManagementBase):
                 elif updateType == OrganizationUpdateType.displayName:
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.name] = details
-                    # send to id manager
-                    headers = {
-                        'authorization': f'Bearer {auth0.apiToken.accessToken}',
-                        'content-Type': 'application/json',
-                        "Cache-Control": "no-cache"
-                    }
-                    baseURL = f"https://{settings.AUTH0_DOMAIN}"
-                    payload = json.dumps({"display_name": details})
-                    response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers, data=payload) )
-                    if isinstance(response, Exception):
-                        raise response
+                    if not mocked:
+                        # send to id manager
+                        headers = {
+                            'authorization': f'Bearer {auth0.apiToken.accessToken}',
+                            'content-Type': 'application/json',
+                            "Cache-Control": "no-cache"
+                        }
+                        baseURL = f"https://{settings.AUTH0_DOMAIN}"
+                        payload = json.dumps({"display_name": details})
+                        response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}', headers=headers, data=payload) )
+                        if isinstance(response, Exception):
+                            raise response
                 elif updateType == OrganizationUpdateType.email:
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.email] = details
                 elif updateType == OrganizationUpdateType.branding:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
-                    # send to id manager
-                    headers = {
-                        'authorization': f'Bearer {auth0.apiToken.accessToken}',
-                        'content-Type': 'application/json',
-                        "Cache-Control": "no-cache"
-                    }
-                    baseURL = f"https://{settings.AUTH0_DOMAIN}"
-                    payload = json.dumps({"branding": details})
-                    #{
-                        # "logo_url": "string",
-                        # "colors": {
-                        # "primary": "string",
-                        # "page_background": "string"
-                    # }
-                    response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers, data=payload) )
-                    if isinstance(response, Exception):
-                        raise response
+                    if not mocked:
+                        # send to id manager
+                        headers = {
+                            'authorization': f'Bearer {auth0.apiToken.accessToken}',
+                            'content-Type': 'application/json',
+                            "Cache-Control": "no-cache"
+                        }
+                        baseURL = f"https://{settings.AUTH0_DOMAIN}"
+                        payload = json.dumps({"branding": details})
+                        #{
+                            # "logo_url": "string",
+                            # "colors": {
+                            # "primary": "string",
+                            # "page_background": "string"
+                        # }
+                        response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}', headers=headers, data=payload) )
+                        if isinstance(response, Exception):
+                            raise response
                 elif updateType == OrganizationUpdateType.locale:
                     assert isinstance(details, str) and "-" in details, f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.locale] = details
+                    if not mocked:
+                        # send to id manager
+                        headers = {
+                            'authorization': f'Bearer {auth0.apiToken.accessToken}',
+                            'content-Type': 'application/json',
+                            "Cache-Control": "no-cache"
+                        }
+                        baseURL = f"https://{settings.AUTH0_DOMAIN}"
+                        payload = json.dumps({"metadata": { "language": details}})
+                        response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}', headers=headers, data=payload) )
+                        if isinstance(response, Exception):
+                            raise response
                 elif updateType == OrganizationUpdateType.taxID:
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.taxID] = details
