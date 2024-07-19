@@ -548,8 +548,8 @@ def callbackLogin(request:Request):
 
             # email of user was not verified yet, tell them that!
             if token["userinfo"]["email_verified"] == False:
-                # return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
-                return Response(settings.FORWARD_URL+"/verifyEMail", status=status.status.HTTP_401_UNAUTHORIZED)
+                return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
+                #return Response(settings.FORWARD_URL+"/verifyEMail", status=status.status.HTTP_401_UNAUTHORIZED)
 
             # convert expiration time to the corresponding date and time
             now = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc) + datetime.timedelta(seconds=token["expires_at"])
