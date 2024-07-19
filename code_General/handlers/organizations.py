@@ -243,8 +243,8 @@ class SReqDeletionsOrga(serializers.Serializer):
     services = serializers.ListField(child=serializers.IntegerField(), required=False)
 #######################################################
 class SReqUpdateOrga(serializers.Serializer):
-    changes = SReqChangesOrga()
-    deletions = SReqDeletionsOrga()
+    changes = SReqChangesOrga(required=False)
+    deletions = SReqDeletionsOrga(required=False)
 #########################################################################
 # Handler  
 @extend_schema(
