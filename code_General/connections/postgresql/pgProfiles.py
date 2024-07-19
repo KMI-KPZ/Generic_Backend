@@ -542,6 +542,58 @@ class ProfileManagementBase():
             return False
         except Exception as error:
             logger.error(f"Error checking whether ID belongs to orga: {str(error)}")
+    
+    ##############################################
+    @staticmethod
+    def getNotificationPreferences(ID:str) -> dict | None:
+        """
+        Get notification preferences of orga if available
+
+        :param ID: The hashed ID of the orga/user
+        :type ID: str
+        :return: Dictionary with settings or None
+        :rtype: dict | None
+        """
+        try:
+            if ID != GlobalDefaults.anonymous:
+                if ProfileManagementBase.checkIfHashIDBelongsToOrganization(ID):
+                    orgaObj = Organization.objects.get(hashedID=ID)
+                    if OrganizationDetails.notificationSettings in orgaObj.details:
+                        return orgaObj.details[OrganizationDetails.notificationSettings]
+                else:
+                    userObj = User.objects.get(hashedID=ID)
+                    if UserDetails.notificationSettings in userObj.details:
+                        return userObj.details[UserDetails.notificationSettings]
+            return None
+        except Exception as e:
+            logger.error(f"Error getting orga email address: {str(e)}")
+            return None
+    
+    ##############################################
+    @staticmethod
+    def getEMailAddress(ID:str) -> str | None:
+        """
+        Get Mail address of user if available
+
+        :param ID: The hashed ID of the user/orga
+        :type ID: str
+        :return: E-Mail address or None
+        :rtype: str | None
+        """
+        try:
+            if ID != GlobalDefaults.anonymous:
+                if ProfileManagementBase.checkIfHashIDBelongsToOrganization(ID):
+                    orgaObj = Organization.objects.get(hashedID=ID)
+                    if OrganizationDetails.email in orgaObj.details:
+                        return orgaObj.details[OrganizationDetails.email]
+                else:
+                    userObj = User.objects.get(hashedID=ID)
+                    if UserDetails.email in userObj.details:
+                        return userObj.details[UserDetails.email]
+            return None
+        except Exception as e:
+            logger.error(f"Error getting user email address: {str(e)}")
+            return None
 
 
 ####################################################################################
@@ -685,9 +737,9 @@ class ProfileManagementUser(ProfileManagementBase):
                         email = False
                         event = True    
                         if checkIfNestedKeyExists(details, notification, NotificationTargets.event):
-                            email = details[notification][NotificationTargets.event]
+                            email = details[notification][NotificationTargets.email]
                         if checkIfNestedKeyExists(details, notification, NotificationTargets.email):
-                            event = details[notification][NotificationTargets.email]
+                            event = details[notification][NotificationTargets.event]
                         existingInfo[UserDescription.details][UserDetails.notificationSettings][notification] = {NotificationTargets.email: email, NotificationTargets.event: event} 
                 else:
                     raise Exception("updateType not defined")
@@ -750,28 +802,6 @@ class ProfileManagementUser(ProfileManagementBase):
 
         """
         return ProfileManagementUser.getUserHashID(session)
-    
-    ##############################################
-    @staticmethod
-    def getEMailAddress(clientID:str) -> str | None:
-        """
-        Get Mail address of user if available
-
-        :param clientID: The hashed ID of the user
-        :type clientID: str
-        :return: E-Mail address or None
-        :rtype: str | None
-        """
-        try:
-            userObj = User.objects.get(hashedID=clientID)
-            if UserDetails.email in userObj.details:
-                return userObj.details[UserDetails.email]
-            
-            return None
-        except Exception as e:
-            logger.error(f"Error getting user email address: {str(e)}")
-            return None
-
 
 ####################################################################################
 class ProfileManagementOrganization(ProfileManagementBase):
@@ -987,9 +1017,9 @@ class ProfileManagementOrganization(ProfileManagementBase):
                         email = False
                         event = True    
                         if checkIfNestedKeyExists(details, notification, NotificationTargets.event):
-                            email = details[notification][NotificationTargets.event]
+                            email = details[notification][NotificationTargets.email]
                         if checkIfNestedKeyExists(details, notification, NotificationTargets.email):
-                            event = details[notification][NotificationTargets.email]
+                            event = details[notification][NotificationTargets.event]
                         existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings][notification] = {NotificationTargets.email: email, NotificationTargets.event: event} 
 
                 elif updateType == OrganizationUpdateType.priorities:
@@ -1062,39 +1092,18 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def getEMailAddress(clientID:str) -> str | None:
-        """
-        Get Mail address of orga if available
-
-        :param clientID: The hashed ID of the orga
-        :type clientID: str
-        :return: E-Mail address or None
-        :rtype: str | None
-        """
-        try:
-            orgaObj = Organization.objects.get(hashedID=clientID)
-            if OrganizationDetails.email in orgaObj.details:
-                return orgaObj.details[OrganizationDetails.email]
-            
-            return None
-        except Exception as e:
-            logger.error(f"Error getting orga email address: {str(e)}")
-            return None
-        
-    ##############################################
-    @staticmethod
-    def getSupportedServices(clientID:str) -> list[int]:
+    def getSupportedServices(orgaID:str) -> list[int]:
         """
         Get a list of all services of the organization
 
-        :param clientID: The hashed ID of the orga
-        :type clientID: str
+        :param orgaID: The hashed ID of the orga
+        :type orgaID: str
         :return: list of all services as integers (see services.py)
         :rtype: list[int]
         
         """
         try:
-            orgaObj = Organization.objects.get(hashedID=clientID)
+            orgaObj = Organization.objects.get(hashedID=orgaID)
             return orgaObj.supportedServices
         except Exception as e:
             logger.error(f"Error getting orgas supported services: {str(e)}")
