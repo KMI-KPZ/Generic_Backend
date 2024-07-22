@@ -146,15 +146,17 @@ class SReqNotificationsContentOrga(serializers.Serializer):
     event = serializers.BooleanField(required=False)
     email = serializers.BooleanField(required=False)
 #######################################################
+class SReqProfileClassForNotifications(serializers.Serializer):
+    organization = serializers.DictField(child=SReqNotificationsContentOrga(), required=False)
+#######################################################
 class SReqPriorities(serializers.Serializer):
-    dummyLow = serializers.IntegerField(default=1)
-    dummyHigh = serializers.IntegerField(default=7)
+    value = serializers.IntegerField(default=3)
 #######################################################
 class SResOrgaDetails(serializers.Serializer):
     addresses = SReqAddressOrga(many=True, required=False)
     email = serializers.EmailField()
     locale = serializers.CharField(max_length=200, required=False)
-    notificationSettings = serializers.DictField(child=SReqNotificationsContentOrga(), required=False)
+    notificationSettings = SReqProfileClassForNotifications(required=False)
     priorities = serializers.DictField(child=SReqPriorities(), required=False)
     taxID = serializers.CharField(max_length=200)
 #######################################################
@@ -231,7 +233,7 @@ class SReqChangesOrga(serializers.Serializer):
     email = serializers.EmailField(required=False)
     address = SReqAddressOrga(required=False)
     locale = serializers.CharField(max_length=200, required=False, default="de-DE")
-    notifications = serializers.DictField(child=SReqNotificationsContentOrga(), required=False)
+    notifications = SReqProfileClassForNotifications(required=False)
     supportedServices = serializers.ListField(child=serializers.IntegerField(), required=False)
     branding = SReqBrandingOrga(required=False)
     taxID = serializers.CharField(max_length=200, required=False)

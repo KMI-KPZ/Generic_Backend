@@ -9,8 +9,8 @@ import enum
 
 from .utilities.customStrEnum import StrEnumExactlyAsDefined
 
-from .modelFiles.organizationModel import OrganizationDescription
-from .modelFiles.userModel import UserDescription
+from .modelFiles.organizationModel import OrganizationDescription, OrganizationDetails, OrganizationNotificationSettings, OrganizationNotificationTargets, OrganizationPriorities, OrganizationUpdateType
+from .modelFiles.userModel import UserDescription, UserDetails, UserNotificationSettings, UserNotificationTargets, UserStatistics, UserUpdateType
 
 #######################################################
 # logging vocabulary
@@ -117,113 +117,6 @@ class ProfileClasses(StrEnumExactlyAsDefined):
     """
     user = enum.auto()
     organization = enum.auto()
-
-###################################################
-# Enum for Content of details for users
-class UserDetails(StrEnumExactlyAsDefined):
-    """
-    What details can a user have
-    
-    """
-    email = enum.auto()
-    addresses = enum.auto()
-    locale = enum.auto()
-    notificationSettings = enum.auto()
-    statistics = enum.auto()
-
-###################################################
-# Enum what can be updated for a user
-class UserUpdateType(StrEnumExactlyAsDefined):
-    """
-    What updated can happen to a user?
-    
-    """
-    displayName = enum.auto()
-    email = enum.auto()
-    notifications = enum.auto()
-    locale = enum.auto()
-    address = enum.auto()
-
-###################################################
-# Enum for notification settings for users
-class NotificationSettingsUser(StrEnumExactlyAsDefined):
-    """
-    Which notifications can be received?
-    Some can be set here but most are specific to the plattform itself (just inherit from this class)
-    
-    """
-    newsletter = enum.auto() 
-
-###################################################
-# Enum for notification targets for users
-class NotificationTargets(StrEnumExactlyAsDefined):
-    """
-    What is the target for each notification?
-    
-    """
-    email = enum.auto()	
-    event = enum.auto()
-
-###################################################
-# Enum for statistics settings for user profiles
-class StatisticsForProfiles(StrEnumExactlyAsDefined):
-    """
-    Which statistics are measured?
-    
-    """
-    lastLogin = enum.auto()
-    numberOfLoginsTotal = enum.auto()
-    locationOfLastLogin = enum.auto()
-
-###################################################
-# Enum for Content of details for organizations
-class OrganizationDetails(StrEnumExactlyAsDefined):
-    """
-    What details can an organization have?
-    
-    """
-    addresses = enum.auto()
-    email = enum.auto()
-    taxID = enum.auto()
-    locale = enum.auto() # preferred communication language
-    notificationSettings = enum.auto()
-    priorities = enum.auto()
-
-###################################################
-# Enum what can be updated for a user
-class OrganizationUpdateType(StrEnumExactlyAsDefined):
-    """
-    What updated can happen to a user?
-    
-    """
-    displayName = enum.auto()
-    email = enum.auto()
-    branding = enum.auto()
-    supportedServices = enum.auto()
-    notifications = enum.auto()
-    locale = enum.auto()
-    address = enum.auto()
-    priorities = enum.auto()
-    taxID = enum.auto()
-
-###################################################
-# Enum for notification settings for orgas
-class NotificationSettingsOrganizations(StrEnumExactlyAsDefined):
-    """
-    Which notifications can be received?
-    Some can be set here but most are specific to the plattform itself
-    
-    """
-    newsletter = enum.auto() 
-
-###################################################
-# Enum for priorities for orgas
-class PrioritiesForOrganization(StrEnumExactlyAsDefined):
-    """
-    If the organization has some priorities, they can be set here
-    Is used in Semper-KI for calculations, can be used here for whatever
-    """
-    pass
 
 ###################################################
 # Class for default strings

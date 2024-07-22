@@ -5,6 +5,7 @@ Silvio Weging 2023
 
 Contains: Model for user
 """
+import copy
 import json, enum
 from django.utils import timezone
 from django.db import models
@@ -28,6 +29,63 @@ class UserDescription(StrEnumExactlyAsDefined):
     accessedWhen = enum.auto()
     lastSeen = enum.auto()
 
+###################################################
+# Enum for Content of details for users
+class UserDetails(StrEnumExactlyAsDefined):
+    """
+    What details can a user have
+    
+    """
+    email = enum.auto()
+    addresses = enum.auto()
+    locale = enum.auto()
+    notificationSettings = enum.auto()
+    statistics = enum.auto()
+
+
+###################################################
+# Enum for notification settings for users
+class UserNotificationSettings(StrEnumExactlyAsDefined):
+    """
+    Which notifications can be received?
+    Some can be set here but most are specific to the plattform itself (just inherit from this class)
+    
+    """
+    newsletter = enum.auto() 
+
+###################################################
+# Enum for notification targets for users
+class UserNotificationTargets(StrEnumExactlyAsDefined):
+    """
+    What is the target for each notification?
+    
+    """
+    email = enum.auto()	
+    event = enum.auto()
+
+###################################################
+# Enum for statistics settings for user profiles
+class UserStatistics(StrEnumExactlyAsDefined):
+    """
+    Which statistics are measured?
+    
+    """
+    lastLogin = enum.auto()
+    numberOfLoginsTotal = enum.auto()
+    locationOfLastLogin = enum.auto()
+
+###################################################
+# Enum what can be updated for a user
+class UserUpdateType(StrEnumExactlyAsDefined):
+    """
+    What updated can happen to a user?
+    
+    """
+    displayName = enum.auto()
+    email = enum.auto()
+    notifications = enum.auto()
+    locale = enum.auto()
+    address = enum.auto()
 
 # Table for regular Users
 ###################################################
@@ -63,10 +121,16 @@ class User(models.Model):
 
     ###################################################
     def __str__(self):
+        """
+        Return string representation
+        """
         return self.hashedID + " " + self.name + " " + str(self.organizations) + " " + json.dumps(self.details) + " " + str(self.createdWhen) + " " + str(self.updatedWhen) + " " + str(self.accessedWhen) + " " + str(self.lastSeen)
 
     ###################################################
     def toDict(self):
+        """
+        Return dictionary representation
+        """
         return {UserDescription.hashedID: self.hashedID, 
                 UserDescription.name: self.name, 
                 UserDescription.organizations: ','.join(orga.hashedID for orga in self.organizations.all()), 
@@ -75,3 +139,84 @@ class User(models.Model):
                 UserDescription.updatedWhen: str(self.updatedWhen), 
                 UserDescription.accessedWhen: str(self.accessedWhen), 
                 UserDescription.lastSeen: str(self.lastSeen)}
+
+    ###################################################
+    def initializeDetails(self):
+        """
+        Fill JSON field with necessary details
+
+        :return: User
+        :rtype: User
+
+        """
+        self.details = {
+            UserDetails.email: "",
+            UserDetails.addresses: {},
+            UserDetails.locale: "",
+            UserDetails.statistics: {UserStatistics.lastLogin: "", UserStatistics.locationOfLastLogin: "", UserStatistics.numberOfLoginsTotal: 0},
+            UserDetails.notificationSettings: {"user":{UserNotificationSettings.newsletter: {UserNotificationTargets.email: True, UserNotificationTargets.event: True}}, "organization": {}}
+        }
+        self.save()
+        return self
+    
+    ###################################################
+    def updateDetails(self):
+        """
+        Fill existing JSON field with necessary details from an old entry or initialize new ones
+        
+        :return: User
+        :rtype: User
+
+        """
+        existingDetails = copy.deepcopy(self.details)
+        self.details = {}
+        if UserDetails.email in existingDetails and isinstance(existingDetails[UserDetails.email], str):
+            self.details[UserDetails.email] = existingDetails[UserDetails.email]
+        else:
+            self.details[UserDetails.email] = ""
+        if UserDetails.locale in existingDetails and isinstance(existingDetails[UserDetails.locale], str):
+            self.details[UserDetails.locale] = existingDetails[UserDetails.locale]
+        else:
+            self.details[UserDetails.locale] = ""
+        if UserDetails.addresses in existingDetails and isinstance(existingDetails[UserDetails.addresses], dict):
+            self.details[UserDetails.addresses] = existingDetails[UserDetails.addresses]
+        else:
+            self.details[UserDetails.addresses] = {}
+        if UserDetails.statistics in existingDetails and isinstance(existingDetails[UserDetails.statistics], dict):
+            self.details[UserDetails.statistics] = {}
+            if UserStatistics.lastLogin in existingDetails[UserDetails.statistics]:
+                self.details[UserDetails.statistics][UserStatistics.lastLogin] = existingDetails[UserDetails.statistics][UserStatistics.lastLogin]
+            else:
+                self.details[UserDetails.statistics][UserStatistics.lastLogin] = ""
+            if UserStatistics.locationOfLastLogin in existingDetails[UserDetails.statistics]:
+                self.details[UserDetails.statistics][UserStatistics.locationOfLastLogin] = existingDetails[UserDetails.statistics][UserStatistics.locationOfLastLogin]
+            else:
+                self.details[UserDetails.statistics][UserStatistics.lastLogin] = ""
+            if UserStatistics.numberOfLoginsTotal in existingDetails[UserDetails.statistics]:
+                self.details[UserDetails.statistics][UserStatistics.numberOfLoginsTotal] = existingDetails[UserDetails.statistics][UserStatistics.numberOfLoginsTotal]
+            else:
+                self.details[UserDetails.statistics][UserStatistics.numberOfLoginsTotal] = 0
+        else:
+            self.details[UserDetails.statistics] = {UserStatistics.lastLogin: "", UserStatistics.locationOfLastLogin: "", UserStatistics.numberOfLoginsTotal: 0}
+        if UserDetails.notificationSettings in existingDetails and isinstance(existingDetails[UserDetails.notificationSettings], dict):
+            self.details[UserDetails.notificationSettings] = {"user": {}}
+            for entry in UserNotificationSettings:
+                setting = entry.value
+                if setting in existingDetails[UserDetails.notificationSettings]["user"]:
+                    self.details[UserDetails.notificationSettings]["user"][setting] = {}
+                    if UserNotificationTargets.email in existingDetails[UserDetails.notificationSettings]["user"][setting]:
+                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.email] = existingDetails[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.email]
+                    else:
+                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.email] = True
+                    if UserNotificationTargets.event in existingDetails[UserDetails.notificationSettings]["user"][setting]:
+                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.event] = existingDetails[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.event]
+                    else:
+                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.event] = True
+                else:
+                    self.details[UserDetails.notificationSettings]["user"][setting] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True}
+        else:
+            self.details[UserDetails.notificationSettings]["user"] = {UserNotificationSettings.newsletter: {UserNotificationTargets.email: True, UserNotificationTargets.event: True}}
+
+        self.save()
+        return self
+

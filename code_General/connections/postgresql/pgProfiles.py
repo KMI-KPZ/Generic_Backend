@@ -15,7 +15,7 @@ from Generic_Backend.code_General.connections import auth0
 from Generic_Backend.code_General.utilities.basics import handleTooManyRequestsError
 from ...modelFiles.organizationModel import Organization
 from ...modelFiles.userModel import User
-from ...utilities import crypto
+from ...utilities import crypto, signals
 from ...utilities.basics import checkIfNestedKeyExists
 from ...definitions import *
 
@@ -107,7 +107,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getOrganizationObject(session):
+    def getOrganizationObject(session=None, hashID=""):
         """
         Check whether an organization exists or not and retrieve the object.
 
@@ -117,14 +117,20 @@ class ProfileManagementBase():
         :rtype: Database object
 
         """
-        orgaID = session["user"]["userinfo"]["org_id"]
-        obj = {}
         try:
-            obj = Organization.objects.get(subID=orgaID)
+            if session != None:
+                orgaID = session["user"]["userinfo"]["org_id"]
+                obj = Organization.objects.get(subID=orgaID)
+                return obj
+            elif hashID != "":
+                obj = Organization.objects.get(hashedID=hashID)
+                return obj
+            else:
+                raise Exception("Neither session nor hashID provided!")
+            
         except (Exception) as error:
             logger.error(f"Error getting organization object: {str(error)}")
-
-        return obj
+            return error
 
     ##############################################
     @staticmethod
@@ -214,18 +220,18 @@ class ProfileManagementBase():
         :param hashedID: hashed ID
         :type hashedID: str
         :return: Orga or User key from database
-        :rtype: Str
+        :rtype: Str or Exception
 
         """
-        IDOfUserOrOrga = ""
         try:
             IDOfUserOrOrga = Organization.objects.get(hashedID=hashedID).subID
+            return IDOfUserOrOrga
         except (ObjectDoesNotExist) as error:
             IDOfUserOrOrga = User.objects.get(hashedID=hashedID).subID
+            return IDOfUserOrOrga
         except (Exception) as error:
             logger.error(f"Error getting user key via hash: {str(error)}")
-
-        return IDOfUserOrOrga
+            return error
     
     ##############################################
     @staticmethod
@@ -559,11 +565,11 @@ class ProfileManagementBase():
                 if ProfileManagementBase.checkIfHashIDBelongsToOrganization(ID):
                     orgaObj = Organization.objects.get(hashedID=ID)
                     if OrganizationDetails.notificationSettings in orgaObj.details:
-                        return orgaObj.details[OrganizationDetails.notificationSettings]
+                        return orgaObj.details[OrganizationDetails.notificationSettings][ProfileClasses.organization]
                 else:
                     userObj = User.objects.get(hashedID=ID)
                     if UserDetails.notificationSettings in userObj.details:
-                        return userObj.details[UserDetails.notificationSettings]
+                        return userObj.details[UserDetails.notificationSettings][ProfileClasses.user]
             return None
         except Exception as e:
             logger.error(f"Error getting orga email address: {str(e)}")
@@ -618,25 +624,31 @@ class ProfileManagementUser(ProfileManagementBase):
         try:
             # first get, then create
             result = User.objects.get(subID=userID)
-            if UserDetails.statistics not in result.details:
-                result.details[UserDetails.statistics] = {}
-                result.details[UserDetails.statistics][StatisticsForProfiles.numberOfLoginsTotal] = 0
-            result.details[UserDetails.statistics][StatisticsForProfiles.lastLogin] = str(timezone.now())
-            result.details[UserDetails.statistics][StatisticsForProfiles.numberOfLoginsTotal] += 1
+            # check if up to current state
+            result = result.updateDetails()
+            result.details[UserDetails.statistics][UserStatistics.lastLogin] = str(timezone.now())
+            result.details[UserDetails.statistics][UserStatistics.numberOfLoginsTotal] += 1
             result.save()
+            signals.signalDispatcher.userUpdated.send(None, userID=result.hashedID, session=session)
             return result
 
         except (ObjectDoesNotExist) as error:
             try:
                 userName = session["user"]["userinfo"]["nickname"]
-                userEmail = session["user"]["userinfo"]["email"]
-                userLocale = session[SessionContent.LOCALE] if SessionContent.LOCALE in session else "de-DE"
-                details = {UserDetails.email: userEmail, UserDetails.statistics: {StatisticsForProfiles.lastLogin: str(timezone.now()), StatisticsForProfiles.numberOfLoginsTotal: 1, StatisticsForProfiles.locationOfLastLogin: ""}, UserDetails.addresses: {}, UserDetails.notificationSettings: {}, UserDetails.locale: userLocale}
                 updated = timezone.now()
                 lastSeen = timezone.now()
                 idHash = crypto.generateSecureID(userID)
                  
-                createdUser = User.objects.create(subID=userID, hashedID=idHash, name=userName, details=details, updatedWhen=updated, lastSeen=lastSeen)
+                createdUser = User.objects.create(subID=userID, hashedID=idHash, name=userName, details={}, updatedWhen=updated, lastSeen=lastSeen)
+                createdUser = createdUser.initializeDetails()
+
+                userEmail = session["user"]["userinfo"]["email"]
+                userLocale = session[SessionContent.LOCALE] if SessionContent.LOCALE in session else "de-DE"
+                createdUser.details[UserDetails.email] = userEmail
+                createdUser.details[UserDetails.statistics]= {UserStatistics.lastLogin: str(timezone.now()), UserStatistics.numberOfLoginsTotal: 1, UserStatistics.locationOfLastLogin: ""}
+                createdUser.details[UserDetails.locale] = userLocale
+                createdUser.save()
+                signals.signalDispatcher.userUpdated.send(None, userID=idHash, session=session)
 
                 return createdUser
             except (Exception) as error:
@@ -716,7 +728,7 @@ class ProfileManagementUser(ProfileManagementBase):
                     newContentInDB[idForNewAddress] = details
                     existingInfo[UserDescription.details][UserDetails.addresses] = newContentInDB
                 elif updateType == UserUpdateType.locale:
-                    assert isinstance(details, str) and "-" in details, f"updateUser failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
+                    assert isinstance(details, str) and ("en" in details or "de" in details), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str or the locale didn't contain de or en"
                     existingInfo[UserDescription.details][UserDetails.locale] = details
                     if not mocked:
                         # send to id manager
@@ -733,19 +745,29 @@ class ProfileManagementUser(ProfileManagementBase):
                             raise response
                 elif updateType == UserUpdateType.notifications:
                     assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
-                    if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings):
-                        existingInfo[UserDescription.details][UserDetails.notificationSettings] = {} 
-                    for notification in details: 
-                        if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, notification) \
-                            or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, notification, NotificationTargets.email) \
-                            or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, notification, NotificationTargets.event):
-                            existingInfo[UserDescription.details][UserDetails.notificationSettings][notification] = {NotificationTargets.email: True, NotificationTargets.event: True} 
+                    if ProfileClasses.user in details:
+                        for notification in details: 
+                            if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification) \
+                                or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification, UserNotificationTargets.email) \
+                                or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification, UserNotificationTargets.event):
+                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
 
-                        if checkIfNestedKeyExists(details, notification, NotificationTargets.email):
-                            existingInfo[UserDescription.details][UserDetails.notificationSettings][notification][NotificationTargets.email] = details[notification][NotificationTargets.email]
-                        if checkIfNestedKeyExists(details, notification, NotificationTargets.event):
-                            existingInfo[UserDescription.details][UserDetails.notificationSettings][notification][NotificationTargets.event] = details[notification][NotificationTargets.event]
-                            
+                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.email):
+                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification][UserNotificationTargets.email] = details[ProfileClasses.user][notification][UserNotificationTargets.email]
+                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.event):
+                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification][UserNotificationTargets.event] = details[ProfileClasses.user][notification][UserNotificationTargets.event]
+                    if ProfileClasses.organization in details:
+                        for notification in details: 
+                            if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification) \
+                                or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.email) \
+                                or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.event):
+                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
+
+                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.email):
+                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.email] = details[ProfileClasses.organization][notification][UserNotificationTargets.email]
+                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.event):
+                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.event] = details[ProfileClasses.organization][notification][UserNotificationTargets.event]
+                    
                 else:
                     raise Exception("updateType not defined")
             
@@ -829,10 +851,11 @@ class ProfileManagementOrganization(ProfileManagementBase):
             if isinstance(existingUser, Exception):
                 raise existingUser
             # then add this user to the organization
-            existingUser.organizations.add(organization)
-            if ProfileManagementOrganization.addUserToOrganization(existingUser, session["user"]["userinfo"]["org_id"]) == False:
-                raise Exception(f"User could not be added to organization!, {existingUser}, {organization}")
-            existingUser.save()
+            if organization not in existingUser.organizations:
+                existingUser.organizations.add(organization)
+                if ProfileManagementOrganization.addUserToOrganization(existingUser, session["user"]["userinfo"]["org_id"]) == False:
+                    raise Exception(f"User could not be added to organization!, {existingUser}, {organization}")
+                existingUser.save()
                 
             return existingUser
         except (Exception) as error:
@@ -859,6 +882,10 @@ class ProfileManagementOrganization(ProfileManagementBase):
             if OrganizationDetails.addresses in result.details: # add addresses of the orga to the user
                 for key in result.details[OrganizationDetails.addresses]:
                     userToBeAdded.details[UserDetails.addresses][key] = result.details[OrganizationDetails.addresses][key]
+                userToBeAdded.save()
+            if OrganizationDetails.notificationSettings in result.details: # add notification settings of orga as default
+                for key in result.details[OrganizationDetails.notificationSettings][ProfileClasses.organization]:
+                    userToBeAdded.details[UserDetails.notificationSettings][ProfileClasses.user][ProfileClasses.organization][key] = result.details[OrganizationDetails.notificationSettings][ProfileClasses.organization][key]
                 userToBeAdded.save()
             result.save()
         except (ObjectDoesNotExist) as error:
@@ -887,15 +914,18 @@ class ProfileManagementOrganization(ProfileManagementBase):
         try:
             # first get, then create
             resultObj = Organization.objects.get(subID=orgaID)
+            resultObj = resultObj.updateDetails()
+            signals.signalDispatcher.orgaUpdated.send(None, orgaID=resultObj.hashedID)
             return resultObj
         except (ObjectDoesNotExist) as error:
             try:
                 orgaName = session[SessionContent.ORGANIZATION_NAME]
-                orgaDetails = {OrganizationDetails.email: "", OrganizationDetails.addresses: {}, OrganizationDetails.taxID: "", OrganizationDetails.locale: "", OrganizationDetails.notificationSettings: {}, OrganizationDetails.priorities: {}}
                 idHash = crypto.generateSecureID(orgaID)
                 uri = ""
                 supportedServices = [0]
-                resultObj = Organization.objects.create(subID=orgaID, hashedID=idHash, supportedServices=supportedServices, name=orgaName, details=orgaDetails, uri=uri, updatedWhen=updated) 
+                resultObj = Organization.objects.create(subID=orgaID, hashedID=idHash, supportedServices=supportedServices, name=orgaName, details={}, uri=uri, updatedWhen=updated) 
+                resultObj = resultObj.initializeDetails()
+                signals.signalDispatcher.orgaUpdated.send(None, orgaID=idHash)
                 return resultObj
             except (Exception) as error:
                 logger.error(f"Error adding organization: {str(error)}")
@@ -999,7 +1029,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                         if isinstance(response, Exception):
                             raise response
                 elif updateType == OrganizationUpdateType.locale:
-                    assert isinstance(details, str) and "-" in details, f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
+                    assert isinstance(details, str) and ("de" in details or "en" in details), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.locale] = details
                     if not mocked:
                         # send to id manager
@@ -1018,22 +1048,22 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     existingInfo[OrganizationDescription.details][OrganizationDetails.taxID] = details
                 elif updateType == OrganizationUpdateType.notifications:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
-                    if not checkIfNestedKeyExists(existingInfo, OrganizationDescription.details, OrganizationDetails.notificationSettings):
-                        existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings] = {} 
-                    for notification in details:   
-                        if not checkIfNestedKeyExists(existingInfo, OrganizationDescription.details, OrganizationDetails.notificationSettings, notification) \
-                            or not checkIfNestedKeyExists(existingInfo, OrganizationDescription.details, OrganizationDetails.notificationSettings, notification, NotificationTargets.email) \
-                            or not checkIfNestedKeyExists(existingInfo, OrganizationDescription.details, OrganizationDetails.notificationSettings, notification, NotificationTargets.event):
-                            existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings][notification] = {NotificationTargets.email: True, NotificationTargets.event: True} 
+                    if ProfileClasses.organization in details:
+                        for notification in details:   
+                            if not checkIfNestedKeyExists(existingInfo, OrganizationDescription.details, OrganizationDetails.notificationSettings, ProfileClasses.organization, notification) \
+                                or not checkIfNestedKeyExists(existingInfo, OrganizationDescription.details, OrganizationDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.email) \
+                                or not checkIfNestedKeyExists(existingInfo, OrganizationDescription.details, OrganizationDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.event):
+                                existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings][ProfileClasses.organization][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
 
-                        if checkIfNestedKeyExists(details, notification, NotificationTargets.email):
-                            existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings][notification][NotificationTargets.email] = details[notification][NotificationTargets.email]
-                        if checkIfNestedKeyExists(details, notification, NotificationTargets.event):
-                            existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings][notification][NotificationTargets.event] = details[notification][NotificationTargets.event]
-                            
+                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.email):
+                                existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.email] = details[ProfileClasses.organization][notification][UserNotificationTargets.email]
+                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.event):
+                                existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.event] = details[ProfileClasses.organization][notification][UserNotificationTargets.event]
+                                
                 elif updateType == OrganizationUpdateType.priorities:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
-                    existingInfo[OrganizationDescription.details][OrganizationDetails.priorities] = details
+                    for key in details:
+                        existingInfo[OrganizationDescription.details][OrganizationDetails.priorities][key] = details[key]
                 else:
                     raise Exception("updateType not defined")
                 

@@ -64,6 +64,8 @@ def addUserTest(request:Request):
 
         if request.session[SessionContent.PG_PROFILE_CLASS] == ProfileClasses.organization:
             orgaObj = pgProfiles.ProfileManagementBase.getOrganizationObject(request.session)
+            if isinstance(orgaObj, Exception):
+                raise orgaObj
             returnVal = pgProfiles.ProfileManagementOrganization.addUserIfNotExists(request.session, orgaObj)
             if isinstance(returnVal, Exception):
                 raise returnVal
@@ -109,14 +111,17 @@ class SResStatistics(serializers.Serializer):
 class SReqNotificationsContent(serializers.Serializer):
     event = serializers.BooleanField(required=False)
     email = serializers.BooleanField(required=False)
-
+#######################################################
+class SReqProfileClassesForNotifications(serializers.Serializer):
+    user = serializers.DictField(child=SReqNotificationsContent(),required=False)
+    organization = serializers.DictField(child=SReqNotificationsContent(),required=False)
 #######################################################
 class SResUserDetails(serializers.Serializer):
     email = serializers.CharField(max_length=200, required=False)
     locale = serializers.CharField(max_length=200, required=False)
     addresses = SReqAddressContent(many=True, required=False)
     statistics = SResStatistics(required=False)
-    notificationSettings = serializers.DictField(child=SReqNotificationsContent(), required=False)
+    notificationSettings = SReqProfileClassesForNotifications(required=False)
 #######################################################
 class SResUserProfile(serializers.Serializer):
     hashedID = serializers.CharField(max_length=200)
@@ -201,7 +206,7 @@ class SReqChanges(serializers.Serializer):
     email = serializers.EmailField(required=False)
     address = SReqAddressContent(required=False)
     locale = serializers.CharField(max_length=200, required=False)
-    notifications = serializers.DictField(child=SReqNotificationsContent(), required=False)
+    notifications = SReqProfileClassesForNotifications(required=False)
 
 #######################################################
 class SReqDeletions(serializers.Serializer):

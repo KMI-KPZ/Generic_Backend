@@ -5,6 +5,7 @@ Silvio Weging 2023
 
 Contains: Model for organizations
 """
+import copy
 import json, enum
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
@@ -27,6 +28,67 @@ class OrganizationDescription(StrEnumExactlyAsDefined):
     createdWhen = enum.auto()
     updatedWhen = enum.auto()
     accessedWhen = enum.auto()
+
+
+###################################################
+# Enum for Content of details for organizations
+class OrganizationDetails(StrEnumExactlyAsDefined):
+    """
+    What details can an organization have?
+    
+    """
+    addresses = enum.auto()
+    email = enum.auto()
+    taxID = enum.auto()
+    locale = enum.auto() # preferred communication language
+    notificationSettings = enum.auto()
+    priorities = enum.auto()
+
+###################################################
+# Enum what can be updated for a user
+class OrganizationUpdateType(StrEnumExactlyAsDefined):
+    """
+    What updated can happen to a user?
+    
+    """
+    displayName = enum.auto()
+    email = enum.auto()
+    branding = enum.auto()
+    supportedServices = enum.auto()
+    notifications = enum.auto()
+    locale = enum.auto()
+    address = enum.auto()
+    priorities = enum.auto()
+    taxID = enum.auto()
+
+###################################################
+# Enum for notification settings for orgas
+class OrganizationNotificationSettings(StrEnumExactlyAsDefined):
+    """
+    Which notifications can be received?
+    Some can be set here but most are specific to the plattform itself
+    
+    """
+    newsletter = enum.auto() 
+
+###################################################
+# Enum for notification targets for users
+class OrganizationNotificationTargets(StrEnumExactlyAsDefined):
+    """
+    What is the target for each notification?
+    
+    """
+    email = enum.auto()	
+    event = enum.auto()
+
+###################################################
+# Enum for priorities for orgas
+class OrganizationPriorities(StrEnumExactlyAsDefined):
+    """
+    If the organization has some priorities, they can be set here
+    Is used in Semper-KI for calculations, can be used here for whatever
+    """
+    pass
 
 #Table for Organizations
 ###################################################
@@ -75,3 +137,75 @@ class Organization(models.Model):
                 OrganizationDescription.createdWhen: str(self.createdWhen), 
                 OrganizationDescription.updatedWhen: str(self.updatedWhen), 
                 OrganizationDescription.accessedWhen: str(self.accessedWhen)}
+
+    ###################################################
+    def initializeDetails(self):
+        """
+        Fill JSON field with necessary details
+
+        :return: Organzation
+        :rtype: Organzation
+
+        """
+        self.details = {
+            OrganizationDetails.email: "",
+            OrganizationDetails.locale: "",
+            OrganizationDetails.taxID: "",
+            OrganizationDetails.addresses: {},
+            OrganizationDetails.notificationSettings: {"organization": {OrganizationNotificationSettings.newsletter: {OrganizationNotificationTargets.email: True, OrganizationNotificationTargets.event: True}}},
+            OrganizationDetails.priorities: {}
+        }
+        self.save()
+        return self
+    
+    ###################################################
+    def updateDetails(self):
+        """
+        Fill existing JSON field with necessary details from an old entry or initialize new ones
+        
+        :return: Organzation
+        :rtype: Organzation
+        """
+        existingDetails = copy.deepcopy(self.details)
+        self.details = {}
+        if OrganizationDetails.email in existingDetails and isinstance(existingDetails[OrganizationDetails.email], str):
+            self.details[OrganizationDetails.email] = existingDetails[OrganizationDetails.email]
+        else:
+            self.details[OrganizationDetails.email] = ""
+        if OrganizationDetails.locale in existingDetails and isinstance(existingDetails[OrganizationDetails.locale], str):
+            self.details[OrganizationDetails.locale] = existingDetails[OrganizationDetails.locale]
+        else:
+            self.details[OrganizationDetails.locale] = ""
+        if OrganizationDetails.taxID in existingDetails and isinstance(existingDetails[OrganizationDetails.taxID], str):
+            self.details[OrganizationDetails.taxID] = existingDetails[OrganizationDetails.taxID]
+        else:
+            self.details[OrganizationDetails.taxID] = ""
+        if OrganizationDetails.addresses in existingDetails and isinstance(existingDetails[OrganizationDetails.addresses], dict):
+            self.details[OrganizationDetails.addresses] = existingDetails[OrganizationDetails.addresses]
+        else:
+            self.details[OrganizationDetails.addresses] = {}
+        if OrganizationDetails.priorities in existingDetails and isinstance(existingDetails[OrganizationDetails.priorities], dict):
+            self.details[OrganizationDetails.priorities] = existingDetails[OrganizationDetails.priorities]
+        else:
+            self.details[OrganizationDetails.priorities] = {}
+        if OrganizationDetails.notificationSettings in existingDetails and isinstance(existingDetails[OrganizationDetails.notificationSettings], dict):
+            self.details[OrganizationDetails.notificationSettings] = {"organization": {}}
+            for entry in OrganizationNotificationSettings:
+                setting = entry.value
+                if setting in existingDetails[OrganizationDetails.notificationSettings]["organization"]:
+                    self.details[OrganizationDetails.notificationSettings]["organization"][setting] = {}
+                    if OrganizationNotificationTargets.email in existingDetails[OrganizationDetails.notificationSettings]["organization"][setting]:
+                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.email] = existingDetails[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.email]
+                    else:
+                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.email] = True
+                    if OrganizationNotificationTargets.event in existingDetails[OrganizationDetails.notificationSettings]["organization"][setting]:
+                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.event] = existingDetails[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.event]
+                    else:
+                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.event] = True
+                else:
+                    self.details[OrganizationDetails.notificationSettings]["organization"][setting] = {OrganizationNotificationTargets.email: True, OrganizationNotificationTargets.event: True}
+        else:
+            self.details[OrganizationDetails.notificationSettings]["organization"] = {OrganizationNotificationSettings.newsletter: {OrganizationNotificationTargets.email: True, OrganizationNotificationTargets.event: True}}
+        
+        self.save()
+        return self
