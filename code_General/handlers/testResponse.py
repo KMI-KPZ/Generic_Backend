@@ -111,7 +111,7 @@ from ..connections.postgresql import pgProfiles
 def testCallToWebsocket(request:Request):
     if "user" in request.session:
         channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserKeyWOSC(session=request.session), {
+        async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserHashID(session=request.session)[:80], {
     "type": "sendMessage",
     "text": "Hello there!",
 })

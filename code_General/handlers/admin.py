@@ -285,7 +285,7 @@ def deleteUserAsAdmin(request:Request):
         userName = content["name"]
         # websocket event for that user
         channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserKeyWOSC(uID=userID), {
+        async_to_sync(channel_layer.group_send)(userHashedID[:80], {
                 "type": "sendMessageJSON",
                 "dict": {"eventType": "accountEvent", "context": "deleteUser"},
             })

@@ -373,4 +373,3 @@ def checkVersion(version=0.3):
         return inner
 
     return decorator
-

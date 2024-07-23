@@ -41,16 +41,16 @@ class GeneralWebSocket(AsyncJsonWebsocketConsumer):
                     if session[SessionContent.IS_PART_OF_ORGANIZATION]:
                         # in other function send to that "group"/"channel"
                         orgaHash = await sync_to_async(pgProfiles.ProfileManagementBase.getOrganizationHashID)(session=session)
-                        await self.channel_layer.group_add(orgaHash, self.channel_name)
+                        await self.channel_layer.group_add(orgaHash[:80], self.channel_name)
                         # add rights
                         for entry in rights.rightsManagement.getRightsList():
-                            await self.channel_layer.group_add(orgaHash+entry, self.channel_name)
+                            await self.channel_layer.group_add(orgaHash[:80]+entry, self.channel_name)
 
                 uID = await sync_to_async(pgProfiles.ProfileManagementBase.getUserHashID)(session=session)
-                await self.channel_layer.group_add(uID, self.channel_name)
+                await self.channel_layer.group_add(uID[:80], self.channel_name)
                 # add rights
                 for entry in rights.rightsManagement.getRightsList():
-                    await self.channel_layer.group_add(uID+entry, self.channel_name)
+                    await self.channel_layer.group_add(uID[:80]+entry, self.channel_name)
 
                 # Send signal to other apps that websocket has been connected
                 await sync_to_async(signals.signalDispatcher.websocketConnected.send)(None,session=session)
@@ -70,13 +70,13 @@ class GeneralWebSocket(AsyncJsonWebsocketConsumer):
                 if SessionContent.IS_PART_OF_ORGANIZATION in session:
                     if session[SessionContent.IS_PART_OF_ORGANIZATION]:
                         orgaIDWOSC = await sync_to_async(pgProfiles.ProfileManagementBase.getOrganizationHashID)(session=session)
-                        await self.channel_layer.group_discard(orgaIDWOSC, self.channel_name)
+                        await self.channel_layer.group_discard(orgaIDWOSC[:80], self.channel_name)
                         for entry in rights.rightsManagement.getRightsList():
-                            await self.channel_layer.group_discard(orgaIDWOSC+entry, self.channel_name)
+                            await self.channel_layer.group_discard(orgaIDWOSC[:80]+entry, self.channel_name)
                 uID = await sync_to_async(pgProfiles.ProfileManagementBase.getUserHashID)(session=session)
-                await self.channel_layer.group_discard(uID, self.channel_name)
+                await self.channel_layer.group_discard(uID[:80], self.channel_name)
                 for entry in rights.rightsManagement.getRightsList():
-                    await self.channel_layer.group_discard(uID+entry, self.channel_name)
+                    await self.channel_layer.group_discard(uID[:80]+entry, self.channel_name)
                 raise StopConsumer("Connection closed")
         except Exception as e:
             logger.error(f'could not disconnect websocket: {str(e)}')

@@ -169,7 +169,7 @@ class ProfileManagementBase():
 
     ##############################################
     @staticmethod
-    def getUserHashID(session):
+    def getUserHashID(session={},userSubID=""):
         """
         Retrieve hashed User ID from Session
 
@@ -181,7 +181,12 @@ class ProfileManagementBase():
         """
         hashID = ""
         try:
-            userID = session["user"]["userinfo"]["sub"]
+            if session != {}:
+                userID = session["user"]["userinfo"]["sub"]
+            elif userID != "":
+                userID = userSubID
+            else:
+                raise Exception("Parameters not set correctly!")
             userObj = User.objects.get(subID=userID)
             if userObj != None:
                 hashID = userObj.hashedID
@@ -192,7 +197,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getOrganizationHashID(session):
+    def getOrganizationHashID(session={}, orgaSubID=""):
         """
         Retrieve Organization object via hashID
 
@@ -203,8 +208,14 @@ class ProfileManagementBase():
 
         """
         hashedID = ""
-        orgaID = session["user"]["userinfo"]["org_id"]
         try:
+            if session != {}:
+                orgaID = session["user"]["userinfo"]["org_id"]
+            elif orgaSubID != "":
+                orgaID = orgaSubID
+            else:
+                raise Exception("Parameters set wrong!")
+
             hashedID = Organization.objects.get(subID=orgaID).hashedID
         except (Exception) as error:
             logger.error(f"Error getting orga hash: {str(error)}")
@@ -781,26 +792,26 @@ class ProfileManagementUser(ProfileManagementBase):
                 elif updateType == UserUpdateType.notifications:
                     assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
                     if ProfileClasses.user in details:
-                        for notification in details: 
+                        for notification in details[ProfileClasses.user]: 
                             if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification) \
                                 or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification, UserNotificationTargets.email) \
                                 or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification, UserNotificationTargets.event):
                                 existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
 
-                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.email):
+                            if checkIfNestedKeyExists(details, ProfileClasses.user, notification, UserNotificationTargets.email):
                                 existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification][UserNotificationTargets.email] = details[ProfileClasses.user][notification][UserNotificationTargets.email]
-                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.event):
+                            if checkIfNestedKeyExists(details, ProfileClasses.user, notification, UserNotificationTargets.event):
                                 existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification][UserNotificationTargets.event] = details[ProfileClasses.user][notification][UserNotificationTargets.event]
                     if ProfileClasses.organization in details:
-                        for notification in details: 
+                        for notification in details[ProfileClasses.organization]: 
                             if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification) \
                                 or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.email) \
                                 or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.event):
                                 existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
 
-                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.email):
+                            if checkIfNestedKeyExists(details, ProfileClasses.organization, notification, UserNotificationTargets.email):
                                 existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.email] = details[ProfileClasses.organization][notification][UserNotificationTargets.email]
-                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.event):
+                            if checkIfNestedKeyExists(details, ProfileClasses.organization, notification, UserNotificationTargets.event):
                                 existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.event] = details[ProfileClasses.organization][notification][UserNotificationTargets.event]
                     
                 else:
@@ -1084,15 +1095,15 @@ class ProfileManagementOrganization(ProfileManagementBase):
                 elif updateType == OrganizationUpdateType.notifications:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     if ProfileClasses.organization in details:
-                        for notification in details:   
+                        for notification in details[ProfileClasses.organization]:   
                             if not checkIfNestedKeyExists(existingInfo, OrganizationDescription.details, OrganizationDetails.notificationSettings, ProfileClasses.organization, notification) \
                                 or not checkIfNestedKeyExists(existingInfo, OrganizationDescription.details, OrganizationDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.email) \
                                 or not checkIfNestedKeyExists(existingInfo, OrganizationDescription.details, OrganizationDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.event):
                                 existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings][ProfileClasses.organization][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
 
-                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.email):
+                            if checkIfNestedKeyExists(details, ProfileClasses.organization, notification, UserNotificationTargets.email):
                                 existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.email] = details[ProfileClasses.organization][notification][UserNotificationTargets.email]
-                            if checkIfNestedKeyExists(details, notification, UserNotificationTargets.event):
+                            if checkIfNestedKeyExists(details, ProfileClasses.organization, notification, UserNotificationTargets.event):
                                 existingInfo[OrganizationDescription.details][OrganizationDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.event] = details[ProfileClasses.organization][notification][UserNotificationTargets.event]
                                 
                 elif updateType == OrganizationUpdateType.priorities:

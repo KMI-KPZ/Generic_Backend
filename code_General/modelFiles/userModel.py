@@ -202,14 +202,17 @@ class User(models.Model):
             self.details[UserDetails.notificationSettings] = {"user": {}}
             for entry in UserNotificationSettings:
                 setting = entry.value
-                if setting in existingDetails[UserDetails.notificationSettings]["user"]:
+                existingNotificationSetting = existingDetails[UserDetails.notificationSettings]
+                if "user" in existingNotificationSetting:
+                    existingNotificationSetting = existingNotificationSetting["user"]
+                if setting in existingNotificationSetting:
                     self.details[UserDetails.notificationSettings]["user"][setting] = {}
-                    if UserNotificationTargets.email in existingDetails[UserDetails.notificationSettings]["user"][setting]:
-                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.email] = existingDetails[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.email]
+                    if UserNotificationTargets.email in existingNotificationSetting[setting]:
+                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.email] = existingNotificationSetting[setting][UserNotificationTargets.email]
                     else:
                         self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.email] = True
-                    if UserNotificationTargets.event in existingDetails[UserDetails.notificationSettings]["user"][setting]:
-                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.event] = existingDetails[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.event]
+                    if UserNotificationTargets.event in existingNotificationSetting[setting]:
+                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.event] = existingNotificationSetting[setting][UserNotificationTargets.event]
                     else:
                         self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.event] = True
                 else:

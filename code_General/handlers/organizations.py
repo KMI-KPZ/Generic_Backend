@@ -49,7 +49,7 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
     try:
         channel_layer = get_channel_layer()
         if eventName == "assignRole" or eventName == "removeRole":
-            groupName = pgProfiles.ProfileManagementBase.getUserKeyWOSC(uID=args)
+            groupName = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args)[:80]
             async_to_sync(channel_layer.group_send)(groupName, {
                 "type": "sendMessageJSON",
                 "dict": {"eventType": "permissionEvent", "type": "roleChanged"},
@@ -67,7 +67,7 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
                 resp = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=baseHeader) )
                 if isinstance(resp, Exception):
                     raise resp    
-                groupName = pgProfiles.ProfileManagementBase.getUserKeyWOSC(uID=userID)
+                groupName = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=userID)[:80]
                 for elem in resp:
                     if elem["id"] == args:
                         async_to_sync(channel_layer.group_send)(groupName, {
@@ -76,7 +76,7 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
                         })
 
         elif eventName == "deleteUserFromOrganization":
-            async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserKeyWOSC(uID=args), {
+            async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args), {
                 "type": "sendMessageJSON",
                 "dict": {"eventType": "orgaEvent", "type": "userDeleted"},
             })
