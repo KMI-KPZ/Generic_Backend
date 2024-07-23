@@ -104,6 +104,41 @@ class ProfileManagementBase():
             return obj
         logger.error(f"Error getting organization because no parameter was given!")
         return {}
+
+    ##############################################
+    @staticmethod
+    def getUsersOfOrganization(session= {}, hashedID:str="") -> list[User]:
+        """
+        Get all user hashIDs belonging to an organization
+
+        :param session: session
+        :type session: Dictionary
+        :param hashedID: The hash ID can be used instead
+        :type hashedID: str
+        :return: List of users
+        :rtype: list
+        
+        """
+        try:
+            if session != {}:
+                if "org_id" in session["user"]["userinfo"]:
+                    orgaID = session["user"]["userinfo"]["org_id"]
+                    obj = Organization.objects.get(subID=orgaID)
+                    return list(obj.users.all())
+                else:
+                    return []
+            if hashedID != "":
+                if ProfileManagementBase.checkIfHashIDBelongsToOrganization(hashedID):
+                    obj = Organization.objects.get(hashedID=hashedID)
+                    return list(obj.users.all())
+                else:
+                    return []
+            else:
+                raise Exception("Error getting organization because no parameter was given!")
+        except Exception as error:
+            logger.error(f"Error in getUsersOfOrganization: {error}")
+            return []
+        
     
     ##############################################
     @staticmethod
@@ -419,7 +454,7 @@ class ProfileManagementBase():
                     else:
                         return "de-DE"
                 else:
-                    userObj = User.objects.get(subID=userID)
+                    userObj = User.objects.get(hashedID=hashedID)
                     if userObj != None and UserDetails.locale in userObj.details:
                         return userObj.details[UserDetails.locale]
                     else:
