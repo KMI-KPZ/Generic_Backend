@@ -154,8 +154,8 @@ class SReqPriorities(serializers.Serializer):
 #######################################################
 class SResOrgaDetails(serializers.Serializer):
     addresses = SReqAddressOrga(many=True, required=False)
-    email = serializers.EmailField()
-    locale = serializers.CharField(max_length=200, required=False)
+    email = serializers.EmailField(required=False, allow_blank=True)
+    locale = serializers.CharField(max_length=200, required=False, allow_blank=True)
     notificationSettings = SReqProfileClassForNotifications(required=False)
     priorities = serializers.DictField(child=SReqPriorities(), required=False)
     taxID = serializers.CharField(max_length=200)
