@@ -897,7 +897,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
             if isinstance(existingUser, Exception):
                 raise existingUser
             # then add this user to the organization
-            if organization not in existingUser.organizations:
+            if organization not in existingUser.organizations.all():
                 existingUser.organizations.add(organization)
                 if ProfileManagementOrganization.addUserToOrganization(existingUser, session["user"]["userinfo"]["org_id"]) == False:
                     raise Exception(f"User could not be added to organization!, {existingUser}, {organization}")
