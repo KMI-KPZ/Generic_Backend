@@ -208,6 +208,7 @@ class Organization(models.Model):
                 else:
                     self.details[OrganizationDetails.notificationSettings]["organization"][setting] = {OrganizationNotificationTargets.email: True, OrganizationNotificationTargets.event: True}
         else:
+            self.details[OrganizationDetails.notificationSettings] = {"organization": {}}
             self.details[OrganizationDetails.notificationSettings]["organization"] = {OrganizationNotificationSettings.newsletter: {OrganizationNotificationTargets.email: True, OrganizationNotificationTargets.event: True}}
         
         self.save()

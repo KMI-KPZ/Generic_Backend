@@ -218,6 +218,7 @@ class User(models.Model):
                 else:
                     self.details[UserDetails.notificationSettings]["user"][setting] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True}
         else:
+            self.details[UserDetails.notificationSettings] = {"user": {}}
             self.details[UserDetails.notificationSettings]["user"] = {UserNotificationSettings.newsletter: {UserNotificationTargets.email: True, UserNotificationTargets.event: True}}
 
         self.save()

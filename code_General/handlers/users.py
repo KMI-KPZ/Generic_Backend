@@ -117,8 +117,8 @@ class SReqProfileClassesForNotifications(serializers.Serializer):
     organization = serializers.DictField(child=SReqNotificationsContent(),required=False)
 #######################################################
 class SResUserDetails(serializers.Serializer):
-    email = serializers.CharField(max_length=200, required=False)
-    locale = serializers.CharField(max_length=200, required=False)
+    email = serializers.CharField(max_length=200, required=False, allow_blank=True)
+    locale = serializers.CharField(max_length=200, required=False, allow_blank=True)
     addresses = SReqAddressContent(many=True, required=False)
     statistics = SResStatistics(required=False)
     notificationSettings = SReqProfileClassesForNotifications(required=False)
