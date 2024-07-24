@@ -118,14 +118,14 @@ def isLoggedIn(request:Request):
 #"setLocaleOfUser": ("public/setLocaleOfUser/", authentification.setLocaleOfUser)
 #########################################################################
 #######################################################
-class SReq(serializers.Serializer):
+class SReqLocale(serializers.Serializer):
     locale = serializers.CharField(max_length=200, default="de-DE")
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Get the preferred language of the user from the frontend .",
     description=" ",
-    request=SReq,
+    request=SReqLocale,
     tags=['FE - Authentification'],
     responses={
         200: None,
@@ -151,7 +151,7 @@ def setLocaleOfUser(request:Request):
         info = json.loads(request.body.decode("utf-8"))
         assert "locale" in info.keys(), f"In {setLocaleOfUser.cls.__name__}: locale not in request"
         localeOfUser = info["locale"]
-        if "-" in localeOfUser: # test supported languages here
+        if "de" in localeOfUser or "en" in localeOfUser: # test supported languages here
             request.session[SessionContent.LOCALE] = localeOfUser
             if basics.manualCheckifLoggedIn(request.session):
                 pgProfiles.ProfileManagementBase.setUserLocale(request.session)
