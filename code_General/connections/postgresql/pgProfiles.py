@@ -1074,6 +1074,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                         response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}', headers=headers, data=payload) )
                         if isinstance(response, Exception):
                             raise response
+                        existingInfo[OrganizationDescription.details][OrganizationDetails.branding] = details
                 elif updateType == OrganizationUpdateType.locale:
                     assert isinstance(details, str) and ("de" in details or "en" in details), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.locale] = details
