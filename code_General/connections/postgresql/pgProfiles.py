@@ -183,7 +183,7 @@ class ProfileManagementBase():
         try:
             if session != {}:
                 userID = session["user"]["userinfo"]["sub"]
-            elif userID != "":
+            elif userSubID != "":
                 userID = userSubID
             else:
                 raise Exception("Parameters not set correctly!")

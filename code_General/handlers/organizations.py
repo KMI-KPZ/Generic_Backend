@@ -67,16 +67,17 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
                 resp = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=baseHeader) )
                 if isinstance(resp, Exception):
                     raise resp    
-                groupName = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=userID)[:80]
                 for elem in resp:
                     if elem["id"] == args:
-                        async_to_sync(channel_layer.group_send)(groupName, {
-                            "type": "sendMessageJSON",
-                            "dict": {"eventType": "permissionEvent", "type": "roleChanged"},
-                        })
+                        groupName = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=userID)[:80]
+                        if groupName != "":
+                            async_to_sync(channel_layer.group_send)(groupName, {
+                                "type": "sendMessageJSON",
+                                "dict": {"eventType": "permissionEvent", "type": "roleChanged"},
+                            })
 
         elif eventName == "deleteUserFromOrganization":
-            async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args), {
+            async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args)[:80], {
                 "type": "sendMessageJSON",
                 "dict": {"eventType": "orgaEvent", "type": "userDeleted"},
             })
@@ -127,8 +128,6 @@ def addOrganizationTest(request:Request):
 #######################################################
 #########################################################################
 # getOrganizationDetails
-#"getOrganization": ("public/getOrganization/",profiles.getOrganizationDetails)
-#########################################################################
 #######################################################
 class SReqAddressOrga(serializers.Serializer):
     id = serializers.CharField(max_length=200, required=False, allow_blank=True)
@@ -158,7 +157,7 @@ class SResOrgaDetails(serializers.Serializer):
     locale = serializers.CharField(max_length=200, required=False, allow_blank=True)
     notificationSettings = SReqProfileClassForNotifications(required=False)
     priorities = serializers.DictField(child=SReqPriorities(), required=False)
-    taxID = serializers.CharField(max_length=200)
+    taxID = serializers.CharField(max_length=200, required=False, allow_blank=True)
 #######################################################
 class SResOrga(serializers.Serializer):
     hashedID = serializers.CharField(max_length=200)
@@ -216,7 +215,6 @@ def getOrganizationDetails(request:Request):
 
 #########################################################################
 # updateDetailsOfOrganization
-#"updateDetailsOfOrga": ("public/updateOrganizationDetails/",profiles.updateDetailsOfOrganization)
 #########################################################################
 # Serializers
 #######################################################
@@ -256,12 +254,13 @@ class SReqUpdateOrga(serializers.Serializer):
     tags=['FE - Profiles'],
     responses={
         200: None,
+        400: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
+@checkIfRightsAreSufficient(json=False)
 @api_view(["PATCH"])
-@checkIfRightsAreSufficient()
 def updateDetailsOfOrganization(request:Request):
     """
     Update details of organization of that user.
@@ -309,9 +308,6 @@ def updateDetailsOfOrganization(request:Request):
 
 #########################################################################
 # deleteOrganization
-#"deleteOrganization": ("public/deleteOrganization/",profiles.deleteOrganization)
-#########################################################################
-#TODO Add serializer for deleteOrganization
 #########################################################################
 # Handler  
 @extend_schema(
@@ -321,12 +317,13 @@ def updateDetailsOfOrganization(request:Request):
     tags=['FE - Profiles'],
     responses={
         200: None,
+        429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
+@checkIfRightsAreSufficient(json=False)
 @api_view(["DELETE"])
-@checkIfRightsAreSufficient()
 def deleteOrganization(request:Request):
     """
     Deletes an organization from the database and auth0.
@@ -385,6 +382,10 @@ def getOrganizationName(session, orgID, baseURL, baseHeader):
             if session[SessionContent.ORGANIZATION_NAME] != "":
                 return session[SessionContent.ORGANIZATION_NAME]
         
+        orgHashID = pgProfiles.ProfileManagementBase.getOrganizationHashID(orgaSubID=orgID)
+        if orgHashID != "":
+            return pgProfiles.ProfileManagementOrganization.getOrganizationName(orgHashID)
+        
         res = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}', headers=baseHeader))
         if isinstance(res, Exception):
             raise res
@@ -394,24 +395,29 @@ def getOrganizationName(session, orgID, baseURL, baseHeader):
 
 #########################################################################
 # organizations_getInviteLink
-#"organizations_getInviteLink": ("public/organizations/getInviteLink/",organizations.organizations_getInviteLink)
 #########################################################################
-#TODO Add serializer for organizations_getInviteLink
+# serializer for organizations_getInviteLink
+#######################################################
+class SReqRoleAndMail(serializers.Serializer):
+    email = serializers.EmailField()
+    roleID = serializers.CharField(max_length=200)
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Ask Auth0 API to invite someone via e-mail and retrieve the link",
     description=" ",
-    request=None,
+    request=SReqRoleAndMail,
     tags=['FE - Organizations'],
     responses={
         200: None,
+        400: ExceptionSerializerGeneric,
+        429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
-@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
+@api_view(["POST"])
 def organizations_getInviteLink(request:Request):
     """
     Ask Auth0 API to invite someone via e-mail and retrieve the link
@@ -425,7 +431,18 @@ def organizations_getInviteLink(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
         
-        content = json.loads(request.body.decode("utf-8"))["data"]
+        inSerializer = SReqRoleAndMail(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {organizations_getInviteLink.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        validatedInput = inSerializer.data
 
         headers = {
             'authorization': f'Bearer {auth0.apiToken.accessToken}',
@@ -433,10 +450,10 @@ def organizations_getInviteLink(request:Request):
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = request.session["user"]["userinfo"]["org_id"]
-        userName = request.session["user"]["userinfo"]["nickname"]
-        emailAddressOfUserToBeAdded = content["content"]["email"]
-        roleID = content["content"]["roleID"]
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        emailAddressOfUserToBeAdded = validatedInput["email"]
+        roleID = validatedInput["roleID"]
 
         data = { "inviter": { "name": userName }, "invitee": { "email": emailAddressOfUserToBeAdded }, "client_id": settings.AUTH0_ORGA_CLIENT_ID, "connection_id": auth0.auth0Config["IDs"]["connection_id"], "ttl_sec": 0, "roles": [roleID], "send_invitation_email": False }
         
@@ -445,7 +462,7 @@ def organizations_getInviteLink(request:Request):
             raise response
         
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},invite,{Logging.Object.USER},user {emailAddressOfUserToBeAdded} to {orgID}," + str(datetime.datetime.now()))
-        return HttpResponse(response["invitation_url"])
+        return Response(response["invitation_url"], status=status.HTTP_200_OK)
     
     except Exception as e:
         loggerError.error(f'Generic Exception while obtaining invite link: {e}')
@@ -456,25 +473,23 @@ def organizations_getInviteLink(request:Request):
 
 #########################################################################
 # organizations_addUser
-#"organizations_addUser": ("public/organizations/addUser/",organizations.organizations_addUser)
-#########################################################################
-#TODO Add serializer for organizations_addUser
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Ask Auth0 API to invite someone via e-mail",
     description=" ",
-    request=None,
+    request=SReqRoleAndMail,
     tags=['FE - Organizations'],
     responses={
         200: None,
+        400: ExceptionSerializerGeneric,
         429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
-@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
+@api_view(["POST"])
 def organizations_addUser(request:Request):
     """
     Ask Auth0 API to invite someone via e-mail
@@ -488,7 +503,18 @@ def organizations_addUser(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
 
-        content = json.loads(request.body.decode("utf-8"))["data"]
+        inSerializer = SReqRoleAndMail(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {organizations_addUser.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        validatedInput = inSerializer.data
 
         headers = {
             'authorization': f'Bearer {auth0.apiToken.accessToken}',
@@ -496,10 +522,10 @@ def organizations_addUser(request:Request):
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = request.session["user"]["userinfo"]["org_id"]
-        userName = request.session["user"]["userinfo"]["nickname"]
-        emailAddressOfUserToBeAdded = content["content"]["email"]
-        roleID = content["content"]["roleID"]
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        emailAddressOfUserToBeAdded = validatedInput["email"]
+        roleID = validatedInput["roleID"]
 
         data = { "inviter": { "name": userName }, "invitee": { "email": emailAddressOfUserToBeAdded }, "client_id": settings.AUTH0_ORGA_CLIENT_ID, "connection_id": auth0.auth0Config["IDs"]["connection_id"], "ttl_sec": 0, "roles":[roleID], "send_invitation_email": True }
         
@@ -519,9 +545,18 @@ def organizations_addUser(request:Request):
 
 #########################################################################
 # organizations_fetchUsers
-#"organizations_fetchUsers": ("public/organizations/fetchUsers/",organizations.organizations_fetchUsers)
 #########################################################################
-#TODO Add serializer for organizations_fetchUsers
+# serializer for organizations_fetchUsers
+#######################################################
+class SResRolesForUsers(serializers.Serializer):
+    id = serializers.CharField(max_length=200)
+    name = serializers.CharField(max_length=200)
+#######################################################
+class SResUsersAndRoles(serializers.Serializer):
+    picture = serializers.URLField(required=False, allow_blank=True)
+    name = serializers.CharField(max_length=200)
+    email = serializers.EmailField()
+    roles = SResRolesForUsers(many=True)
 #########################################################################
 # Handler  
 @extend_schema(
@@ -530,14 +565,14 @@ def organizations_addUser(request:Request):
     request=None,
     tags=['FE - Organizations'],
     responses={
-        200: None,
+        200: serializers.ListSerializer(child=SResUsersAndRoles()),
         429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
+@checkIfRightsAreSufficient(json=False)
 @api_view(["GET"])
-@checkIfRightsAreSufficient(json=True)
 def organizations_fetchUsers(request:Request):
     """
     Ask Auth0 API for all users of an organization
@@ -557,7 +592,7 @@ def organizations_fetchUsers(request:Request):
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = request.session["user"]["userinfo"]["org_id"]
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
 
         orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
         if isinstance(orgaName, Exception):
@@ -577,7 +612,11 @@ def organizations_fetchUsers(request:Request):
                 responseDict[idx]["roles"][elemIdx]["name"] = responseDict[idx]["roles"][elemIdx]["name"].replace(orgaName+"-", "")
             entry.pop("user_id")
 
-        return Response(responseDict)
+        outSerializer = SResUsersAndRoles(data=responseDict, many=True)
+        if outSerializer.is_valid():
+            return Response(outSerializer.data, status=status.HTTP_200_OK)
+        else:
+            raise Exception(outSerializer.errors)
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching users: {e}')
         if "many requests" in e.args[0]:
@@ -587,13 +626,10 @@ def organizations_fetchUsers(request:Request):
 
 #########################################################################
 # organizations_deleteUser
-#"organizations_deleteUser": ("public/organizations/deleteUser/",organizations.organizations_deleteUser)
-#########################################################################
-#TODO Add serializer for organizations_deleteUser
 #########################################################################
 # Handler  
 @extend_schema(
-    summary="Ask Auth0 API to delete someone from an organization via their name",
+    summary="Ask Auth0 API to delete someone from an organization via their mail address",
     description=" ",
     request=None,
     tags=['FE - Organizations'],
@@ -604,14 +640,14 @@ def organizations_fetchUsers(request:Request):
     },
 )
 @checkIfUserIsLoggedIn()
-@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_deleteUser(request:Request):
+@api_view(["DELETE"])
+def organizations_deleteUser(request:Request, userEMail:str):
     """
-    Ask Auth0 API to delete someone from an organization via their name
+    Ask Auth0 API to delete someone from an organization via their mail address
 
-    :param request: Request with content as json
-    :type request: HTTP POST
+    :param request: Request with parameter
+    :type request: HTTP DELETE
     :return: If successful or not
     :rtype: HTTPResponse or error
     """
@@ -619,19 +655,17 @@ def organizations_deleteUser(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
 
-        content = json.loads(request.body.decode("utf-8"))["data"]
         headers = {
             'authorization': f'Bearer {auth0.apiToken.accessToken}',
             'content-Type': 'application/json',
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = request.session["user"]["userinfo"]["org_id"]
-        userName = request.session["user"]["userinfo"]["nickname"]
-        emailAddressOfUserToBeAdded = content["content"]["email"]
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
 
         # fetch user id via E-Mail of the user
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAddressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
+        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{userEMail}"&search_engine=v3', headers=headers) )
         if isinstance(response, Exception):
             raise response
         userID = response[0]["user_id"]
@@ -642,7 +676,7 @@ def organizations_deleteUser(request:Request):
         if isinstance(response, Exception):
             raise response
         pgProfiles.ProfileManagementUser.deleteUser("", uID=userID)
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},user {emailAddressOfUserToBeAdded} from {orgID}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},user with email {userEMail} from {orgID}," + str(datetime.datetime.now()))
         
         # Send event to websocket
         retVal = sendEventViaWebsocket(orgID, baseURL, headers, "deleteUserFromOrganization", userID)
@@ -660,25 +694,29 @@ def organizations_deleteUser(request:Request):
     
 #########################################################################
 # organizations_createRole
-#"organizations_createRole": ("public/organizations/createRole/",organizations.organizations_createRole)
 #########################################################################
-#TODO Add serializer for organizations_createRole
+# serializer for organizations_createRole
+#######################################################
+class SReqCreateRole(serializers.Serializer):
+    roleName = serializers.CharField(max_length=200)
+    roleDescription = serializers.CharField(max_length=200, allow_blank=True)
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Ask Auth0 API to create a new role",
     description=" ",
-    request=None,
+    request=SReqCreateRole,
     tags=['FE - Organizations'],
     responses={
         200: None,
+        400: ExceptionSerializerGeneric,
         429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
-@api_view(["POST"])
 @checkIfRightsAreSufficient(json=True)
+@api_view(["POST"])
 def organizations_createRole(request:Request):
     """
     Ask Auth0 API to create a new role
@@ -692,7 +730,18 @@ def organizations_createRole(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return JsonResponse({})
 
-        content = json.loads(request.body.decode("utf-8"))["data"]
+        inSerializer = SReqCreateRole(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {organizations_createRole.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        validatedInput = inSerializer.data
 
         headers = {
             'authorization': f'Bearer {auth0.apiToken.accessToken}',
@@ -700,16 +749,16 @@ def organizations_createRole(request:Request):
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = request.session["user"]["userinfo"]["org_id"]
-        userName = request.session["user"]["userinfo"]["nickname"]
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
 
         orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
         if isinstance(orgaName, Exception):
             raise orgaName
         
         # append organization name to the role name to avoid that two different organizations create the same role
-        roleName = orgaName + "-" + content["content"]["roleName"]
-        roleDescription = content["content"]["roleDescription"]
+        roleName = orgaName + "-" + validatedInput["roleName"]
+        roleDescription = validatedInput["roleDescription"]
 
         data = { "name": roleName, "description": roleDescription}
         response = handleTooManyRequestsError( lambda: requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}', headers=headers, json=data) )
@@ -717,7 +766,7 @@ def organizations_createRole(request:Request):
             raise response
         
         logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},created,{Logging.Object.OBJECT},role {roleName} in {orgID}," + str(datetime.datetime.now()))
-        return Response(response)
+        return Response("Success", status=status.HTTP_200_OK)
     
     except Exception as e:
         loggerError.error(f'Generic Exception while creating role: {e}')
@@ -728,31 +777,29 @@ def organizations_createRole(request:Request):
 
 #########################################################################
 # organizations_assignRole
-#"organizations_assignRole": ("public/organizations/assignRole/",organizations.organizations_assignRole)
-#########################################################################
-#TODO Add serializer for organizations_assignRole
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Assign a role to a person",
     description=" ",
-    request=None,
+    request=SReqRoleAndMail,
     tags=['FE - Organizations'],
     responses={
         200: None,
+        400: ExceptionSerializerGeneric,
         429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
-@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
+@api_view(["PATCH"])
 def organizations_assignRole(request:Request):
     """
     Assign a role to a person
 
     :param request: request with content as json
-    :type request: HTTP POST
+    :type request: HTTP PATCH
     :return: If successful or not
     :rtype: HTTPResponse
     """
@@ -760,7 +807,18 @@ def organizations_assignRole(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
 
-        content = json.loads(request.body.decode("utf-8"))["data"]
+        inSerializer = SReqRoleAndMail(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {organizations_assignRole.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        validatedInput = inSerializer.data
 
         headers = {
             'authorization': f'Bearer {auth0.apiToken.accessToken}',
@@ -768,10 +826,10 @@ def organizations_assignRole(request:Request):
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = request.session["user"]["userinfo"]["org_id"]
-        userName = request.session["user"]["userinfo"]["nickname"]
-        emailAddressOfUserToBeAdded = content["content"]["email"]
-        roleID = content["content"]["roleID"]
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        emailAddressOfUserToBeAdded = validatedInput["email"]
+        roleID = validatedInput["roleID"]
 
         # fetch user id via E-Mail of the user
         response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAddressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
@@ -800,31 +858,29 @@ def organizations_assignRole(request:Request):
     
 #########################################################################
 # organizations_removeRole
-#"organizations_removeRole": ("public/organizations/removeRole/",organizations.organizations_removeRole)
-#########################################################################
-#TODO Add serializer for organizations_removeRole
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Remove a role from a person",
     description=" ",
-    request=None,
+    request=SReqRoleAndMail,
     tags=['FE - Organizations'],
     responses={
         200: None,
+        400: ExceptionSerializerGeneric,
         429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
-@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
+@api_view(["PATCH"])
 def organizations_removeRole(request:Request):
     """
     Remove a role from a person
 
     :param request: request with content as json
-    :type request: HTTP POST
+    :type request: HTTP PATCH
     :return: If successful or not
     :rtype: True or error
     """
@@ -832,7 +888,18 @@ def organizations_removeRole(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
 
-        content = json.loads(request.body.decode("utf-8"))["data"]
+        inSerializer = SReqRoleAndMail(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {organizations_removeRole.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        validatedInput = inSerializer.data
 
         headers = {
             'authorization': f'Bearer {auth0.apiToken.accessToken}',
@@ -840,10 +907,10 @@ def organizations_removeRole(request:Request):
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = request.session["user"]["userinfo"]["org_id"]
-        userName = request.session["user"]["userinfo"]["nickname"]
-        emailAddressOfUserToBeAdded = content["content"]["email"]
-        roleID = content["content"]["roleID"]
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        emailAddressOfUserToBeAdded = validatedInput["email"]
+        roleID = validatedInput["roleID"]
 
         # fetch user id via E-Mail of the user
         response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAddressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
@@ -871,25 +938,30 @@ def organizations_removeRole(request:Request):
 
 #########################################################################
 # organizations_editRole
-#"organizations_editRole": ("public/organizations/editRole/",organizations.organizations_editRole)
 #########################################################################
-#TODO Add serializer for organizations_editRole
+# serializer for organizations_editRole
+#######################################################
+class SReqEditRole(serializers.Serializer):
+    roleID = serializers.CharField(max_length=200)
+    roleName = serializers.CharField(max_length=200)
+    roleDescription = serializers.CharField(max_length=200, allow_blank=True)
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Ask Auth0 API to edit a role",
     description=" ",
-    request=None,
+    request=SReqEditRole,
     tags=['FE - Organizations'],
     responses={
         200: None,
+        400: ExceptionSerializerGeneric,
         429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     }
 )
 @checkIfUserIsLoggedIn()
-@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
+@api_view(["PATCH"])
 def organizations_editRole(request:Request):
     """
     Ask Auth0 API to edit a role
@@ -903,7 +975,18 @@ def organizations_editRole(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
 
-        content = json.loads(request.body.decode("utf-8"))["data"]
+        inSerializer = SReqEditRole(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {organizations_editRole.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        validatedInput = inSerializer.data
 
         headers = {
             'authorization': f'Bearer {auth0.apiToken.accessToken}',
@@ -911,16 +994,16 @@ def organizations_editRole(request:Request):
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = request.session["user"]["userinfo"]["org_id"]
-        userName = request.session["user"]["userinfo"]["nickname"]
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
 
         orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
         if isinstance(orgaName, Exception):
             raise orgaName
 
-        roleID = content["content"]["roleID"]
-        roleName = orgaName + "-" + content["content"]["roleName"]
-        roleDescription = content["content"]["roleDescription"]
+        roleID = validatedInput["roleID"]
+        roleName = orgaName + "-" + validatedInput["roleName"]
+        roleDescription = validatedInput["roleDescription"]
 
         data = { "name": roleName, "description": roleDescription}
         response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}', headers=headers, json=data) )
@@ -942,9 +1025,13 @@ def organizations_editRole(request:Request):
 
 #########################################################################
 # organizations_getRoles
-#"organizations_getRoles": ("public/organizations/getRoles/",organizations.organizations_getRoles)
 #########################################################################
-#TODO Add serializer for organizations_getRoles
+# serializer for organizations_getRoles
+#######################################################
+class SResRoles(serializers.Serializer):
+    id = serializers.CharField(max_length=200)
+    name = serializers.CharField(max_length=200)
+    description = serializers.CharField(max_length=200, allow_blank=True)
 #########################################################################
 # Handler  
 @extend_schema(
@@ -953,14 +1040,14 @@ def organizations_editRole(request:Request):
     request=None,
     tags=['FE - Organizations'],
     responses={
-        200: None,
+        200: serializers.ListSerializer(child=SResRoles()),
         429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     },
 )
 @checkIfUserIsLoggedIn()
-@api_view(["GET"])
 @checkIfRightsAreSufficient(json=True)
+@api_view(["GET"])
 def organizations_getRoles(request:Request):
     """
     Fetch all roles for the organization
@@ -981,7 +1068,7 @@ def organizations_getRoles(request:Request):
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = request.session["user"]["userinfo"]["org_id"]
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
 
         orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
         if isinstance(orgaName, Exception):
@@ -997,7 +1084,11 @@ def organizations_getRoles(request:Request):
                 entry["name"] = entry["name"].replace(orgaName+"-", "")
                 rolesOut.append(entry)
 
-        return Response(rolesOut)
+        outSerializer = SResRoles(data=rolesOut, many=True)
+        if outSerializer.is_valid():
+            return Response(outSerializer.data, status=status.HTTP_200_OK)
+        else:
+            raise Exception(outSerializer.errors)
     
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching roles: {e}')
@@ -1008,9 +1099,6 @@ def organizations_getRoles(request:Request):
 
 #########################################################################
 # organizations_deleteRole
-#"organizations_deleteRole": ("public/organizations/deleteRole/",organizations.organizations_deleteRole)
-#########################################################################
-#TODO Add serializer for organizations_deleteRole
 #########################################################################
 # Handler  
 @extend_schema(
@@ -1025,14 +1113,14 @@ def organizations_getRoles(request:Request):
     },
 )
 @checkIfUserIsLoggedIn()
-@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
-def organizations_deleteRole(request:Request):
+@api_view(["DELETE"])
+def organizations_deleteRole(request:Request, roleID:str):
     """
     Delete role via ID
 
     :param request: request with content as json
-    :type request: HTTP POST
+    :type request: HTTP DELETE
     :return: If successful or not
     :rtype: HTTPResponse or error
     """
@@ -1040,17 +1128,14 @@ def organizations_deleteRole(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
 
-        content = json.loads(request.body.decode("utf-8"))["data"]
-
         headers = {
             'authorization': f'Bearer {auth0.apiToken.accessToken}',
             'content-Type': 'application/json',
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        roleID = content["content"]["roleID"]
-        userName = request.session["user"]["userinfo"]["nickname"]
-        orgID = request.session["user"]["userinfo"]["org_id"]
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
 
         response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}', headers=headers) )
         if isinstance(response, Exception):
@@ -1068,31 +1153,35 @@ def organizations_deleteRole(request:Request):
 
 #########################################################################
 # organizations_setPermissionsForRole
-#"organizations_setPermissionsForRole": ("public/organizations/setPermissionsForRole/",organizations.organizations_setPermissionsForRole)
 #########################################################################
-#TODO Add serializer for organizations_setPermissionsForRole
+# serializer for organizations_setPermissionsForRole
+#######################################################
+class SReqPermissionsAndRoles(serializers.Serializer):
+    roleID = serializers.CharField(max_length=200)
+    permissionIDs = serializers.ListField(child=serializers.CharField())
 #########################################################################
 # Handler 
 @extend_schema(
     summary="Add Permissions to role",
     description=" ",
-    request=None,
+    request=SReqPermissionsAndRoles,
     tags=['FE - Organizations'],
     responses={
         200: None,
+        400: ExceptionSerializerGeneric,
         429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     },
 ) 
 @checkIfUserIsLoggedIn()
-@api_view(["POST"])
 @checkIfRightsAreSufficient(json=False)
+@api_view(["PATCH"])
 def organizations_setPermissionsForRole(request:Request):
     """
     Add Permissions to role
 
     :param request: request with content as json
-    :type request: HTTP POST
+    :type request: HTTP PATCH
     :return: If successful or not
     :rtype: HTTPResponse or error
     """    
@@ -1100,7 +1189,18 @@ def organizations_setPermissionsForRole(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
 
-        content = json.loads(request.body.decode("utf-8"))["data"]
+        inSerializer = SReqPermissionsAndRoles(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {organizations_getPermissionsForRole.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        validatedInput = inSerializer.data
 
         headers = {
             'authorization': f'Bearer {auth0.apiToken.accessToken}',
@@ -1108,10 +1208,10 @@ def organizations_setPermissionsForRole(request:Request):
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = request.session["user"]["userinfo"]["org_id"]
-        userName = request.session["user"]["userinfo"]["nickname"]
-        roleID = content["content"]["roleID"]
-        permissionList = content["content"]["permissionIDs"]
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        roleID = validatedInput["roleID"]
+        permissionList = validatedInput["permissionIDs"]
 
         data = {"permissions" : []}
         for entry in permissionList:
@@ -1147,9 +1247,12 @@ def organizations_setPermissionsForRole(request:Request):
 
 #########################################################################
 # organizations_getPermissions
-#"organizations_getPermissions": ("public/organizations/getPermissions/",organizations.organizations_getPermissions)
 #########################################################################
-#TODO Add serializer for organizations_getPermissions
+# serializer for organizations_getPermissions
+#######################################################
+class SResPermissions(serializers.Serializer):
+    value = serializers.CharField(max_length=200)
+    description = serializers.CharField(max_length=500, required=False, allow_blank=True)
 #########################################################################
 # Handler  
 @extend_schema(
@@ -1158,14 +1261,14 @@ def organizations_setPermissionsForRole(request:Request):
     request=None,
     tags=['FE - Organizations'],
     responses={
-        200: None,
+        200: serializers.ListSerializer(child=SResPermissions()),
         429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     }
 )
 @checkIfUserIsLoggedIn()
-@api_view(["GET"])
 @checkIfRightsAreSufficient(json=True)
+@api_view(["GET"])
 def organizations_getPermissions(request:Request):
     """
     Get all Permissions
@@ -1190,7 +1293,11 @@ def organizations_getPermissions(request:Request):
         if isinstance(response, Exception):
             raise response
         
-        return Response(response["scopes"])
+        outSerializer = SResPermissions(data=response["scopes"], many=True)
+        if outSerializer.is_valid():
+            return Response(outSerializer.data, status=status.HTTP_200_OK)
+        else:
+            raise Exception(outSerializer.errors)
 
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching permissions: {e}')
@@ -1201,9 +1308,14 @@ def organizations_getPermissions(request:Request):
 
 #########################################################################
 # organizations_getPermissionsForRole
-#"organizations_getPermissionsForRole": ("public/organizations/getPermissionsForRole/",organizations.organizations_getPermissionsForRole)
 #########################################################################
-#TODO Add serializer for organizations_getPermissionsForRole
+# serializer for organizations_getPermissionsForRole
+#######################################################
+class SResPermissionsForRole(serializers.Serializer):
+    resource_server_identifier = serializers.CharField(max_length=300)
+    permission_name = serializers.CharField(max_length=200)
+    resource_server_name = serializers.CharField(max_length=200)
+    description = serializers.CharField(max_length=200, allow_blank=True)
 #########################################################################
 # Handler  
 @extend_schema(
@@ -1212,20 +1324,20 @@ def organizations_getPermissions(request:Request):
     request=None,
     tags=['FE - Organizations'],
     responses={
-        200: None,
+        200: serializers.ListSerializer(child=SResPermissionsForRole()),
         429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     }
 )
 @checkIfUserIsLoggedIn()
-@api_view(["POST"])
 @checkIfRightsAreSufficient(json=True)
-def organizations_getPermissionsForRole(request:Request):
+@api_view(["GET"])
+def organizations_getPermissionsForRole(request:Request, roleID:str):
     """
     Get Permissions of role
 
     :param request: request with content as json
-    :type request: HTTP POST
+    :type request: HTTP GET
     :return: If successful, list of permissions for role as array, error if not
     :rtype: JSON or error
     """    
@@ -1233,20 +1345,22 @@ def organizations_getPermissionsForRole(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return JsonResponse({})
 
-        content = json.loads(request.body.decode("utf-8"))["data"]
-
         headers = {
             'authorization': f'Bearer {auth0.apiToken.accessToken}',
             'content-Type': 'application/json',
             "Cache-Control": "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        roleID = content["content"]["roleID"]
 
         response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}/permissions', headers=headers) )
         if isinstance(response, Exception):
             raise response
-        return Response(response)
+        
+        outSerializer = SResPermissionsForRole(data=response, many=True)
+        if outSerializer.is_valid():
+            return Response(outSerializer.data, status=status.HTTP_200_OK)
+        else:
+            raise Exception(outSerializer.errors)
 
     except Exception as e:
         loggerError.error(f'Generic Exception while fetching permissions for role: {e}')
@@ -1257,18 +1371,23 @@ def organizations_getPermissionsForRole(request:Request):
 
 #########################################################################
 # organizations_createNewOrganization
-#"organizations_createOrganization": ("public/organizations/createNew/",organizations.organizations_createNewOrganization)
 #########################################################################
-#TODO Add serializer for organizations_createNewOrganization
+# serializer for organizations_createNewOrganization
+#######################################################
+class SReqNewOrganization(serializers.Serializer):
+    metadata = serializers.DictField(required=False, allow_empty=True)
+    display_name = serializers.CharField(max_length=200, min_length=3)
+    email = serializers.EmailField()
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Create a new organization",
     description="Create a new organization, create an admin role, invite a person via email as admin. All via Auth0s API.",
-    request=None,
+    request=SReqNewOrganization,
     tags=['FE - Organizations'],
     responses={
         200: None,
+        400: ExceptionSerializerGeneric,
         429: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     }
@@ -1289,7 +1408,18 @@ def organizations_createNewOrganization(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
 
-        content = json.loads(request.body.decode("utf-8"))["data"]
+        inSerializer = SReqNewOrganization(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {organizations_createNewOrganization.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        validatedInput = inSerializer.data
 
         headers = {
             'authorization': f'Bearer {auth0.apiToken.accessToken}',
@@ -1299,9 +1429,11 @@ def organizations_createNewOrganization(request:Request):
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
 
         # create organization
-        metadata = {} if "metadata" not in content["content"] else content["content"]["metadata"]
-        data = { "name": content["content"]["name"], 
-                "display_name": content["content"]["display_name"], 
+        metadata = {} if "metadata" not in validatedInput else validatedInput["metadata"]
+        displayName = validatedInput["display_name"]
+        name =  displayName.strip().lower().replace(" ", "_")[:49]
+        data = { "name": name, 
+                "display_name": displayName, 
                 "metadata": metadata,
                 "enabled_connections": [ { "connection_id": auth0.auth0Config["IDs"]["connection_id"], "assign_membership_on_login": False } ] }
 
@@ -1312,7 +1444,7 @@ def organizations_createNewOrganization(request:Request):
         org_id = response["id"]
         
         # create admin role
-        roleName = content["content"]["display_name"] + "-" + "admin"
+        roleName = displayName + "-" + "admin"
         roleDescription = "admin"
 
         data = { "name": roleName, "description": roleDescription}
@@ -1335,7 +1467,7 @@ def organizations_createNewOrganization(request:Request):
             raise response
 
         # invite person to organization as admin
-        email = content["content"]["email"]
+        email = validatedInput["email"]
 
         data = { "inviter": { "name": "Semper-KI" }, "invitee": { "email": email }, "client_id": settings.AUTH0_ORGA_CLIENT_ID, "roles": [ roleID ], "connection_id": auth0.auth0Config["IDs"]["connection_id"], "ttl_sec": 0, "send_invitation_email": True }
         
@@ -1343,7 +1475,7 @@ def organizations_createNewOrganization(request:Request):
         if isinstance(response, Exception):
             raise response
         
-        logger.info(f"{Logging.Subject.SYSTEM},Semper-KI,{Logging.Predicate.CREATED},created,{Logging.Object.ORGANISATION},{content['content']['name']} through user {email}," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.SYSTEM},Semper-KI,{Logging.Predicate.CREATED},created,{Logging.Object.ORGANISATION},{displayName} through user {email}," + str(datetime.datetime.now()))
         
         return Response("Success", status=status.HTTP_200_OK)
     
