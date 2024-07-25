@@ -129,6 +129,14 @@ def addOrganizationTest(request:Request):
 #########################################################################
 # getOrganizationDetails
 #######################################################
+class SReqBrandingColor(serializers.Serializer):
+    primary = serializers.CharField(max_length=200, default="HEX Color", allow_blank=True)
+    page_background = serializers.CharField(max_length=200, default="HEX Color", allow_blank=True)
+#######################################################
+class SReqBrandingOrga(serializers.Serializer):
+    logo_url = serializers.URLField(allow_blank=True)
+    colors = SReqBrandingColor()
+#######################################################
 class SReqAddressOrga(serializers.Serializer):
     id = serializers.CharField(max_length=200, required=False, allow_blank=True)
     standard = serializers.BooleanField()
@@ -156,6 +164,7 @@ class SResOrgaDetails(serializers.Serializer):
     email = serializers.EmailField(required=False, allow_blank=True)
     locale = serializers.CharField(max_length=200, required=False, allow_blank=True)
     notificationSettings = SReqProfileClassForNotifications(required=False)
+    branding = SReqBrandingOrga(required=False)
     priorities = serializers.DictField(child=SReqPriorities(), required=False)
     taxID = serializers.CharField(max_length=200, required=False, allow_blank=True)
 #######################################################
@@ -217,14 +226,6 @@ def getOrganizationDetails(request:Request):
 # updateDetailsOfOrganization
 #########################################################################
 # Serializers
-#######################################################
-class SReqBrandingColor(serializers.Serializer):
-    primary = serializers.CharField(max_length=200, default="HEX Color")
-    page_background = serializers.CharField(max_length=200, default="HEX Color")
-#######################################################
-class SReqBrandingOrga(serializers.Serializer):
-    logo_url = serializers.URLField()
-    colors = SReqBrandingColor()
 #######################################################
 class SReqChangesOrga(serializers.Serializer):
     displayName = serializers.CharField(max_length=200, required=False)
