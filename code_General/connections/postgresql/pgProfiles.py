@@ -1157,7 +1157,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                 else:
                     raise Exception("updateType not defined")
             
-            affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], uri=existingInfo[OrganizationDescription.uri], updatedWhen=updated)
+            affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], updatedWhen=updated)
             return None
         except (Exception) as error:
             logger.error(f"Error deleting orga details: {str(error)}")
