@@ -71,6 +71,8 @@ newPaths = {
     "organizations_addUser": ("public/organizations/users/add/",organizations.organizations_addUser),
     "organizations_getInviteLink": ("public/organizations/users/inviteLink/",organizations.organizations_getInviteLink),
     "organizations_fetchUsers": ("public/organizations/users/get/",organizations.organizations_fetchUsers),
+    "organizations_fetchInvitees": ("public/organizations/invites/get/",organizations.organizations_fetchInvitees),
+    "organizations_deleteInvite": ("public/organizations/invites/delete/<str:invitationID>/",organizations.organizations_deleteInvite),
     "organizations_deleteUser": ("public/organizations/users/delete/<str:userEMail>/",organizations.organizations_deleteUser),
     "organizations_createRole": ("public/organizations/roles/create/",organizations.organizations_createRole),
     "organizations_getRoles": ("public/organizations/roles/get/",organizations.organizations_getRoles),

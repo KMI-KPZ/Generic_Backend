@@ -624,6 +624,138 @@ def organizations_fetchUsers(request:Request):
             return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
         else:
             return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+#########################################################################
+# organizations_fetchInvitees
+#########################################################################
+# serializer for organizations_fetchInvitees
+#######################################################
+class SResInvitee(serializers.Serializer):
+    email = serializers.EmailField()
+#######################################################
+class SResInviter(serializers.Serializer):
+    name = serializers.CharField(max_length=200)
+#######################################################
+class SResInvites(serializers.Serializer):
+    id = serializers.CharField()
+    inviter = SResInviter()
+    invitee = SResInvitee()
+    invitation_url = serializers.URLField()
+    created_at = serializers.CharField()
+    expires_at = serializers.CharField()
+    roles = serializers.ListField(child=serializers.CharField())
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Ask Auth0 API for all invited people of an organization",
+    description=" ",
+    request=None,
+    tags=['FE - Organizations'],
+    responses={
+        200: serializers.ListSerializer(child=SResInvites()),
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    },
+)
+@checkIfUserIsLoggedIn()
+@checkIfRightsAreSufficient(json=False)
+@api_view(["GET"])
+def organizations_fetchInvitees(request:Request):
+    """
+    Ask Auth0 API for all invited people of an organization
+
+    :param request: Request with session in it
+    :type request: HTTP GET
+    :return: If successful or not
+    :rtype: Json or error
+    """
+    try:
+        if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
+            return JsonResponse({})
+
+        headers = {
+            'authorization': f'Bearer {auth0.apiToken.accessToken}',
+            'content-Type': 'application/json',
+            "Cache-Control": "no-cache"
+        }
+        baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+
+        orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
+        if isinstance(orgaName, Exception):
+            raise orgaName
+
+        response = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/invitations', headers=headers) )
+        if isinstance(response, Exception):
+            raise response
+
+        outSerializer = SResInvites(data=response, many=True)
+        if outSerializer.is_valid():
+            return Response(outSerializer.data, status=status.HTTP_200_OK)
+        else:
+            raise Exception(outSerializer.errors)
+    except Exception as e:
+        loggerError.error(f'Generic Exception while fetching users: {e}')
+        if "many requests" in e.args[0]:
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+        else:
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+#########################################################################
+# organizations_deleteUser
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Ask Auth0 API to revoke and invitation",
+    description=" ",
+    request=None,
+    tags=['FE - Organizations'],
+    responses={
+        200: None,
+        429: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric,
+    },
+)
+@checkIfUserIsLoggedIn()
+@checkIfRightsAreSufficient(json=False)
+@api_view(["DELETE"])
+def organizations_deleteInvite(request:Request, invitationID:str):
+    """
+    Ask Auth0 API to revoke and invitation
+
+    :param request: Request with parameter
+    :type request: HTTP DELETE
+    :return: If successful or not
+    :rtype: HTTPResponse or error
+    """
+    try:
+        if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
+            return Response("Mock")
+
+        headers = {
+            'authorization': f'Bearer {auth0.apiToken.accessToken}',
+            'content-Type': 'application/json',
+            "Cache-Control": "no-cache"
+        }
+        baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+
+        # delete person from organization via invitationID
+        response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/invitations/{invitationID}', headers=headers) )
+        if isinstance(response, Exception):
+            raise response
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},user invitation from {orgID}," + str(datetime.datetime.now()))
+        
+        return Response("Success", status=status.HTTP_200_OK)
+
+    except Exception as e:
+        loggerError.error(f'Generic Exception while deleting user: {e}')
+        if "many requests" in e.args[0]:
+            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+        else:
+            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # organizations_deleteUser
