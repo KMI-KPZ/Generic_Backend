@@ -7,16 +7,25 @@ Contains: Basic stuff that is imported everywhere
 """
 
 import datetime, enum, json
+from time import sleep
 from functools import wraps
+
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 
-from time import sleep
+from rest_framework import serializers
+from rest_framework import exceptions
+from rest_framework.versioning import AcceptHeaderVersioning
+from rest_framework.response import Response
+from rest_framework import status
+
 
 from ..utilities import rights
-from ..utilities.customStrEnum import StrEnumExactylAsDefined
+from ..utilities.customStrEnum import StrEnumExactlyAsDefined
 from ..connections.redis import RedisConnection
 from ..definitions import SessionContent
+
+
 
 #######################################################
 def checkIfTokenValid(token):
@@ -170,7 +179,9 @@ def manualCheckIfRightsAreSufficient(session, funcName):
     :rtype: Bool
     """
     if "user" in session and SessionContent.USER_PERMISSIONS in session:
-        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowed(session[SessionContent.USER_PERMISSIONS],funcName):
+        if funcName == "view":
+            raise Exception("Funcname is view!")
+        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowed(session[SessionContent.USER_PERMISSIONS], funcName):
             return True
 
     return False
@@ -188,7 +199,9 @@ def manualCheckIfRightsAreSufficientForSpecificOperation(session, funcName, oper
     :rtype: Bool
     """
     if "user" in session and SessionContent.USER_PERMISSIONS in session:
-        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowedWithOperation(session[SessionContent.USER_PERMISSIONS],funcName, operation):
+        if funcName == "view":
+            raise Exception("Funcname is view!")
+        if session[SessionContent.usertype] == "admin" or rights.rightsManagement.checkIfAllowedWithOperation(session[SessionContent.USER_PERMISSIONS], funcName, operation):
             return True
 
     return False
@@ -310,3 +323,53 @@ def getNestedValue(dictionary:dict, *keys):
     if isinstance(_dictionary, dict):
         raise AttributeError("Not enough keys given in getNestedValue!")
     return _dictionary
+
+#####################################################################
+class ExceptionSerializerGeneric(serializers.Serializer):
+    message = serializers.CharField()
+    exception = serializers.CharField()
+
+####################################################
+# The following two are for version checking if that is desired.
+# For this to work, the frontend has to change the accept header 
+# and add "version=0.3" whereas the 0.3 is just an example
+#################### DECORATOR ###################################
+class VersioningForHandlers(AcceptHeaderVersioning):
+    allowed_versions = ["0.3"] # default for swagger
+
+    def __init__(self, allowedVersions) -> None:
+        super().__init__()
+        if str(allowedVersions) not in self.allowed_versions:
+            self.allowed_versions = [str(allowedVersions)]
+            
+######################################################
+def checkVersion(version=0.3):
+    """
+    Checks if the version is supported or not. If not, returns an error message.
+
+    :param version: Version of the API to check if it is supported or not
+    :type version: Float
+    :return: Response whether the version is supported or not
+    :rtype: HTTPRespone
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def inner(request, *args, **kwargs):
+            try:
+                if request.version == None:
+                    #getting really tired of swaggers bullshit (of sometimes not sending the correct header)
+                    return func(request, *args, **kwargs)
+                versioning = VersioningForHandlers(version)
+                versionOfReq = versioning.determine_version(request)
+                return func(request, *args, **kwargs)
+            except exceptions.NotAcceptable as e:
+                return Response(f"Version mismatch! {version} required!", status=status.HTTP_406_NOT_ACCEPTABLE)
+            except Exception as e:
+                if func.__name__ == "view":
+                    return Response(f"Exception in {func.cls.__name__}: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                else:
+                    return Response(f"Exception in {func.__name__}: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return inner
+
+    return decorator

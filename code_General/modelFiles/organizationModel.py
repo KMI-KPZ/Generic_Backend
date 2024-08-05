@@ -5,14 +5,15 @@ Silvio Weging 2023
 
 Contains: Model for organizations
 """
+import copy
 import json, enum
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
-from ..utilities.customStrEnum import StrEnumExactylAsDefined
+from ..utilities.customStrEnum import StrEnumExactlyAsDefined
 
 ###################################################
-class OrganizationDescription(StrEnumExactylAsDefined):
+class OrganizationDescription(StrEnumExactlyAsDefined):
     """
     What does an Organization consists of?
 
@@ -27,6 +28,68 @@ class OrganizationDescription(StrEnumExactylAsDefined):
     createdWhen = enum.auto()
     updatedWhen = enum.auto()
     accessedWhen = enum.auto()
+
+
+###################################################
+# Enum for Content of details for organizations
+class OrganizationDetails(StrEnumExactlyAsDefined):
+    """
+    What details can an organization have?
+    
+    """
+    addresses = enum.auto()
+    email = enum.auto()
+    taxID = enum.auto()
+    locale = enum.auto() # preferred communication language
+    branding = enum.auto()
+    notificationSettings = enum.auto()
+    priorities = enum.auto()
+
+###################################################
+# Enum what can be updated for a user
+class OrganizationUpdateType(StrEnumExactlyAsDefined):
+    """
+    What updated can happen to a user?
+    
+    """
+    displayName = enum.auto()
+    email = enum.auto()
+    branding = enum.auto()
+    supportedServices = enum.auto()
+    notifications = enum.auto()
+    locale = enum.auto()
+    address = enum.auto()
+    priorities = enum.auto()
+    taxID = enum.auto()
+
+###################################################
+# Enum for notification settings for orgas
+class OrganizationNotificationSettings(StrEnumExactlyAsDefined):
+    """
+    Which notifications can be received?
+    Some can be set here but most are specific to the plattform itself
+    
+    """
+    newsletter = enum.auto() 
+
+###################################################
+# Enum for notification targets for users
+class OrganizationNotificationTargets(StrEnumExactlyAsDefined):
+    """
+    What is the target for each notification?
+    
+    """
+    email = enum.auto()	
+    event = enum.auto()
+
+###################################################
+# Enum for priorities for orgas
+class OrganizationPriorities(StrEnumExactlyAsDefined):
+    """
+    If the organization has some priorities, they can be set here
+    Is used in Semper-KI for calculations, can be used here for whatever
+    """
+    pass
 
 #Table for Organizations
 ###################################################
@@ -51,7 +114,7 @@ class Organization(models.Model):
     details = models.JSONField()
     users = models.ManyToManyField("User")
     supportedServices = ArrayField(models.IntegerField())
-    uri = models.CharField(max_length=200)
+    uri = models.CharField(max_length=200) #maybe use this for api key instead
     createdWhen = models.DateTimeField(auto_now_add=True)
     updatedWhen = models.DateTimeField()
     accessedWhen = models.DateTimeField(auto_now=True)
@@ -75,3 +138,83 @@ class Organization(models.Model):
                 OrganizationDescription.createdWhen: str(self.createdWhen), 
                 OrganizationDescription.updatedWhen: str(self.updatedWhen), 
                 OrganizationDescription.accessedWhen: str(self.accessedWhen)}
+
+    ###################################################
+    def initializeDetails(self):
+        """
+        Fill JSON field with necessary details
+
+        :return: Organzation
+        :rtype: Organzation
+
+        """
+        self.details = {
+            OrganizationDetails.email: "",
+            OrganizationDetails.locale: "",
+            OrganizationDetails.taxID: "",
+            OrganizationDetails.addresses: {},
+            OrganizationDetails.notificationSettings: {"organization": {OrganizationNotificationSettings.newsletter: {OrganizationNotificationTargets.email: True, OrganizationNotificationTargets.event: True}}},
+            OrganizationDetails.priorities: {}
+        }
+        self.save()
+        return self
+    
+    ###################################################
+    def updateDetails(self):
+        """
+        Fill existing JSON field with necessary details from an old entry or initialize new ones
+        
+        :return: Organzation
+        :rtype: Organzation
+        """
+        existingDetails = copy.deepcopy(self.details)
+        self.details = {}
+        if OrganizationDetails.email in existingDetails and isinstance(existingDetails[OrganizationDetails.email], str):
+            self.details[OrganizationDetails.email] = existingDetails[OrganizationDetails.email]
+        else:
+            self.details[OrganizationDetails.email] = ""
+        if OrganizationDetails.locale in existingDetails and isinstance(existingDetails[OrganizationDetails.locale], str):
+            self.details[OrganizationDetails.locale] = existingDetails[OrganizationDetails.locale]
+        else:
+            self.details[OrganizationDetails.locale] = ""
+        if OrganizationDetails.taxID in existingDetails and isinstance(existingDetails[OrganizationDetails.taxID], str):
+            self.details[OrganizationDetails.taxID] = existingDetails[OrganizationDetails.taxID]
+        else:
+            self.details[OrganizationDetails.taxID] = ""
+        if OrganizationDetails.addresses in existingDetails and isinstance(existingDetails[OrganizationDetails.addresses], dict):
+            self.details[OrganizationDetails.addresses] = existingDetails[OrganizationDetails.addresses]
+        else:
+            self.details[OrganizationDetails.addresses] = {}
+        if OrganizationDetails.priorities in existingDetails and isinstance(existingDetails[OrganizationDetails.priorities], dict):
+            self.details[OrganizationDetails.priorities] = existingDetails[OrganizationDetails.priorities]
+        else:
+            self.details[OrganizationDetails.priorities] = {}
+        if OrganizationDetails.branding in existingDetails and isinstance(existingDetails[OrganizationDetails.priorities], dict):
+            self.details[OrganizationDetails.branding] = existingDetails[OrganizationDetails.branding]
+        else:
+            self.details[OrganizationDetails.branding] = {"logo_url": "", "colors": {"primary": "#000000", "page_background": "#FFFFFF"}}
+        if OrganizationDetails.notificationSettings in existingDetails and isinstance(existingDetails[OrganizationDetails.notificationSettings], dict):
+            self.details[OrganizationDetails.notificationSettings] = {"organization": {}}
+            for entry in OrganizationNotificationSettings:
+                setting = entry.value
+                existingNotificationSetting = existingDetails[OrganizationDetails.notificationSettings]
+                if "organization" in existingNotificationSetting:
+                    existingNotificationSetting = existingNotificationSetting["organization"]
+                if setting in existingNotificationSetting:
+                    self.details[OrganizationDetails.notificationSettings]["organization"][setting] = {}
+                    if OrganizationNotificationTargets.email in existingNotificationSetting[setting]:
+                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.email] = existingNotificationSetting[setting][OrganizationNotificationTargets.email]
+                    else:
+                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.email] = True
+                    if OrganizationNotificationTargets.event in existingNotificationSetting[setting]:
+                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.event] = existingNotificationSetting[setting][OrganizationNotificationTargets.event]
+                    else:
+                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.event] = True
+                else:
+                    self.details[OrganizationDetails.notificationSettings]["organization"][setting] = {OrganizationNotificationTargets.email: True, OrganizationNotificationTargets.event: True}
+        else:
+            self.details[OrganizationDetails.notificationSettings] = {"organization": {}}
+            self.details[OrganizationDetails.notificationSettings]["organization"] = {OrganizationNotificationSettings.newsletter: {OrganizationNotificationTargets.email: True, OrganizationNotificationTargets.event: True}}
+        
+        self.save()
+        return self

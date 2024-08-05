@@ -8,13 +8,34 @@ Contains: Handling test calls and getting a csrf cookie
 
 import json
 
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
+from rest_framework.response import Response
+from rest_framework.request import Request
+from rest_framework.decorators import api_view
+from rest_framework import status
+
+
+from ..utilities.basics import ExceptionSerializerGeneric
+from drf_spectacular.utils import extend_schema
+
 ###################################################
+@extend_schema(
+    summary="Tests whether request and response scheme works.",
+    description=" ",
+    request=None,
+    tags=['BE - Test'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric,
+    },
+)
 @csrf_exempt # ONLY FOR TESTING!!!!
-def testResponse(request):
+@api_view(['GET'])
+def testResponse(request:Request):
     """
     Tests whether request and response scheme works.
 
@@ -31,8 +52,19 @@ def testResponse(request):
 
 ###################################################
 #@csrf_protect
+@extend_schema(
+    summary="Ensures that the csrf cookie is set correctly.",
+    description=" ",
+    request=None,
+    tags=['BE - Test'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric,  
+    },
+)
 @ensure_csrf_cookie
-def testResponseCsrf(request):
+@api_view(['GET'])
+def testResponseCsrf(request:Request):
     """
     Ensures that the csrf cookie is set correctly.
 
@@ -63,24 +95,49 @@ class testWebSocket(AsyncWebsocketConsumer):
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from ..connections.postgresql import pgProfiles
-def testCallToWebsocket(request):
+
+########################################
+@extend_schema(
+    summary="test call to websocket",
+    description=" ",
+    request=None,
+    tags=['BE - Test'],
+    responses={
+        200: None,
+        401: ExceptionSerializerGeneric,  
+    },
+)
+@api_view(["GET"])
+def testCallToWebsocket(request:Request):
     if "user" in request.session:
         channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserKeyWOSC(session=request.session), {
+        async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserHashID(session=request.session)[:80], {
     "type": "sendMessage",
     "text": "Hello there!",
 })
 
-        return HttpResponse("Success", status=200)
-    return HttpResponse("Not Logged In", status=401)
+        return Response("Success", status=status.HTTP_200_OK)
+    return Response("Not Logged In", status=status.HTTP_401_UNAUTHORIZED)
 
 ###################################################
 class Counter():
     counter = 1
-counter = Counter
+counter = Counter()
 
 ###################################################
-def dynamic(request):
+@extend_schema(
+    summary="Dynamically generate buttons just for fun",
+    description=" ",
+    request=None,
+    tags=['BE - Test'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric,
+        
+    },
+)
+@api_view(["GET"])
+def dynamic(request:Request):
     """
     Dynamically generate buttons just for fun
     
@@ -104,4 +161,27 @@ def dynamic(request):
         for i in range(counter.counter):
             templateEdit["payload"]["number"] += 1
             dynamicObject["Buttons"].append(templateEdit)
-        return JsonResponse(dynamicObject)
+        return Response(dynamicObject)
+    
+
+#######################################################
+@extend_schema(
+    summary=" Return Settings of django",
+    description=" ",
+    request=None,
+    tags=['BE - Test'],
+    responses={
+        200: None,
+    },
+)
+@api_view(["GET"])
+def getSettingsToken(request):
+    """
+    Return Settings of django
+
+    :param request: GET request
+    :type request: HTTP GET
+    :return: JSON with Settings
+    :rtype: JSONResponse
+    """
+    return JsonResponse({"token": settings.BACKEND_SETTINGS})

@@ -11,7 +11,7 @@ Local:
 - postgres as database
 - pgadmin to look into the database
 - redis as key-value store
-- localstack as a local S3 compatible cloud
+- minio as a local S3 compatible cloud
 
 Remote:
 - Digital Ocean Spaces as remote S3 compatible cloud storage

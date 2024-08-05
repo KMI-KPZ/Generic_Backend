@@ -432,7 +432,7 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Semper-KI Backend',
+    'TITLE': 'Semper-KI GenericBackend',
     'DESCRIPTION': 'API for Semper-KI',
     'VERSION': '0.3.0',
     'SERVE_INCLUDE_SCHEMA': False,
