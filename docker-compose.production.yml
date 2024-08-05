@@ -5,8 +5,8 @@ services:
     image: backend-production
     build:
       context: .
-      dockerfile: ./Dockerfile
-    command: ["-e production"]
+      dockerfile: ./Dockerfile.Server
+    command: ["bash","run/run.sh","-e production", "-m", "-c"]
     env_file:
       - .env.production
     ports:

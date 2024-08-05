@@ -421,6 +421,7 @@ STORAGES = {
 
 
 STATIC_URL = f"https://{AWS_STATICS_BUCKET_NAME}.{AWS_REGION_NAME}.{AWS_CDN_ENDPOINT}/{AWS_STATICS_LOCATION}/public/"
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication', #TODO: Set API Keys
@@ -435,5 +436,6 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API for Semper-KI',
     'VERSION': '0.3.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True
     # OTHER SETTINGS
 }
