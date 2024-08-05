@@ -7,22 +7,22 @@ Contains: Definitions, Classes, Enums to describe Elements in the Backend as wel
 """
 import enum
 
-from .utilities.customStrEnum import StrEnumExactylAsDefined
+from .utilities.customStrEnum import StrEnumExactlyAsDefined
 
-from .modelFiles.organizationModel import OrganizationDescription
-from .modelFiles.userModel import UserDescription
+from .modelFiles.organizationModel import OrganizationDescription, OrganizationDetails, OrganizationNotificationSettings, OrganizationNotificationTargets, OrganizationPriorities, OrganizationUpdateType
+from .modelFiles.userModel import UserDescription, UserDetails, UserNotificationSettings, UserNotificationTargets, UserStatistics, UserUpdateType
 
 #######################################################
 # logging vocabulary
 class Logging():
-    class Subject(StrEnumExactylAsDefined):
+    class Subject(StrEnumExactlyAsDefined):
         USER = enum.auto()
         ADMIN = enum.auto()
         ORGANISATION = enum.auto()
         SYSTEM = enum.auto()
         SUBJECT = enum.auto() # for everything else
 
-    class Predicate(StrEnumExactylAsDefined):
+    class Predicate(StrEnumExactlyAsDefined):
         CREATED = enum.auto()
         DEFINED = enum.auto()
         FETCHED = enum.auto()
@@ -30,7 +30,7 @@ class Logging():
         DELETED = enum.auto()
         PREDICATE = enum.auto() # for everything else
 
-    class Object(StrEnumExactylAsDefined):
+    class Object(StrEnumExactlyAsDefined):
         USER = enum.auto()
         ADMIN = enum.auto()
         ORGANISATION = enum.auto()
@@ -58,7 +58,7 @@ class FileObject():
 
 ###################################################
 # File object content as enum
-class FileObjectContent(StrEnumExactylAsDefined):
+class FileObjectContent(StrEnumExactlyAsDefined):
     """
     What can be the metadata of a file?
     """
@@ -79,7 +79,7 @@ class FileObjectContent(StrEnumExactylAsDefined):
 
 ###################################################
 # File object content as enum
-class FileTypes(StrEnumExactylAsDefined):
+class FileTypes(StrEnumExactlyAsDefined):
     """
     What types are there (see FileObjectContent.type)
 
@@ -89,7 +89,7 @@ class FileTypes(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum for session content
-class SessionContent(StrEnumExactylAsDefined):
+class SessionContent(StrEnumExactlyAsDefined):
     """
     What is saved into the session?
 
@@ -111,7 +111,7 @@ class SessionContent(StrEnumExactylAsDefined):
 
 ###################################################
 # Enum for types of users
-class ProfileClasses(StrEnumExactylAsDefined):
+class ProfileClasses(StrEnumExactlyAsDefined):
     """
     Which classes exist?
     """
@@ -119,31 +119,8 @@ class ProfileClasses(StrEnumExactylAsDefined):
     organization = enum.auto()
 
 ###################################################
-# Enum for Content of details for users
-class UserDetails(StrEnumExactylAsDefined):
-    """
-    What details can a user have
-    
-    """
-    email = enum.auto()
-    addresses = enum.auto()
-    locale = enum.auto()
-
-###################################################
-# Enum for Content of details for organizations
-class OrganizationDetails(StrEnumExactylAsDefined):
-    """
-    What details can an organization have?
-    
-    """
-    address = enum.auto()
-    email = enum.auto()
-    taxID = enum.auto()
-    locale = enum.auto()
-
-###################################################
 # Class for default strings
-class GlobalDefaults(StrEnumExactylAsDefined):
+class GlobalDefaults(StrEnumExactlyAsDefined):
     """
     Some things need to be defined globally in name
 

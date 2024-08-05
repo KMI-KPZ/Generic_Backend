@@ -109,6 +109,7 @@ def updateDetailsOfUserAsAdmin(request:Request):
 
     """
     try:
+        # TODO
         content = json.loads(request.body.decode("utf-8"))
         assert "hashedID" in content.keys(), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: hashedID not in request"
         userHashedID = content["hashedID"]
@@ -119,7 +120,7 @@ def updateDetailsOfUserAsAdmin(request:Request):
         assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
         userName = content["name"]
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
-        flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, UserDescription.name, userID)
+        flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, userID)
         assert isinstance(flag, bool), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
         if flag is True:
             return Response("Success", status=status.HTTP_200_OK)
@@ -284,7 +285,7 @@ def deleteUserAsAdmin(request:Request):
         userName = content["name"]
         # websocket event for that user
         channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(pgProfiles.ProfileManagementBase.getUserKeyWOSC(uID=userID), {
+        async_to_sync(channel_layer.group_send)(userHashedID[:80], {
                 "type": "sendMessageJSON",
                 "dict": {"eventType": "accountEvent", "context": "deleteUser"},
             })

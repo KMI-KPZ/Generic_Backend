@@ -18,6 +18,8 @@ class SignalDispatchers():
     """
     userLoggedIn = django.dispatch.Signal()
     userLoggedOut = django.dispatch.Signal()
+    userUpdated = django.dispatch.Signal()
+    orgaUpdated = django.dispatch.Signal()
     websocketConnected = django.dispatch.Signal()
     websocketDisconnected = django.dispatch.Signal()
 

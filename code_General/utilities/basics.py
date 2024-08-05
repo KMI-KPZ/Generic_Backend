@@ -21,7 +21,7 @@ from rest_framework import status
 
 
 from ..utilities import rights
-from ..utilities.customStrEnum import StrEnumExactylAsDefined
+from ..utilities.customStrEnum import StrEnumExactlyAsDefined
 from ..connections.redis import RedisConnection
 from ..definitions import SessionContent
 
@@ -373,4 +373,3 @@ def checkVersion(version=0.3):
         return inner
 
     return decorator
-
