@@ -340,14 +340,15 @@ def deleteOrganization(request:Request):
         orgaName = pgProfiles.ProfileManagementOrganization.getOrganizationName(pgProfiles.ProfileManagementOrganization.getOrganizationHashID(request.session))
         flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
         if flag is True:
-            baseURL = f"https://{settings.AUTH0_DOMAIN}"
-            headers = {
-                'authorization': f'Bearer {auth0.apiToken.accessToken}'
-            }
-            response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers) )
-            if isinstance(response, Exception):
-                loggerError.error(f"Error deleting organization: {str(response)}")
-                return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if SessionContent.MOCKED_LOGIN not in request.session or (SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is False):
+                baseURL = f"https://{settings.AUTH0_DOMAIN}"
+                headers = {
+                    'authorization': f'Bearer {auth0.apiToken.accessToken}'
+                }
+                response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers) )
+                if isinstance(response, Exception):
+                    loggerError.error(f"Error deleting organization: {str(response)}")
+                    return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
             logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
             return Response("Success", status=status.HTTP_200_OK)

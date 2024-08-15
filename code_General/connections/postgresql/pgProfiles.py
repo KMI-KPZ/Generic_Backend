@@ -931,7 +931,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                 userToBeAdded.save()
             if OrganizationDetails.notificationSettings in result.details: # add notification settings of orga as default
                 for key in result.details[OrganizationDetails.notificationSettings][ProfileClasses.organization]:
-                    userToBeAdded.details[UserDetails.notificationSettings][ProfileClasses.user][ProfileClasses.organization][key] = result.details[OrganizationDetails.notificationSettings][ProfileClasses.organization][key]
+                    userToBeAdded.details[UserDetails.notificationSettings][ProfileClasses.user][key] = result.details[OrganizationDetails.notificationSettings][ProfileClasses.organization][key]
                 userToBeAdded.save()
             result.save()
         except (ObjectDoesNotExist) as error:
