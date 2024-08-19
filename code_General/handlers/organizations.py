@@ -20,6 +20,7 @@ from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
 from Generic_Backend.code_General.modelFiles.organizationModel import OrganizationDescription
+from Generic_Backend.code_General.utilities import signals
 
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
@@ -350,6 +351,7 @@ def deleteOrganization(request:Request):
                     loggerError.error(f"Error deleting organization: {str(response)}")
                     return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
+            signals.signalDispatcher.orgaDeleted.send(None,orgaID=orgaID)
             logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
             return Response("Success", status=status.HTTP_200_OK)
         else:

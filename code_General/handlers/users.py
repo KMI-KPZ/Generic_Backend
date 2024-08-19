@@ -1,4 +1,6 @@
-from __future__ import annotations 
+from __future__ import annotations
+
+from Generic_Backend.code_General.utilities import signals 
 """
 Part of Semper-KI software
 
@@ -527,6 +529,7 @@ def deleteUser(request:Request):
                 loggerError.error(f"Error deleting user: {str(response)}")
                 return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+            signals.signalDispatcher.userDeleted.send(None,userID=userID)
             logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.SELF},," + str(datetime.datetime.now()))
             return Response("Success", status=status.HTTP_200_OK)
         else:
