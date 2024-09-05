@@ -39,7 +39,7 @@ class ManageS3():
         if item == "s3_client":
             self.s3_client = self.initClient()
             if self.local:
-                self.createBucket(self.bucketName) # has to be done every time lest localstack forgets it exists
+                self.createBucket(self.bucketName) # has to be done every time lest minio forgets it exists
             return self.s3_client
         if item == "s3_resource":
             self.s3_resource = self.initResource()
@@ -52,7 +52,7 @@ class ManageS3():
         """
         Initialize instance with settings for either local or remote storage
 
-        :param endpoint: IP Adress of storage
+        :param endpoint: IP Address of storage
         :type endpoint: URL Str
         :param key: The access key
         :type key: Str
@@ -70,7 +70,7 @@ class ManageS3():
     #######################################################
     def createBucket(self, bucketName):
         """
-        Create a named bucket to put stuff in. Should only be used freely for localstack!
+        Create a named bucket to put stuff in. Should only be used freely for minio!
 
         :param bucketName: Name of the bucket
         :type bucketName: Str

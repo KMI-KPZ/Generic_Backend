@@ -11,6 +11,9 @@ from django.shortcuts import render
 from django.conf import settings
 from logging import getLogger
 
+from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema
+
 logger = getLogger("django")
 
 
@@ -52,6 +55,7 @@ def docPage(request):
     # response['X-Accel-Redirect'] = url
     # return response
     pathOfHtml = request.path.replace('private/doc/', '').replace('index.html', '')
+    assert isinstance(pathOfHtml, str), f"In {docPage.__name__}: expected pathOfHtml to be of type string, instead got: {type(pathOfHtml)}"
     logger.info(pathOfHtml)
     if ("_static" in pathOfHtml):
         return render(
@@ -83,16 +87,3 @@ def benchyPage(request):
         # "pretty": json.dumps(request.session.get("user"), indent=4),
         # },
     )
-
-
-#######################################################
-def getSettingsToken(request):
-    """
-    Return Settings of django
-
-    :param request: GET request
-    :type request: HTTP GET
-    :return: JSON with Settings
-    :rtype: JSONResponse
-    """
-    return JsonResponse({"token": settings.BACKEND_SETTINGS})

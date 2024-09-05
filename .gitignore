@@ -140,3 +140,5 @@ localstack/
 /playground
 
 redis/data*
+
+minio/*

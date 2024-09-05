@@ -5,7 +5,7 @@ services:
     image: backend-production
     build:
       context: .
-      dockerfile: ./Dockerfile.Testing
+      dockerfile: ./Dockerfile.Server
     command: ["bash", "run/runtests.sh"]
     env_file:
       - .env.production
@@ -14,7 +14,7 @@ services:
     volumes:
       - .:/app
     networks:
-      - semper-ki-production-network
+      - production-network
 
   db-production:
     image: postgres:15
@@ -25,7 +25,7 @@ services:
     volumes:
       - ./postgres/data-test/:/var/lib/postgresql/data/
     networks:
-      - semper-ki-production-network
+      - production-network
 
   files-production:
     image: redis:7
@@ -40,21 +40,22 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
-      - semper-ki-production-network
+      - production-network
     
-  localstack-production:
-      image: localstack/localstack
-      volumes:
-        - ./localstack/:/var/lib/localstack
-      env_file:
-        - .env.production
-      environment:
-        - DOCKER_HOST=unix:///var/run/docker.sock
-        - LOCALSTACK_PERSISTENCE=1
-      ports:
-        - "127.0.0.1:4567:4566"
-      networks:
-          - semper-ki-production-network
+  minio-production:
+    image: minio/minio
+    container_name: minio-production
+    volumes:
+      - ./minio/data:/data
+      - ./minio/config:/root/.minio
+      - ./docker/docker-service-minio-start.sh:/usr/local/bin/docker-service-minio-start.sh
+    env_file:
+      - .env.production
+    ports:
+      - "127.0.0.1:4568:9000"
+    entrypoint: /usr/local/bin/docker-service-minio-start.sh
+    networks:
+      - production-network
 
 networks:
-  semper-ki-production-network:
+  production-network:

@@ -12,6 +12,6 @@ services:
     volumes:
       - .:/app
     networks:
-      - semper-ki-dev-network
+      - dev-network
 networks:
-    semper-ki-dev-network:
+    dev-network:

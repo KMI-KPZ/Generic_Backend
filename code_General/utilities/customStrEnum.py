@@ -9,7 +9,7 @@ Contains: Custom StrEnum Class for representation of String Enum variables exact
 import enum
 
 ####################################################################################
-class StrEnumExactylAsDefined(str, enum.ReprEnum):
+class StrEnumExactlyAsDefined(str, enum.ReprEnum):
     """
     Enum where members are also (and must be) strings and are represented exacty as defined in the enum
     

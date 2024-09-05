@@ -24,41 +24,28 @@ class TestProfiles(TestCase):
     # not part of the tests!
     #######################################################
     @classmethod
-    def createOrganization(self, client:Client, id="", userID = ""):
+    def createOrganization(self, client:Client):
         mockSession = client.session
-        mockSession["user"] = {"userinfo": {"sub": "", "nickname": "", "email": "", "org_id": ""}}
-        mockSession["user"]["userinfo"]["sub"] = "auth0|testOrga" if userID == "" else userID
-        mockSession["user"]["userinfo"]["nickname"] = "testOrga"
-        mockSession["user"]["userinfo"]["email"] = "testOrga@test.de"
-        mockSession["user"]["userinfo"]["org_id"] = "id123" if id == "" else id
-        mockSession[SessionContent.USER_PERMISSIONS] = {"processes:read": "", "processes:files": "", "processes:messages": "", "processes:edit" : "", "processes:delete": "", "orga:edit": "", "orga:delete": "", "orga:read": "", "resources:read": "", "resources:edit": ""}
-        mockSession[SessionContent.usertype] = "organization"
-        mockSession[SessionContent.ORGANIZATION_NAME] = "testOrga"
-        mockSession[SessionContent.INITIALIZED] = True
+        mockSession[SessionContent.MOCKED_LOGIN] = True
+        mockSession[SessionContent.IS_PART_OF_ORGANIZATION] = True
         mockSession[SessionContent.PG_PROFILE_CLASS] = "organization"
-        currentTime = datetime.datetime.now()
-        mockSession["user"]["tokenExpiresOn"] = str(datetime.datetime(currentTime.year+1, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute, currentTime.second, tzinfo=datetime.timezone.utc))
+        mockSession[SessionContent.usertype] = "organization"
+        mockSession[SessionContent.PATH_AFTER_LOGIN] = "127.0.0.1:3000" # no real use but needs to be set
         mockSession.save()
-        client.post("/"+paths["addOrga"][0])
-        client.post("/"+paths["addUser"][0])
+        client.get("/"+paths["callbackLogin"][0])
         return mockSession
 
     #######################################################
     @staticmethod
-    def createUser(client:Client, sub="", name=""):
+    def createUser(client:Client):
         mockSession = client.session
-        mockSession["user"] = {"userinfo": {"sub": "", "nickname": "", "email": ""}}
-        mockSession["user"]["userinfo"]["sub"] = "auth0|testuser" if sub == "" else sub
-        mockSession["user"]["userinfo"]["nickname"] = "testuser" if name == "" else name
-        mockSession["user"]["userinfo"]["email"] = "testuser@test.de"
-        mockSession[SessionContent.USER_PERMISSIONS] = {"processes:read": "", "processes:files": "", "processes:messages": "", "processes:edit" : "", "processes:delete": "", "orga:edit": "", "orga:delete": "", "orga:read": "", "resources:read": "", "resources:edit": ""}
-        mockSession[SessionContent.usertype] = "user"
+        mockSession[SessionContent.MOCKED_LOGIN] = True
+        mockSession[SessionContent.IS_PART_OF_ORGANIZATION] = False
         mockSession[SessionContent.PG_PROFILE_CLASS] = "user"
-        mockSession[SessionContent.INITIALIZED] = True
-        currentTime = datetime.datetime.now()
-        mockSession["user"]["tokenExpiresOn"] = str(datetime.datetime(currentTime.year+1, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute, currentTime.second, tzinfo=datetime.timezone.utc))
+        mockSession[SessionContent.usertype] = "user"
+        mockSession[SessionContent.PATH_AFTER_LOGIN] = "127.0.0.1:3000" # no real use but needs to be set
         mockSession.save()
-        client.post("/"+paths["addUser"][0])
+        client.get("/"+paths["callbackLogin"][0])
         return mockSession
 
     # TESTS!
@@ -66,16 +53,14 @@ class TestProfiles(TestCase):
     def test_updateUser(self):
         client =  Client()
         self.createUser(client)
-        client.post("/"+paths["addUser"][0])
-        client.patch("/"+paths["updateDetails"][0], '{"name": "testuser2TEST"}')
+        client.patch(path="/"+paths["updateDetails"][0], data={"changes": {"displayName": "testuser2TEST"}}, content_type="application/json")
         response = json.loads(client.get("/"+paths["getUser"][0]).content)
         self.assertIs(response["name"] == "testuser2TEST", True)
     
     #######################################################
     def test_deleteUser(self):
         client =  Client()
-        self.createUser(client, sub="auth0|deleteDude", name="deleteDude")
-        client.post("/"+paths["addUser"][0])
+        self.createUser(client)
         delResponse = client.delete("/"+paths["deleteUser"][0])
         self.assertIs(delResponse.status_code == 200, True)
     
@@ -89,13 +74,13 @@ class TestProfiles(TestCase):
     #######################################################
     def test_updateOrganization(self):
         client = Client()
-        self.createOrganization(client, "updateOrga", "auth0|updateUser")
-        response = client.patch("/"+paths["updateDetailsOfOrga"][0], '{"data": {"content": { "supportedServices": [1] } } }')
+        self.createOrganization(client)
+        response = client.patch(path="/"+paths["updateDetailsOfOrga"][0], data={"changes": { "supportedServices": [1] } }, content_type="application/json")
         self.assertIs(response.status_code == 200, True)
 
     #######################################################
     def test_deleteOrganization(self):
         client = Client()
-        self.createOrganization(client, "orgaDeletion", "auth0|deleteOrga")
+        self.createOrganization(client)
         response = client.delete("/"+paths["deleteOrganization"][0])
         self.assertIs(response.status_code == 200, True)

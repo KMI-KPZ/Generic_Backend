@@ -5,8 +5,8 @@ services:
     image: backend-production
     build:
       context: .
-      dockerfile: ./Dockerfile
-    command: ["-e production"]
+      dockerfile: ./Dockerfile.Server
+    command: ["bash","run/run.sh","-e production", "-m", "-c"]
     env_file:
       - .env.production
     ports:
@@ -42,17 +42,18 @@ services:
     networks:
       - production-network
 
-  localstack-production:
-    image: localstack/localstack
+  minio-production:
+    image: minio/minio
+    container_name: minio-production
     volumes:
-      - ./localstack/:/var/lib/localstack
+      - ./minio/data:/data
+      - ./minio/config:/root/.minio
+      - ./docker/docker-service-minio-start.sh:/usr/local/bin/docker-service-minio-start.sh
     env_file:
       - .env.production
-    environment:
-      - DOCKER_HOST=unix:///var/run/docker.sock
-      - LOCALSTACK_PERSISTENCE=1
     ports:
-      - "127.0.0.1:4568:4566"
+      - "127.0.0.1:4568:9000"
+    entrypoint: /usr/local/bin/docker-service-minio-start.sh
     networks:
       - production-network
 

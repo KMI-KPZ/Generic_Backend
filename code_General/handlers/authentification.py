@@ -6,26 +6,92 @@ Silvio Weging 2023
 Contains: Authentification handling using Auth0
 """
 
-import json, datetime, requests, logging
+import json, datetime, requests, logging, re
 from urllib.parse import quote_plus, urlencode
 
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.conf import settings
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 
-from ..utilities import basics, rights, signals
+from rest_framework import status, serializers
+from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
+from rest_framework.decorators import api_view
+from rest_framework.request import Request
+from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiParameter, inline_serializer
+
+from ..utilities import basics, rights, signals, mocks
+from ..utilities.basics import ExceptionSerializerGeneric
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0, redis
-from ..definitions import SessionContent, ProfileClasses, UserDescription
-
+from ..definitions import Logging, SessionContent, ProfileClasses, UserDescription
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
 
 #######################################################
-@require_http_methods(["GET"])
-def isLoggedIn(request):
+
+###################################################
+# CSRF protection
+#@csrf_protect
+@extend_schema(
+    summary="Ensures that the csrf cookie is set correctly.",
+    description=" ",
+    request=None,
+    tags=['FE - Authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric,  
+    },
+)
+@ensure_csrf_cookie
+@api_view(['GET'])
+def createCsrfCookie(request:Request):
+    """
+    Ensures that the csrf cookie is set correctly.
+
+    :param request: GET request
+    :type request: HTTP GET
+    :return: Response with cookie
+    :rtype: HTTP Response
+
+    """
+    try:
+        response = Response("CSRF cookie set", status=status.HTTP_200_OK)
+        return response
+    except (Exception) as error:
+        message = f"Error in {createCsrfCookie.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+#########################################################################
+# isLoggedIn
+#"isLoggedIn": ("public/isLoggedIn/",authentification.isLoggedIn)
+#########################################################################
+#TODO Add serializer for isLoggedIn
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Check whether the token of a user has expired and a new login is necessary",
+    description=" ",
+    request=None,
+    tags=['FE - Authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric
+    },
+)
+@api_view(["GET"])
+def isLoggedIn(request:Request):
     """
     Check whether the token of a user has expired and a new login is necessary
 
@@ -41,15 +107,33 @@ def isLoggedIn(request):
     # Check if user is already logged in
     if "user" in request.session:
         if basics.checkIfTokenValid(request.session["user"]):
-            return HttpResponse("Success",status=200)
+            return Response("Success",status=status.HTTP_200_OK)
         else:
-            return HttpResponse("Failed",status=200)
+            return Response("Failed",status=status.HTTP_200_OK)
     
-    return HttpResponse("Failed",status=200)
+    return Response("Failed",status=status.HTTP_200_OK)
 
+#########################################################################
+# setLocaleOfUser
+#"setLocaleOfUser": ("public/setLocaleOfUser/", authentification.setLocaleOfUser)
+#########################################################################
 #######################################################
-@require_http_methods(["POST"])
-def setLocaleOfUser(request):
+class SReqLocale(serializers.Serializer):
+    locale = serializers.CharField(max_length=200, default="de-DE")
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Get the preferred language of the user from the frontend .",
+    description=" ",
+    request=SReqLocale,
+    tags=['FE - Authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric
+    },
+)
+@api_view(["POST"])
+def setLocaleOfUser(request:Request):
     """
     Get the preferred language of the user from the frontend
 
@@ -65,22 +149,45 @@ def setLocaleOfUser(request):
             request.session[SessionContent.INITIALIZED] = True
         
         info = json.loads(request.body.decode("utf-8"))
+        assert "locale" in info.keys(), f"In {setLocaleOfUser.cls.__name__}: locale not in request"
         localeOfUser = info["locale"]
-        if "-" in localeOfUser: # test supported languages here
+        if "de" in localeOfUser or "en" in localeOfUser: # test supported languages here
             request.session[SessionContent.LOCALE] = localeOfUser
-            pgProfiles.ProfileManagementBase.setUserLocale(request.session)
-            return HttpResponse("Success",status=200)
+            if basics.manualCheckifLoggedIn(request.session):
+                pgProfiles.ProfileManagementBase.setUserLocale(request.session)
+            return Response("Success",status=status.HTTP_200_OK)
 
-        return HttpResponse("Failed", status=200)
-    except Exception as e:
-        loggerError.error(f"getLocaleOfUser: {str(e)}")
-        return HttpResponse("Failed", status=500)
-
-
-#######################################################
-@require_http_methods(["GET"])
+        return Response("Failed", status=status.HTTP_200_OK)
+    except Exception as error:
+        message = f"Error in {setLocaleOfUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+#########################################################################
+# provideRightsFile
+#"getPermissionsFile": ("public/getPermissionMask/",authentification.provideRightsFile)
+#########################################################################
+#TODO Add serializer for provideRightsFile
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Returns the json file containing the rights for the frontend",
+    description=" ",
+    request=None,
+    tags=['FE - Authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric
+    },
+)
+@api_view(["GET"])
 @basics.checkIfUserIsLoggedIn(json=True)
-def provideRightsFile(request):
+def provideRightsFile(request:Request):
     """
     Returns the json file containing the rights for the frontend
 
@@ -91,11 +198,70 @@ def provideRightsFile(request):
 
     """
     
-    return JsonResponse(rights.rightsManagement.getFile(), safe=False)
+    return Response(rights.rightsManagement.getFile())
+
 
 #######################################################
-@require_http_methods(["GET"])
-def loginUser(request):
+@extend_schema(
+    summary="Use fakeUser, fakeOrganization or fakeAdmin to log in from the swagger interface",
+    description=" ",
+    tags=["BE - Authentification"],
+    request=None,
+    parameters=[OpenApiParameter(
+        name='Usertype',
+        type={'type': 'string'},
+        location=OpenApiParameter.HEADER,
+    )],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric
+    }
+)
+@api_view(["GET"])
+def loginAsTestUser(request:Request):
+    """
+    Use fakeUser, fakeOrganization or fakeAdmin to log in from the swagger interface.
+
+    :param request: GET Request
+    :type request: HTTP GET
+    :return: Nothing
+    :rtype: None
+
+    """
+    try:
+        loginUser(request._request)
+        callbackLogin(request._request)
+        return Response("Success", status=status.HTTP_200_OK)
+
+    except (Exception) as error:
+        message = f"Error in {loginAsTestUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#########################################################################
+# loginUser
+#"login" : ("public/login/",authentification.loginUser)
+#########################################################################
+#TODO Add serializer for loginUser
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Return a link for redirection to Auth0",
+    description=" ",
+    request=None,
+    tags=['FE - Authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric,
+    },
+)
+@api_view(["GET"])
+def loginUser(request:Request):
     """
     Return a link for redirection to Auth0.
 
@@ -111,12 +277,13 @@ def loginUser(request):
         mocked = True
 
     if settings.PRODUCTION or settings.STAGING:
-        mocked = False
+        mocked = False # this disables the possibility of h4(|<0|2Z logging in as fakeAdmin
         #return HttpResponse("Currently, logging in is not allowed. Sorry.", status=403)
 
     # check number of login attempts
     if mocked is False:
         if SessionContent.NUMBER_OF_LOGIN_ATTEMPTS in request.session:
+            assert request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] >= 0, f"In {loginUser.cls.__name__}: Expected non-negative number of login attempts, got {request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS]}"
             if (datetime.datetime.now() - datetime.datetime.strptime(request.session[SessionContent.LAST_LOGIN_ATTEMPT],"%Y-%m-%d %H:%M:%S.%f")).seconds > 300:
                 request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] = 0
                 request.session[SessionContent.LAST_LOGIN_ATTEMPT] = str(datetime.datetime.now())
@@ -124,7 +291,7 @@ def loginUser(request):
                 request.session[SessionContent.LAST_LOGIN_ATTEMPT] = str(datetime.datetime.now())
 
             if request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] > 10:
-                return HttpResponse("Too many login attempts! Please wait 5 Minutes.", status=429)
+                return Response("Too many login attempts! Please wait 5 Minutes.", status=status.HTTP_429_TOO_MANY_REQUESTS)
             else:
                 request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] += 1
         else:
@@ -162,18 +329,26 @@ def loginUser(request):
     if "Register" in request.headers and mocked is False:
         if request.headers["Register"] == "true":
             register = "&screen_hint=signup"
+    
+    localization = "&ui_locales=de"
+    if SessionContent.LOCALE in request.session:
+         localization = f"&ui_locales={request.session[SessionContent.LOCALE].split('-')[0]}"
 
     request.session.modified = True
     if mocked:
         request.session[SessionContent.MOCKED_LOGIN] = True
-        return HttpResponse("http://127.0.0.1:8000"+reverse("callbackLogin"))
+        return Response("http://127.0.0.1:8000"+reverse("callbackLogin"))
     else:
         if isPartOfOrganization:
             uri = auth0.authorizeRedirectOrga(request, reverse("callbackLogin"))
         else:
             uri = auth0.authorizeRedirect(request, reverse("callbackLogin"))
+        if __debug__:
+            regex = "^((http|https)://)[-a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)$"
+            url_regex = re.compile(regex)
+            assert url_regex.match(uri.url), f"In {loginUser.cls.__name__}: Expected uri.url to be a http or https url, instead got: {uri.url}"
         # return uri and redirect to register if desired
-        return HttpResponse(uri.url + register)
+        return Response(uri.url + register + localization)
 
 #######################################################
 def setOrganizationName(request):
@@ -211,14 +386,20 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: AUTH0_DOMAIN was not added to baseURL"
         orgID = session["user"]["userinfo"]["org_id"]
+        assert isinstance(orgID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected orgID to be of type string, instead got: {type(orgID)}"
+        assert orgID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: non-empty orgID expected"
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: non-empty userID expected"
 
         
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
         roles = response
+        assert isinstance(roles, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected roles to be of type list, instead got: {type(roles)}"
         
         for entry in roles:
             response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
@@ -226,6 +407,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
                 raise response
             else:
                 permissions = response
+                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -249,8 +431,12 @@ def retrieveRolesAndPermissionsForStandardUser(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: AUTH0_DOMAIN was not added to baseURL"
         
+        userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: non-empty userID expected"
+
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
@@ -267,6 +453,7 @@ def retrieveRolesAndPermissionsForStandardUser(session):
                 raise response
             else:
                 permissions = response
+                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -296,6 +483,7 @@ def setRoleAndPermissionsOfUser(request):
             if isinstance(resultDict, Exception):
                 raise resultDict
 
+        assert isinstance(resultDict, dict), f"In {setRoleAndPermissionsOfUser.cls.__name__}: expected resultDict to be of type dictionary, instead got: {type(resultDict)}"
         request.session[SessionContent.USER_ROLES] = resultDict["roles"]
         request.session[SessionContent.USER_PERMISSIONS] = {x["permission_name"]: "" for x in resultDict["permissions"] } # save only the permission names, the dict is for faster access
 
@@ -310,9 +498,26 @@ def setRoleAndPermissionsOfUser(request):
         loggerError.error(f'Generic Exception: {e}')
         return e
 
-#######################################################
-@require_http_methods(["POST", "GET"])
-def callbackLogin(request):
+#########################################################################
+# callbackLogin
+#"callbackLogin": ("public/callback/",authentification.callbackLogin)
+#########################################################################
+#TODO Add serializer for callbackLogin
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Check if user really is part of an organization or not",
+    description="check if misclick at login, and set flags and instances here.  Get information back from Auth0.  Add user to database if entry doesn't exist. ",
+    request=None,
+    tags=['BE - Authentification'],
+    responses={
+        200: None,
+        401: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
+    },
+)
+@api_view(["POST" ,"GET"])
+def callbackLogin(request:Request):
     """
     TODO: Check if user really is part of an organization or not -> check if misclick at login, and set flags and instances here
     Get information back from Auth0.
@@ -326,50 +531,37 @@ def callbackLogin(request):
     """
     try:
         # Check if mocked
-        mocked = False
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            mocked = True
-
-        # authorize callback token or write fake data
-        if not mocked:
+            match request.session[SessionContent.usertype]:
+                case "user":
+                    mocks.createMockUserInSession(request.session)
+                case "organization":
+                    mocks.createMockOrganizationInSession(request.session)
+                case "admin":
+                    mocks.createMockAdminInSession(request.session)
+        else:
+            # authorize callback token 
             if request.session[SessionContent.IS_PART_OF_ORGANIZATION]:
                 token = auth0.authorizeTokenOrga(request)
             else:
                 token = auth0.authorizeToken(request)
-        else:
-            request.session["user"] = {"userinfo": {"sub": "", "nickname": "", "email": "", "type": ""}}
-            request.session["user"]["userinfo"]["sub"] = "auth0|testuser"
-            request.session["user"]["userinfo"]["nickname"] = "testuser"
-            request.session["user"]["userinfo"]["email"] = "testuser@test.de"
-            request.session[SessionContent.USER_ROLES] = [{"id":settings.AUTH0_DEFAULT_ROLE_ID}]
-            request.session[SessionContent.USER_PERMISSIONS] = {"processes:read": "", "processes:messages": "","processes:edit": "","processes:delete": "","processes:files": ""}
-            
 
-        # email of user was not verified yet, tell them that!
-        if not mocked and token["userinfo"]["email_verified"] == False:
-            return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
+            # email of user was not verified yet, tell them that!
+            if token["userinfo"]["email_verified"] == False:
+                return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
+                #return Response(settings.FORWARD_URL+"/verifyEMail", status=status.status.HTTP_401_UNAUTHORIZED)
 
-        # convert expiration time to the corresponding date and time
-        if not mocked:
+            # convert expiration time to the corresponding date and time
             now = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc) + datetime.timedelta(seconds=token["expires_at"])
             request.session["user"] = token
             request.session["user"]["tokenExpiresOn"] = str(now)
-        else:
-            currentTime = datetime.datetime.now()
-            request.session["user"]["tokenExpiresOn"] = str(datetime.datetime(currentTime.year+1, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute, currentTime.second, tzinfo=datetime.timezone.utc))
-        
 
-        # get roles and permissions
-        if not mocked:
+            # get roles and permissions
             setOrganizationName(request)
             retVal = setRoleAndPermissionsOfUser(request)
             if isinstance(retVal, Exception):
                 raise retVal
-        elif request.session[SessionContent.IS_PART_OF_ORGANIZATION]:
-                request.session[SessionContent.ORGANIZATION_NAME] = "testOrganization"
-                request.session["user"]["userinfo"]["org_id"] = "id123"
-                request.session[SessionContent.USER_PERMISSIONS].update({"orga:read": "", "orga:edit": "", "orga:delete": "", "resources:read": "", "resources:edit": ""})
-
+            
         # Get Data from Database or create entry in it for logged in User
         orgaObj = None
         if request.session[SessionContent.IS_PART_OF_ORGANIZATION]:
@@ -382,19 +574,35 @@ def callbackLogin(request):
             raise userObj
         
         # communicate that user is logged in to other apps
-        signals.signalDispatcher.userLoggedIn.send(None,request=request)
+        signals.signalDispatcher.userLoggedIn.send(None,request=request._request)
 
-        logger.info(f"{basics.Logging.Subject.USER},{request.session['user']['userinfo']['nickname']},{basics.Logging.Predicate.FETCHED},login,{basics.Logging.Object.SELF},," + str(datetime.datetime.now()))
+        logger.info(f"{Logging.Subject.USER},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.FETCHED},login,{Logging.Object.SELF},," + str(datetime.datetime.now()))
         return HttpResponseRedirect(request.session[SessionContent.PATH_AFTER_LOGIN])
     except Exception as e:
         returnObj = HttpResponseRedirect(request.session[SessionContent.PATH_AFTER_LOGIN])
         returnObj.write(str(e))
         return returnObj
 
-#######################################################
+#########################################################################
+# getRolesOfUser
+#"getRoles": ("public/getRoles/",authentification.getRolesOfUser)
+#########################################################################
+#TODO Add serializer for getRolesOfUser
+#########################################################################
+# Handler  
+@extend_schema(
+    summary=" Get Roles of User.",
+    description=" ",
+    request=None,
+    tags=['FE - Authentification'],
+    responses={
+        200: None,
+        400: ExceptionSerializerGeneric
+    },
+)
 @basics.checkIfUserIsLoggedIn(json=True)
-@require_http_methods("GET")
-def getRolesOfUser(request):
+@api_view(["GET"])
+def getRolesOfUser(request:Request):
     """
     Get Roles of User.
 
@@ -403,19 +611,46 @@ def getRolesOfUser(request):
     :return: List of roles
     :rtype: JSONResponse
     """
-
-    if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
-        if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
-            return JsonResponse(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"], safe=False)
+    try:
+    
+        if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
+            if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
+                return Response(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"])
+            else:
+                return Response([], status=status.HTTP_200_OK)
         else:
-            return JsonResponse([], safe=False, status=200)
-    else:
-        return JsonResponse([], safe=False, status=400)
+            return Response([], status=status.HTTP_400_BAD_REQUEST)
+    except (Exception) as error:
+        message = f"Error in {getRolesOfUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
+#########################################################################
+# getPermissionsOfUser
+#"getPermissions": ("public/getPermissions/",authentification.getPermissionsOfUser)
+#########################################################################
+#TODO Add serializer for getPermissionsOfUser
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Get Permissions of User.",
+    description=" ",
+    request=None,
+    tags=['FE - Authentification'],
+    responses={
+        200: None,
+        400: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
+    },
+)
 @basics.checkIfUserIsLoggedIn(json=True)
-@require_http_methods(["GET"])
-def getPermissionsOfUser(request):
+@api_view(["GET"])
+def getPermissionsOfUser(request:Request):
     """
     Get Permissions of User.
 
@@ -424,23 +659,49 @@ def getPermissionsOfUser(request):
     :return: List of roles
     :rtype: JSONResponse
     """
-    if SessionContent.USER_PERMISSIONS in request.session:
-        if len(request.session[SessionContent.USER_PERMISSIONS]) != 0:
-            outArray = []
-            for entry in request.session[SessionContent.USER_PERMISSIONS]:
-                context, permission = entry.split(":")
-                outArray.append({"context": context, "permission": permission})
-
-            return JsonResponse(outArray, safe=False)
+    try:
+        if SessionContent.USER_PERMISSIONS in request.session:
+            if len(request.session[SessionContent.USER_PERMISSIONS]) != 0:
+                outArray = []
+                for entry in request.session[SessionContent.USER_PERMISSIONS]:
+                    context, permission = entry.split(":")
+                    outArray.append({"context": context, "permission": permission})
+                return Response(outArray, status=status.HTTP_200_OK)
+            else:
+                return Response([], status=status.HTTP_200_OK)
         else:
-            return JsonResponse([], safe=False, status=200)
-    else:
-        return JsonResponse([], safe=False, status=400)
+            return Response([], status=status.HTTP_400_BAD_REQUEST)
 
-#######################################################
+    except (Exception) as error:
+        message = f"Error in {getPermissionsOfUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#########################################################################
+# getNewRoleAndPermissionsForUser
+#"getNewPermissions": ("public/getNewPermissions/",authentification.getNewRoleAndPermissionsForUser)
+#########################################################################
+#TODO Add serializer for getNewRoleAndPermissionsForUser
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="In case the role changed, get new role and new permissions from auth0.",
+    description=" ",
+    request=None,
+    tags=['FE - Authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric
+    },
+)
 @basics.checkIfUserIsLoggedIn(json=True)
-@require_http_methods(["GET"])
-def getNewRoleAndPermissionsForUser(request):
+@api_view(["GET"])
+def getNewRoleAndPermissionsForUser(request:Request):
     """
     In case the role changed, get new role and new permissions from auth0
 
@@ -449,14 +710,41 @@ def getNewRoleAndPermissionsForUser(request):
     :return: New Permissions for User
     :rtype: JSONResponse
     """
-    retVal = setRoleAndPermissionsOfUser(request)
-    if isinstance(retVal, Exception):
-        return HttpResponse(retVal, status=500)
-    return getPermissionsOfUser(request)    
+    try:
+        retVal = setRoleAndPermissionsOfUser(request)
+        if isinstance(retVal, Exception):
+            return Response(retVal, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return getPermissionsOfUser(request)  
+    except (Exception) as error:
+        message = f"Error in {getNewRoleAndPermissionsForUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+      
 
-#######################################################
-@require_http_methods(["GET"])
-def logoutUser(request):
+#########################################################################
+# logoutUser
+#"logout": ("public/logout/",authentification.logoutUser)
+#########################################################################
+#TODO Add serializer for logoutUser
+#########################################################################
+# Handler  
+@extend_schema(
+    summary="Delete session for this user and log out.",
+    description=" ",
+    request=None,
+    tags=['FE - Authentification'],
+    responses={
+        200: None,
+        500: ExceptionSerializerGeneric
+    },
+)
+@api_view(["GET"])
+def logoutUser(request:Request):
     """
     Delete session for this user and log out.
 
@@ -466,44 +754,55 @@ def logoutUser(request):
     :rtype: HTTP URL
 
     """
-    if not basics.manualCheckifLoggedIn(request.session):
-        return HttpResponse("Not logged in!")
-    mock = False
-    if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-        mock = True
+    try:
+        if not basics.manualCheckifLoggedIn(request.session):
+            return HttpResponse("Not logged in!")
+        mock = False
+        if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
+            mock = True
 
-    # Send signal to other apps that logout is occuring
-    signals.signalDispatcher.userLoggedOut.send(None,request=request)
+        # Send signal to other apps that logout is occuring
+        signals.signalDispatcher.userLoggedOut.send(None,request=request._request)
 
-    user = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].getUser(request.session)
-    if user != {}:
-        pgProfiles.ProfileManagementBase.setLoginTime(user[UserDescription.hashedID])
-        logger.info(f"{basics.Logging.Subject.USER},{user['name']},{basics.Logging.Predicate.PREDICATE},logout,{basics.Logging.Object.SELF},," + str(datetime.datetime.now()))
-    else:
-        logger.info(f"{basics.Logging.Subject.SYSTEM},,{basics.Logging.Predicate.PREDICATE},logout,{basics.Logging.Object.USER},DELETED," + str(datetime.datetime.now()))
+        user = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].getUser(request.session)
+        assert isinstance(user, dict), f"In {logoutUser.cls.__name__}: expected user to be of type dictionary, instead got: {type(user)}"
+        if user != {}:
+            pgProfiles.ProfileManagementBase.setLoginTime(user[UserDescription.hashedID])
+            logger.info(f"{Logging.Subject.USER},{user['name']},{Logging.Predicate.PREDICATE},logout,{Logging.Object.SELF},," + str(datetime.datetime.now()))
+        else:
+            logger.info(f"{Logging.Subject.SYSTEM},,{Logging.Predicate.PREDICATE},logout,{Logging.Object.USER},DELETED," + str(datetime.datetime.now()))
 
 
-    # Delete saved files from redis
-    redis.RedisConnection().deleteKey(request.session.session_key)
+        # Delete saved files from redis
+        redis.RedisConnection().deleteKey(request.session.session_key)
 
-    request.session.clear()
-    request.session.flush()
+        request.session.clear()
+        request.session.flush()
 
-    # return redirect(
-    #     f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
-    #     + urlencode(
-    #         {
-    #             #"returnTo": request.build_absolute_uri(reverse("index")),
-    #             "returnTo": request.build_absolute_uri('http://localhost:3000/callback/logout'),
-    #             "client_id": settings.AUTH0_CLIENT_ID,
-    #         },
-    #         quote_via=quote_plus,
-    #     ),
-    # )
+        # return redirect(
+        #     f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
+        #     + urlencode(
+        #         {
+        #             #"returnTo": request.build_absolute_uri(reverse("index")),
+        #             "returnTo": request.build_absolute_uri('http://localhost:3000/callback/logout'),
+        #             "client_id": settings.AUTH0_CLIENT_ID,
+        #         },
+        #         quote_via=quote_plus,
+        #     ),
+        # )
 
-    callbackString = request.build_absolute_uri(settings.FORWARD_URL)
-    
-    if not mock:    
-        return HttpResponse(f"https://{settings.AUTH0_DOMAIN}/v2/logout?" + urlencode({"returnTo": request.build_absolute_uri(callbackString),"client_id": settings.AUTH0_CLIENT_ID,},quote_via=quote_plus,))
-    else:
-        return HttpResponse(callbackString)
+        callbackString = request.build_absolute_uri(settings.FORWARD_URL)
+
+        if not mock:
+            return HttpResponse(f"https://{settings.AUTH0_DOMAIN}/v2/logout?" + urlencode({"returnTo": request.build_absolute_uri(callbackString),"client_id": settings.AUTH0_CLIENT_ID,},quote_via=quote_plus,))
+        else:
+            return HttpResponse(callbackString)
+    except Exception as error:
+        message = f"Error in {logoutUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

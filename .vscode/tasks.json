@@ -50,7 +50,7 @@
 				"env": {
 					"MODE" :"local_container"
 				},
-				"network": "vs-code-dev-services_semper-ki-dev-network"
+				"network": "vs-code-dev-services_dev-network"
 			},
 			"python": {
 				"args": [

@@ -5,8 +5,8 @@ services:
     image: backend-staging
     build:
       context: .
-      dockerfile: ./Dockerfile
-    command: ["-e staging"]
+      dockerfile: ./Dockerfile.Server
+    command: ["bash","run/run.sh","-e staging", "-m", "-c"]
     env_file:
      - .env.staging
     ports:
@@ -42,17 +42,18 @@ services:
     networks:
       - staging-network
   
-  localstack-staging:
-    image: localstack/localstack
+  minio-staging:
+    image: minio/minio
+    container_name: minio-staging
     volumes:
-      - ./localstack/:/var/lib/localstack
+      - ./minio/data:/data
+      - ./minio/config:/root/.minio
+      - ./docker/docker-service-minio-start.sh:/usr/local/bin/docker-service-minio-start.sh
     env_file:
       - .env.staging
-    environment:
-      - DOCKER_HOST=unix:///var/run/docker.sock
-      - LOCALSTACK_PERSISTENCE=1
     ports:
-      - "127.0.0.1:4567:4566"
+      - "127.0.0.1:4567:9000"
+    entrypoint: /usr/local/bin/docker-service-minio-start.sh
     networks:
       - staging-network
 
