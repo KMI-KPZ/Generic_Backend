@@ -364,12 +364,12 @@ def checkVersion(version=0.3):
                 versionOfReq = versioning.determine_version(request)
                 return func(request, *args, **kwargs)
             except exceptions.NotAcceptable as e:
-                return Response(f"Version mismatch! {version} required!", status=status.HTTP_406_NOT_ACCEPTABLE)
+                return HttpResponse(f"Version mismatch! {version} required!", status=status.HTTP_406_NOT_ACCEPTABLE)
             except Exception as e:
                 if func.__name__ == "view":
-                    return Response(f"Exception in {func.cls.__name__}: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return HttpResponse(f"Exception in {func.cls.__name__}: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 else:
-                    return Response(f"Exception in {func.__name__}: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return HttpResponse(f"Exception in {func.__name__}: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return inner
 
     return decorator
