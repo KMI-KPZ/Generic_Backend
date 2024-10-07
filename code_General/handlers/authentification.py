@@ -25,7 +25,7 @@ from drf_spectacular.utils import OpenApiParameter, inline_serializer
 
 from ..utilities import basics, rights, signals, mocks
 from ..utilities.basics import ExceptionSerializerGeneric
-from ..connections.postgresql import pgProfiles
+from ..connections.postgresql import pgProfiles, pgAPIToken
 from ..connections import auth0, redis
 from ..definitions import Logging, SessionContent, ProfileClasses, UserDescription
 
@@ -72,6 +72,52 @@ def createCsrfCookie(request:Request):
         else:
             return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+#######################################################
+class SResAPIToken(serializers.Serializer):
+    token = serializers.CharField(max_length=200)
+
+#######################################################
+@extend_schema(
+    summary="Generates an API Token",
+    description=" ",
+    tags=['FE - Authentification'],
+    request=None,
+    responses={
+        200: SResAPIToken,
+        401: ExceptionSerializerGeneric,
+        500: ExceptionSerializerGeneric
+    }
+)
+@basics.checkIfUserIsLoggedIn()
+@require_http_methods(["GET"])
+@api_view(["GET"])
+@basics.checkVersion(0.3)
+def generateAPIToken(request:Request):
+    """
+    Generates an API Token
+
+    :param request: GET Request
+    :type request: HTTP GET
+    :return: JSON
+    :rtype: JSON Response
+
+    """
+    try:
+        apiToken = pgAPIToken.createAPIToken(request.session)
+        outSerializer = SResAPIToken(data={"token": apiToken})
+        if outSerializer.is_valid():
+            return Response(outSerializer.data, status=status.HTTP_200_OK)
+        else:
+            raise Exception(outSerializer.errors)
+    except (Exception) as error:
+        message = f"Error in {generateAPIToken.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # isLoggedIn

@@ -43,6 +43,7 @@ newPaths = {
     "getNewPermissions": ("public/auth/permissions/new/get/",authentification.getNewRoleAndPermissionsForUser),
     "getPermissionsFile": ("public/auth/permissions/mask/get/",authentification.provideRightsFile),
     "setLocaleOfUser": ("public/auth/localeOfUser/set/", authentification.setLocaleOfUser),
+    "generateAPIToken": ("public/auth/api-key/get/", authentification.generateAPIToken),
 
     "deleteUser": ("public/profile/user/delete/",users.deleteUser),
     #"addUser": ("private/profile_addUser/",profiles.addUserTest),
