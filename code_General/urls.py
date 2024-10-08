@@ -17,7 +17,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 ##############################################################################
 ### WSGI
 
-from .handlers import admin, authentification, email, files, frontpage, organizations, statistics, testResponse, files, users
+from .handlers import admin, authentification, apiToken, email, files, frontpage, organizations, statistics, testResponse, files, users
 from Benchy.BenchyMcMarkface import startFromDjango
 
 newPaths = { 
@@ -25,8 +25,8 @@ newPaths = {
     "benchyPage": ("private/test/benchy/",frontpage.benchyPage),
     "benchyMcMarkface": ("private/test/benchyMcMarkface/",startFromDjango),
     
-    "schema": ('api/schema/', SpectacularAPIView.as_view(api_version='0.3')),
-    "swagger-ui": ('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema')),
+    "schema": ('public/api/schema/', SpectacularAPIView.as_view(api_version='0.3')),
+    "swagger-ui": ('public/api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema')),
 
     "test": ('public/test/',testResponse.testResponse),
     "csrfTest": ('public/test/csrf/',testResponse.testResponseCsrf),
@@ -43,11 +43,12 @@ newPaths = {
     "getNewPermissions": ("public/auth/permissions/new/get/",authentification.getNewRoleAndPermissionsForUser),
     "getPermissionsFile": ("public/auth/permissions/mask/get/",authentification.provideRightsFile),
     "setLocaleOfUser": ("public/auth/localeOfUser/set/", authentification.setLocaleOfUser),
-    "generateAPIToken": ("public/auth/api-key/get/", authentification.generateAPIToken),
-
+    "getAPIToken": ("public/auth/api-key/get/", apiToken.getAPIToken),
+    "generateAPIToken": ("public/auth/api-key/create/", apiToken.generateAPIToken),
+    "deleteAPIToken": ("public/auth/api-key/delete/", apiToken.deleteAPIToken),
+    
     "deleteUser": ("public/profile/user/delete/",users.deleteUser),
     #"addUser": ("private/profile_addUser/",profiles.addUserTest),
-    
     "getUser": ("public/profile/user/get/",users.getUserDetails),
     "updateDetails": ("public/profile/user/update/",users.updateDetails),
     #"createAddress": ("public/profile/address/create/", users.createAddress),

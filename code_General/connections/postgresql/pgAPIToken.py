@@ -5,11 +5,39 @@ Silvio Weging 2024
 
 Contains: Calls to the API Token model
 """
+from django.core.exceptions import ObjectDoesNotExist
+
 from .pgProfiles import ProfileManagementBase, ProfileManagementUser, ProfileManagementOrganization
 from ...modelFiles.apiTokenModel import APITokenDescription, APIToken
 
 from logging import getLogger
 logger = getLogger("errors")
+
+##################################################
+def checkIfAPITokenExists(session) -> str | Exception:
+    """
+    Checks if there already is a token and if so, return it
+
+    :param session: The session
+    :type sessioN: Dict-like
+    :return: Token if it exists, empty string if not
+    :rtype: str | Exception
+    
+    """
+    try:
+        isInOrga = ProfileManagementBase.checkIfUserIsInOrganization(session)
+        if isInOrga:
+            orgaObj = ProfileManagementOrganization.getOrganizationObject(session)
+            token = APIToken.objects.get(organization=orgaObj)
+            return token.token
+        else:
+            userObj = ProfileManagementUser.getUserObj(session)
+            token = APIToken.objects.get(user=userObj)
+            return token.token
+    except (ObjectDoesNotExist) as error:
+        return ""
+    except (Exception) as error:
+        return error
 
 ##################################################
 def createAPIToken(session) -> str | Exception:
@@ -37,18 +65,38 @@ def createAPIToken(session) -> str | Exception:
         return error
 
 ##################################################
-def checkAPIToken(token:str) -> bool | Exception:
+def checkAPITokenAndRetrieveUserObject(token:str):
     """
-    Check if API Token is legit
+    Check if API Token is legit and if so, return either the user or the orga
 
     :param token: The API token
     :type token: str
-    :return: if legit or not
-    :rtype: bool
+    :return: (False, None) if there is nothing, (False, User) if a user is associated with that token, else (True, Organization)
+    :rtype: (bool, None | User | Organization)
     
     """
     try:
-        APIToken.objects.get(token=token)
-        return True
+        tokenObj = APIToken.objects.get(token=token)
+        if tokenObj.user != None:
+            return (False, tokenObj.user)
+        elif tokenObj.organization != None:
+            return (True, tokenObj.organization)
+        
+        return (False, None)
     except (Exception) as error:
-        return False
+        return (False, None)
+    
+##################################################
+def deleteAPIToken(token:str):
+    """
+    Deletes the API token for that user/orga
+
+    :param token: The API token
+    :type token: str
+    :return: None or Exception if it didn't work
+    :rtype: None | Exception
+    """
+    try:
+        APIToken.objects.filter(token=token).delete()
+    except (Exception) as error:
+        return error

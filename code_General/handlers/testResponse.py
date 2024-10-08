@@ -19,8 +19,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 
 
-from ..utilities.basics import ExceptionSerializerGeneric 
-from ..utilities.apiCalls import checkIfAPICallIsLegitimate
+from ..utilities.basics import ExceptionSerializerGeneric, checkIfUserIsLoggedIn 
+from ..utilities.apiCalls import loginViaAPITokenIfAvailable
 from drf_spectacular.utils import extend_schema
 
 ###################################################
@@ -35,7 +35,6 @@ from drf_spectacular.utils import extend_schema
     },
 )
 @csrf_exempt # ONLY FOR TESTING!!!!
-@checkIfAPICallIsLegitimate()
 @api_view(['GET'])
 def testResponse(request:Request):
     """
