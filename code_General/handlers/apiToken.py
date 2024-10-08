@@ -75,16 +75,13 @@ def getAPIToken(request:Request):
         else:
             return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-#######################################################
-class SReqAPIToken(serializers.Serializer):
-    token = serializers.CharField(max_length=200)
 
 #######################################################
 @extend_schema(
     summary="Generate a new API Token, thus deleting the old",
     description=" ",
     tags=['FE - Authentification'],
-    request=SReqAPIToken,
+    request=None,
     responses={
         200: SResAPIToken,
         401: ExceptionSerializerGeneric,
@@ -106,19 +103,10 @@ def generateAPIToken(request:Request):
 
     """
     try:
-        inSerializer = SReqAPIToken(data=request.data)
-        if not inSerializer.is_valid():
-            message = f"Verification failed in {generateAPIToken.cls.__name__}"
-            exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
-            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
-            if exceptionSerializer.is_valid():
-                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        validatedInput = inSerializer.data
-        error = pgAPIToken.deleteAPIToken(validatedInput["token"])
+        apiToken = pgAPIToken.checkIfAPITokenExists(request.session)
+        if isinstance(apiToken,Exception):
+            raise apiToken
+        error = pgAPIToken.deleteAPIToken(apiToken)
         if isinstance(error,Exception):
             raise error
         apiToken = pgAPIToken.createAPIToken(request.session)
