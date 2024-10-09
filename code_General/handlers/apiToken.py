@@ -116,14 +116,14 @@ def generateAPIToken(request:Request):
         else:
             raise Exception(outSerializer.errors)
     except (Exception) as error:
-       message = f"Error in {generateAPIToken.cls.__name__}: {str(error)}"
-       exception = str(error)
-       loggerError.error(message)
-       exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
-       if exceptionSerializer.is_valid():
-           return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-       else:
-           return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        message = f"Error in {generateAPIToken.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
        
 
 #######################################################
@@ -162,11 +162,11 @@ def deleteAPIToken(request:Request):
                 raise result
         return Response("Success", status=status.HTTP_200_OK)
     except (Exception) as error:
-       message = f"Error in {deleteAPIToken.cls.__name__}: {str(error)}"
-       exception = str(error)
-       loggerError.error(message)
-       exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
-       if exceptionSerializer.is_valid():
-           return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-       else:
-           return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        message = f"Error in {deleteAPIToken.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
