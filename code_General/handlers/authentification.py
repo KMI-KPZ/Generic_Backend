@@ -386,20 +386,20 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: AUTH0_DOMAIN was not added to baseURL"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: AUTH0_DOMAIN was not added to baseURL"
         orgID = session["user"]["userinfo"]["org_id"]
-        assert isinstance(orgID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected orgID to be of type string, instead got: {type(orgID)}"
-        assert orgID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: non-empty orgID expected"
+        assert isinstance(orgID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected orgID to be of type string, instead got: {type(orgID)}"
+        assert orgID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: non-empty orgID expected"
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
-        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
-        assert userID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: non-empty userID expected"
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: non-empty userID expected"
 
         
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
         roles = response
-        assert isinstance(roles, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected roles to be of type list, instead got: {type(roles)}"
+        assert isinstance(roles, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected roles to be of type list, instead got: {type(roles)}"
         
         for entry in roles:
             response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
@@ -407,7 +407,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
                 raise response
             else:
                 permissions = response
-                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
+                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -431,11 +431,11 @@ def retrieveRolesAndPermissionsForStandardUser(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: AUTH0_DOMAIN was not added to baseURL"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN was not added to baseURL"
         
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
-        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
-        assert userID != "", f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: non-empty userID expected"
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: non-empty userID expected"
 
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
@@ -453,7 +453,7 @@ def retrieveRolesAndPermissionsForStandardUser(session):
                 raise response
             else:
                 permissions = response
-                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
+                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -483,7 +483,7 @@ def setRoleAndPermissionsOfUser(request):
             if isinstance(resultDict, Exception):
                 raise resultDict
 
-        assert isinstance(resultDict, dict), f"In {setRoleAndPermissionsOfUser.cls.__name__}: expected resultDict to be of type dictionary, instead got: {type(resultDict)}"
+        assert isinstance(resultDict, dict), f"In {setRoleAndPermissionsOfUser.__name__}: expected resultDict to be of type dictionary, instead got: {type(resultDict)}"
         request.session[SessionContent.USER_ROLES] = resultDict["roles"]
         request.session[SessionContent.USER_PERMISSIONS] = {x["permission_name"]: "" for x in resultDict["permissions"] } # save only the permission names, the dict is for faster access
 
