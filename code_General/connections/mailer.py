@@ -6,9 +6,11 @@ Thomas Skodawessely 2023
 Contains: Writing Mails
 """
 import logging
-
 from django.core import mail
 from django.conf import settings # THIS ALSO IMPORTS THE NECESSARY SETTINGS FOR EMAIL CONFIGURATION!
+from django.template.loader import render_to_string
+from django.utils.translation import gettext as _
+import os
 
 loggerDebug = logging.getLogger("django_debug")
 loggerError = logging.getLogger("errors")
@@ -44,7 +46,9 @@ class MailingClass():
                 subject,
                 message,
                 settings.EMAIL_ADDR_SUPPORT,
-                [to], False,
+                [to],
+                html_message=message,  # Use the HTML message
+                fail_silently=False,
                 connection=connection)
             return email
         except Exception as e:
@@ -62,15 +66,16 @@ class MailingClass():
         :type language: locale string e.g. de-de, en-gb, ...
         :param content: What this mail is about
         :type content: str
-        :return: The Template as string
+        :return: The Template as HTML string
         :rtype: str
-
         """
-        # TODO
-        output = ""
-        if "de" in language:
-            output = f"An: {subject}\nInformation: {content}\nViele Grüße\nDie Semper-KI"
-        elif "en" in language:
-            output = f"To: {subject}\nInformation: {content}\nGreetings\nThe Semper-KI"
-
-        return output
+        context = {
+            'subject': subject,
+            'language': language[:2],
+            'content': content,
+            'greeting': _('Hello,') if 'en' in language else _('Hallo,'),
+            'closing': _('Best regards,') if 'en' in language else _('Viele Grüße,'),
+            'signature': _('The Semper-KI Team') if 'en' in language else _('Das Semper-KI Team'),
+            'visit_website': _('Visit our website') if 'en' in language else _('Besuchen Sie unsere Website'),
+        }
+        return render_to_string('email_template.html', context)

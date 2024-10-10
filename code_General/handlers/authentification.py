@@ -153,6 +153,8 @@ def setLocaleOfUser(request:Request):
             request.session[SessionContent.LOCALE] = localeOfUser
             if basics.manualCheckifLoggedIn(request.session):
                 pgProfiles.ProfileManagementBase.setUserLocale(request.session)
+                #update locale in user profile
+                pgProfiles.ProfileManagementUser.updateContent(request.session, updates={"locale": localeOfUser})
             return Response("Success",status=status.HTTP_200_OK)
 
         return Response("Failed", status=status.HTTP_200_OK)
