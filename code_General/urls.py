@@ -59,8 +59,8 @@ newPaths = {
     "genericDeleteFile": ("private/generic/files/delete/",files.genericDeleteFile),
 
     "adminGetAll": ("public/admin/all/get/",admin.getAllAsAdmin),
-    "adminDelete": ("public/admin/user/delete/",admin.deleteUserAsAdmin),
-    "adminDeleteOrga": ("public/admin/organization/delete/",admin.deleteOrganizationAsAdmin),
+    "adminDelete": ("public/admin/user/delete/<str:userHashedID>",admin.deleteUserAsAdmin),
+    "adminDeleteOrga": ("public/admin/organization/delete/<str:orgaHashedID>/",admin.deleteOrganizationAsAdmin),
     "adminUpdateUser": ("public/admin/user/update",admin.updateDetailsOfUserAsAdmin),
     "adminUpdateOrga": ("public/admin/organization/update/",admin.updateDetailsOfOrganizationAsAdmin),
 
