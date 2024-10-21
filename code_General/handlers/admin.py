@@ -14,6 +14,8 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 from Generic_Backend.code_General.modelFiles.userModel import UserDescription
+from ..handlers.organizations import SReqChangesOrga
+from ..handlers.users import SReqChanges as SReqChangesUser
 
 from ..utilities import basics
 from  ..utilities.basics import ExceptionSerializerGeneric
@@ -36,7 +38,8 @@ loggerError = logging.getLogger("errors")
 # getAllAsAdmin
 #"adminGetAll": ("public/admin/getAll/",admin.getAllAsAdmin)
 #########################################################################
-#TODO Add serializer for getAllAsAdmin
+# serializer for getAllAsAdmin
+#########################################################################
 class SResGetAllAsAdmin(serializers.Serializer):   
     users = serializers.ListField(child=serializers.DictField(allow_empty=True))
     orga = serializers.ListField(child=serializers.DictField(allow_empty=True))
@@ -87,11 +90,11 @@ def getAllAsAdmin(request:Request):
 # updateDetailsOfUserAsAdmin
 #"adminUpdateUser": ("public/admin/updateUser/",admin.updateDetailsOfUserAsAdmin)
 #########################################################################
-#TODO Add serializer for updateDetailsOfUserAsAdmin
+#TODO exchange serializers for Imports
+#########################################################################
 class SReqUpdateDetailsOfUserAsAdmin(serializers.Serializer):
-    projectID = serializers.CharField(max_length=200)   
-    processIDs = serializers.ListField(child=serializers.CharField(max_length=200))
-    changes = serializers.DictField()
+    hashedID = serializers.CharField(max_length=200)   
+    changes = SReqChangesUser()
 #########################################################################
 # Handler  
 @extend_schema(
@@ -144,11 +147,10 @@ def updateDetailsOfUserAsAdmin(request:Request):
         assert isinstance(userID, str), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
         assert userID != "", f"In {updateDetailsOfUserAsAdmin.cls.__name__}: non-empty userID expected"
 
-        assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
-        userName = content["name"]
+        #assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
+        #userName = content["name"]
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
         flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, userID)
-        assert isinstance(flag, bool), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
         if flag is True:
             return Response("Success", status=status.HTTP_200_OK)
         else:
@@ -169,10 +171,10 @@ def updateDetailsOfUserAsAdmin(request:Request):
 #"adminUpdateOrga": ("public/admin/updateOrganization/",admin.updateDetailsOfOrganizationAsAdmin)
 #########################################################################
 #TODO Add serializer for updateDetailsOfOrganizationAsAdmin
+#########################################################################
 class SReqUpdateDetailsOfOrganisationAsAdmin(serializers.Serializer):
-    projectID = serializers.CharField(max_length=200)   
-    processIDs = serializers.ListField(child=serializers.CharField(max_length=200))
-    changes = serializers.DictField()
+    hashedID = serializers.CharField(max_length=200)
+    changes = SReqChangesOrga()
 #########################################################################
 # Handler  
 @extend_schema(
@@ -226,7 +228,6 @@ def updateDetailsOfOrganizationAsAdmin(request:Request):
         orgaName = content["name"]
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
         flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content, orgaID)
-        assert isinstance(flag, bool), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
         if flag is True:
             return Response("Success", status=status.HTTP_200_OK)
         else:
@@ -244,8 +245,6 @@ def updateDetailsOfOrganizationAsAdmin(request:Request):
 #########################################################################
 # deleteOrganizationAsAdmin
 #"adminDeleteOrga": ("public/admin/deleteOrganization/",admin.deleteOrganizationAsAdmin)
-#########################################################################
-#TODO Add serializer for deleteOrganizationAsAdmin
 #########################################################################
 # Handler  
 @extend_schema(
@@ -282,7 +281,6 @@ def deleteOrganizationAsAdmin(request:Request, orgaHashedID:str):
         #orgaName = content["name"]
 
         flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
-        assert isinstance(flag, bool), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
         if flag is True:
             logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
             return Response("Success", status=status.HTTP_200_OK)
@@ -301,12 +299,6 @@ def deleteOrganizationAsAdmin(request:Request, orgaHashedID:str):
 #########################################################################
 # deleteUserAsAdmin
 #"adminDelete": ("public/admin/deleteUser/<str:",admin.deleteUserAsAdmin)
-#########################################################################
-#TODO Add serializer for deleteUserAsAdmin
-class SReqUpdateDetailsOfOrganisationAsAdmin(serializers.Serializer):
-    projectID = serializers.CharField(max_length=200)   
-    processIDs = serializers.ListField(child=serializers.CharField(max_length=200))
-    changes = serializers.DictField()
 #########################################################################
 # Handler  
 @extend_schema(
@@ -352,7 +344,6 @@ def deleteUserAsAdmin(request:Request, userHashedID:str):
             })
 
         flag = pgProfiles.ProfileManagementUser.deleteUser(request.session, userHashedID)
-        assert isinstance(flag, bool), f"In {deleteUserAsAdmin.cls.__name__}: expected flag to be of type bool, instead got: {type(flag)}"
         if flag is True:
             logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
             return Response("Success", status=status.HTTP_200_OK)
