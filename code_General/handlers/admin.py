@@ -51,7 +51,7 @@ class SResGetAllAsAdmin(serializers.Serializer):
     request=None,
     tags=['FE - Admin'],
     responses={
-        200: SResGetAllAsAdmin, #TODO
+        200: SResGetAllAsAdmin,
         401: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric
     },
@@ -90,8 +90,6 @@ def getAllAsAdmin(request:Request):
 # updateDetailsOfUserAsAdmin
 #"adminUpdateUser": ("public/admin/updateUser/",admin.updateDetailsOfUserAsAdmin)
 #########################################################################
-#TODO exchange serializers for Imports
-#########################################################################
 class SReqUpdateDetailsOfUserAsAdmin(serializers.Serializer):
     hashedID = serializers.CharField(max_length=200)   
     changes = SReqChangesUser()
@@ -123,10 +121,6 @@ def updateDetailsOfUserAsAdmin(request:Request):
 
     """
     try:
-        # TODO Body via Serializer
-        #content = json.loads(request.body.decode("utf-8"))
-        
-        ###
         inSerializer = SReqUpdateDetailsOfUserAsAdmin(data=request.data)
         if not inSerializer.is_valid():
             message = f"Verification failed in {updateDetailsOfOrganizationAsAdmin.cls.__name__}"
@@ -139,8 +133,6 @@ def updateDetailsOfUserAsAdmin(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         content = inSerializer.data
-        ###
-
         assert "hashedID" in content.keys(), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: hashedID not in request"
         userHashedID = content["hashedID"]
         userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
@@ -149,8 +141,6 @@ def updateDetailsOfUserAsAdmin(request:Request):
         
         assert "changes" in content.keys(), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: hashedID not in request"
         changes = content["changes"]
-        #assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
-        #userName = content["name"]
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
         flag = pgProfiles.ProfileManagementUser.updateContent(request.session, changes, userID)
         if flag is None: #updateContent returns None on success
@@ -171,8 +161,6 @@ def updateDetailsOfUserAsAdmin(request:Request):
 #########################################################################
 # updateDetailsOfOrganizationAsAdmin
 #"adminUpdateOrga": ("public/admin/updateOrganization/",admin.updateDetailsOfOrganizationAsAdmin)
-#########################################################################
-#TODO Add serializer for updateDetailsOfOrganizationAsAdmin
 #########################################################################
 class SReqUpdateDetailsOfOrganisationAsAdmin(serializers.Serializer):
     hashedID = serializers.CharField(max_length=200)
@@ -205,10 +193,6 @@ def updateDetailsOfOrganizationAsAdmin(request:Request):
 
     """
     try:
-        # TODO Body via Serializer
-        #content = json.loads(request.body.decode("utf-8"))["data"]["content"]
-        
-        ###
         inSerializer = SReqUpdateDetailsOfOrganisationAsAdmin(data=request.data)
         if not inSerializer.is_valid():
             message = f"Verification failed in {updateDetailsOfOrganizationAsAdmin.cls.__name__}"
@@ -221,13 +205,10 @@ def updateDetailsOfOrganizationAsAdmin(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         content = inSerializer.data
-        ###
 
         assert "hashedID" in content.keys(), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: hashedID not in JSON"
         orgaHashedID = content["hashedID"]
         orgaID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(orgaHashedID)
-        #assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
-        #orgaName = content["name"]
         assert "changes" in content.keys(), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: changes not in JSON"
         changes = content["changes"] 
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
@@ -281,8 +262,6 @@ def deleteOrganizationAsAdmin(request:Request, orgaHashedID:str):
     try:
         assert orgaHashedID != "", f"In {deleteOrganizationAsAdmin.cls.__name__}: orgaHashedID is blank"
         orgaID = orgaHashedID
-        #assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
-        #orgaName = content["name"]
 
         flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
         if flag is True:
@@ -338,8 +317,6 @@ def deleteUserAsAdmin(request:Request, userHashedID:str):
         userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
         assert userID != "", f"In {deleteUserAsAdmin.cls.__name__}: userID is blank"
         
-        #assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
-        #userName = content["name"]
         # websocket event for that user
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(userHashedID[:80], {
