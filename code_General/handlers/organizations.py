@@ -232,7 +232,7 @@ class SReqChangesOrga(serializers.Serializer):
     displayName = serializers.CharField(max_length=200, required=False)
     email = serializers.EmailField(required=False)
     address = SReqAddressOrga(required=False)
-    locale = serializers.CharField(max_length=200, required=False, default="de-DE")
+    locale = serializers.CharField(max_length=200, required=False)#, default="de-DE")
     notifications = SReqProfileClassForNotifications(required=False)
     supportedServices = serializers.ListField(child=serializers.IntegerField(), required=False)
     branding = SReqBrandingOrga(required=False)

@@ -146,12 +146,14 @@ def updateDetailsOfUserAsAdmin(request:Request):
         userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
         assert isinstance(userID, str), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
         assert userID != "", f"In {updateDetailsOfUserAsAdmin.cls.__name__}: non-empty userID expected"
-
+        
+        assert "changes" in content.keys(), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: hashedID not in request"
+        changes = content["changes"]
         #assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
         #userName = content["name"]
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
-        flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content, userID)
-        if flag is True:
+        flag = pgProfiles.ProfileManagementUser.updateContent(request.session, changes, userID)
+        if flag is None: #updateContent returns None on success
             return Response("Success", status=status.HTTP_200_OK)
         else:
             return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -221,14 +223,16 @@ def updateDetailsOfOrganizationAsAdmin(request:Request):
         content = inSerializer.data
         ###
 
-        assert "hashedID" in content.keys(), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: hashedID not in request"
+        assert "hashedID" in content.keys(), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: hashedID not in JSON"
         orgaHashedID = content["hashedID"]
         orgaID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(orgaHashedID)
-        assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
-        orgaName = content["name"]
+        #assert "name" in content.keys(), f"In {deleteUserAsAdmin.cls.__name__}: name not in request"
+        #orgaName = content["name"]
+        assert "changes" in content.keys(), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: changes not in JSON"
+        changes = content["changes"] 
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
-        flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content, orgaID)
-        if flag is True:
+        flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, changes, orgaID)
+        if flag is None: #updateContent returns None on success
             return Response("Success", status=status.HTTP_200_OK)
         else:
             return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
