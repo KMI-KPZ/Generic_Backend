@@ -468,33 +468,38 @@ class ProfileManagementBase():
         
         """
         try:
+            returnObj = ""
             if session != None:
                 if "user" in session:
                     userID = session["user"]["userinfo"]["sub"]
                     userObj = User.objects.get(subID=userID)
                     if userObj != None and UserDetails.locale in userObj.details:
-                        return userObj.details[UserDetails.locale]
+                        returnObj = userObj.details[UserDetails.locale]
                     else:
-                        return "de-DE"
+                        returnObj = "de-DE"
                 elif SessionContent.LOCALE in session:
-                    return session[SessionContent.LOCALE]
+                    returnObj = session[SessionContent.LOCALE]
                 else:
-                    return "de-DE"
+                    returnObj = "de-DE"
             elif hashedID != "":
                 if ProfileManagementBase.checkIfHashIDBelongsToOrganization(hashedID):
                     orgaObj = Organization.objects.get(hashedID=hashedID)
                     if orgaObj != None and OrganizationDetails.locale in orgaObj.details:
-                        return orgaObj.details[OrganizationDetails.locale]
+                        returnObj = orgaObj.details[OrganizationDetails.locale]
                     else:
-                        return "de-DE"
+                        returnObj = "de-DE"
                 else:
                     userObj = User.objects.get(hashedID=hashedID)
                     if userObj != None and UserDetails.locale in userObj.details:
-                        return userObj.details[UserDetails.locale]
+                        returnObj = userObj.details[UserDetails.locale]
                     else:
-                        return "de-DE"
+                        returnObj = "de-DE"
             else:
+                returnObj = "de-DE"
+            if returnObj == "": # make very sure, that something is there!
                 return "de-DE"
+            else:
+                return returnObj
         except (Exception) as error:
             return "de-DE"
 

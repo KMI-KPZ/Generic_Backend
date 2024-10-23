@@ -146,9 +146,20 @@ def setLocaleOfUser(request:Request):
         if SessionContent.INITIALIZED not in request.session:
             request.session[SessionContent.INITIALIZED] = True
         
-        info = json.loads(request.body.decode("utf-8"))
-        assert "locale" in info.keys(), f"In {setLocaleOfUser.cls.__name__}: locale not in request"
-        localeOfUser = info["locale"]
+        inSerializer = SReqLocale(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {setLocaleOfUser.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        validatedInput = inSerializer.data
+        assert "locale" in validatedInput.keys(), f"In {setLocaleOfUser.cls.__name__}: locale not in request"
+        localeOfUser = validatedInput["locale"]
         if "de" in localeOfUser or "en" in localeOfUser: # test supported languages here
             request.session[SessionContent.LOCALE] = localeOfUser
             if basics.manualCheckifLoggedIn(request.session):
