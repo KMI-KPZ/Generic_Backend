@@ -126,3 +126,16 @@ class GlobalDefaults(StrEnumExactlyAsDefined):
 
     """
     anonymous = enum.auto() # default user name for not logged in users
+
+##################################################
+# Enum for Events structure
+class EventsDescriptionGeneric(StrEnumExactlyAsDefined):
+    """
+    Websocket events and missed events should be in the same format
+
+    """
+    eventType = enum.auto()
+    events = enum.auto()
+    orgaEvent = enum.auto()
+    triggerEvent = enum.auto()
+    reason = enum.auto()
