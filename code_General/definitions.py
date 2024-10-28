@@ -135,7 +135,7 @@ class EventsDescriptionGeneric(StrEnumExactlyAsDefined):
 
     """
     eventType = enum.auto()
-    events = enum.auto()
     orgaEvent = enum.auto()
     triggerEvent = enum.auto()
+    primaryID = enum.auto()
     reason = enum.auto()

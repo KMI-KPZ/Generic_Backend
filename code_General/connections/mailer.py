@@ -77,5 +77,6 @@ class MailingClass():
             'closing': _('Best regards,') if 'en' in language else _('Viele Grüße,'),
             'signature': _('The Semper-KI Team') if 'en' in language else _('Das Semper-KI Team'),
             'visit_website': _('Visit our website') if 'en' in language else _('Besuchen Sie unsere Website'),
+            'rights': _('All rights reserved') if 'en' in language else _('Alle Rechte vorbehalten')
         }
         return render_to_string('email_template.html', context)

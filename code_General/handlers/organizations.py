@@ -54,7 +54,12 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
             userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args)
             if userHashedID != "":
                 groupName = userHashedID[:80]
-                event = {EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent, EventsDescriptionGeneric.triggerEvent: True, EventsDescriptionGeneric.events: [{EventsDescriptionGeneric.reason: "roleChanged"}]}
+                event = {
+                    EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
+                    EventsDescriptionGeneric.triggerEvent: True,
+                    EventsDescriptionGeneric.primaryID: orgID,
+                    EventsDescriptionGeneric.reason: "roleChanged"
+                }
                 async_to_sync(channel_layer.group_send)(groupName, {
                     "type": "sendMessageJSON",
                     "dict": event,
@@ -78,7 +83,13 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
                         userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=userID)
                         if userHashedID != "":
                             groupName = userHashedID[:80]
-                            event = {EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent, EventsDescriptionGeneric.triggerEvent: True, EventsDescriptionGeneric.events: [{EventsDescriptionGeneric.reason: "roleChanged"}]}
+                            event = {
+                                EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
+                                EventsDescriptionGeneric.triggerEvent: True,
+                                EventsDescriptionGeneric.primaryID: orgID,
+                                EventsDescriptionGeneric.reason: "roleChanged"
+                            }
+                            
                             async_to_sync(channel_layer.group_send)(groupName, {
                                 "type": "sendMessageJSON",
                                 "dict": event,
@@ -88,7 +99,12 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
             userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args)
             if userHashedID != "":
                 groupName = userHashedID[:80]
-                event = {EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent, EventsDescriptionGeneric.triggerEvent: True, EventsDescriptionGeneric.events: [{EventsDescriptionGeneric.reason: "userDeleted"}]}
+                event = {
+                    EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
+                    EventsDescriptionGeneric.triggerEvent: True,
+                    EventsDescriptionGeneric.primaryID: orgID,
+                    EventsDescriptionGeneric.reason: "userDeleted"
+                }
                 async_to_sync(channel_layer.group_send)(groupName, {
                     "type": "sendMessageJSON",
                     "dict": event,
