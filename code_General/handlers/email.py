@@ -28,12 +28,17 @@ loggerError = logging.getLogger("errors")
 # sendContactForm
 #"contactForm": ("public/contact/",email.sendContactForm)
 #########################################################################
-#TODO Add serializer for sendContactForm
+#######################################################
+class SReqMail(serializers.Serializer):
+    name = serializers.CharField(max_length=200)
+    email = serializers.EmailField()
+    subject = serializers.CharField(max_length=500)
+    message = serializers.CharField(max_length=10000)
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Send an email from the contact form from the front end",
-    request=None,
+    request=SReqMail,
     tags=['FE - E-Mail'],
     responses={
         200: None,
@@ -53,21 +58,27 @@ def sendContactForm(request:Request):
     """
 
     try:
-        # TODO check if logging is necessary
-        logger.info(f'received contact form input: "{str(request.body)}')
-        data = json.loads(request.body.decode("utf-8"))
-        # check if all fields are present
-        if not all(key in data for key in ["name", "email", "subject", "message"]):
-            return Response({"status": "error", "result": "missing fields"}, status=status.HTTP_400_BAD_REQUEST)
-
+        inSerializer = SReqMail(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {sendContactForm.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        validatedInput = inSerializer.data
+  
         mailer = MailingClass()
         msg = ("Backendsettings: " + settings.BACKEND_SETTINGS +
                "\nName: " +
-               data["name"] +
+               validatedInput["name"] +
                "\n" +
                "Email: " +
-               data["email"] + "\n" + "Message: " + data["message"])
-        result = mailer.sendMail(settings.EMAIL_ADDR_SUPPORT, data["subject"], msg)
+               validatedInput["email"] + "\n" + "Message: " + validatedInput["message"])
+        result = mailer.sendMail(settings.EMAIL_ADDR_SUPPORT, validatedInput["subject"], msg)
         return Response({"status": "ok", "result": result}, status=status.HTTP_200_OK)
 
     except Exception as error:

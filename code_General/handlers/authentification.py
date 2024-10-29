@@ -645,7 +645,10 @@ def getRolesOfUser(request:Request):
 # getPermissionsOfUser
 #"getPermissions": ("public/getPermissions/",authentification.getPermissionsOfUser)
 #########################################################################
-#TODO Add serializer for getPermissionsOfUser
+#######################################################
+class SResPermissionsOfUser(serializers.Serializer):
+    context = serializers.CharField(max_length=200)
+    permission = serializers.CharField(max_length=200)
 #########################################################################
 # Handler  
 @extend_schema(
@@ -654,7 +657,7 @@ def getRolesOfUser(request:Request):
     request=None,
     tags=['FE - Authentification'],
     responses={
-        200: None,
+        200: serializers.ListField(child=SResPermissionsOfUser()),
         400: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric
     },
@@ -677,7 +680,11 @@ def getPermissionsOfUser(request:Request):
                 for entry in request.session[SessionContent.USER_PERMISSIONS]:
                     context, permission = entry.split(":")
                     outArray.append({"context": context, "permission": permission})
-                return Response(outArray, status=status.HTTP_200_OK)
+                outSerializer = SResPermissionsOfUser(data=outArray, many=True)
+                if outSerializer.is_valid():
+                    return Response(outSerializer.data, status=status.HTTP_200_OK)
+                else:
+                    raise Exception(outSerializer.errors)
             else:
                 return Response([], status=status.HTTP_200_OK)
         else:
