@@ -135,8 +135,13 @@ class EventsDescriptionGeneric(StrEnumExactlyAsDefined):
 
     """
     eventType = enum.auto()
+    eventID = enum.auto()
+    userHashedID = enum.auto()
+    eventData = enum.auto()
     orgaEvent = enum.auto()
     triggerEvent = enum.auto()
     primaryID = enum.auto()
+    secondaryID = enum.auto()
     reason = enum.auto()
     content = enum.auto()
+    createdWhen = enum.auto()

@@ -56,10 +56,15 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
                 groupName = userHashedID[:80]
                 event = {
                     EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
+                    EventsDescriptionGeneric.eventID: "",
+                    EventsDescriptionGeneric.userHashedID: userHashedID,
+                    EventsDescriptionGeneric.eventData: {
+                        EventsDescriptionGeneric.primaryID: orgID,
+                        EventsDescriptionGeneric.reason: "roleChanged",
+                        EventsDescriptionGeneric.content: "roleChanged"
+                    },
                     EventsDescriptionGeneric.triggerEvent: True,
-                    EventsDescriptionGeneric.primaryID: orgID,
-                    EventsDescriptionGeneric.reason: "roleChanged",
-                    EventsDescriptionGeneric.content: "roleChanged"
+                    EventsDescriptionGeneric.createdWhen: str(datetime.datetime.now())
                 }
                 async_to_sync(channel_layer.group_send)(groupName, {
                     "type": "sendMessageJSON",
@@ -86,10 +91,15 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
                             groupName = userHashedID[:80]
                             event = {
                                 EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
+                                EventsDescriptionGeneric.eventID: "",
+                                EventsDescriptionGeneric.userHashedID: userHashedID,
+                                EventsDescriptionGeneric.eventData: {
+                                    EventsDescriptionGeneric.primaryID: orgID,
+                                    EventsDescriptionGeneric.reason: "roleChanged",
+                                    EventsDescriptionGeneric.content: "roleChanged"
+                                },
                                 EventsDescriptionGeneric.triggerEvent: True,
-                                EventsDescriptionGeneric.primaryID: orgID,
-                                EventsDescriptionGeneric.reason: "roleChanged",
-                                EventsDescriptionGeneric.content: "roleChanged"
+                                EventsDescriptionGeneric.createdWhen: str(datetime.datetime.now())
                             }
                             
                             async_to_sync(channel_layer.group_send)(groupName, {
@@ -103,10 +113,15 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
                 groupName = userHashedID[:80]
                 event = {
                     EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
+                    EventsDescriptionGeneric.eventID: "",
+                    EventsDescriptionGeneric.userHashedID: userHashedID,
+                    EventsDescriptionGeneric.eventData: {
+                        EventsDescriptionGeneric.primaryID: orgID,
+                        EventsDescriptionGeneric.reason: "userDeleted",
+                        EventsDescriptionGeneric.content: "userDeleted"
+                    },
                     EventsDescriptionGeneric.triggerEvent: True,
-                    EventsDescriptionGeneric.primaryID: orgID,
-                    EventsDescriptionGeneric.reason: "userDeleted",
-                    EventsDescriptionGeneric.content: "userDeleted"
+                    EventsDescriptionGeneric.createdWhen: str(datetime.datetime.now())
                 }
                 async_to_sync(channel_layer.group_send)(groupName, {
                     "type": "sendMessageJSON",
