@@ -139,3 +139,4 @@ class EventsDescriptionGeneric(StrEnumExactlyAsDefined):
     triggerEvent = enum.auto()
     primaryID = enum.auto()
     reason = enum.auto()
+    content = enum.auto()

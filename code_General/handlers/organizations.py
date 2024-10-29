@@ -58,7 +58,8 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
                     EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
                     EventsDescriptionGeneric.triggerEvent: True,
                     EventsDescriptionGeneric.primaryID: orgID,
-                    EventsDescriptionGeneric.reason: "roleChanged"
+                    EventsDescriptionGeneric.reason: "roleChanged",
+                    EventsDescriptionGeneric.content: "roleChanged"
                 }
                 async_to_sync(channel_layer.group_send)(groupName, {
                     "type": "sendMessageJSON",
@@ -87,7 +88,8 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
                                 EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
                                 EventsDescriptionGeneric.triggerEvent: True,
                                 EventsDescriptionGeneric.primaryID: orgID,
-                                EventsDescriptionGeneric.reason: "roleChanged"
+                                EventsDescriptionGeneric.reason: "roleChanged",
+                                EventsDescriptionGeneric.content: "roleChanged"
                             }
                             
                             async_to_sync(channel_layer.group_send)(groupName, {
@@ -103,7 +105,8 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
                     EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
                     EventsDescriptionGeneric.triggerEvent: True,
                     EventsDescriptionGeneric.primaryID: orgID,
-                    EventsDescriptionGeneric.reason: "userDeleted"
+                    EventsDescriptionGeneric.reason: "userDeleted",
+                    EventsDescriptionGeneric.content: "userDeleted"
                 }
                 async_to_sync(channel_layer.group_send)(groupName, {
                     "type": "sendMessageJSON",
