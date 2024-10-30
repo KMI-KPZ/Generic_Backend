@@ -17,7 +17,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 ##############################################################################
 ### WSGI
 
-from .handlers import admin, authentification, apiToken, email, files, frontpage, organizations, statistics, testResponse, files, users
+from .handlers import admin, authentification, events, apiToken, email, files, frontpage, organizations, statistics, testResponse, files, users
 from Benchy.BenchyMcMarkface import startFromDjango
 
 newPaths = { 
@@ -65,6 +65,13 @@ newPaths = {
     "adminDeleteOrga": ("public/admin/organization/delete/",admin.deleteOrganizationAsAdmin),
     "adminUpdateUser": ("public/admin/user/update",admin.updateDetailsOfUserAsAdmin),
     "adminUpdateOrga": ("public/admin/organization/update/",admin.updateDetailsOfOrganizationAsAdmin),
+
+    "getAllEventsForUser": ("public/events/all/get/", events.getAllEventsForUser),
+    "getOneEventOfUser": ("public/events/get/<str:eventID>/", events.getOneEventOfUser),
+    "createEvent": ("public/events/post/", events.createEvent),
+    "deleteOneEvent": ("public/events/delete/<str:eventID>/", events.deleteOneEvent),
+    "deleteAllEventsForAUser": ("public/events/all/delete/", events.deleteAllEventsForAUser),
+    
 
     #"addOrga": ("private/profile_addOrga/",organizations.addOrganizationTest),
     "getOrganization": ("public/organizations/get/",organizations.getOrganizationDetails),

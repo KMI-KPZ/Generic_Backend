@@ -23,7 +23,6 @@ class SignalDispatchers():
     orgaUpdated = django.dispatch.Signal()
     orgaDeleted = django.dispatch.Signal()
     websocketConnected = django.dispatch.Signal()
-    websocketEvent = django.dispatch.Signal()
     websocketDisconnected = django.dispatch.Signal()
 
 signalDispatcher = SignalDispatchers()

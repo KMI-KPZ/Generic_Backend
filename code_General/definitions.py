@@ -145,3 +145,4 @@ class EventsDescriptionGeneric(StrEnumExactlyAsDefined):
     reason = enum.auto()
     content = enum.auto()
     createdWhen = enum.auto()
+    additionalInformation = enum.auto()

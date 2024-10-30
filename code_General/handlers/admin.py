@@ -13,7 +13,7 @@ from django.http import HttpResponse, JsonResponse
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
-from Generic_Backend.code_General.modelFiles.userModel import UserDescription
+from ..modelFiles.userModel import UserDescription
 
 from ..utilities import basics
 from  ..utilities.basics import ExceptionSerializerGeneric

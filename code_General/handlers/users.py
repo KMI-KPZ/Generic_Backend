@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from Generic_Backend.code_General.utilities import signals 
 """
 Part of Semper-KI software
 
@@ -23,7 +22,7 @@ from rest_framework.request import Request
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import OpenApiParameter
 
-from ..utilities import basics, crypto
+from ..utilities import basics, crypto, signals
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
 from ..utilities.basics import handleTooManyRequestsError, ExceptionSerializerGeneric

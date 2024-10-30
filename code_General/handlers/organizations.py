@@ -19,13 +19,11 @@ from rest_framework.request import Request
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
-from Generic_Backend.code_General.modelFiles.organizationModel import OrganizationDescription
-from Generic_Backend.code_General.utilities import signals
+from ..modelFiles.organizationModel import OrganizationDescription
 
-from ..connections.postgresql import pgProfiles
+from ..connections.postgresql import pgProfiles, pgEvents
 from ..connections import auth0
 from ..utilities.basics import checkIfNestedKeyExists, checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient, ExceptionSerializerGeneric
-from ..utilities import signals
 from ..definitions import SessionContent, Logging, OrganizationDetails, EventsDescriptionGeneric
 
 logger = logging.getLogger("logToFile")
@@ -54,23 +52,16 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
             userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args)
             if userHashedID != "":
                 groupName = userHashedID[:80]
-                event = {
-                    EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
-                    EventsDescriptionGeneric.eventID: "",
-                    EventsDescriptionGeneric.userHashedID: userHashedID,
-                    EventsDescriptionGeneric.eventData: {
+                eventData = {
                         EventsDescriptionGeneric.primaryID: orgID,
                         EventsDescriptionGeneric.reason: "roleChanged",
                         EventsDescriptionGeneric.content: "roleChanged"
-                    },
-                    EventsDescriptionGeneric.triggerEvent: True,
-                    EventsDescriptionGeneric.createdWhen: str(datetime.datetime.now())
                 }
+                event = pgEvents.createEventEntry(userHashedID, EventsDescriptionGeneric.orgaEvent, eventData, True)
                 async_to_sync(channel_layer.group_send)(groupName, {
                     "type": "sendMessageJSON",
                     "dict": event,
                 })
-                signals.signalDispatcher.websocketEvent.send(None, event=event, userHashedID=userHashedID)
 
         elif eventName == "addPermissionsToRole" or eventName == "editRole":
             # get list of all members, retrieve the user ids and filter for those affected
@@ -89,45 +80,32 @@ def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
                         userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=userID)
                         if userHashedID != "":
                             groupName = userHashedID[:80]
-                            event = {
-                                EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
-                                EventsDescriptionGeneric.eventID: "",
-                                EventsDescriptionGeneric.userHashedID: userHashedID,
-                                EventsDescriptionGeneric.eventData: {
+                            eventData = {
                                     EventsDescriptionGeneric.primaryID: orgID,
                                     EventsDescriptionGeneric.reason: "roleChanged",
                                     EventsDescriptionGeneric.content: "roleChanged"
-                                },
-                                EventsDescriptionGeneric.triggerEvent: True,
-                                EventsDescriptionGeneric.createdWhen: str(datetime.datetime.now())
                             }
-                            
+                            event = pgEvents.createEventEntry(userHashedID, EventsDescriptionGeneric.orgaEvent, eventData, True)
                             async_to_sync(channel_layer.group_send)(groupName, {
                                 "type": "sendMessageJSON",
                                 "dict": event,
                             })
-                            signals.signalDispatcher.websocketEvent.send(None, event=event, userHashedID=userHashedID)
+
         elif eventName == "deleteUserFromOrganization":
             userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args)
             if userHashedID != "":
                 groupName = userHashedID[:80]
-                event = {
-                    EventsDescriptionGeneric.eventType: EventsDescriptionGeneric.orgaEvent,
-                    EventsDescriptionGeneric.eventID: "",
-                    EventsDescriptionGeneric.userHashedID: userHashedID,
-                    EventsDescriptionGeneric.eventData: {
+                eventData = {
                         EventsDescriptionGeneric.primaryID: orgID,
                         EventsDescriptionGeneric.reason: "userDeleted",
                         EventsDescriptionGeneric.content: "userDeleted"
-                    },
-                    EventsDescriptionGeneric.triggerEvent: True,
-                    EventsDescriptionGeneric.createdWhen: str(datetime.datetime.now())
                 }
+                event = pgEvents.createEventEntry(userHashedID, EventsDescriptionGeneric.orgaEvent, eventData, True)
+
                 async_to_sync(channel_layer.group_send)(groupName, {
                     "type": "sendMessageJSON",
                     "dict": event,
                 })
-                signals.signalDispatcher.websocketEvent.send(None, event=event, userHashedID=userHashedID)
 
         return True
     except Exception as e:

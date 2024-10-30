@@ -11,8 +11,8 @@ import types, json, enum, re, requests
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 
-from Generic_Backend.code_General.connections import auth0
-from Generic_Backend.code_General.utilities.basics import handleTooManyRequestsError
+from ...connections import auth0
+from ...utilities.basics import handleTooManyRequestsError
 from ...modelFiles.organizationModel import Organization
 from ...modelFiles.userModel import User
 

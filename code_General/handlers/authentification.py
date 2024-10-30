@@ -607,7 +607,7 @@ def callbackLogin(request:Request):
     request=None,
     tags=['FE - Authentification'],
     responses={
-        200: None,
+        200: serializers.ListSerializer(child=serializers.CharField()),
         400: ExceptionSerializerGeneric
     },
 )
@@ -626,7 +626,12 @@ def getRolesOfUser(request:Request):
     
         if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
             if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
-                return Response(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"])
+                output = request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]
+                outSerializer = serializers.ListSerializer(data=output)
+                if outSerializer.is_valid():
+                    return Response(outSerializer.data, status=status.HTTP_200_OK)
+                else:
+                    raise Exception(outSerializer.errors)
             else:
                 return Response([], status=status.HTTP_200_OK)
         else:
@@ -725,14 +730,14 @@ def getNewRoleAndPermissionsForUser(request:Request):
 
     :param request: GET request
     :type request: HTTP GET
-    :return: New Permissions for User
-    :rtype: JSONResponse
+    :return: If successfull or not
+    :rtype: Bool
     """
     try:
         retVal = setRoleAndPermissionsOfUser(request)
         if isinstance(retVal, Exception):
             return Response(retVal, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        return getPermissionsOfUser(request)  
+        return Response(getPermissionsOfUser(request), status=status.HTTP_200_OK)
     except (Exception) as error:
         message = f"Error in {getNewRoleAndPermissionsForUser.cls.__name__}: {str(error)}"
         exception = str(error)
