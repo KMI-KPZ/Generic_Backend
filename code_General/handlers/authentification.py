@@ -627,7 +627,7 @@ def getRolesOfUser(request:Request):
         if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
             if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
                 output = request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]
-                outSerializer = serializers.ListSerializer(data=output)
+                outSerializer = serializers.ListSerializer(child=serializers.CharField(), data=output)
                 if outSerializer.is_valid():
                     return Response(outSerializer.data, status=status.HTTP_200_OK)
                 else:
@@ -662,7 +662,7 @@ class SResPermissionsOfUser(serializers.Serializer):
     request=None,
     tags=['FE - Authentification'],
     responses={
-        200: serializers.ListField(child=SResPermissionsOfUser()),
+        200: serializers.ListSerializer(child=SResPermissionsOfUser()),
         400: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric
     },
@@ -718,7 +718,7 @@ def getPermissionsOfUser(request:Request):
     request=None,
     tags=['FE - Authentification'],
     responses={
-        200: None,
+        200: serializers.ListSerializer(child=SResPermissionsOfUser()),
         500: ExceptionSerializerGeneric
     },
 )
@@ -737,7 +737,7 @@ def getNewRoleAndPermissionsForUser(request:Request):
         retVal = setRoleAndPermissionsOfUser(request)
         if isinstance(retVal, Exception):
             return Response(retVal, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        return Response(getPermissionsOfUser(request), status=status.HTTP_200_OK)
+        return getPermissionsOfUser(request._request)
     except (Exception) as error:
         message = f"Error in {getNewRoleAndPermissionsForUser.cls.__name__}: {str(error)}"
         exception = str(error)
