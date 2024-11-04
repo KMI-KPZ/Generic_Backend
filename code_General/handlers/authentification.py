@@ -9,7 +9,6 @@ Contains: Authentification handling using Auth0
 import json, datetime, requests, logging, re
 from urllib.parse import quote_plus, urlencode
 
-from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.conf import settings
 from django.urls import reverse
@@ -72,7 +71,6 @@ def createCsrfCookie(request:Request):
         else:
             return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-
 #########################################################################
 # isLoggedIn
 #"isLoggedIn": ("public/isLoggedIn/",authentification.isLoggedIn)
@@ -148,13 +146,26 @@ def setLocaleOfUser(request:Request):
         if SessionContent.INITIALIZED not in request.session:
             request.session[SessionContent.INITIALIZED] = True
         
-        info = json.loads(request.body.decode("utf-8"))
-        assert "locale" in info.keys(), f"In {setLocaleOfUser.cls.__name__}: locale not in request"
-        localeOfUser = info["locale"]
+        inSerializer = SReqLocale(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {setLocaleOfUser.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            logger.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        validatedInput = inSerializer.data
+        assert "locale" in validatedInput.keys(), f"In {setLocaleOfUser.cls.__name__}: locale not in request"
+        localeOfUser = validatedInput["locale"]
         if "de" in localeOfUser or "en" in localeOfUser: # test supported languages here
             request.session[SessionContent.LOCALE] = localeOfUser
             if basics.manualCheckifLoggedIn(request.session):
                 pgProfiles.ProfileManagementBase.setUserLocale(request.session)
+                #update locale in user profile
+                pgProfiles.ProfileManagementUser.updateContent(request.session, updates={"locale": localeOfUser})
             return Response("Success",status=status.HTTP_200_OK)
 
         return Response("Failed", status=status.HTTP_200_OK)
@@ -386,20 +397,20 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: AUTH0_DOMAIN was not added to baseURL"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: AUTH0_DOMAIN was not added to baseURL"
         orgID = session["user"]["userinfo"]["org_id"]
-        assert isinstance(orgID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected orgID to be of type string, instead got: {type(orgID)}"
-        assert orgID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: non-empty orgID expected"
+        assert isinstance(orgID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected orgID to be of type string, instead got: {type(orgID)}"
+        assert orgID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: non-empty orgID expected"
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
-        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
-        assert userID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: non-empty userID expected"
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: non-empty userID expected"
 
         
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
             raise response
         roles = response
-        assert isinstance(roles, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected roles to be of type list, instead got: {type(roles)}"
+        assert isinstance(roles, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected roles to be of type list, instead got: {type(roles)}"
         
         for entry in roles:
             response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{entry["id"]}/permissions', headers=headers) )
@@ -407,7 +418,7 @@ def retrieveRolesAndPermissionsForMemberOfOrganization(session):
                 raise response
             else:
                 permissions = response
-                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.cls.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
+                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForMemberOfOrganization.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -431,11 +442,11 @@ def retrieveRolesAndPermissionsForStandardUser(session):
             'Cache-Control': "no-cache"
         }
         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: AUTH0_DOMAIN was not added to baseURL"
+        assert baseURL != "https://", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: AUTH0_DOMAIN was not added to baseURL"
         
         userID = pgProfiles.profileManagement[session[SessionContent.PG_PROFILE_CLASS]].getUserKey(session)
-        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
-        assert userID != "", f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: non-empty userID expected"
+        assert isinstance(userID, str), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: non-empty userID expected"
 
         response = basics.handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}/roles', headers=headers) )
         if isinstance(response, Exception):
@@ -453,7 +464,7 @@ def retrieveRolesAndPermissionsForStandardUser(session):
                 raise response
             else:
                 permissions = response
-                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForStandardUser.cls.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
+                assert isinstance(permissions, list), f"In {retrieveRolesAndPermissionsForStandardUser.__name__}: expected permissions to be of type list, instead got: {type(permissions)}"
         
         outDict = {"roles": roles, "permissions": permissions}
         return outDict
@@ -483,7 +494,7 @@ def setRoleAndPermissionsOfUser(request):
             if isinstance(resultDict, Exception):
                 raise resultDict
 
-        assert isinstance(resultDict, dict), f"In {setRoleAndPermissionsOfUser.cls.__name__}: expected resultDict to be of type dictionary, instead got: {type(resultDict)}"
+        assert isinstance(resultDict, dict), f"In {setRoleAndPermissionsOfUser.__name__}: expected resultDict to be of type dictionary, instead got: {type(resultDict)}"
         request.session[SessionContent.USER_ROLES] = resultDict["roles"]
         request.session[SessionContent.USER_PERMISSIONS] = {x["permission_name"]: "" for x in resultDict["permissions"] } # save only the permission names, the dict is for faster access
 
@@ -596,7 +607,7 @@ def callbackLogin(request:Request):
     request=None,
     tags=['FE - Authentification'],
     responses={
-        200: None,
+        200: serializers.ListSerializer(child=serializers.CharField()),
         400: ExceptionSerializerGeneric
     },
 )
@@ -615,7 +626,12 @@ def getRolesOfUser(request:Request):
     
         if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
             if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
-                return Response(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"])
+                output = request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]
+                outSerializer = serializers.ListSerializer(child=serializers.CharField(), data=output)
+                if outSerializer.is_valid():
+                    return Response(outSerializer.data, status=status.HTTP_200_OK)
+                else:
+                    raise Exception(outSerializer.errors)
             else:
                 return Response([], status=status.HTTP_200_OK)
         else:
@@ -634,7 +650,10 @@ def getRolesOfUser(request:Request):
 # getPermissionsOfUser
 #"getPermissions": ("public/getPermissions/",authentification.getPermissionsOfUser)
 #########################################################################
-#TODO Add serializer for getPermissionsOfUser
+#######################################################
+class SResPermissionsOfUser(serializers.Serializer):
+    context = serializers.CharField(max_length=200)
+    permission = serializers.CharField(max_length=200)
 #########################################################################
 # Handler  
 @extend_schema(
@@ -643,7 +662,7 @@ def getRolesOfUser(request:Request):
     request=None,
     tags=['FE - Authentification'],
     responses={
-        200: None,
+        200: serializers.ListSerializer(child=SResPermissionsOfUser()),
         400: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric
     },
@@ -666,7 +685,11 @@ def getPermissionsOfUser(request:Request):
                 for entry in request.session[SessionContent.USER_PERMISSIONS]:
                     context, permission = entry.split(":")
                     outArray.append({"context": context, "permission": permission})
-                return Response(outArray, status=status.HTTP_200_OK)
+                outSerializer = SResPermissionsOfUser(data=outArray, many=True)
+                if outSerializer.is_valid():
+                    return Response(outSerializer.data, status=status.HTTP_200_OK)
+                else:
+                    raise Exception(outSerializer.errors)
             else:
                 return Response([], status=status.HTTP_200_OK)
         else:
@@ -695,7 +718,7 @@ def getPermissionsOfUser(request:Request):
     request=None,
     tags=['FE - Authentification'],
     responses={
-        200: None,
+        200: serializers.ListSerializer(child=SResPermissionsOfUser()),
         500: ExceptionSerializerGeneric
     },
 )
@@ -707,14 +730,14 @@ def getNewRoleAndPermissionsForUser(request:Request):
 
     :param request: GET request
     :type request: HTTP GET
-    :return: New Permissions for User
-    :rtype: JSONResponse
+    :return: If successfull or not
+    :rtype: Bool
     """
     try:
         retVal = setRoleAndPermissionsOfUser(request)
         if isinstance(retVal, Exception):
             return Response(retVal, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        return getPermissionsOfUser(request)  
+        return getPermissionsOfUser(request._request)
     except (Exception) as error:
         message = f"Error in {getNewRoleAndPermissionsForUser.cls.__name__}: {str(error)}"
         exception = str(error)

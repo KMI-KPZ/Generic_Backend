@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="{{ language }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f0f0f0; }
+        .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .header { background-color: #003366; color: #ffffff; text-align: center; padding: 20px; }
+        .logo { max-width: 100px; }
+        h1 { color: #ffffff; margin: 20px 0; font-size: 28px; }
+        .content { background-color: #ffffff; color: #333333; margin: 0; padding: 30px; font-size: 16px; }
+        .footer { background-color: #003366; color: #ffffff; text-align: center; padding: 20px; font-size: 0.9em; }
+        .website-link { display: block; text-align: center; margin-top: 20px; color: #003366; text-decoration: none; font-weight: bold; }
+        .website-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://raw.githubusercontent.com/KMI-KPZ/KISS/main/KISS_logo_transparent.png" alt="Semper-KI Logo" class="logo">
+            <h1>Semper-KI</h1>
+        </div>
+        <div class="content">
+            <p><strong>{{ greeting }}</strong></p>
+            <p>{{ content }}</p>
+            <p><strong>{{ closing }}</strong><br>{{ signature }}</p>
+            <a href="https://www.semper-ki.org/" class="website-link">{{ visit_website }}</a>
+        </div>
+        <div class="footer">
+            <p>© {% now "Y" %} Semper-KI. {{ rights }}.</p>
+        </div>
+    </div>
+</body>
+</html>

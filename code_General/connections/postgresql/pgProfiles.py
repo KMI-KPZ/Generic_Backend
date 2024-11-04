@@ -11,10 +11,11 @@ import types, json, enum, re, requests
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 
-from Generic_Backend.code_General.connections import auth0
-from Generic_Backend.code_General.utilities.basics import handleTooManyRequestsError
+from ...connections import auth0
+from ...utilities.basics import handleTooManyRequestsError
 from ...modelFiles.organizationModel import Organization
 from ...modelFiles.userModel import User
+
 from ...utilities import crypto, signals
 from ...utilities.basics import checkIfNestedKeyExists
 from ...definitions import *
@@ -31,7 +32,7 @@ class ProfileManagementBase():
     @staticmethod
     def getUser(session):
         """
-        Check whether a user exists or not and retrieve entry.
+        Check whether a user exists or not and retrieve dictionary.
 
         :param session: session
         :type session: Dictionary
@@ -43,6 +44,28 @@ class ProfileManagementBase():
         obj = {}
         try:
             obj = User.objects.get(subID=userID).toDict()
+                
+        except (Exception) as error:
+            logger.error(f"Error getting user: {str(error)}")
+
+        return obj
+    
+    ##############################################
+    @staticmethod
+    def getUserObj(session):
+        """
+        Check whether a user exists or not and retrieve entry.
+
+        :param session: session
+        :type session: Dictionary
+        :return: User object from database
+        :rtype: User
+
+        """
+        userID = session["user"]["userinfo"]["sub"]
+        obj = {}
+        try:
+            obj = User.objects.get(subID=userID)
                 
         except (Exception) as error:
             logger.error(f"Error getting user: {str(error)}")
@@ -445,33 +468,38 @@ class ProfileManagementBase():
         
         """
         try:
+            returnObj = ""
             if session != None:
                 if "user" in session:
                     userID = session["user"]["userinfo"]["sub"]
                     userObj = User.objects.get(subID=userID)
                     if userObj != None and UserDetails.locale in userObj.details:
-                        return userObj.details[UserDetails.locale]
+                        returnObj = userObj.details[UserDetails.locale]
                     else:
-                        return "de-DE"
+                        returnObj = "de-DE"
                 elif SessionContent.LOCALE in session:
-                    return session[SessionContent.LOCALE]
+                    returnObj = session[SessionContent.LOCALE]
                 else:
-                    return "de-DE"
+                    returnObj = "de-DE"
             elif hashedID != "":
                 if ProfileManagementBase.checkIfHashIDBelongsToOrganization(hashedID):
                     orgaObj = Organization.objects.get(hashedID=hashedID)
                     if orgaObj != None and OrganizationDetails.locale in orgaObj.details:
-                        return orgaObj.details[OrganizationDetails.locale]
+                        returnObj = orgaObj.details[OrganizationDetails.locale]
                     else:
-                        return "de-DE"
+                        returnObj = "de-DE"
                 else:
                     userObj = User.objects.get(hashedID=hashedID)
                     if userObj != None and UserDetails.locale in userObj.details:
-                        return userObj.details[UserDetails.locale]
+                        returnObj = userObj.details[UserDetails.locale]
                     else:
-                        return "de-DE"
+                        returnObj = "de-DE"
             else:
+                returnObj = "de-DE"
+            if returnObj == "": # make very sure, that something is there!
                 return "de-DE"
+            else:
+                return returnObj
         except (Exception) as error:
             return "de-DE"
 
@@ -647,6 +675,7 @@ class ProfileManagementBase():
             logger.error(f"Error getting user email address: {str(e)}")
             return None
 
+        
 
 ####################################################################################
 class ProfileManagementUser(ProfileManagementBase):

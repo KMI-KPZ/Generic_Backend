@@ -17,7 +17,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 ##############################################################################
 ### WSGI
 
-from .handlers import admin, authentification, email, files, frontpage, organizations, statistics, testResponse, files, users
+from .handlers import admin, authentification, events, apiToken, email, files, frontpage, organizations, statistics, testResponse, files, users
 from Benchy.BenchyMcMarkface import startFromDjango
 
 newPaths = { 
@@ -25,8 +25,8 @@ newPaths = {
     "benchyPage": ("private/test/benchy/",frontpage.benchyPage),
     "benchyMcMarkface": ("private/test/benchyMcMarkface/",startFromDjango),
     
-    "schema": ('api/schema/', SpectacularAPIView.as_view(api_version='0.3')),
-    "swagger-ui": ('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema')),
+    "schema": ('public/api/schema/', SpectacularAPIView.as_view(api_version='0.3')),
+    "swagger-ui": ('public/api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema')),
 
     "test": ('public/test/',testResponse.testResponse),
     "csrfTest": ('public/test/csrf/',testResponse.testResponseCsrf),
@@ -43,10 +43,12 @@ newPaths = {
     "getNewPermissions": ("public/auth/permissions/new/get/",authentification.getNewRoleAndPermissionsForUser),
     "getPermissionsFile": ("public/auth/permissions/mask/get/",authentification.provideRightsFile),
     "setLocaleOfUser": ("public/auth/localeOfUser/set/", authentification.setLocaleOfUser),
-
+    "getAPIToken": ("public/auth/api-key/get/", apiToken.getAPIToken),
+    "generateAPIToken": ("public/auth/api-key/create/", apiToken.generateAPIToken),
+    "deleteAPIToken": ("public/auth/api-key/delete/", apiToken.deleteAPIToken),
+    
     "deleteUser": ("public/profile/user/delete/",users.deleteUser),
     #"addUser": ("private/profile_addUser/",profiles.addUserTest),
-    
     "getUser": ("public/profile/user/get/",users.getUserDetails),
     "updateDetails": ("public/profile/user/update/",users.updateDetails),
     #"createAddress": ("public/profile/address/create/", users.createAddress),
@@ -59,10 +61,17 @@ newPaths = {
     "genericDeleteFile": ("private/generic/files/delete/",files.genericDeleteFile),
 
     "adminGetAll": ("public/admin/all/get/",admin.getAllAsAdmin),
-    "adminDelete": ("public/admin/user/delete/",admin.deleteUserAsAdmin),
-    "adminDeleteOrga": ("public/admin/organization/delete/",admin.deleteOrganizationAsAdmin),
+    "adminDelete": ("public/admin/user/delete/<str:userHashedID>/",admin.deleteUserAsAdmin),
+    "adminDeleteOrga": ("public/admin/organization/delete/<str:orgaHashedID>/",admin.deleteOrganizationAsAdmin),
     "adminUpdateUser": ("public/admin/user/update",admin.updateDetailsOfUserAsAdmin),
     "adminUpdateOrga": ("public/admin/organization/update/",admin.updateDetailsOfOrganizationAsAdmin),
+
+    "getAllEventsForUser": ("public/events/all/get/", events.getAllEventsForUser),
+    "getOneEventOfUser": ("public/events/get/<str:eventID>/", events.getOneEventOfUser),
+    "createEvent": ("public/events/post/", events.createEvent),
+    "deleteOneEvent": ("public/events/delete/<str:eventID>/", events.deleteOneEvent),
+    "deleteAllEventsForAUser": ("public/events/all/delete/", events.deleteAllEventsForAUser),
+    
 
     #"addOrga": ("private/profile_addOrga/",organizations.addOrganizationTest),
     "getOrganization": ("public/organizations/get/",organizations.getOrganizationDetails),

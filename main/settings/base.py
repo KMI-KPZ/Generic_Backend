@@ -424,18 +424,20 @@ STATIC_URL = f"https://{AWS_STATICS_BUCKET_NAME}.{AWS_REGION_NAME}.{AWS_CDN_ENDP
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication', #TODO: Set API Keys
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning'
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Semper-KI GenericBackend',
-    'DESCRIPTION': 'API for Semper-KI',
+    'TITLE': 'Generic Backend',
+    'DESCRIPTION': 'API for Generic Backend',
     'VERSION': '0.3.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    'COMPONENT_SPLIT_REQUEST': True
+    'COMPONENT_SPLIT_REQUEST': True,
+    'PREPROCESSING_HOOKS': ["main.settings.helper.filteredEndpointsForAPI"]
+
     # OTHER SETTINGS
 }
