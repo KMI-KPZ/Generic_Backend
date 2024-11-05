@@ -19,8 +19,8 @@ from rest_framework.request import Request
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
+from ..utilities import signals
 from ..modelFiles.organizationModel import OrganizationDescription
-
 from ..connections.postgresql import pgProfiles, pgEvents
 from ..connections import auth0
 from ..utilities.basics import checkIfNestedKeyExists, checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient, ExceptionSerializerGeneric
