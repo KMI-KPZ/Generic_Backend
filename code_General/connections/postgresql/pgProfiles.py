@@ -105,7 +105,7 @@ class ProfileManagementBase():
         :param hashedID: The hash ID can be used instead
         :type hashedID: str
         :return: Organization details from database
-        :rtype: Dictionary
+        :rtype: Dictionary | Exception
 
         """
         if session != {}:
@@ -115,7 +115,7 @@ class ProfileManagementBase():
                 obj = Organization.objects.get(subID=orgaID).toDict()
             except (Exception) as error:
                 logger.error(f"Error getting organization: {str(error)}")
-
+                return error
             return obj
         if hashedID != "":
             obj = {}
@@ -123,7 +123,7 @@ class ProfileManagementBase():
                 obj = Organization.objects.get(hashedID=hashedID).toDict()
             except (Exception) as error:
                 logger.error(f"Error getting organization: {str(error)}")
-
+                return error
             return obj
         logger.error(f"Error getting organization because no parameter was given!")
         return {}

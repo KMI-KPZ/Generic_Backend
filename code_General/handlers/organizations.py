@@ -228,6 +228,8 @@ def getOrganizationDetails(request:Request):
     # Read organization details from Database
     try:
         returnVal = pgProfiles.ProfileManagementOrganization.getOrganization(request.session)
+        if isinstance(returnVal, Exception):
+            raise returnVal
         # parse addresses 
         if checkIfNestedKeyExists(returnVal, OrganizationDescription.details, OrganizationDetails.addresses):
             returnVal[OrganizationDescription.details][OrganizationDetails.addresses] = list(returnVal[OrganizationDescription.details][OrganizationDetails.addresses].values())

@@ -44,6 +44,7 @@ class OrganizationDetails(StrEnumExactlyAsDefined):
     branding = enum.auto()
     notificationSettings = enum.auto()
     priorities = enum.auto()
+    services = enum.auto()
 
 ###################################################
 # Enum what can be updated for a user

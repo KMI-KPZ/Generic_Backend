@@ -69,6 +69,7 @@ class FileObjectContent(StrEnumExactlyAsDefined):
     tags = enum.auto()
     licenses = enum.auto()
     certificates = enum.auto()
+    quantity = enum.auto()
     date = enum.auto()
     createdBy = enum.auto()
     createdByID = enum.auto()

@@ -167,6 +167,8 @@ def getUserDetails(request:Request):
             organizationsOfUser = userObj[UserDescription.organizations].split(",")
             del userObj[UserDescription.organizations]
             currentOrganizationOfUser = pgProfiles.ProfileManagementBase.getOrganization(request.session)
+            if isinstance(currentOrganizationOfUser, Exception):
+                raise currentOrganizationOfUser
             for elem in organizationsOfUser:
                 if elem == currentOrganizationOfUser[OrganizationDescription.hashedID]:
                     userObj["organization"] = elem
