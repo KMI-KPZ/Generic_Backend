@@ -1042,6 +1042,8 @@ class ProfileManagementOrganization(ProfileManagementBase):
                 details = updates[updateType]
                 if updateType == OrganizationUpdateType.supportedServices:
                     assert isinstance(details, list), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of list"
+                    # call signal here and add service specific stuff depending on the choices of supported services
+                    signals.signalDispatcher.orgaServiceDetails.send(None, orgaID=orgID, details=details)
                     existingInfo[OrganizationDescription.supportedServices] = details
                 elif updateType == OrganizationUpdateType.address:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
