@@ -1045,6 +1045,9 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     # call signal here and add service specific stuff depending on the choices of supported services
                     signals.signalDispatcher.orgaServiceDetails.send(None, orgaID=orgID, details=details)
                     existingInfo[OrganizationDescription.supportedServices] = details
+                elif updateType == OrganizationUpdateType.services:
+                    assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
+                    existingInfo[OrganizationDescription.details][OrganizationDetails.services] = details
                 elif updateType == OrganizationUpdateType.address:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     setToStandardAddress = details["standard"] # if the new address will be the standard address

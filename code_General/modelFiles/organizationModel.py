@@ -57,6 +57,7 @@ class OrganizationUpdateType(StrEnumExactlyAsDefined):
     email = enum.auto()
     branding = enum.auto()
     supportedServices = enum.auto()
+    services = enum.auto()
     notifications = enum.auto()
     locale = enum.auto()
     address = enum.auto()
