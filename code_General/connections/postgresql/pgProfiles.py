@@ -1044,9 +1044,13 @@ class ProfileManagementOrganization(ProfileManagementBase):
                 details = updates[updateType]
                 if updateType == OrganizationUpdateType.supportedServices:
                     assert isinstance(details, list), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of list"
-                    # call signal here and add service specific stuff depending on the choices of supported services
-                    sendSignals[OrganizationDescription.supportedServices] = details
-                    existingInfo[OrganizationDescription.supportedServices] = details
+                    supportedServices = []
+                    for supportedService in details:
+                        supportedServices.append(supportedService)
+                    supportedServices.extend(existingInfo[OrganizationDescription.supportedServices])
+
+                    sendSignals[OrganizationDescription.supportedServices] = supportedServices
+                    existingInfo[OrganizationDescription.supportedServices] = supportedServices
                 elif updateType == OrganizationUpdateType.services:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.services] = details
@@ -1198,8 +1202,8 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     del existingInfo[OrganizationDescription.details][OrganizationDetails.addresses][details]
                 elif updateType == OrganizationUpdateType.supportedServices:
                     assert isinstance(details, list), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of list"
-                    for serviceNumber in details:
-                        del existingInfo[OrganizationDescription.supportedServices][serviceNumber]
+                    # deletion not necessary because the array is set in the changes function without the not set services
+                    existingInfo[OrganizationDescription.supportedServices] = [elem for elem in existingInfo[OrganizationDescription.supportedServices] if elem not in details]
                     sendSignals[OrganizationDescription.supportedServices] = details
                 else:
                     raise Exception("updateType not defined")

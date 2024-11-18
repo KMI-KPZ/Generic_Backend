@@ -269,7 +269,7 @@ class SReqChangesOrga(serializers.Serializer):
 
 #######################################################
 class SReqDeletionsOrga(serializers.Serializer):
-    address = serializers.CharField(max_length=200, required=False, default="id")
+    address = serializers.CharField(max_length=200, required=False)
     supportedServices = serializers.ListField(child=serializers.IntegerField(), required=False)
 
 #######################################################
