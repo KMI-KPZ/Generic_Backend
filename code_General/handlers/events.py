@@ -29,7 +29,7 @@ class SReqsEventContent(serializers.Serializer):
     primaryID =  serializers.CharField(max_length=513)
     secondaryID = serializers.CharField(max_length=513,  required=False)
     reason = serializers.CharField(max_length=513, required=False)
-    content = serializers.CharField(max_length=513, required=False)
+    content = serializers.CharField(max_length=513, required=False, allow_blank=True)
     additionalInformation = serializers.DictField(allow_empty=True, required=False)
 #######################################################
 class SReqsOneEvent(serializers.Serializer):
