@@ -27,6 +27,7 @@ from ..connections.postgresql import pgProfiles
 from ..connections import auth0
 from ..utilities.basics import handleTooManyRequestsError, ExceptionSerializerGeneric
 from ..definitions import *
+from ..logics.userLogics import *
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -160,25 +161,28 @@ def getUserDetails(request:Request):
     """
     # Read user details from Database
     try:
-        userObj = pgProfiles.ProfileManagementBase.getUser(request.session)
-        userObj[SessionContent.usertype] = request.session[SessionContent.usertype]
-        # show only the current organization
-        if pgProfiles.ProfileManagementBase.checkIfUserIsInOrganization(request.session):
-            organizationsOfUser = userObj[UserDescription.organizations].split(",")
-            del userObj[UserDescription.organizations]
-            currentOrganizationOfUser = pgProfiles.ProfileManagementBase.getOrganization(request.session)
-            if isinstance(currentOrganizationOfUser, Exception):
-                raise currentOrganizationOfUser
-            for elem in organizationsOfUser:
-                if elem == currentOrganizationOfUser[OrganizationDescription.hashedID]:
-                    userObj["organization"] = elem
-                    break
-        else:
-            del userObj[UserDescription.organizations] # users who logged in as users don't need the organization info leaked
-        
-        # parse addresses 
-        if basics.checkIfNestedKeyExists(userObj, UserDescription.details, UserDetails.addresses):
-            userObj[UserDescription.details][UserDetails.addresses] = list(userObj[UserDescription.details][UserDetails.addresses].values())
+        ####
+        #userObj = pgProfiles.ProfileManagementBase.getUser(request.session)
+        #userObj[SessionContent.usertype] = request.session[SessionContent.usertype]
+        ## show only the current organization
+        #if pgProfiles.ProfileManagementBase.checkIfUserIsInOrganization(request.session):
+        #    organizationsOfUser = userObj[UserDescription.organizations].split(",")
+        #    del userObj[UserDescription.organizations]
+        #    currentOrganizationOfUser = pgProfiles.ProfileManagementBase.getOrganization(request.session)
+        #    if isinstance(currentOrganizationOfUser, Exception):
+        #        raise currentOrganizationOfUser
+        #    for elem in organizationsOfUser:
+        #        if elem == currentOrganizationOfUser[OrganizationDescription.hashedID]:
+        #            userObj["organization"] = elem
+        #            break
+        #else:
+        #    del userObj[UserDescription.organizations] # users who logged in as users don't need the organization info leaked
+        # 
+        ## parse addresses 
+        #if basics.checkIfNestedKeyExists(userObj, UserDescription.details, UserDetails.addresses):
+        #    userObj[UserDescription.details][UserDetails.addresses] = list(userObj[UserDescription.details][UserDetails.addresses].values())
+        ####
+        userObj = logicForGetUserDetails(request)
 
         outSerializer = SResUserProfile(data=userObj)
         if outSerializer.is_valid():
