@@ -30,87 +30,87 @@ from ..logics import organizationLogics
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
 #######################################################
-def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
-    """
-    Send events to the respective websockets.
+# def sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args):
+#     """
+#     Send events to the respective websockets.
 
-    :param orgID: ID of that organization
-    :type orgID: str
-    :param baseURL: stuff for Auth0
-    :type baseURL: str
-    :param baseHeader: stuff for Auth0
-    :type baseHeader: str
-    :param eventName: stuff for frontend
-    :type eventName: str
-    :param args: other arguments
-    :type args: str
-    :return: True or exception
-    :rtype: Bool or exception
-    """
-    try:
-        channel_layer = get_channel_layer()
-        if eventName == "assignRole" or eventName == "removeRole":
-            userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args)
-            if userHashedID != "":
-                groupName = userHashedID[:80]
-                eventData = {
-                        EventsDescriptionGeneric.primaryID: orgID,
-                        EventsDescriptionGeneric.reason: "roleChanged",
-                        EventsDescriptionGeneric.content: "roleChanged"
-                }
-                event = pgEvents.createEventEntry(userHashedID, EventsDescriptionGeneric.orgaEvent, eventData, True)
-                async_to_sync(channel_layer.group_send)(groupName, {
-                    "type": "sendMessageJSON",
-                    "dict": event,
-                })
+#     :param orgID: ID of that organization
+#     :type orgID: str
+#     :param baseURL: stuff for Auth0
+#     :type baseURL: str
+#     :param baseHeader: stuff for Auth0
+#     :type baseHeader: str
+#     :param eventName: stuff for frontend
+#     :type eventName: str
+#     :param args: other arguments
+#     :type args: str
+#     :return: True or exception
+#     :rtype: Bool or exception
+#     """
+#     try:
+#         channel_layer = get_channel_layer()
+#         if eventName == "assignRole" or eventName == "removeRole":
+#             userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args)
+#             if userHashedID != "":
+#                 groupName = userHashedID[:80]
+#                 eventData = {
+#                         EventsDescriptionGeneric.primaryID: orgID,
+#                         EventsDescriptionGeneric.reason: "roleChanged",
+#                         EventsDescriptionGeneric.content: "roleChanged"
+#                 }
+#                 event = pgEvents.createEventEntry(userHashedID, EventsDescriptionGeneric.orgaEvent, eventData, True)
+#                 async_to_sync(channel_layer.group_send)(groupName, {
+#                     "type": "sendMessageJSON",
+#                     "dict": event,
+#                 })
 
-        elif eventName == "addPermissionsToRole" or eventName == "editRole":
-            # get list of all members, retrieve the user ids and filter for those affected
-            response = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members', headers=baseHeader) )
-            if isinstance(response, Exception):
-                raise response
-            responseDict = response
-            for user in responseDict:
-                userID = user["user_id"]
+#         elif eventName == "addPermissionsToRole" or eventName == "editRole":
+#             # get list of all members, retrieve the user ids and filter for those affected
+#             response = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members', headers=baseHeader) )
+#             if isinstance(response, Exception):
+#                 raise response
+#             responseDict = response
+#             for user in responseDict:
+#                 userID = user["user_id"]
                 
-                resp = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=baseHeader) )
-                if isinstance(resp, Exception):
-                    raise resp    
-                for elem in resp:
-                    if elem["id"] == args:
-                        userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=userID)
-                        if userHashedID != "":
-                            groupName = userHashedID[:80]
-                            eventData = {
-                                    EventsDescriptionGeneric.primaryID: orgID,
-                                    EventsDescriptionGeneric.reason: "roleChanged",
-                                    EventsDescriptionGeneric.content: "roleChanged"
-                            }
-                            event = pgEvents.createEventEntry(userHashedID, EventsDescriptionGeneric.orgaEvent, eventData, True)
-                            async_to_sync(channel_layer.group_send)(groupName, {
-                                "type": "sendMessageJSON",
-                                "dict": event,
-                            })
+#                 resp = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=baseHeader) )
+#                 if isinstance(resp, Exception):
+#                     raise resp    
+#                 for elem in resp:
+#                     if elem["id"] == args:
+#                         userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=userID)
+#                         if userHashedID != "":
+#                             groupName = userHashedID[:80]
+#                             eventData = {
+#                                     EventsDescriptionGeneric.primaryID: orgID,
+#                                     EventsDescriptionGeneric.reason: "roleChanged",
+#                                     EventsDescriptionGeneric.content: "roleChanged"
+#                             }
+#                             event = pgEvents.createEventEntry(userHashedID, EventsDescriptionGeneric.orgaEvent, eventData, True)
+#                             async_to_sync(channel_layer.group_send)(groupName, {
+#                                 "type": "sendMessageJSON",
+#                                 "dict": event,
+#                             })
 
-        elif eventName == "deleteUserFromOrganization":
-            userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args)
-            if userHashedID != "":
-                groupName = userHashedID[:80]
-                eventData = {
-                        EventsDescriptionGeneric.primaryID: orgID,
-                        EventsDescriptionGeneric.reason: "userDeleted",
-                        EventsDescriptionGeneric.content: "userDeleted"
-                }
-                event = pgEvents.createEventEntry(userHashedID, EventsDescriptionGeneric.orgaEvent, eventData, True)
+#         elif eventName == "deleteUserFromOrganization":
+#             userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(userSubID=args)
+#             if userHashedID != "":
+#                 groupName = userHashedID[:80]
+#                 eventData = {
+#                         EventsDescriptionGeneric.primaryID: orgID,
+#                         EventsDescriptionGeneric.reason: "userDeleted",
+#                         EventsDescriptionGeneric.content: "userDeleted"
+#                 }
+#                 event = pgEvents.createEventEntry(userHashedID, EventsDescriptionGeneric.orgaEvent, eventData, True)
 
-                async_to_sync(channel_layer.group_send)(groupName, {
-                    "type": "sendMessageJSON",
-                    "dict": event,
-                })
+#                 async_to_sync(channel_layer.group_send)(groupName, {
+#                     "type": "sendMessageJSON",
+#                     "dict": event,
+#                 })
 
-        return True
-    except Exception as e:
-        return e
+#         return True
+#     except Exception as e:
+#         return e
 
 
 #########################################################################
@@ -620,32 +620,32 @@ def organizations_fetchUsers(request:Request):
     try:
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return JsonResponse({})
+        responseDict = organizationLogics.logicsForOrganizataionsFetchUsers(request)
+        # headers = {
+        #     'authorization': f'Bearer {auth0.apiToken.accessToken}',
+        #     'content-Type': 'application/json',
+        #     "Cache-Control": "no-cache"
+        # }
+        # baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        # orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
 
-        headers = {
-            'authorization': f'Bearer {auth0.apiToken.accessToken}',
-            'content-Type': 'application/json',
-            "Cache-Control": "no-cache"
-        }
-        baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        # orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
+        # if isinstance(orgaName, Exception):
+        #     raise orgaName
 
-        orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
-        if isinstance(orgaName, Exception):
-            raise orgaName
-
-        response = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members', headers=headers) )
-        if isinstance(response, Exception):
-            raise response
+        # response = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members', headers=headers) )
+        # if isinstance(response, Exception):
+        #     raise response
         
-        responseDict = response
-        for idx, entry in enumerate(responseDict):
-            resp = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{entry["user_id"]}/roles', headers=headers) )
-            if isinstance(resp, Exception):
-                raise resp
-            responseDict[idx]["roles"] = resp
-            for elemIdx in range(len(responseDict[idx]["roles"])):
-                responseDict[idx]["roles"][elemIdx]["name"] = responseDict[idx]["roles"][elemIdx]["name"].replace(orgaName+"-", "")
-            entry.pop("user_id")
+        # responseDict = response
+        # for idx, entry in enumerate(responseDict):
+        #     resp = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{entry["user_id"]}/roles', headers=headers) )
+        #     if isinstance(resp, Exception):
+        #         raise resp
+        #     responseDict[idx]["roles"] = resp
+        #     for elemIdx in range(len(responseDict[idx]["roles"])):
+        #         responseDict[idx]["roles"][elemIdx]["name"] = responseDict[idx]["roles"][elemIdx]["name"].replace(orgaName+"-", "")
+        #     entry.pop("user_id")
 
         outSerializer = SResUsersAndRoles(data=responseDict, many=True)
         if outSerializer.is_valid():
@@ -707,22 +707,22 @@ def organizations_fetchInvitees(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return JsonResponse({})
 
-        headers = {
-            'authorization': f'Bearer {auth0.apiToken.accessToken}',
-            'content-Type': 'application/json',
-            "Cache-Control": "no-cache"
-        }
-        baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        # headers = {
+        #     'authorization': f'Bearer {auth0.apiToken.accessToken}',
+        #     'content-Type': 'application/json',
+        #     "Cache-Control": "no-cache"
+        # }
+        # baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        # orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
 
-        orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
-        if isinstance(orgaName, Exception):
-            raise orgaName
+        # orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
+        # if isinstance(orgaName, Exception):
+        #     raise orgaName
 
-        response = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/invitations', headers=headers) )
-        if isinstance(response, Exception):
-            raise response
-
+        # response = handleTooManyRequestsError(lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/invitations', headers=headers) )
+        # if isinstance(response, Exception):
+        #     raise response
+        response = organizationLogics.logicsForOrganizataionsFetchInvitees(request)
         outSerializer = SResInvites(data=response, many=True)
         if outSerializer.is_valid():
             return Response(outSerializer.data, status=status.HTTP_200_OK)
@@ -822,33 +822,34 @@ def organizations_deleteUser(request:Request, userEMail:str):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
 
-        headers = {
-            'authorization': f'Bearer {auth0.apiToken.accessToken}',
-            'content-Type': 'application/json',
-            "Cache-Control": "no-cache"
-        }
-        baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
-        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        organizationLogics.logicsForOrganizationsDeleteUser(request, userEMail)
+        # headers = {
+        #     'authorization': f'Bearer {auth0.apiToken.accessToken}',
+        #     'content-Type': 'application/json',
+        #     "Cache-Control": "no-cache"
+        # }
+        # baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        # orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        # userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
 
-        # fetch user id via E-Mail of the user
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{userEMail}"&search_engine=v3', headers=headers) )
-        if isinstance(response, Exception):
-            raise response
-        userID = response[0]["user_id"]
+        # # fetch user id via E-Mail of the user
+        # response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{userEMail}"&search_engine=v3', headers=headers) )
+        # if isinstance(response, Exception):
+        #     raise response
+        # userID = response[0]["user_id"]
 
-        # delete person from organization via userID
-        data = { "members": [userID]}
-        response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members', headers=headers, json=data) )
-        if isinstance(response, Exception):
-            raise response
-        pgProfiles.ProfileManagementUser.deleteUser("", uID=userID)
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},user with email {userEMail} from {orgID}," + str(datetime.datetime.now()))
+        # # delete person from organization via userID
+        # data = { "members": [userID]}
+        # response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members', headers=headers, json=data) )
+        # if isinstance(response, Exception):
+        #     raise response
+        # pgProfiles.ProfileManagementUser.deleteUser("", uID=userID)
+        # logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},user with email {userEMail} from {orgID}," + str(datetime.datetime.now()))
         
-        # Send event to websocket
-        retVal = sendEventViaWebsocket(orgID, baseURL, headers, "deleteUserFromOrganization", userID)
-        if isinstance(retVal, Exception):
-            raise retVal
+        # # Send event to websocket
+        # retVal = sendEventViaWebsocket(orgID, baseURL, headers, "deleteUserFromOrganization", userID)
+        # if isinstance(retVal, Exception):
+        #     raise retVal
         
         return Response("Success", status=status.HTTP_200_OK)
 
@@ -910,29 +911,30 @@ def organizations_createRole(request:Request):
         
         validatedInput = inSerializer.data
 
-        headers = {
-            'authorization': f'Bearer {auth0.apiToken.accessToken}',
-            'content-Type': 'application/json',
-            "Cache-Control": "no-cache"
-        }
-        baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
-        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        # headers = {
+        #     'authorization': f'Bearer {auth0.apiToken.accessToken}',
+        #     'content-Type': 'application/json',
+        #     "Cache-Control": "no-cache"
+        # }
+        # baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        # orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        # userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
 
-        orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
-        if isinstance(orgaName, Exception):
-            raise orgaName
+        # orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
+        # if isinstance(orgaName, Exception):
+        #     raise orgaName
         
-        # append organization name to the role name to avoid that two different organizations create the same role
-        roleName = orgaName + "-" + validatedInput["roleName"]
-        roleDescription = validatedInput["roleDescription"]
+        # # append organization name to the role name to avoid that two different organizations create the same role
+        # roleName = orgaName + "-" + validatedInput["roleName"]
+        # roleDescription = validatedInput["roleDescription"]
 
-        data = { "name": roleName, "description": roleDescription}
-        response = handleTooManyRequestsError( lambda: requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}', headers=headers, json=data) )
-        if isinstance(response, Exception):
-            raise response
-        
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},created,{Logging.Object.OBJECT},role {roleName} in {orgID}," + str(datetime.datetime.now()))
+        # data = { "name": roleName, "description": roleDescription}
+        # response = handleTooManyRequestsError( lambda: requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}', headers=headers, json=data) )
+        # if isinstance(response, Exception):
+        #     raise response
+
+        # logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},created,{Logging.Object.OBJECT},role {roleName} in {orgID}," + str(datetime.datetime.now()))
+        organizationLogics.logicsForOrganizationsCreateRole(validatedInput, request)
         return Response("Success", status=status.HTTP_200_OK)
     
     except Exception as e:
@@ -986,34 +988,34 @@ def organizations_assignRole(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
+        organizationLogics.logicsForOrganizationsAssignRole(validatedInput, request)
+        # headers = {
+        #     'authorization': f'Bearer {auth0.apiToken.accessToken}',
+        #     'content-Type': 'application/json',
+        #     "Cache-Control": "no-cache"
+        # }
+        # baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        # orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        # userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        # emailAddressOfUserToBeAdded = validatedInput["email"]
+        # roleID = validatedInput["roleID"]
 
-        headers = {
-            'authorization': f'Bearer {auth0.apiToken.accessToken}',
-            'content-Type': 'application/json',
-            "Cache-Control": "no-cache"
-        }
-        baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
-        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
-        emailAddressOfUserToBeAdded = validatedInput["email"]
-        roleID = validatedInput["roleID"]
+        # # fetch user id via E-Mail of the user
+        # response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAddressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
+        # if isinstance(response, Exception):
+        #     raise response
+        # userID = response[0]["user_id"]
 
-        # fetch user id via E-Mail of the user
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}?q=email:"{emailAddressOfUserToBeAdded}"&search_engine=v3', headers=headers) )
-        if isinstance(response, Exception):
-            raise response
-        userID = response[0]["user_id"]
+        # data = { "roles": [roleID]}
+        # response = handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=headers, json=data) )
+        # if isinstance(response, Exception):
+        #     raise response
 
-        data = { "roles": [roleID]}
-        response = handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members/{userID}/roles', headers=headers, json=data) )
-        if isinstance(response, Exception):
-            raise response
-
-        retVal = sendEventViaWebsocket(orgID, baseURL, headers, "assignRole", userID)
-        if isinstance(retVal, Exception):
-            raise retVal
+        # retVal = sendEventViaWebsocket(orgID, baseURL, headers, "assignRole", userID)
+        # if isinstance(retVal, Exception):
+        #     raise retVal
         
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DEFINED},assigned,{Logging.Object.OBJECT},role {roleID} to {emailAddressOfUserToBeAdded} in {orgID}," + str(datetime.datetime.now()))
+        # logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DEFINED},assigned,{Logging.Object.OBJECT},role {roleID} to {emailAddressOfUserToBeAdded} in {orgID}," + str(datetime.datetime.now()))
         return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
@@ -1155,32 +1157,33 @@ def organizations_editRole(request:Request):
         
         validatedInput = inSerializer.data
 
-        headers = {
-            'authorization': f'Bearer {auth0.apiToken.accessToken}',
-            'content-Type': 'application/json',
-            "Cache-Control": "no-cache"
-        }
-        baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
-        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        organizationLogics.logicsForOrganizationsEditRole(validatedInput, request)
+        # headers = {
+        #     'authorization': f'Bearer {auth0.apiToken.accessToken}',
+        #     'content-Type': 'application/json',
+        #     "Cache-Control": "no-cache"
+        # }
+        # baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        # orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        # userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
 
-        orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
-        if isinstance(orgaName, Exception):
-            raise orgaName
+        # orgaName = getOrganizationName(request.session, orgID, baseURL, headers)
+        # if isinstance(orgaName, Exception):
+        #     raise orgaName
 
-        roleID = validatedInput["roleID"]
-        roleName = orgaName + "-" + validatedInput["roleName"]
-        roleDescription = validatedInput["roleDescription"]
+        # roleID = validatedInput["roleID"]
+        # roleName = orgaName + "-" + validatedInput["roleName"]
+        # roleDescription = validatedInput["roleDescription"]
 
-        data = { "name": roleName, "description": roleDescription}
-        response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}', headers=headers, json=data) )
-        if isinstance(response, Exception):
-            raise response
+        # data = { "name": roleName, "description": roleDescription}
+        # response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}', headers=headers, json=data) )
+        # if isinstance(response, Exception):
+        #     raise response
         
-        retVal = sendEventViaWebsocket(orgID, baseURL, headers, "editRole", roleID)
-        if isinstance(retVal, Exception):
-            raise retVal
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.EDITED},edited,{Logging.Object.OBJECT},role {roleName} for {orgID}," + str(datetime.datetime.now()))
+        # retVal = sendEventViaWebsocket(orgID, baseURL, headers, "editRole", roleID)
+        # if isinstance(retVal, Exception):
+        #     raise retVal
+        # logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.EDITED},edited,{Logging.Object.OBJECT},role {roleName} for {orgID}," + str(datetime.datetime.now()))
         return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
@@ -1368,41 +1371,41 @@ def organizations_setPermissionsForRole(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
+        organizationLogics.logicsForOrganizationSetPermissionsForRole(validatedInput, request)
+        # headers = {
+        #     'authorization': f'Bearer {auth0.apiToken.accessToken}',
+        #     'content-Type': 'application/json',
+        #     "Cache-Control": "no-cache"
+        # }
+        # baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        # orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
+        # userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        # roleID = validatedInput["roleID"]
+        # permissionList = validatedInput["permissionIDs"]
 
-        headers = {
-            'authorization': f'Bearer {auth0.apiToken.accessToken}',
-            'content-Type': 'application/json',
-            "Cache-Control": "no-cache"
-        }
-        baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        orgID = pgProfiles.ProfileManagementBase.getOrganizationID(request.session)
-        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
-        roleID = validatedInput["roleID"]
-        permissionList = validatedInput["permissionIDs"]
-
-        data = {"permissions" : []}
-        for entry in permissionList:
-            data["permissions"].append({"resource_server_identifier": settings.AUTH0_PERMISSIONS_API_NAME, "permission_name": entry})
+        # data = {"permissions" : []}
+        # for entry in permissionList:
+        #     data["permissions"].append({"resource_server_identifier": settings.AUTH0_PERMISSIONS_API_NAME, "permission_name": entry})
         
-        # get all permissions, remove them, then add anew. It's cumbersome but the API is the way it is
-        response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}/permissions', headers=headers) )
-        if isinstance(response, Exception):
-            raise response
-        permissionsToBeRemoved = {"permissions": []}
-        for entry in response:
-            permissionsToBeRemoved["permissions"].append({"resource_server_identifier": settings.AUTH0_PERMISSIONS_API_NAME, "permission_name": entry["permission_name"]})
-        if len(permissionsToBeRemoved["permissions"]) > 0: # there are permissions that need removal
-            response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}/permissions', headers=headers, json=permissionsToBeRemoved) )
-            if isinstance(response, Exception):
-                raise response
-        response = handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}/permissions', headers=headers, json=data) )
-        if isinstance(response, Exception):
-            raise response
+        # # get all permissions, remove them, then add anew. It's cumbersome but the API is the way it is
+        # response = handleTooManyRequestsError( lambda : requests.get(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}/permissions', headers=headers) )
+        # if isinstance(response, Exception):
+        #     raise response
+        # permissionsToBeRemoved = {"permissions": []}
+        # for entry in response:
+        #     permissionsToBeRemoved["permissions"].append({"resource_server_identifier": settings.AUTH0_PERMISSIONS_API_NAME, "permission_name": entry["permission_name"]})
+        # if len(permissionsToBeRemoved["permissions"]) > 0: # there are permissions that need removal
+        #     response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}/permissions', headers=headers, json=permissionsToBeRemoved) )
+        #     if isinstance(response, Exception):
+        #         raise response
+        # response = handleTooManyRequestsError( lambda : requests.post(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["roles"]}/{roleID}/permissions', headers=headers, json=data) )
+        # if isinstance(response, Exception):
+        #     raise response
         
-        retVal = sendEventViaWebsocket(orgID, baseURL, headers, "addPermissionsToRole", roleID)
-        if isinstance(retVal, Exception):
-            raise retVal
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DEFINED},set,{Logging.Object.OBJECT},permissions of role {roleID} in {orgID}," + str(datetime.datetime.now()))
+        # retVal = sendEventViaWebsocket(orgID, baseURL, headers, "addPermissionsToRole", roleID)
+        # if isinstance(retVal, Exception):
+        #     raise retVal
+        # logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DEFINED},set,{Logging.Object.OBJECT},permissions of role {roleID} in {orgID}," + str(datetime.datetime.now()))
         return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
