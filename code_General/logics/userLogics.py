@@ -3,7 +3,7 @@ Part of Semper-KI software
 
 Silvio Weging 2024
 
-Contains: Logic for the processes
+Contains: Logic for the users
 """
 import logging, numpy
 

@@ -21,6 +21,7 @@ from ..utilities import basics
 from  ..utilities.basics import ExceptionSerializerGeneric
 from ..connections.postgresql import pgProfiles
 from ..definitions import Logging
+from ..logics import organizationLogics, userLogics
 
 from rest_framework import status, serializers
 from rest_framework.response import Response
@@ -212,7 +213,7 @@ def updateDetailsOfOrganizationAsAdmin(request:Request):
         assert "changes" in content.keys(), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: changes not in JSON"
         changes = content["changes"] 
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
-        flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, changes, orgaID)
+        flag = organizationLogics.updateContent(request.session, changes, orgaID)
         if flag is None: #updateContent returns None on success
             return Response("Success", status=status.HTTP_200_OK)
         else:

@@ -25,6 +25,7 @@ from ..connections.postgresql import pgProfiles, pgEvents
 from ..connections import auth0
 from ..utilities.basics import checkIfNestedKeyExists, checkIfUserIsLoggedIn, handleTooManyRequestsError, checkIfRightsAreSufficient, ExceptionSerializerGeneric
 from ..definitions import SessionContent, Logging, OrganizationDetails, EventsDescriptionGeneric
+from ..logics import organizationLogics
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -317,11 +318,11 @@ def updateDetailsOfOrganization(request:Request):
         
         content = inSerializer.data
         if "changes" in content:
-            flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content["changes"])
+            flag = organizationLogics.updateContent(request.session, content["changes"]) 
             if isinstance(flag, Exception):
                 raise flag
         if "deletions" in content:
-            flag = pgProfiles.ProfileManagementOrganization.deleteContent(request.session, content["deletions"])
+            flag = organizationLogics.deleteContent(request.session, content["deletions"])
             if isinstance(flag, Exception):
                 raise flag
         
