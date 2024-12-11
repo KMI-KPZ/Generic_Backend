@@ -734,162 +734,162 @@ class ProfileManagementUser(ProfileManagementBase):
                 return error
 
     ##############################################
-    @staticmethod
-    def updateContent(session, updates, userID=""):
-        """
-        Update user details.
+    # @staticmethod
+    # def updateContent(session, updates, userID=""):
+    #     """
+    #     Update user details.
 
-        :param session: GET request session
-        :type session: Dictionary
-        :param updates: The user details to update
-        :type updates: differs
-        :param userID: The user ID who updates. If not given, the subID will be used	
-        :type userID: str
-        :return: If it worked or not
-        :rtype: None | Exception
+    #     :param session: GET request session
+    #     :type session: Dictionary
+    #     :param updates: The user details to update
+    #     :type updates: differs
+    #     :param userID: The user ID who updates. If not given, the subID will be used	
+    #     :type userID: str
+    #     :return: If it worked or not
+    #     :rtype: None | Exception
 
-        """
-        if userID == "":
-            subID = session["user"]["userinfo"]["sub"]
-        else:
-            subID = userID
-        updated = timezone.now()
-        try:
-            mocked = False
-            if SessionContent.MOCKED_LOGIN in session and session[SessionContent.MOCKED_LOGIN] is True:
-                mocked = True
-            existingObj = User.objects.get(subID=subID)
-            existingInfo = {UserDescription.name: existingObj.name, UserDescription.details: existingObj.details}
-            for updateType in updates:
-                details = updates[updateType]
-                if updateType == UserUpdateType.displayName:
-                    assert isinstance(details, str), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str"
-                    existingInfo[UserDescription.name] = details
-                elif updateType == UserUpdateType.email:
-                    assert isinstance(details, str), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str"
-                    existingInfo[UserDescription.details][UserDetails.email] = details
-                    if not mocked:
-                        # send to id manager
-                        headers = {
-                            'authorization': f'Bearer {auth0.apiToken.accessToken}',
-                            'content-Type': 'application/json',
-                            "Accept": "application/json",
-                            "Cache-Control": "no-cache"
-                        }
-                        baseURL = f"https://{settings.AUTH0_DOMAIN}"
-                        payload = json.dumps({"email": details})
-                        response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{subID}', data=payload, headers=headers) )
-                        if isinstance(response, Exception):
-                            raise response
-                elif updateType == UserUpdateType.address:
-                    assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
-                    setToStandardAddress = details["standard"] # if the new address will be the standard address
-                    addressAlreadyExists = False
-                    newContentInDB = {}
-                    if UserDetails.addresses in existingInfo[UserDescription.details]: # add old content
-                        newContentInDB = existingInfo[UserDescription.details][UserDetails.addresses] 
-                        for key in newContentInDB:
-                            if "id" in details and details["id"] == newContentInDB[key]["id"]:
-                                addressAlreadyExists = True
-                            if setToStandardAddress:
-                                newContentInDB[key]["standard"] = False
-                    if addressAlreadyExists == False:
-                        # add new content
-                        idForNewAddress = crypto.generateURLFriendlyRandomString()
-                        details["id"] = idForNewAddress
-                    else:
-                        # overwrite existing entry
-                        idForNewAddress = details["id"]
-                    newContentInDB[idForNewAddress] = details
-                    existingInfo[UserDescription.details][UserDetails.addresses] = newContentInDB
-                elif updateType == UserUpdateType.locale:
-                    assert isinstance(details, str) and ("en" in details or "de" in details), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str or the locale didn't contain de or en"
-                    existingInfo[UserDescription.details][UserDetails.locale] = details
-                    if not mocked:
-                        # send to id manager
-                        headers = {
-                            'authorization': f'Bearer {auth0.apiToken.accessToken}',
-                            'content-Type': 'application/json',
-                            "Accept": "application/json",
-                            "Cache-Control": "no-cache"
-                        }
-                        baseURL = f"https://{settings.AUTH0_DOMAIN}"
-                        payload = json.dumps({"user_metadata": {"language": details}})
-                        response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{subID}', data=payload, headers=headers) )
-                        if isinstance(response, Exception):
-                            raise response
-                elif updateType == UserUpdateType.notifications:
-                    assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
-                    if ProfileClasses.user in details:
-                        for notification in details[ProfileClasses.user]: 
-                            if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification) \
-                                or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification, UserNotificationTargets.email) \
-                                or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification, UserNotificationTargets.event):
-                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
+    #     """
+    #     if userID == "":
+    #         subID = session["user"]["userinfo"]["sub"]
+    #     else:
+    #         subID = userID
+    #     updated = timezone.now()
+    #     try:
+    #         mocked = False
+    #         if SessionContent.MOCKED_LOGIN in session and session[SessionContent.MOCKED_LOGIN] is True:
+    #             mocked = True
+    #         existingObj = User.objects.get(subID=subID)
+    #         existingInfo = {UserDescription.name: existingObj.name, UserDescription.details: existingObj.details}
+    #         for updateType in updates:
+    #             details = updates[updateType]
+    #             if updateType == UserUpdateType.displayName:
+    #                 assert isinstance(details, str), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str"
+    #                 existingInfo[UserDescription.name] = details
+    #             elif updateType == UserUpdateType.email:
+    #                 assert isinstance(details, str), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str"
+    #                 existingInfo[UserDescription.details][UserDetails.email] = details
+    #                 if not mocked:
+    #                     # send to id manager
+    #                     headers = {
+    #                         'authorization': f'Bearer {auth0.apiToken.accessToken}',
+    #                         'content-Type': 'application/json',
+    #                         "Accept": "application/json",
+    #                         "Cache-Control": "no-cache"
+    #                     }
+    #                     baseURL = f"https://{settings.AUTH0_DOMAIN}"
+    #                     payload = json.dumps({"email": details})
+    #                     response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{subID}', data=payload, headers=headers) )
+    #                     if isinstance(response, Exception):
+    #                         raise response
+    #             elif updateType == UserUpdateType.address:
+    #                 assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
+    #                 setToStandardAddress = details["standard"] # if the new address will be the standard address
+    #                 addressAlreadyExists = False
+    #                 newContentInDB = {}
+    #                 if UserDetails.addresses in existingInfo[UserDescription.details]: # add old content
+    #                     newContentInDB = existingInfo[UserDescription.details][UserDetails.addresses] 
+    #                     for key in newContentInDB:
+    #                         if "id" in details and details["id"] == newContentInDB[key]["id"]:
+    #                             addressAlreadyExists = True
+    #                         if setToStandardAddress:
+    #                             newContentInDB[key]["standard"] = False
+    #                 if addressAlreadyExists == False:
+    #                     # add new content
+    #                     idForNewAddress = crypto.generateURLFriendlyRandomString()
+    #                     details["id"] = idForNewAddress
+    #                 else:
+    #                     # overwrite existing entry
+    #                     idForNewAddress = details["id"]
+    #                 newContentInDB[idForNewAddress] = details
+    #                 existingInfo[UserDescription.details][UserDetails.addresses] = newContentInDB
+    #             elif updateType == UserUpdateType.locale:
+    #                 assert isinstance(details, str) and ("en" in details or "de" in details), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str or the locale didn't contain de or en"
+    #                 existingInfo[UserDescription.details][UserDetails.locale] = details
+    #                 if not mocked:
+    #                     # send to id manager
+    #                     headers = {
+    #                         'authorization': f'Bearer {auth0.apiToken.accessToken}',
+    #                         'content-Type': 'application/json',
+    #                         "Accept": "application/json",
+    #                         "Cache-Control": "no-cache"
+    #                     }
+    #                     baseURL = f"https://{settings.AUTH0_DOMAIN}"
+    #                     payload = json.dumps({"user_metadata": {"language": details}})
+    #                     response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{subID}', data=payload, headers=headers) )
+    #                     if isinstance(response, Exception):
+    #                         raise response
+    #             elif updateType == UserUpdateType.notifications:
+    #                 assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
+    #                 if ProfileClasses.user in details:
+    #                     for notification in details[ProfileClasses.user]: 
+    #                         if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification) \
+    #                             or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification, UserNotificationTargets.email) \
+    #                             or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification, UserNotificationTargets.event):
+    #                             existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
 
-                            if checkIfNestedKeyExists(details, ProfileClasses.user, notification, UserNotificationTargets.email):
-                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification][UserNotificationTargets.email] = details[ProfileClasses.user][notification][UserNotificationTargets.email]
-                            if checkIfNestedKeyExists(details, ProfileClasses.user, notification, UserNotificationTargets.event):
-                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification][UserNotificationTargets.event] = details[ProfileClasses.user][notification][UserNotificationTargets.event]
-                    if ProfileClasses.organization in details:
-                        for notification in details[ProfileClasses.organization]: 
-                            if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification) \
-                                or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.email) \
-                                or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.event):
-                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
+    #                         if checkIfNestedKeyExists(details, ProfileClasses.user, notification, UserNotificationTargets.email):
+    #                             existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification][UserNotificationTargets.email] = details[ProfileClasses.user][notification][UserNotificationTargets.email]
+    #                         if checkIfNestedKeyExists(details, ProfileClasses.user, notification, UserNotificationTargets.event):
+    #                             existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification][UserNotificationTargets.event] = details[ProfileClasses.user][notification][UserNotificationTargets.event]
+    #                 if ProfileClasses.organization in details:
+    #                     for notification in details[ProfileClasses.organization]: 
+    #                         if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification) \
+    #                             or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.email) \
+    #                             or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.event):
+    #                             existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
 
-                            if checkIfNestedKeyExists(details, ProfileClasses.organization, notification, UserNotificationTargets.email):
-                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.email] = details[ProfileClasses.organization][notification][UserNotificationTargets.email]
-                            if checkIfNestedKeyExists(details, ProfileClasses.organization, notification, UserNotificationTargets.event):
-                                existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.event] = details[ProfileClasses.organization][notification][UserNotificationTargets.event]
+    #                         if checkIfNestedKeyExists(details, ProfileClasses.organization, notification, UserNotificationTargets.email):
+    #                             existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.email] = details[ProfileClasses.organization][notification][UserNotificationTargets.email]
+    #                         if checkIfNestedKeyExists(details, ProfileClasses.organization, notification, UserNotificationTargets.event):
+    #                             existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.event] = details[ProfileClasses.organization][notification][UserNotificationTargets.event]
                     
-                else:
-                    raise Exception("updateType not defined")
+    #             else:
+    #                 raise Exception("updateType not defined")
             
-            affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
-            return None
-        except (Exception) as error:
-            logger.error(f"Error updating user details: {str(error)}")
-            return error
+    #         affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
+    #         return None
+    #     except (Exception) as error:
+    #         logger.error(f"Error updating user details: {str(error)}")
+    #         return error
         
     ##############################################
-    @staticmethod
-    def deleteContent(session, updates, userID=""):
-        """
-        Delete certain user details.
+    # @staticmethod
+    # def deleteContent(session, updates, userID=""):
+    #     """
+    #     Delete certain user details.
 
-        :param session: GET request session
-        :type session: Dictionary
-        :param updates: The user details to update
-        :type updates: differs
-        :param userID: The user ID to update. If not given, the subID will be used	
-        :type userID: str
-        :return: If it worked or not
-        :rtype: None | Exception
+    #     :param session: GET request session
+    #     :type session: Dictionary
+    #     :param updates: The user details to update
+    #     :type updates: differs
+    #     :param userID: The user ID to update. If not given, the subID will be used	
+    #     :type userID: str
+    #     :return: If it worked or not
+    #     :rtype: None | Exception
 
-        """
-        if userID == "":
-            subID = session["user"]["userinfo"]["sub"]
-        else:
-            subID = userID
-        updated = timezone.now()
-        try:
-            existingObj = User.objects.get(subID=subID)
-            existingInfo = {UserDescription.name: existingObj.name, UserDescription.details: existingObj.details}
-            for updateType in updates:
-                details = updates[updateType]
+    #     """
+    #     if userID == "":
+    #         subID = session["user"]["userinfo"]["sub"]
+    #     else:
+    #         subID = userID
+    #     updated = timezone.now()
+    #     try:
+    #         existingObj = User.objects.get(subID=subID)
+    #         existingInfo = {UserDescription.name: existingObj.name, UserDescription.details: existingObj.details}
+    #         for updateType in updates:
+    #             details = updates[updateType]
                 
-                if updateType == UserUpdateType.address:
-                    assert isinstance(details, str), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of str"
-                    del existingInfo[UserDescription.details][UserDetails.addresses][details]
-                else:
-                    raise Exception("updateType not defined")
+    #             if updateType == UserUpdateType.address:
+    #                 assert isinstance(details, str), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of str"
+    #                 del existingInfo[UserDescription.details][UserDetails.addresses][details]
+    #             else:
+    #                 raise Exception("updateType not defined")
             
-            affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
-            return None
-        except (Exception) as error:
-            logger.error(f"Error updating user details: {str(error)}")
-            return error
+    #         affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
+    #         return None
+    #     except (Exception) as error:
+    #         logger.error(f"Error updating user details: {str(error)}")
+    #         return error
     
     ##############################################
     @staticmethod

@@ -792,7 +792,7 @@ def logicsForOrganizationsGetInviteLink(validatedInput, request):
     return response
 
 ##############################################
-def logicsForGetOrganizationDeteails(request):
+def logicsForGetOrganizationDetails(request):
     returnVal = pgProfiles.ProfileManagementOrganization.getOrganization(request.session)
     if isinstance(returnVal, Exception):
         raise returnVal
