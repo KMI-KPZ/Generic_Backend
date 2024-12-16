@@ -44,6 +44,7 @@ class OrganizationDetails(StrEnumExactlyAsDefined):
     branding = enum.auto()
     notificationSettings = enum.auto()
     priorities = enum.auto()
+    services = enum.auto()
 
 ###################################################
 # Enum what can be updated for a user
@@ -56,6 +57,7 @@ class OrganizationUpdateType(StrEnumExactlyAsDefined):
     email = enum.auto()
     branding = enum.auto()
     supportedServices = enum.auto()
+    services = enum.auto()
     notifications = enum.auto()
     locale = enum.auto()
     address = enum.auto()
@@ -193,6 +195,10 @@ class Organization(models.Model):
             self.details[OrganizationDetails.branding] = existingDetails[OrganizationDetails.branding]
         else:
             self.details[OrganizationDetails.branding] = {"logo_url": "", "colors": {"primary": "#000000", "page_background": "#FFFFFF"}}
+        if OrganizationDetails.services in existingDetails and isinstance(existingDetails[OrganizationDetails.services], dict):
+            self.details[OrganizationDetails.services] = existingDetails[OrganizationDetails.services]
+        else:
+            self.details[OrganizationDetails.services] = {}
         if OrganizationDetails.notificationSettings in existingDetails and isinstance(existingDetails[OrganizationDetails.notificationSettings], dict):
             self.details[OrganizationDetails.notificationSettings] = {"organization": {}}
             for entry in OrganizationNotificationSettings:

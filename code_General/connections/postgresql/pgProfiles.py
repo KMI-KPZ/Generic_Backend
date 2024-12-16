@@ -105,7 +105,7 @@ class ProfileManagementBase():
         :param hashedID: The hash ID can be used instead
         :type hashedID: str
         :return: Organization details from database
-        :rtype: Dictionary
+        :rtype: Dictionary | Exception
 
         """
         if session != {}:
@@ -115,7 +115,7 @@ class ProfileManagementBase():
                 obj = Organization.objects.get(subID=orgaID).toDict()
             except (Exception) as error:
                 logger.error(f"Error getting organization: {str(error)}")
-
+                return error
             return obj
         if hashedID != "":
             obj = {}
@@ -123,7 +123,7 @@ class ProfileManagementBase():
                 obj = Organization.objects.get(hashedID=hashedID).toDict()
             except (Exception) as error:
                 logger.error(f"Error getting organization: {str(error)}")
-
+                return error
             return obj
         logger.error(f"Error getting organization because no parameter was given!")
         return {}
@@ -1037,12 +1037,23 @@ class ProfileManagementOrganization(ProfileManagementBase):
             mocked = False
             if SessionContent.MOCKED_LOGIN in session and session[SessionContent.MOCKED_LOGIN] is True:
                 mocked = True
+            
+            sendSignals = {}
 
             for updateType in updates:
                 details = updates[updateType]
                 if updateType == OrganizationUpdateType.supportedServices:
                     assert isinstance(details, list), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of list"
-                    existingInfo[OrganizationDescription.supportedServices] = details
+                    supportedServices = []
+                    for supportedService in details:
+                        supportedServices.append(supportedService)
+                    supportedServices.extend(existingInfo[OrganizationDescription.supportedServices])
+
+                    sendSignals[OrganizationDescription.supportedServices] = supportedServices
+                    existingInfo[OrganizationDescription.supportedServices] = supportedServices
+                elif updateType == OrganizationUpdateType.services:
+                    assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
+                    existingInfo[OrganizationDescription.details][OrganizationDetails.services] = details
                 elif updateType == OrganizationUpdateType.address:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     setToStandardAddress = details["standard"] # if the new address will be the standard address
@@ -1144,6 +1155,13 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     raise Exception("updateType not defined")
                 
             affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], updatedWhen=updated)
+            
+            if len(sendSignals) > 0:
+                for key in sendSignals:
+                    match key:
+                        case OrganizationDescription.supportedServices:
+                            signals.signalDispatcher.orgaServiceDetails.send(None, orgaID=existingObj.hashedID, details=sendSignals[key])
+            
             return None
         except (Exception) as error:
             logger.error(f"Error updating organization details: {str(error)}")
@@ -1173,6 +1191,9 @@ class ProfileManagementOrganization(ProfileManagementBase):
         try:
             existingObj = Organization.objects.get(subID=orgID)
             existingInfo = {OrganizationDescription.details: existingObj.details, OrganizationDescription.supportedServices: existingObj.supportedServices, OrganizationDescription.name: existingObj.name}
+            
+            sendSignals = {}
+            
             for updateType in updates:
                 details = updates[updateType]
                 
@@ -1181,12 +1202,18 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     del existingInfo[OrganizationDescription.details][OrganizationDetails.addresses][details]
                 elif updateType == OrganizationUpdateType.supportedServices:
                     assert isinstance(details, list), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of list"
-                    for serviceNumber in details:
-                        del existingInfo[OrganizationDescription.supportedServices][serviceNumber]
+                    # deletion not necessary because the array is set in the changes function without the not set services
+                    existingInfo[OrganizationDescription.supportedServices] = [elem for elem in existingInfo[OrganizationDescription.supportedServices] if elem not in details]
+                    sendSignals[OrganizationDescription.supportedServices] = details
                 else:
                     raise Exception("updateType not defined")
             
             affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], updatedWhen=updated)
+            
+            for key in sendSignals:
+                match key:
+                    case OrganizationUpdateType.supportedServices:
+                        signals.signalDispatcher.orgaServiceDeletion.send(None, orgaID=existingObj.hashedID, details=sendSignals[key])
             return None
         except (Exception) as error:
             logger.error(f"Error deleting orga details: {str(error)}")

@@ -192,6 +192,7 @@ class SResOrgaDetails(serializers.Serializer):
     branding = SReqBrandingOrga(required=False)
     priorities = serializers.DictField(child=SReqPriorities(), required=False)
     taxID = serializers.CharField(max_length=200, required=False, allow_blank=True)
+    services = serializers.DictField(required=False, allow_empty=True)
 #######################################################
 class SResOrga(serializers.Serializer):
     hashedID = serializers.CharField(max_length=200)
@@ -228,6 +229,8 @@ def getOrganizationDetails(request:Request):
     # Read organization details from Database
     try:
         returnVal = pgProfiles.ProfileManagementOrganization.getOrganization(request.session)
+        if isinstance(returnVal, Exception):
+            raise returnVal
         # parse addresses 
         if checkIfNestedKeyExists(returnVal, OrganizationDescription.details, OrganizationDetails.addresses):
             returnVal[OrganizationDescription.details][OrganizationDetails.addresses] = list(returnVal[OrganizationDescription.details][OrganizationDetails.addresses].values())
@@ -262,15 +265,18 @@ class SReqChangesOrga(serializers.Serializer):
     branding = SReqBrandingOrga(required=False)
     taxID = serializers.CharField(max_length=200, required=False)
     priorities = serializers.DictField(child=SReqPriorities(), required=False)
+    services = serializers.DictField(required=False, allow_empty=True)
 
 #######################################################
 class SReqDeletionsOrga(serializers.Serializer):
-    address = serializers.CharField(max_length=200, required=False, default="id")
-    services = serializers.ListField(child=serializers.IntegerField(), required=False)
+    address = serializers.CharField(max_length=200, required=False)
+    supportedServices = serializers.ListField(child=serializers.IntegerField(), required=False)
+
 #######################################################
 class SReqUpdateOrga(serializers.Serializer):
     changes = SReqChangesOrga(required=False)
     deletions = SReqDeletionsOrga(required=False)
+
 #########################################################################
 # Handler  
 @extend_schema(
