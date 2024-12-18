@@ -261,11 +261,11 @@ def updateDetails(request:Request):
         
         content = inSerializer.data
         if "changes" in content:
-            flag = pgProfiles.ProfileManagementUser.updateContent(request.session, content["changes"])
+            flag = logicForUserUpdateContent(request.session, content["changes"])
             if isinstance(flag, Exception):
                 raise flag
         if "deletions" in content:
-            flag = pgProfiles.ProfileManagementUser.deleteContent(request.session, content["deletions"])
+            flag = logicForUserDeleteContent(request.session, content["deletions"])
             if isinstance(flag, Exception):
                 raise flag
         

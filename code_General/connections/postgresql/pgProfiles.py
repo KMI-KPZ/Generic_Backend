@@ -1170,54 +1170,54 @@ class ProfileManagementOrganization(ProfileManagementBase):
     ##############################################
     # @staticmethod
     # def deleteContent(session, updates, orgaID=""):
-        """
-        Delete certain orga details.
+        # """
+        # Delete certain orga details.
 
-        :param session: GET request session
-        :type session: Dictionary
-        :param updates: The orga details to update
-        :type updates: differs
-        :param orgaID: The orga ID to update. If not given, the subID will be used	
-        :type orgaID: str
-        :return: If it worked or not
-        :rtype: None | Exception
+        # :param session: GET request session
+        # :type session: Dictionary
+        # :param updates: The orga details to update
+        # :type updates: differs
+        # :param orgaID: The orga ID to update. If not given, the subID will be used	
+        # :type orgaID: str
+        # :return: If it worked or not
+        # :rtype: None | Exception
 
-        """
-        if orgaID == "":
-            orgID = session["user"]["userinfo"]["org_id"]
-        else:
-            orgID = orgaID
-        updated = timezone.now()
-        try:
-            existingObj = Organization.objects.get(subID=orgID)
-            existingInfo = {OrganizationDescription.details: existingObj.details, OrganizationDescription.supportedServices: existingObj.supportedServices, OrganizationDescription.name: existingObj.name}
+        # """
+        # if orgaID == "":
+        #     orgID = session["user"]["userinfo"]["org_id"]
+        # else:
+        #     orgID = orgaID
+        # updated = timezone.now()
+        # try:
+        #     existingObj = Organization.objects.get(subID=orgID)
+        #     existingInfo = {OrganizationDescription.details: existingObj.details, OrganizationDescription.supportedServices: existingObj.supportedServices, OrganizationDescription.name: existingObj.name}
             
-            sendSignals = {}
+        #     sendSignals = {}
             
-            for updateType in updates:
-                details = updates[updateType]
+        #     for updateType in updates:
+        #         details = updates[updateType]
                 
-                if updateType == OrganizationUpdateType.address:
-                    assert isinstance(details, str), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of str"
-                    del existingInfo[OrganizationDescription.details][OrganizationDetails.addresses][details]
-                elif updateType == OrganizationUpdateType.supportedServices:
-                    assert isinstance(details, list), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of list"
-                    # deletion not necessary because the array is set in the changes function without the not set services
-                    existingInfo[OrganizationDescription.supportedServices] = [elem for elem in existingInfo[OrganizationDescription.supportedServices] if elem not in details]
-                    sendSignals[OrganizationDescription.supportedServices] = details
-                else:
-                    raise Exception("updateType not defined")
+        #         if updateType == OrganizationUpdateType.address:
+        #             assert isinstance(details, str), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of str"
+        #             del existingInfo[OrganizationDescription.details][OrganizationDetails.addresses][details]
+        #         elif updateType == OrganizationUpdateType.supportedServices:
+        #             assert isinstance(details, list), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of list"
+        #             # deletion not necessary because the array is set in the changes function without the not set services
+        #             existingInfo[OrganizationDescription.supportedServices] = [elem for elem in existingInfo[OrganizationDescription.supportedServices] if elem not in details]
+        #             sendSignals[OrganizationDescription.supportedServices] = details
+        #         else:
+        #             raise Exception("updateType not defined")
             
-            affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], updatedWhen=updated)
+        #     affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], updatedWhen=updated)
             
-            for key in sendSignals:
-                match key:
-                    case OrganizationUpdateType.supportedServices:
-                        signals.signalDispatcher.orgaServiceDeletion.send(None, orgaID=existingObj.hashedID, details=sendSignals[key])
-            return None
-        except (Exception) as error:
-            logger.error(f"Error deleting orga details: {str(error)}")
-            return error
+        #     for key in sendSignals:
+        #         match key:
+        #             case OrganizationUpdateType.supportedServices:
+        #                 signals.signalDispatcher.orgaServiceDeletion.send(None, orgaID=existingObj.hashedID, details=sendSignals[key])
+        #     return None
+        # except (Exception) as error:
+        #     logger.error(f"Error deleting orga details: {str(error)}")
+        #     return error
 
     ##############################################
     @staticmethod

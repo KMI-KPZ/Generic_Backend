@@ -30,7 +30,6 @@ from ..modelFiles.userModel import User
 
 from ..utilities import crypto, signals
 from ..utilities.basics import checkIfNestedKeyExists
-from ..definitions import *
 
 from logging import getLogger
 logger = getLogger("errors")
@@ -310,6 +309,7 @@ def logicsForOrganizationsDeleteContent(session, updates, orgaID=""):
             
             if updateType == OrganizationUpdateType.address:
                 assert isinstance(details, str), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of str"
+                #check here if standard address is about to deleted?
                 del existingInfo[OrganizationDescription.details][OrganizationDetails.addresses][details]
             elif updateType == OrganizationUpdateType.supportedServices:
                 assert isinstance(details, list), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of list"
