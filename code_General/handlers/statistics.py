@@ -21,6 +21,7 @@ from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
 from ..utilities.basics import checkIfTokenValid, ExceptionSerializerGeneric
+from ..logics.statisticsLogics import *
 
 ##############################################
 async def checkSession(session):
@@ -82,10 +83,11 @@ def getNumberOfUsers(request:Request):
 
     """
     try:
-        activeSessions = Session.objects.filter(expire_date__gte=timezone.now())
-        numOfActiveSessions = len(activeSessions)
-        numOfLoggedInUsers = asyncio.run(getNumOfLoggedInUsers(activeSessions))
-        output = {"active": numOfActiveSessions, "loggedIn": numOfLoggedInUsers}
+        # activeSessions = Session.objects.filter(expire_date__gte=timezone.now())
+        # numOfActiveSessions = len(activeSessions)
+        # numOfLoggedInUsers = asyncio.run(getNumOfLoggedInUsers(activeSessions))
+        # output = {"active": numOfActiveSessions, "loggedIn": numOfLoggedInUsers}
+        output = logicForGetNumberOfUsers()
         return Response(output, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -19,6 +19,7 @@ from drf_spectacular.utils import extend_schema
 from ..definitions import *
 from ..utilities.basics import ExceptionSerializerGeneric, checkIfUserIsLoggedIn, checkIfRightsAreSufficient, checkVersion
 from ..connections.postgresql import pgProfiles, pgEvents
+from ..logics.eventLogics import *
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -67,11 +68,11 @@ def getAllEventsForUser(request:Request):
 
     """
     try:
-        userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
-        listOfEvents = pgEvents.getAllEventsOfAUser(userHashedID)
-        if isinstance(listOfEvents, Exception):
-            raise listOfEvents
-
+        # userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
+        # listOfEvents = pgEvents.getAllEventsOfAUser(userHashedID)
+        # if isinstance(listOfEvents, Exception):
+        #     raise listOfEvents
+        listOfEvents = logicForGetAllEventsForUser(request)
         outSerializer = SReqsOneEvent(data=listOfEvents, many=True)
         if outSerializer.is_valid():
             return Response(outSerializer.data, status=status.HTTP_200_OK)
@@ -113,9 +114,10 @@ def getOneEventOfUser(request:Request, eventID:str):
 
     """
     try:
-        event = pgEvents.getOneEvent(eventID)
-        if isinstance(event, Exception):
-            raise event
+        # event = pgEvents.getOneEvent(eventID)
+        # if isinstance(event, Exception):
+        #     raise event
+        event = logicForGetOneEventOfUser(eventID)
         outSerializer = SReqsOneEvent(data=event)
         if outSerializer.is_valid():
             return Response(outSerializer.data, status=status.HTTP_200_OK)
@@ -170,14 +172,16 @@ def createEvent(request:Request):
         
         validatedInput = inSerializer.data
         
-        if EventsDescriptionGeneric.userHashedID in validatedInput:
-            userHashedID = validatedInput[EventsDescriptionGeneric.userHashedID]
-        else:
-            userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
+        ###
+        # if EventsDescriptionGeneric.userHashedID in validatedInput:
+        #     userHashedID = validatedInput[EventsDescriptionGeneric.userHashedID]
+        # else:
+        #     userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
 
-        retVal = pgEvents.createEventEntry(userHashedID=userHashedID, eventType=validatedInput[EventsDescriptionGeneric.eventType], eventData=validatedInput[EventsDescriptionGeneric.eventData], triggerEvent=validatedInput[EventsDescriptionGeneric.triggerEvent])
-        if isinstance(retVal, Exception):
-            raise retVal
+        # retVal = pgEvents.createEventEntry(userHashedID=userHashedID, eventType=validatedInput[EventsDescriptionGeneric.eventType], eventData=validatedInput[EventsDescriptionGeneric.eventData], triggerEvent=validatedInput[EventsDescriptionGeneric.triggerEvent])        
+        # if isinstance(retVal, Exception):
+        #     raise retVal
+        retVal = logicForCreateEvent(validatedInput, Request)
         
         outSerializer = SReqsOneEvent(data=retVal)
         if outSerializer.is_valid():
@@ -222,9 +226,10 @@ def deleteOneEvent(request:Request, eventID:str):
 
     """
     try:
-        retVal = pgEvents.removeEvent(eventID)
-        if isinstance(retVal, Exception):
-            raise retVal
+        logicForDeleteOneEvent(eventID)
+        # retVal = pgEvents.removeEvent(eventID)
+        # if isinstance(retVal, Exception):
+        #     raise retVal
         return Response("Success", status=status.HTTP_200_OK)
     except (Exception) as error:
         message = f"Error in {deleteOneEvent.cls.__name__}: {str(error)}"
@@ -263,10 +268,11 @@ def deleteAllEventsForAUser(request:Request):
 
     """
     try:
-        userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
-        retVal = pgEvents.removeAllEventsForUser(userHashedID)
-        if isinstance(retVal, Exception):
-            raise retVal
+        logicForDeleteAllEventsForAUser(request)
+        # userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
+        # retVal = pgEvents.removeAllEventsForUser(userHashedID)
+        # if isinstance(retVal, Exception):
+        #     raise retVal
         return Response("Success", status=status.HTTP_200_OK)
     except (Exception) as error:
         message = f"Error in {deleteAllEventsForAUser.cls.__name__}: {str(error)}"

@@ -20,6 +20,7 @@ from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
 from ..utilities.basics import ExceptionSerializerGeneric
+from ..logics.emailLogics import *
 
 logger = logging.getLogger("django_debug")
 loggerError = logging.getLogger("errors")
@@ -70,15 +71,15 @@ def sendContactForm(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
-  
-        mailer = MailingClass()
-        msg = ("Backendsettings: " + settings.BACKEND_SETTINGS +
-               "\nName: " +
-               validatedInput["name"] +
-               "\n" +
-               "Email: " +
-               validatedInput["email"] + "\n" + "Message: " + validatedInput["message"])
-        result = mailer.sendMail(settings.EMAIL_ADDR_SUPPORT, validatedInput["subject"], msg)
+        result = logicForSendContactForm(validatedInput)
+        # mailer = MailingClass()
+        # msg = ("Backendsettings: " + settings.BACKEND_SETTINGS +
+        #        "\nName: " +
+        #        validatedInput["name"] +
+        #        "\n" +
+        #        "Email: " +
+        #        validatedInput["email"] + "\n" + "Message: " + validatedInput["message"])
+        # result = mailer.sendMail(settings.EMAIL_ADDR_SUPPORT, validatedInput["subject"], msg)
         return Response({"status": "ok", "result": result}, status=status.HTTP_200_OK)
 
     except Exception as error:
