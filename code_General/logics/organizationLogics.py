@@ -559,19 +559,30 @@ def logicsForOrganizationsDeleteUser(request, userEMail):
         raise retVal
     
 ##############################################
-# def logicsForDeleteOrganization(request, orgaName, orgaID):
-#     if SessionContent.MOCKED_LOGIN not in request.session or (SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is False):
-#         baseURL = f"https://{settings.AUTH0_DOMAIN}"
-#         headers = {
-#             'authorization': f'Bearer {auth0.apiToken.accessToken}'
-#         }
-#         response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers) )
-#         if isinstance(response, Exception):
-#             loggerError.error(f"Error deleting organization: {str(response)}")
-#             return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-#     signals.signalDispatcher.orgaDeleted.send(None,orgaID=orgaID)
-#     logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
+def logicsForDeleteOrganization(request):
+    try:
+        orgaID = pgProfiles.ProfileManagementOrganization.getOrganizationID(request.session)
+        orgaName = pgProfiles.ProfileManagementOrganization.getOrganizationName(pgProfiles.ProfileManagementOrganization.getOrganizationHashID(request.session))
+        flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
+        if flag is True:    
+            if SessionContent.MOCKED_LOGIN not in request.session or (SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is False):
+                baseURL = f"https://{settings.AUTH0_DOMAIN}"
+                headers = {
+                    'authorization': f'Bearer {auth0.apiToken.accessToken}'
+                }
+                response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers) )
+                if isinstance(response, Exception):
+                    loggerError.error(f"Error deleting organization: {str(response)}")
+                    return (response, 500)
+            
+            signals.signalDispatcher.orgaDeleted.send(None,orgaID=orgaID)
+            logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
+            return None, 200
+        else:
+            return (Exception("Failed to delete Organization"), 500)
+    except Exception as e:
+        loggerError.error("Error in logicForDeleteOrganization: %s" % str(e))
+        return (e, 500)
 
 ##############################################
 def logicsForOrganizationsRemoveRole(validatedInput, request):

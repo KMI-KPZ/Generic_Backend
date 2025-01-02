@@ -23,6 +23,7 @@ from drf_spectacular.utils import extend_schema
 from ..utilities.basics import checkIfTokenValid, ExceptionSerializerGeneric
 from ..logics.statisticsLogics import *
 
+
 ##############################################
 async def checkSession(session):
     """
@@ -87,7 +88,15 @@ def getNumberOfUsers(request:Request):
         # numOfActiveSessions = len(activeSessions)
         # numOfLoggedInUsers = asyncio.run(getNumOfLoggedInUsers(activeSessions))
         # output = {"active": numOfActiveSessions, "loggedIn": numOfLoggedInUsers}
-        output = logicForGetNumberOfUsers()
+        output, exception, value = logicForGetNumberOfUsers(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(output, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

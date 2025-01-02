@@ -52,9 +52,13 @@ async def getNumOfLoggedInUsers(activeSessions):
     return reduce(lambda x,y: x+y, results)
 
 ##############################################
-def logicForGetNumberOfUsers():
-    activeSessions = Session.objects.filter(expire_date__gte=timezone.now())
-    numOfActiveSessions = len(activeSessions)
-    numOfLoggedInUsers = asyncio.run(getNumOfLoggedInUsers(activeSessions))
-    output = {"active": numOfActiveSessions, "loggedIn": numOfLoggedInUsers}
-    return output
+def logicForGetNumberOfUsers(request):
+    try:
+        activeSessions = Session.objects.filter(expire_date__gte=timezone.now())
+        numOfActiveSessions = len(activeSessions)
+        numOfLoggedInUsers = asyncio.run(getNumOfLoggedInUsers(activeSessions))
+        output = {"active": numOfActiveSessions, "loggedIn": numOfLoggedInUsers}
+        return (output, None, 200)
+    except Exception as e:
+        loggerError.error("Error in logicForGetNumberOfUSers: %s" % str(e))
+        return (None, e, 500)

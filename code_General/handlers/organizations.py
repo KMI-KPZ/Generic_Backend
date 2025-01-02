@@ -281,26 +281,37 @@ def deleteOrganization(request:Request): ### #TODO ###
 
     """
     try:
-        orgaID = pgProfiles.ProfileManagementOrganization.getOrganizationID(request.session)
-        orgaName = pgProfiles.ProfileManagementOrganization.getOrganizationName(pgProfiles.ProfileManagementOrganization.getOrganizationHashID(request.session))
-        flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
-        if flag is True:
-            #logicsForDeleteOrganization(request, orgaName, orgaID)
-            if SessionContent.MOCKED_LOGIN not in request.session or (SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is False):
-                baseURL = f"https://{settings.AUTH0_DOMAIN}"
-                headers = {
-                    'authorization': f'Bearer {auth0.apiToken.accessToken}'
-                }
-                response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers) )
-                if isinstance(response, Exception):
-                    loggerError.error(f"Error deleting organization: {str(response)}")
-                    return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        exception, value = logicsForDeleteOrganization(request)
+        # orgaID = pgProfiles.ProfileManagementOrganization.getOrganizationID(request.session)
+        # orgaName = pgProfiles.ProfileManagementOrganization.getOrganizationName(pgProfiles.ProfileManagementOrganization.getOrganizationHashID(request.session))
+        # flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
+        # if flag is True:    
+        #     if SessionContent.MOCKED_LOGIN not in request.session or (SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is False):
+        #         baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        #         headers = {
+        #             'authorization': f'Bearer {auth0.apiToken.accessToken}'
+        #         }
+        #         response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgaID}', headers=headers) )
+        #         if isinstance(response, Exception):
+        #             loggerError.error(f"Error deleting organization: {str(response)}")
+        #             return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
-            signals.signalDispatcher.orgaDeleted.send(None,orgaID=orgaID)
-            logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
-            return Response("Success", status=status.HTTP_200_OK)
-        else:
-            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        #     signals.signalDispatcher.orgaDeleted.send(None,orgaID=orgaID)
+        #     logger.info(f"{Logging.Subject.USER},{pgProfiles.ProfileManagementBase.getUserName(request.session)},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},organization {orgaName}," + str(datetime.datetime.now()))
+        #     return Response("Success", status=status.HTTP_200_OK)
+        # else:
+        #     return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        return Response("Success", status=status.HTTP_200_OK)
+
     except Exception as error:
         message = f"Error in {deleteOrganization.cls.__name__}: {str(error)}"
         exception = str(error)
@@ -362,8 +373,16 @@ def organizationsGetInviteLink(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
-        response = logicsForOrganizationsGetInviteLink(validatedInput, request)
-        
+        response, value = logicsForOrganizationsGetInviteLink(validatedInput, request)
+        if isinstance(response, Exception):
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         return Response(response["invitation_url"], status=status.HTTP_200_OK)
     
     except Exception as e:
