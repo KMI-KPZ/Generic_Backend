@@ -64,19 +64,29 @@ def addUserTest(request:Request):
     """
     try:
 
-        if request.session[SessionContent.PG_PROFILE_CLASS] == ProfileClasses.organization:
-            orgaObj = pgProfiles.ProfileManagementBase.getOrganizationObject(request.session)
-            if isinstance(orgaObj, Exception):
-                raise orgaObj
-            returnVal = pgProfiles.ProfileManagementOrganization.addUserIfNotExists(request.session, orgaObj)
-            if isinstance(returnVal, Exception):
-                raise returnVal
-        else:
-            returnVal = pgProfiles.ProfileManagementUser.addUserIfNotExists(request.session)
-            if isinstance(returnVal, Exception):
-                raise returnVal
-
+        # if request.session[SessionContent.PG_PROFILE_CLASS] == ProfileClasses.organization:
+        #     orgaObj = pgProfiles.ProfileManagementBase.getOrganizationObject(request.session)
+        #     if isinstance(orgaObj, Exception):
+        #         raise orgaObj
+        #     returnVal = pgProfiles.ProfileManagementOrganization.addUserIfNotExists(request.session, orgaObj)
+        #     if isinstance(returnVal, Exception):
+        #         raise returnVal
+        # else:
+        #     returnVal = pgProfiles.ProfileManagementUser.addUserIfNotExists(request.session)
+        #     if isinstance(returnVal, Exception):
+        #         raise returnVal
+        exception, value = logicForAddUserTest(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
         return Response("Success", status=status.HTTP_200_OK)
+
     except (Exception) as error:
         message = f"Error in addUserTest : {str(error)}"
         exception = str(error)
@@ -182,13 +192,21 @@ def getUserDetails(request:Request):
         #if basics.checkIfNestedKeyExists(userObj, UserDescription.details, UserDetails.addresses):
         #    userObj[UserDescription.details][UserDetails.addresses] = list(userObj[UserDescription.details][UserDetails.addresses].values())
         ####
-        userObj = logicForGetUserDetails(request)
-
+        userObj, exception, value = logicForGetUserDetails(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         outSerializer = SResUserProfile(data=userObj)
         if outSerializer.is_valid():
             return Response(outSerializer.data, status=status.HTTP_200_OK)
         else:
             raise Exception(outSerializer.errors)
+
     
     except Exception as error:
         message = f"Error in {getUserDetails.cls.__name__}: {str(error)}"
@@ -488,6 +506,7 @@ def updateDetails(request:Request):
 #             return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 #         else:
 #             return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 #########################################################################
 # deleteUser
 #"deleteUser": ("public/profileDeleteUser/",profiles.deleteUser)
@@ -519,26 +538,37 @@ def deleteUser(request:Request):
     """
     try:
         # delete in database
-        userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
-        userID = pgProfiles.ProfileManagementBase.getUserKey(request.session)
-        flag = pgProfiles.ProfileManagementUser.deleteUser(request.session)
-        if flag is True:
-            baseURL = f"https://{settings.AUTH0_DOMAIN}"
-            headers = {
-                'authorization': f'Bearer {auth0.apiToken.accessToken}',
-                "customScopeKey": "permissions", 
-                "customUserKey": "auth"
-            }
-            response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', headers=headers) )
-            if isinstance(response, Exception):
-                loggerError.error(f"Error deleting user: {str(response)}")
-                return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
+        # userID = pgProfiles.ProfileManagementBase.getUserKey(request.session)
+        # flag = pgProfiles.ProfileManagementUser.deleteUser(request.session)
+        # if flag is True:
+        #     baseURL = f"https://{settings.AUTH0_DOMAIN}"
+        #     headers = {
+        #         'authorization': f'Bearer {auth0.apiToken.accessToken}',
+        #         "customScopeKey": "permissions", 
+        #         "customUserKey": "auth"
+        #     }
+        #     response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', headers=headers) )
+        #     if isinstance(response, Exception):
+        #         loggerError.error(f"Error deleting user: {str(response)}")
+        #         return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-            signals.signalDispatcher.userDeleted.send(None,userID=userID)
-            logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.SELF},," + str(datetime.datetime.now()))
-            return Response("Success", status=status.HTTP_200_OK)
-        else:
-            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        #     signals.signalDispatcher.userDeleted.send(None,userID=userID)
+        #     logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.SELF},," + str(datetime.datetime.now()))
+        #     return Response("Success", status=status.HTTP_200_OK)
+        # else:
+        #     return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        exception, value = logicForDeleteUser(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("Success", status=status.HTTP_200_OK)
+
     except (Exception) as error:
         message = f"Error in {deleteUser.cls.__name__}: {str(error)}"
         exception = str(error)
