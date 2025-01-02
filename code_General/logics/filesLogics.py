@@ -25,9 +25,6 @@ logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
 
 ####################################################################################
-
-
-##############################################
 def logicForGenericUploadFiles(request):
     try:
         fileNames = list(request.FILES.keys())

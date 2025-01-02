@@ -71,7 +71,8 @@ def sendContactForm(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
-        result = logicForSendContactForm(validatedInput)
+        result, exception, value = logicForSendContactForm(validatedInput)
+
         # mailer = MailingClass()
         # msg = ("Backendsettings: " + settings.BACKEND_SETTINGS +
         #        "\nName: " +
@@ -80,6 +81,15 @@ def sendContactForm(request:Request):
         #        "Email: " +
         #        validatedInput["email"] + "\n" + "Message: " + validatedInput["message"])
         # result = mailer.sendMail(settings.EMAIL_ADDR_SUPPORT, validatedInput["subject"], msg)
+        
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response({"status": "ok", "result": result}, status=status.HTTP_200_OK)
 
     except Exception as error:

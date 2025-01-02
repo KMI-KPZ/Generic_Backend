@@ -24,13 +24,18 @@ loggerError = logging.getLogger("errors")
 
 ####################################################################################
 def logicForSendContactForm(validatedInput):
-    mailer = MailingClass()
-    msg = ("Backendsettings: " + settings.BACKEND_SETTINGS +
-            "\nName: " +
-            validatedInput["name"] +
-            "\n" +
-            "Email: " +
-            validatedInput["email"] + "\n" + "Message: " + validatedInput["message"])
-    result = mailer.sendMail(settings.EMAIL_ADDR_SUPPORT, validatedInput["subject"], msg)
+    try:
+        mailer = MailingClass()
+        msg = ("Backendsettings: " + settings.BACKEND_SETTINGS +
+                "\nName: " +
+                validatedInput["name"] +
+                "\n" +
+                "Email: " +
+                validatedInput["email"] + "\n" + "Message: " + validatedInput["message"])
+        result = mailer.sendMail(settings.EMAIL_ADDR_SUPPORT, validatedInput["subject"], msg)
+        
+        return (result, None, 200)
     
-    return result
+    except Exception as e:
+        logger.error(f"Error in {logicForSendContactForm.__name__}: {e}")
+        return (None, e, 500)
