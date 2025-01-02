@@ -135,12 +135,12 @@ def logicsForOrganizationsUpdateContent(session, updates, orgaID=""):
     :rtype: None | Exception
 
     """
-    if orgaID == "":
-        orgID = session["user"]["userinfo"]["org_id"]
-    else:
-        orgID = orgaID
-    updated = timezone.now()
     try:
+        if orgaID == "":
+            orgID = session["user"]["userinfo"]["org_id"]
+        else:
+            orgID = orgaID
+        updated = timezone.now()
         existingObj = Organization.objects.get(subID=orgID)
         existingInfo = {OrganizationDescription.details: existingObj.details, OrganizationDescription.supportedServices: existingObj.supportedServices, OrganizationDescription.name: existingObj.name}
             

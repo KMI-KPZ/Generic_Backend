@@ -281,7 +281,6 @@ def deleteOrganization(request:Request): ### #TODO ###
 
     """
     try:
-        exception, value = logicsForDeleteOrganization(request)
         # orgaID = pgProfiles.ProfileManagementOrganization.getOrganizationID(request.session)
         # orgaName = pgProfiles.ProfileManagementOrganization.getOrganizationName(pgProfiles.ProfileManagementOrganization.getOrganizationHashID(request.session))
         # flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
@@ -301,6 +300,7 @@ def deleteOrganization(request:Request): ### #TODO ###
         #     return Response("Success", status=status.HTTP_200_OK)
         # else:
         #     return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        exception, value = logicsForDeleteOrganization(request)
         if exception is not None:
             message = str(exception)
             loggerError.error(exception)
@@ -309,7 +309,6 @@ def deleteOrganization(request:Request): ### #TODO ###
                 return Response(exceptionSerializer.data, status=value)
             else:
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
         return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as error:

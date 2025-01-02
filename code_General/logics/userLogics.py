@@ -51,11 +51,11 @@ def logicForGetUserDetails(request):
             userObj[UserDescription.details][UserDetails.addresses] = list(userObj[UserDescription.details][UserDetails.addresses].values())
     
         
-        return userObj, None, 200
+        return (userObj, None, 200)
 
     except Exception as e:
-        loggerError.error("Error in logicForGetUserDetails: %s" % e)
-        return None, e, 500
+        loggerError.error(f"Error in {logicForGetUserDetails.cls.__name__}: {str(e)}")
+        return (None, e, 500)
 
 ##############################################
 @staticmethod
@@ -173,7 +173,7 @@ def logicForUserUpdateContent(session, updates, userID=""):
         affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
         return None
     except (Exception) as error:
-        logger.error(f"Error updating user details: {str(error)}")
+        logger.error(f"Error updating user details in {logicForUserUpdateContent.cls.__name__}: {str(error)}")
         return error
     
 ##############################################
@@ -213,7 +213,7 @@ def logicForUserDeleteContent(session, updates, userID=""):
         affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
         return None
     except (Exception) as error:
-        logger.error(f"Error updating user details: {str(error)}")
+        logger.error(f"Error deleting user details in {logicForUserDeleteContent.cös.__name__}: {str(error)}")
         return error
 
 ##############################################
@@ -232,7 +232,7 @@ def logicForDeleteUser(request):
             }
             response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', headers=headers) )
             if isinstance(response, Exception):
-                loggerError.error(f"Error deleting user: {str(response)}")
+                loggerError.error(f"Error in {logicForDeleteUser.cls.__name__}: {str(response)}")
                 return (Exception("Failed to delete user"), 500)
 
             signals.signalDispatcher.userDeleted.send(None,userID=userID)
@@ -241,7 +241,7 @@ def logicForDeleteUser(request):
         else:
             return (Exception("Failed to delete user"), 500)
     except Exception as e:
-        loggerError.error(f"Error deleting user: {str(e)}")
+        loggerError.error(f"Error in {logicForDeleteUser.cls.__name__}: {str(e)}")
         return (e, 500)
 
 ######################
@@ -261,6 +261,6 @@ def logicForAddUserTest(request):
         return (None, 200)
             
     except Exception as e:
-        loggerError.error(f"Error deleting user: {str(e)}")
+        loggerError.error(f"Error in {logicForAddUserTest.cls.__name__}: {str(e)}")
         return (e, 500)
     
