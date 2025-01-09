@@ -148,7 +148,17 @@ def getOrganizationDetails(request:Request):
     """
     # Read organization details from Database
     try:
-        returnVal = logicsForGetOrganizationDetails(request)
+        returnVal, exception, value = logicsForGetOrganizationDetails(request)
+
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         outSerializer = SResOrga(data=returnVal)
         if outSerializer.is_valid():
             return Response(outSerializer.data, status=status.HTTP_200_OK)
@@ -270,7 +280,7 @@ def updateDetailsOfOrganization(request:Request):
 @checkIfUserIsLoggedIn()
 @checkIfRightsAreSufficient(json=False)
 @api_view(["DELETE"])
-def deleteOrganization(request:Request): ### #TODO ###
+def deleteOrganization(request:Request):
     """
     Deletes an organization from the database and auth0.
 
@@ -372,8 +382,8 @@ def organizationsGetInviteLink(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
-        response, value = logicsForOrganizationsGetInviteLink(validatedInput, request)
-        if isinstance(response, Exception):
+        response, exception, value = logicsForOrganizationsGetInviteLink(validatedInput, request)
+        if exception is not None:
             message = str(exception)
             loggerError.error(exception)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
@@ -435,7 +445,15 @@ def organizationsAddUser(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
-        logicsForOrganizationsAddUser(validatedInput, request)
+        exception, value = logicsForOrganizationsAddUser(validatedInput, request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response("Success", status=status.HTTP_200_OK)
 
@@ -488,7 +506,15 @@ def organizationsFetchUsers(request:Request):
     try:
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return JsonResponse({})
-        responseDict = logicsForOrganizationsFetchUsers(request)
+        responseDict, exception, value = logicsForOrganizationsFetchUsers(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         outSerializer = SResUsersAndRoles(data=responseDict, many=True)
         if outSerializer.is_valid():
@@ -550,7 +576,16 @@ def organizationsFetchInvitees(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return JsonResponse({})
 
-        response = logicsForOrganizationsFetchInvitees(request)
+        response, exception, value = logicsForOrganizationsFetchInvitees(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         outSerializer = SResInvites(data=response, many=True)
         if outSerializer.is_valid():
             return Response(outSerializer.data, status=status.HTTP_200_OK)
@@ -565,7 +600,7 @@ def organizationsFetchInvitees(request:Request):
 
 
 #########################################################################
-# organizationsDeleteUser
+# organizationsDeleteInvite
 #########################################################################
 # Handler  
 @extend_schema(
@@ -595,7 +630,16 @@ def organizationsDeleteInvite(request:Request, invitationID:str):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
         
-        logicsForOrganizationDeleteInvite(request, invitationID)
+        exception, value = logicsForOrganizationDeleteInvite(request, invitationID)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
@@ -636,7 +680,15 @@ def organizationsDeleteUser(request:Request, userEMail:str):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
 
-        logicsForOrganizationsDeleteUser(request, userEMail)
+        exception, value = logicsForOrganizationsDeleteUser(request, userEMail)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response("Success", status=status.HTTP_200_OK)
 
@@ -698,7 +750,16 @@ def organizationsCreateRole(request:Request):
         
         validatedInput = inSerializer.data
         
-        logicsForOrganizationsCreateRole(validatedInput, request)
+        exception, value = logicsForOrganizationsCreateRole(validatedInput, request)
+
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response("Success", status=status.HTTP_200_OK)
     
     except Exception as e:
@@ -752,8 +813,15 @@ def organizationsAssignRole(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
-        logicsForOrganizationsAssignRole(validatedInput, request)
-        
+        exception, value = logicsForOrganizationsAssignRole(validatedInput, request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
@@ -807,8 +875,15 @@ def organizationsRemoveRole(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
-        logicsForOrganizationsRemoveRole(validatedInput, request)
-        
+        exception, value = logicsForOrganizationsRemoveRole(validatedInput, request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response("Success", status=status.HTTP_200_OK)
         
     except Exception as e:
@@ -870,8 +945,15 @@ def organizationsEditRole(request:Request):
         
         validatedInput = inSerializer.data
 
-        logicsForOrganizationsEditRole(validatedInput, request)
-        
+        exception, value = logicsForOrganizationsEditRole(validatedInput, request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
@@ -920,7 +1002,16 @@ def organizationsGetRoles(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return JsonResponse({})
         
-        rolesOut = logicsForOrganizationsGetRoles(request)
+        rolesOut, exception, value = logicsForOrganizationsGetRoles(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+              
         outSerializer = SResRoles(data=rolesOut, many=True)
         if outSerializer.is_valid():
             return Response(outSerializer.data, status=status.HTTP_200_OK)
@@ -965,10 +1056,18 @@ def organizationsDeleteRole(request:Request, roleID:str):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return Response("Mock")
 
-        logicsForOrganizationsDeleteRole(request, roleID)
-
+        exception, value = logicsForOrganizationsDeleteRole(request, roleID)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         return Response("Success", status=status.HTTP_200_OK)
-        
+
     except Exception as e:
         loggerError.error(f'Generic Exception while deleting role: {e}')
         if "many requests" in e.args[0]:
@@ -1026,8 +1125,16 @@ def organizationsSetPermissionsForRole(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
-        logicsForOrganizationSetPermissionsForRole(validatedInput, request)
-
+        exception, value = logicsForOrganizationSetPermissionsForRole(validatedInput, request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         return Response("Success", status=status.HTTP_200_OK)
 
     except Exception as e:
@@ -1074,7 +1181,16 @@ def organizationsGetPermissions(request:Request):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return JsonResponse({})
         
-        response = logicsForOrganizationsGetPermissions()
+        response, exception, value = logicsForOrganizationsGetPermissions()
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         outSerializer = SResPermissions(data=response["scopes"], many=True)
         if outSerializer.is_valid():
             return Response(outSerializer.data, status=status.HTTP_200_OK)
@@ -1127,7 +1243,16 @@ def organizationsGetPermissionsForRole(request:Request, roleID:str):
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             return JsonResponse({})
         
-        response = logicsForOrganizationsGetPermissionsForRole(roleID)
+        response, exception, value = logicsForOrganizationsGetPermissionsForRole(roleID)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         outSerializer = SResPermissionsForRole(data=response, many=True)
         if outSerializer.is_valid():
             return Response(outSerializer.data, status=status.HTTP_200_OK)
@@ -1193,7 +1318,16 @@ def organizationsCreateNewOrganization(request:Request):
         
         validatedInput = inSerializer.data
 
-        logicsForOrganizationsCreateNewOrganization(validatedInput)
+        exception, value = logicsForOrganizationsCreateNewOrganization(validatedInput)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         return Response("Success", status=status.HTTP_200_OK)
     
     except Exception as e:
