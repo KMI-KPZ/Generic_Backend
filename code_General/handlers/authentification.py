@@ -275,7 +275,7 @@ def loginAsTestUser(request:Request):
     },
 )
 @api_view(["GET"])
-def loginUser(request:Request): ### TODO ### Is there supposed to be no try except here? 
+def loginUser(request:Request):
     """
     Return a link for redirection to Auth0.
 
@@ -285,88 +285,28 @@ def loginUser(request:Request): ### TODO ### Is there supposed to be no try exce
     :rtype: HTTP Link as str
 
     """
-    # Check if Login is mocked
-    mocked = False
-    if "Usertype" in request.headers and (request.headers["Usertype"] == "fakeUser" or request.headers["Usertype"] == "fakeAdmin" or request.headers["Usertype"] == "fakeOrganization"):
-        mocked = True
-
-    if settings.PRODUCTION or settings.STAGING:
-        mocked = False # this disables the possibility of h4(|<0|2Z logging in as fakeAdmin
-        #return HttpResponse("Currently, logging in is not allowed. Sorry.", status=403)
-
-    # check number of login attempts
-    if mocked is False:
-        if SessionContent.NUMBER_OF_LOGIN_ATTEMPTS in request.session:
-            assert request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] >= 0, f"In {loginUser.cls.__name__}: Expected non-negative number of login attempts, got {request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS]}"
-            if (datetime.datetime.now() - datetime.datetime.strptime(request.session[SessionContent.LAST_LOGIN_ATTEMPT],"%Y-%m-%d %H:%M:%S.%f")).seconds > 300:
-                request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] = 0
-                request.session[SessionContent.LAST_LOGIN_ATTEMPT] = str(datetime.datetime.now())
+    try:
+        output, exception, value = logicForLoginUser(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
             else:
-                request.session[SessionContent.LAST_LOGIN_ATTEMPT] = str(datetime.datetime.now())
-
-            if request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] > 10:
-                return Response("Too many login attempts! Please wait 5 Minutes.", status=status.HTTP_429_TOO_MANY_REQUESTS)
-            else:
-                request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] += 1
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] = 1
-            request.session[SessionContent.LAST_LOGIN_ATTEMPT] = str(datetime.datetime.now())
+            return Response(output)
 
-    # set type of user
-    isPartOfOrganization = False
-    if "Usertype" not in request.headers:
-        request.session[SessionContent.usertype] = "user"
-        request.session[SessionContent.IS_PART_OF_ORGANIZATION] = False
-        request.session[SessionContent.PG_PROFILE_CLASS] = "user"
-    else:
-        userType = request.headers["Usertype"]
-        if userType == "organization" or userType == "manufacturer" or userType == "fakeOrganization":
-            request.session[SessionContent.usertype] = "organization"
-            request.session[SessionContent.IS_PART_OF_ORGANIZATION] = True
-            request.session[SessionContent.PG_PROFILE_CLASS] = ProfileClasses.organization
-            isPartOfOrganization = True
-        elif userType == "fakeAdmin" and mocked is True:
-            request.session[SessionContent.usertype] = "admin"
-            request.session[SessionContent.IS_PART_OF_ORGANIZATION] = False
-            request.session[SessionContent.PG_PROFILE_CLASS] = ProfileClasses.user
+    except Exception as error:
+        message = f"Error in {loginUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            request.session[SessionContent.usertype] = "user"
-            request.session[SessionContent.IS_PART_OF_ORGANIZATION] = False
-            request.session[SessionContent.PG_PROFILE_CLASS] = ProfileClasses.user
-
-    if "Path" not in request.headers:
-        request.session[SessionContent.PATH_AFTER_LOGIN] = settings.FORWARD_URL
-    else:
-        request.session[SessionContent.PATH_AFTER_LOGIN] = settings.FORWARD_URL + request.headers["Path"]
-        
-    register = ""
-    if "Register" in request.headers and mocked is False:
-        if request.headers["Register"] == "true":
-            register = "&screen_hint=signup"
-    
-    localization = "&ui_locales=de"
-    if SessionContent.LOCALE in request.session:
-         localization = f"&ui_locales={request.session[SessionContent.LOCALE].split('-')[0]}"
-
-    request.session.modified = True
-    if mocked:
-        request.session[SessionContent.MOCKED_LOGIN] = True
-        return Response("http://127.0.0.1:8000"+reverse("callbackLogin"))
-    else:
-        if isPartOfOrganization:
-            uri = auth0.authorizeRedirectOrga(request, reverse("callbackLogin"))
-        else:
-            uri = auth0.authorizeRedirect(request, reverse("callbackLogin"))
-        if __debug__:
-            regex = "^((http|https)://)[-a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)$"
-            url_regex = re.compile(regex)
-            assert url_regex.match(uri.url), f"In {loginUser.cls.__name__}: Expected uri.url to be a http or https url, instead got: {uri.url}"
-        # return uri and redirect to register if desired
-        return Response(uri.url + register + localization)
-    
-    # try:
-    #     exception, value = logicForLoginUser(request)
-    # except Exception as error:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # callbackLogin

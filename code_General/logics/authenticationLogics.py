@@ -195,6 +195,7 @@ def setRoleAndPermissionsOfUser(request):
 #########################################################################
 def logicForLoginUser(request):
     try:
+        # Check if Login is mocked
         mocked = False
         if "Usertype" in request.headers and (request.headers["Usertype"] == "fakeUser" or request.headers["Usertype"] == "fakeAdmin" or request.headers["Usertype"] == "fakeOrganization"):
             mocked = True
