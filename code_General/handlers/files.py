@@ -61,24 +61,6 @@ def genericUploadFiles(request:Request):
     :rtype: HTTP Response
     """
     try:
-        ###
-        # fileNames = list(request.FILES.keys())
-        # userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
-        # assert isinstance(userName, str), f"In {genericUploadFiles.cls.__name__}: expected userName to be of type string, instead got: {type(userName)}"
-        # assert userName != "", f"In {genericUploadFiles.cls.__name__}: non-empty userName expected"
-
-        # for fileName in fileNames:
-        #     fileID = crypto.generateURLFriendlyRandomString()
-        #     assert isinstance(fileID, str), f"In {genericUploadFiles.cls.__name__}: expected fileID to be of type string, instead got: {type(fileID)}"
-        #     assert fileID != "", f"In {genericUploadFiles.cls.__name__}: non-empty fileID expected"
-        #     filePath = userName+"/"+fileID
-        #     returnVal = s3.manageLocalS3.uploadFile(filePath, request.FILES.getlist(fileName)[0])
-        #     assert isinstance(returnVal, bool), f"In {genericUploadFiles.cls.__name__}: expected returnVal to be of type bool, instead got: {type(returnVal)}"
-        #     if returnVal is not True:
-        #         return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        # logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.CREATED},uploaded,{Logging.Object.OBJECT},files,"+str(datetime.now()))
-        ###
         exception, value = logicForGenericUploadFiles(request)
         if exception is not None:
             message = str(exception)
@@ -136,24 +118,6 @@ def genericDownloadFile(request:Request, fileID):
 
     """
     try:
-        ###
-        # userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
-        # assert isinstance(userName, str), f"In {genericDownloadFile.cls.__name__}: expected userName to be of type string, instead got: {type(userName)}"
-        # assert userName != "", f"In {genericDownloadFile.cls.__name__}: non-empty userName expected"
-
-        # # retrieve the correct file and download it from (local or remote) aws to the user
-        # assert isinstance(fileID, str), f"In {genericDownloadFile.cls.__name__}: expected fileID to be of type string, instead got: {type(fileID)}"
-        # assert fileID != "", f"In {genericDownloadFile.cls.__name__}: non-empty fileID expected" 
-        # content, flag = s3.manageLocalS3.downloadFile(userName+"/"+fileID)
-        # assert isinstance(flag, bool), f"In {genericDownloadFile.cls.__name__}: expected userName to be of type bool, instead got: {type(flag)}"
-        # if flag is False:
-        #     content, flag = s3.manageRemoteS3.downloadFile(userName+"/"+fileID)
-        #     assert isinstance(flag, bool), f"In {genericDownloadFile.cls.__name__}: expected userName to be of type bool, instead got: {type(flag)}"
-        #     if flag is False:
-        #         return Response("Not found!", status=status.HTTP_404_NOT_FOUND)
-            
-        # logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.FETCHED},downloaded,{Logging.Object.OBJECT},file {fileID}," + str(datetime.now()))
-        # ###
         content, exception, value = logicForGenericDownloadFile(fileID, request)
         if exception is not None:
             message = str(exception)
@@ -205,40 +169,6 @@ def genericDownloadFilesAsZip(request:Request):
 
     """
     try:
-        ###
-        # fileIDs = request.GET['fileIDs'].split(",")
-        # filesArray = []
-
-        # userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
-        # assert isinstance(userName, str), f"In {genericDownloadFilesAsZip.cls.__name__}: expected userName to be of type string, instead got: {type(userName)}"
-        # assert userName != "", f"In {genericDownloadFilesAsZip.cls.__name__}: non-empty userName expected"
-
-        # # get files, download them from aws, put them in an array together with their name
-        # for fileID in fileIDs:
-        #     assert isinstance(fileID, str), f"In {genericDownloadFilesAsZip.cls.__name__}: expected fileID to be of type string, instead got: {type(fileID)}"
-        #     assert fileID != "", f"In {genericDownloadFilesAsZip.cls.__name__}: non-empty fileID expected"
-        #     content, flag = s3.manageLocalS3.downloadFile(userName+"/"+fileID)
-        #     assert isinstance(flag, bool), f"In {genericDownloadFilesAsZip.cls.__name__}: expected userName to be of type bool, instead got: {type(flag)}"
-        #     if flag is False:
-        #         content, flag = s3.manageRemoteS3.downloadFile(userName+"/"+fileID)
-        #         assert isinstance(flag, bool), f"In {genericDownloadFilesAsZip.cls.__name__}: expected userName to be of type bool, instead got: {type(flag)}"
-        #         if flag is False:
-        #             return Response("Not found!", status=status.HTTP_404_NOT_FOUND)
-                
-        #         filesArray.append( (fileID, content) )
-
-        # if len(filesArray) == 0:
-        #     return Response("Not found!", status=status.HTTP_404_NOT_FOUND)
-        
-        # # compress each file and put them in the same zip file, all in memory
-        # zipFile = BytesIO()
-        # with zipfile.ZipFile(zipFile, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
-        #     for f in filesArray:
-        #         zf.writestr(f[0], f[1].read())
-        # zipFile.seek(0) # reset zip file
-
-        # logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.FETCHED},downloaded,{Logging.Object.OBJECT},files as zip," + str(datetime.now()))        
-        # ###
         userName, zipFile, exception, value = logicForGenericDeleteFile(request)
         
         if exception is not None:
@@ -292,22 +222,6 @@ def genericDeleteFile(request:Request, fileID):
 
     """
     try:
-        ###
-        # userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
-        # assert isinstance(userName, str), f"In {genericDeleteFile.cls.__name__}: expected userName to be of type string, instead got: {type(userName)}"
-        # assert userName != "", f"In {genericDeleteFile.cls.__name__}: non-empty userName expected"
-
-        # returnVal = s3.manageLocalS3.deleteFile(userName+"/"+fileID)
-        # assert isinstance(returnVal, bool), f"In {genericDeleteFile.cls.__name__}: expected returnVal to be of type bool, instead got: {type(returnVal)}" #might need to be adjusted when deleteFile gets updated
-        # if returnVal is not True:
-        #     raise Exception("Deletion of file" + fileID + " failed")
-        # returnVal = s3.manageRemoteS3.deleteFile(userName+"/"+fileID)
-        # assert isinstance(returnVal, bool), f"In {genericDeleteFile.cls.__name__}: expected returnVal to be of type bool, instead got: {type(returnVal)}" #might need to be adjusted when deleteFile gets updated
-        # if returnVal is not True:
-        #     raise Exception("Deletion of file" + fileID + " failed")
-
-        # logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.OBJECT},file {fileID}," + str(datetime.now()))        
-        ###
         exception, value = logicForGenericDeleteFile(fileID, request)
         
         if exception is not None:

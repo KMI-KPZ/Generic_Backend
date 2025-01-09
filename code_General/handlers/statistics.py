@@ -84,10 +84,6 @@ def getNumberOfUsers(request:Request):
 
     """
     try:
-        # activeSessions = Session.objects.filter(expire_date__gte=timezone.now())
-        # numOfActiveSessions = len(activeSessions)
-        # numOfLoggedInUsers = asyncio.run(getNumOfLoggedInUsers(activeSessions))
-        # output = {"active": numOfActiveSessions, "loggedIn": numOfLoggedInUsers}
         output, exception, value = logicForGetNumberOfUsers(request)
         if exception is not None:
             message = str(exception)

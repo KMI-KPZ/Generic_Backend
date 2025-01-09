@@ -278,6 +278,7 @@ def logicForLoginUser(request):
 #########################################################################
 def logicForCallbackLogin(request):
     try:
+        # Check if mocked
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             match request.session[SessionContent.usertype]:
                 case "user":
@@ -386,7 +387,7 @@ def logicForLogoutUser(request):
         request.session.clear()
         request.session.flush()
 
-        # nreturn redirect(
+        # return redirect(
         #     f"https://{settigs.AUTH0_DOMAIN}/v2/logout?"
         #     + urlencode(
         #         {

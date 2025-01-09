@@ -160,18 +160,6 @@ def setLocaleOfUser(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
-        ###
-        # assert "locale" in validatedInput.keys(), f"In {setLocaleOfUser.cls.__name__}: locale not in request"
-        # localeOfUser = validatedInput["locale"]
-        # if "de" in localeOfUser or "en" in localeOfUser: # test supported languages here
-        #     request.session[SessionContent.LOCALE] = localeOfUser
-        #     if basics.manualCheckifLoggedIn(request.session):
-        #         pgProfiles.ProfileManagementBase.setUserLocale(request.session)
-        #         #update locale in user profile
-        #         pgProfiles.ProfileManagementUser.updateContent(request.session, updates={"locale": localeOfUser})
-        #     return Response("Success",status=status.HTTP_200_OK)        
-        # return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        ###
         exception, value = logicForSetLocaleOfUser(validatedInput, request)
         if exception is not None:
             message = str(exception)
@@ -412,57 +400,7 @@ def callbackLogin(request:Request):
 
     """
     try:
-        # # Check if mocked
-        ###
-        # if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-        #     match request.session[SessionContent.usertype]:
-        #         case "user":
-        #             mocks.createMockUserInSession(request.session)
-        #         case "organization":
-        #             mocks.createMockOrganizationInSession(request.session)
-        #         case "admin":
-        #             mocks.createMockAdminInSession(request.session)
-        # else:
-        #     # authorize callback token 
-        #     if request.session[SessionContent.IS_PART_OF_ORGANIZATION]:
-        #         token = auth0.authorizeTokenOrga(request)
-        #     else:
-        #         token = auth0.authorizeToken(request)
-
-        #     # email of user was not verified yet, tell them that!
-        #     if token["userinfo"]["email_verified"] == False:
-        #         return HttpResponseRedirect(settings.FORWARD_URL+"/verifyEMail")#, status=401)
-        #         #return Response(settings.FORWARD_URL+"/verifyEMail", status=status.status.HTTP_401_UNAUTHORIZED)
-
-        #     # convert expiration time to the corresponding date and time
-        #     now = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc) + datetime.timedelta(seconds=token["expires_at"])
-        #     request.session["user"] = token
-        #     request.session["user"]["tokenExpiresOn"] = str(now)
-
-        #     # get roles and permissions
-        #     setOrganizationName(request)
-        #     retVal = setRoleAndPermissionsOfUser(request)
-        #     if isinstance(retVal, Exception):
-        #         raise retVal
-            
-        # # Get Data from Database or create entry in it for logged in User
-        # orgaObj = None
-        # if request.session[SessionContent.IS_PART_OF_ORGANIZATION]:
-        #     orgaObj = pgProfiles.ProfileManagementOrganization.addOrGetOrganization(request.session)
-        #     if orgaObj == None:
-        #         raise Exception("Organization could not be found or created!")
-
-        # userObj = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].addUserIfNotExists(request.session, orgaObj)
-        # if isinstance(userObj, Exception):
-        #     raise userObj
-        
-        # # communicate that user is logged in to other apps
-        # signals.signalDispatcher.userLoggedIn.send(None,request=request._request)
-
-        # logger.info(f"{Logging.Subject.USER},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.FETCHED},login,{Logging.Object.SELF},," + str(datetime.datetime.now()))
-        # return HttpResponseRedirect(request.session[SessionContent.PATH_AFTER_LOGIN])
-        ###
-        output, exception, value = logicForGetRolesOfUser(request)
+        output, exception, value = logicForCallbackLogin(request)
         if exception is not None:
             message = str(exception)
             loggerError.error(exception)
@@ -509,20 +447,6 @@ def getRolesOfUser(request:Request):
     :rtype: JSONResponse
     """
     try:
-        ###
-        # if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
-        #     if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
-        #         output = request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]
-        #         outSerializer = serializers.ListSerializer(child=serializers.CharField(), data=output)
-        #         if outSerializer.is_valid():
-        #             return Response(outSerializer.data, status=status.HTTP_200_OK)
-        #         else:
-        #             raise Exception(outSerializer.errors)
-        #     else:
-        #         return Response([], status=status.HTTP_200_OK)
-        # else:
-        #     return Response([], status=status.HTTP_400_BAD_REQUEST)
-        ###
         output, exception, value = logicForGetRolesOfUser(request)
         if exception is not None:
             message = str(exception)
@@ -586,23 +510,6 @@ def getPermissionsOfUser(request:Request):
     :rtype: JSONResponse
     """
     try:
-    ###
-    #     if SessionContent.USER_PERMISSIONS in request.session:
-    #         if len(request.session[SessionContent.USER_PERMISSIONS]) != 0:
-    #             outArray = []
-    #             for entry in request.session[SessionContent.USER_PERMISSIONS]:
-    #                 context, permission = entry.split(":")
-    #                 outArray.append({"context": context, "permission": permission})
-    #             outSerializer = SResPermissionsOfUser(data=outArray, many=True)
-    #             if outSerializer.is_valid():
-    #                 return Response(outSerializer.data, status=status.HTTP_200_OK)
-    #             else:
-    #                 raise Exception(outSerializer.errors)
-    #         else:
-    #             return Response([], status=status.HTTP_200_OK)
-    #     else:
-    #         return Response([], status=status.HTTP_400_BAD_REQUEST)
-    ###
         output, exception, value = logicForGetPermissionsOfUser(request)
         if exception is not None:
             message = str(exception)
@@ -706,50 +613,6 @@ def logoutUser(request:Request):
 
     """
     try:
-        ###
-        # if not basics.manualCheckifLoggedIn(request.session):
-        #     return HttpResponse("Not logged in!")
-        # mock = False
-        # if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-        #     mock = True
-
-        # # Send signal to other apps that logout is occuring
-        # signals.signalDispatcher.userLoggedOut.send(None,request=request._request)
-
-        # user = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].getUser(request.session)
-        # assert isinstance(user, dict), f"In {logoutUser.cls.__name__}: expected user to be of type dictionary, instead got: {type(user)}"
-        # if user != {}:
-        #     pgProfiles.ProfileManagementBase.setLoginTime(user[UserDescription.hashedID])
-        #     logger.info(f"{Logging.Subject.USER},{user['name']},{Logging.Predicate.PREDICATE},logout,{Logging.Object.SELF},," + str(datetime.datetime.now()))
-        # else:
-        #     logger.info(f"{Logging.Subject.SYSTEM},,{Logging.Predicate.PREDICATE},logout,{Logging.Object.USER},DELETED," + str(datetime.datetime.now()))
-
-
-        # # Delete saved files from redis
-        # redis.RedisConnection().deleteKey(request.session.session_key)
-
-        # request.session.clear()
-        # request.session.flush()
-
-        # # return redirect(
-        # #     f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
-        # #     + urlencode(
-        # #         {
-        # #             #"returnTo": request.build_absolute_uri(reverse("index")),
-        # #             "returnTo": request.build_absolute_uri('http://localhost:3000/callback/logout'),
-        # #             "client_id": settings.AUTH0_CLIENT_ID,
-        # #         },
-        # #         quote_via=quote_plus,
-        # #     ),
-        # # )
-
-        # callbackString = request.build_absolute_uri(settings.FORWARD_URL)
-
-        # if not mock:
-        #     return HttpResponse(f"https://{settings.AUTH0_DOMAIN}/v2/logout?" + urlencode({"returnTo": request.build_absolute_uri(callbackString),"client_id": settings.AUTH0_CLIENT_ID,},quote_via=quote_plus,))
-        # else:
-        #     return HttpResponse(callbackString)
-        ###
         output, exception, value = logicForLogoutUser(request)
         if exception is not None:
             message = str(exception)

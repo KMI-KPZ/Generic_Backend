@@ -63,18 +63,6 @@ def addUserTest(request:Request):
 
     """
     try:
-
-        # if request.session[SessionContent.PG_PROFILE_CLASS] == ProfileClasses.organization:
-        #     orgaObj = pgProfiles.ProfileManagementBase.getOrganizationObject(request.session)
-        #     if isinstance(orgaObj, Exception):
-        #         raise orgaObj
-        #     returnVal = pgProfiles.ProfileManagementOrganization.addUserIfNotExists(request.session, orgaObj)
-        #     if isinstance(returnVal, Exception):
-        #         raise returnVal
-        # else:
-        #     returnVal = pgProfiles.ProfileManagementUser.addUserIfNotExists(request.session)
-        #     if isinstance(returnVal, Exception):
-        #         raise returnVal
         exception, value = logicForAddUserTest(request)
         if exception is not None:
             message = str(exception)
@@ -171,27 +159,6 @@ def getUserDetails(request:Request):
     """
     # Read user details from Database
     try:
-        ####
-        #userObj = pgProfiles.ProfileManagementBase.getUser(request.session)
-        #userObj[SessionContent.usertype] = request.session[SessionContent.usertype]
-        ## show only the current organization
-        #if pgProfiles.ProfileManagementBase.checkIfUserIsInOrganization(request.session):
-        #    organizationsOfUser = userObj[UserDescription.organizations].split(",")
-        #    del userObj[UserDescription.organizations]
-        #    currentOrganizationOfUser = pgProfiles.ProfileManagementBase.getOrganization(request.session)
-        #    if isinstance(currentOrganizationOfUser, Exception):
-        #        raise currentOrganizationOfUser
-        #    for elem in organizationsOfUser:
-        #        if elem == currentOrganizationOfUser[OrganizationDescription.hashedID]:
-        #            userObj["organization"] = elem
-        #            break
-        #else:
-        #    del userObj[UserDescription.organizations] # users who logged in as users don't need the organization info leaked
-        # 
-        ## parse addresses 
-        #if basics.checkIfNestedKeyExists(userObj, UserDescription.details, UserDetails.addresses):
-        #    userObj[UserDescription.details][UserDetails.addresses] = list(userObj[UserDescription.details][UserDetails.addresses].values())
-        ####
         userObj, exception, value = logicForGetUserDetails(request)
         if exception is not None:
             message = str(exception)
@@ -537,27 +504,6 @@ def deleteUser(request:Request):
 
     """
     try:
-        # delete in database
-        # userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
-        # userID = pgProfiles.ProfileManagementBase.getUserKey(request.session)
-        # flag = pgProfiles.ProfileManagementUser.deleteUser(request.session)
-        # if flag is True:
-        #     baseURL = f"https://{settings.AUTH0_DOMAIN}"
-        #     headers = {
-        #         'authorization': f'Bearer {auth0.apiToken.accessToken}',
-        #         "customScopeKey": "permissions", 
-        #         "customUserKey": "auth"
-        #     }
-        #     response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', headers=headers) )
-        #     if isinstance(response, Exception):
-        #         loggerError.error(f"Error deleting user: {str(response)}")
-        #         return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        #     signals.signalDispatcher.userDeleted.send(None,userID=userID)
-        #     logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.SELF},," + str(datetime.datetime.now()))
-        #     return Response("Success", status=status.HTTP_200_OK)
-        # else:
-        #     return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         exception, value = logicForDeleteUser(request)
         if exception is not None:
             message = str(exception)
