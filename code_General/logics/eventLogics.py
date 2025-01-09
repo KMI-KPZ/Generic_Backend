@@ -24,40 +24,67 @@ loggerError = logging.getLogger("errors")
 
 ####################################################################################
 def logicForCreateEvent(validatedInput, request):
-    if EventsDescriptionGeneric.userHashedID in validatedInput:
-        userHashedID = validatedInput[EventsDescriptionGeneric.userHashedID]
-    else:
-        userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
+    try:
+        if EventsDescriptionGeneric.userHashedID in validatedInput:
+            userHashedID = validatedInput[EventsDescriptionGeneric.userHashedID]
+        else:
+            userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
 
-    retVal = pgEvents.createEventEntry(userHashedID=userHashedID, eventType=validatedInput[EventsDescriptionGeneric.eventType], eventData=validatedInput[EventsDescriptionGeneric.eventData], triggerEvent=validatedInput[EventsDescriptionGeneric.triggerEvent])
-    if isinstance(retVal, Exception):
-        raise retVal
-    return retVal    
+        retVal = pgEvents.createEventEntry(userHashedID=userHashedID, eventType=validatedInput[EventsDescriptionGeneric.eventType], eventData=validatedInput[EventsDescriptionGeneric.eventData], triggerEvent=validatedInput[EventsDescriptionGeneric.triggerEvent])
+        if isinstance(retVal, Exception):
+            raise retVal
+        return (retVal, None, 200)    
 
-##############################################
-def logicForDeleteAllEventsForAUser(request):
-    userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
-    retVal = pgEvents.removeAllEventsForUser(userHashedID)
-    if isinstance(retVal, Exception):
-        raise retVal
+    except Exception as e:
+        loggerError.error(f"Error in {logicForCreateEvent.cls.__name__}: {str(e)}")
+        return (None, e, 500)
     
 ##############################################
-def logicForDeleteOneEvent(eventID):
-    retVal = pgEvents.removeEvent(eventID)
-    if isinstance(retVal, Exception):
-        raise retVal
+def logicForDeleteAllEventsForAUser(request):
+    try:
+        userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
+        retVal = pgEvents.removeAllEventsForUser(userHashedID)
+        if isinstance(retVal, Exception):
+            raise retVal
+        return (None, 200)
+
+    except Exception as e:
+        loggerError.error(f"Error in {logicForDeleteAllEventsForAUser.cls.__name__}: {str(e)}")
+        return (e, 500)
+    
+##############################################
+def logicForDeleteOneEvent(eventID): 
+    try:
+        retVal = pgEvents.removeEvent(eventID)
+        if isinstance(retVal, Exception):
+            raise retVal
+        return (None, 200)
+    
+    except Exception as e:
+        loggerError.error(f"Error in {logicForDeleteOneEvent.cls.__name__}: {str(e)}")
+        return (e, 500)
     
 ##############################################
 def logicForGetOneEventOfUser(eventID):
-    event = pgEvents.getOneEvent(eventID)
-    if isinstance(event, Exception):
-        raise event
-    return event
+    try:
+        event = pgEvents.getOneEvent(eventID)
+        if isinstance(event, Exception):
+            raise event
+        return (event, None, 200)
+    
+    except Exception as e:
+        loggerError.error(f"Error in {logicForGetOneEventOfUser.cls.__name__}: {str(e)}")
+        return (None, e, 500)
 
 ##############################################
 def logicForGetAllEventsForUser(request):
-    userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
-    listOfEvents = pgEvents.getAllEventsOfAUser(userHashedID)
-    if isinstance(listOfEvents, Exception):
-        raise listOfEvents
-    return listOfEvents
+    try:
+        userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
+        listOfEvents = pgEvents.getAllEventsOfAUser(userHashedID)
+        if isinstance(listOfEvents, Exception):
+            raise listOfEvents
+        return (listOfEvents, None, 200)
+    
+    except Exception as e:
+        loggerError.error(f"Error in {logicForGetAllEventsForUser.cls.__name__}: {str(e)}")
+        return (None, e, 500)

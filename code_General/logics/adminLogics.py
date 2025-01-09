@@ -47,6 +47,7 @@ def logicForUpdateDetailsOfUserAsAdmin(request, content):
             else:
                 return (Exception(f"Error in {logicForUpdateDetailsOfUserAsAdmin.cls.__name__} when trying to update UserContent: {str(flag)}"), 500)
     except Exception as e:
+        loggerError.error(f"Error in {logicForUpdateDetailsOfUserAsAdmin.cls.__name__}: {str(e)}")
         return (e, 500)
 
 ##############################################
