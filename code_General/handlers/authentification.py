@@ -778,8 +778,9 @@ def logoutUser(request:Request):
 
     """
     try:
+        callbackString = request.build_absolute_uri(settings.FORWARD_URL)
         if not basics.manualCheckifLoggedIn(request.session):
-            return HttpResponse("Not logged in!")
+            return HttpResponse(callbackString)
         mock = False
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             mock = True
@@ -813,8 +814,6 @@ def logoutUser(request:Request):
         #         quote_via=quote_plus,
         #     ),
         # )
-
-        callbackString = request.build_absolute_uri(settings.FORWARD_URL)
 
         if not mock:
             return HttpResponse(f"https://{settings.AUTH0_DOMAIN}/v2/logout?" + urlencode({"returnTo": request.build_absolute_uri(callbackString),"client_id": settings.AUTH0_CLIENT_ID,},quote_via=quote_plus,))
