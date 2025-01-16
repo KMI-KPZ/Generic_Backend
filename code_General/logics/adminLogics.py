@@ -25,13 +25,13 @@ loggerError = logging.getLogger("errors")
 ####################################################################################
 def logicForUpdateDetailsOfUserAsAdmin(request, content):
     try:
-        assert "hashedID" in content.keys(), f"In {logicForUpdateDetailsOfUserAsAdmin.cls.__name__}: hashedID not in request"
+        assert "hashedID" in content.keys(), f"In {logicForUpdateDetailsOfUserAsAdmin.__name__}: hashedID not in request"
         userHashedID = content["hashedID"]
         userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
-        assert isinstance(userID, str), f"In {logicForUpdateDetailsOfUserAsAdmin.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
-        assert userID != "", f"In {logicForUpdateDetailsOfUserAsAdmin.cls.__name__}: non-empty userID expected"
+        assert isinstance(userID, str), f"In {logicForUpdateDetailsOfUserAsAdmin.__name__}: expected userID to be of type string, instead got: {type(userID)}"
+        assert userID != "", f"In {logicForUpdateDetailsOfUserAsAdmin.__name__}: non-empty userID expected"
 
-        assert "changes" in content.keys(), f"In {logicForUpdateDetailsOfUserAsAdmin.cls.__name__}: hashedID not in request"
+        assert "changes" in content.keys(), f"In {logicForUpdateDetailsOfUserAsAdmin.__name__}: hashedID not in request"
         changes = content["changes"]
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
         
@@ -42,17 +42,17 @@ def logicForUpdateDetailsOfUserAsAdmin(request, content):
             if isinstance(flag, Exception):
                 return (flag, 500)
             else:
-                return (Exception(f"Error in {logicForUpdateDetailsOfUserAsAdmin.cls.__name__} when trying to update UserContent: {str(flag)}"), 500)
+                return (Exception(f"Error in {logicForUpdateDetailsOfUserAsAdmin.__name__} when trying to update UserContent: {str(flag)}"), 500)
     except Exception as e:
-        loggerError.error(f"Error in {logicForUpdateDetailsOfUserAsAdmin.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForUpdateDetailsOfUserAsAdmin.__name__}: {str(e)}")
         return (e, 500)
 
 ##############################################
 def logicForDeleteUserAsAdmin(userHashedID, request):
     try:
-        assert userHashedID != "", f"In {logicForDeleteUserAsAdmin.cls.__name__}: userHashedID is blank"
+        assert userHashedID != "", f"In {logicForDeleteUserAsAdmin.__name__}: userHashedID is blank"
         userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
-        assert userID != "", f"In {logicForDeleteUserAsAdmin.cls.__name__}: userID is blank"
+        assert userID != "", f"In {logicForDeleteUserAsAdmin.__name__}: userID is blank"
         
         # websocket event for that user
         channel_layer = get_channel_layer()
@@ -66,10 +66,10 @@ def logicForDeleteUserAsAdmin(userHashedID, request):
             logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
             return (None, 200)
         else:
-            return (Exception(f"Error in {logicForDeleteUserAsAdmin.cls.__name__}: {str(e)}"), 500)
+            return (Exception(f"Error in {logicForDeleteUserAsAdmin.__name__}: {str(e)}"), 500)
         
     except Exception as e:
-        loggerError.error(f"Error in {logicForDeleteUserAsAdmin.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForDeleteUserAsAdmin.__name__}: {str(e)}")
         return (e, 500)
     
 ##############################################
@@ -80,21 +80,21 @@ def logicForGetAllAsAdmin(request):
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.FETCHED},fetched,{Logging.Object.SYSTEM}, all users and orgas," + str(datetime.datetime.now()))
         return (outLists, None, 200)
     except Exception as e:
-        loggerError.error(f"Error in {logicForGetAllAsAdmin.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForGetAllAsAdmin.__name__}: {str(e)}")
         return (None, e, 500)
 
 
 ##############################################
 def logicForUpdateDetailsOfOrganizationAsAdmin(request, content):
     try:
-        assert "hashedID" in content.keys(), f"In {logicForUpdateDetailsOfOrganizationAsAdmin.cls.__name__}: hashedID not in JSON"
+        assert "hashedID" in content.keys(), f"In {logicForUpdateDetailsOfOrganizationAsAdmin.__name__}: hashedID not in JSON"
         orgaHashedID = content["hashedID"]
         orgaID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(orgaHashedID)
-        assert "changes" in content.keys(), f"In {logicForUpdateDetailsOfOrganizationAsAdmin.cls.__name__}: changes not in JSON"
+        assert "changes" in content.keys(), f"In {logicForUpdateDetailsOfOrganizationAsAdmin.__name__}: changes not in JSON"
         changes = content["changes"] 
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
 
-        assert orgaHashedID != "", f"In {logicForUpdateDetailsOfOrganizationAsAdmin.cls.__name__}: orgaHashedID is blank"
+        assert orgaHashedID != "", f"In {logicForUpdateDetailsOfOrganizationAsAdmin.__name__}: orgaHashedID is blank"
         orgaID = orgaHashedID
         exception  = pgProfiles.ProfileManagementOrganization.updateContent(request.session, changes, orgaID)
         if exception is None:
@@ -103,16 +103,16 @@ def logicForUpdateDetailsOfOrganizationAsAdmin(request, content):
             if isinstance(exception, Exception):
                 return (exception, 500)
             else:
-                return (Exception(f"Error in {logicForUpdateDetailsOfOrganizationAsAdmin.cls.__name__}: {str(e)}"), 500)
+                return (Exception(f"Error in {logicForUpdateDetailsOfOrganizationAsAdmin.__name__}: {str(e)}"), 500)
 
     except Exception as e:      
-        loggerError.error(f"Error in {logicForUpdateDetailsOfOrganizationAsAdmin.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForUpdateDetailsOfOrganizationAsAdmin.__name__}: {str(e)}")
         return (e, 500)
 
 ##############################################
-def logicForDeleteOrganizationAsAdmin(request, orgaHashedID):
+def logicForDeleteOrganizationAsAdmin(orgaHashedID, request):
     try:
-        assert orgaHashedID != "", f"In {logicForDeleteOrganizationAsAdmin.cls.__name__}: orgaHashedID is blank"
+        assert orgaHashedID != "", f"In {logicForDeleteOrganizationAsAdmin.__name__}: orgaHashedID is blank"
         flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaHashedID)
         if flag is True:
             logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},{orgaHashedID}," + str(datetime.datetime.now()))
@@ -121,9 +121,9 @@ def logicForDeleteOrganizationAsAdmin(request, orgaHashedID):
             if isinstance(flag, Exception):
                 return (flag, 500)
             else:
-                return (Exception(f"Error in {logicForDeleteOrganizationAsAdmin.cls.__name__}: {str(e)}"), 500)
+                return (Exception(f"Error in {logicForDeleteOrganizationAsAdmin.__name__}: {str(e)}"), 500)
 
     except Exception as e:    
-        loggerError.error(f"Error in {logicForDeleteOrganizationAsAdmin.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForDeleteOrganizationAsAdmin.__name__}: {str(e)}")
         return (e, 500)
 

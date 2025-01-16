@@ -29,7 +29,7 @@ loggerError = logging.getLogger("errors")
 ####################################################################################
 def logicForSetLocaleOfUser(validatedInput, request):
     try:
-        assert "locale" in validatedInput.keys(), f"In {logicForSetLocaleOfUser.cls.__name__}: locale not in request"
+        assert "locale" in validatedInput.keys(), f"In {logicForSetLocaleOfUser.__name__}: locale not in request"
         localeOfUser = validatedInput["locale"]
         if "de" in localeOfUser or "en" in localeOfUser: # test supported languages here
             request.session[SessionContent.LOCALE] = localeOfUser
@@ -206,7 +206,7 @@ def logicForLoginUser(request):
         # check number of login attempts
         if mocked is False:
             if SessionContent.NUMBER_OF_LOGIN_ATTEMPTS in request.session:
-                assert request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] >= 0, f"In {logicForLoginUser.cls.__name__}: Expected non-negative number of login attempts, got {request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS]}"
+                assert request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] >= 0, f"In {logicForLoginUser.__name__}: Expected non-negative number of login attempts, got {request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS]}"
                 if (datetime.datetime.now() - datetime.datetime.strptime(request.session[SessionContent.LAST_LOGIN_ATTEMPT],"%Y-%m-%d %H:%M:%S.%f")).seconds > 300:
                     request.session[SessionContent.NUMBER_OF_LOGIN_ATTEMPTS] = 0
                     request.session[SessionContent.LAST_LOGIN_ATTEMPT] = str(datetime.datetime.now())
@@ -269,7 +269,7 @@ def logicForLoginUser(request):
             if __debug__:
                 regex = "^((http|https)://)[-a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)$"
                 url_regex = re.compile(regex)
-                assert url_regex.match(uri.url), f"In {logicForLoginUser.cls.__name__}: Expected uri.url to be a http or https url, instead got: {uri.url}"
+                assert url_regex.match(uri.url), f"In {logicForLoginUser.__name__}: Expected uri.url to be a http or https url, instead got: {uri.url}"
             # return uri and redirect to register if desired
             return (uri.url + register + localization, 200)
     except Exception as e:
@@ -373,7 +373,7 @@ def logicForLogoutUser(request):
         signals.signalDispatcher.userLoggedOut.send(None,request=request._request)
 
         user = pgProfiles.profileManagement[request.session[SessionContent.PG_PROFILE_CLASS]].getUser(request.session)
-        assert isinstance(user, dict), f"In {logicForLogoutUser.cls.__name__}: expected user to be of type dictionary, instead got: {type(user)}"
+        assert isinstance(user, dict), f"In {logicForLogoutUser.__name__}: expected user to be of type dictionary, instead got: {type(user)}"
         if user != {}:
             pgProfiles.ProfileManagementBase.setLoginTime(user[UserDescription.hashedID])
             logger.info(f"{Logging.Subject.USER},{user['name']},{Logging.Predicate.PREDICATE},logout,{Logging.Object.SELF},," + str(datetime.datetime.now()))

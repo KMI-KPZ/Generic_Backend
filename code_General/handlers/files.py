@@ -169,7 +169,7 @@ def genericDownloadFilesAsZip(request:Request):
 
     """
     try:
-        userName, zipFile, exception, value = logicForGenericDeleteFile(request)
+        userName, zipFile, exception, value = logicForGenericDownloadFilesAsZip(request)
         
         if exception is not None:
             message = str(exception)

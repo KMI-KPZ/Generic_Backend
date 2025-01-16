@@ -36,7 +36,7 @@ def logicForCreateEvent(validatedInput, request):
         return (retVal, None, 200)    
 
     except Exception as e:
-        loggerError.error(f"Error in {logicForCreateEvent.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForCreateEvent.__name__}: {str(e)}")
         return (None, e, 500)
     
 ##############################################
@@ -49,7 +49,7 @@ def logicForDeleteAllEventsForAUser(request):
         return (None, 200)
 
     except Exception as e:
-        loggerError.error(f"Error in {logicForDeleteAllEventsForAUser.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForDeleteAllEventsForAUser.__name__}: {str(e)}")
         return (e, 500)
     
 ##############################################
@@ -61,7 +61,7 @@ def logicForDeleteOneEvent(eventID):
         return (None, 200)
     
     except Exception as e:
-        loggerError.error(f"Error in {logicForDeleteOneEvent.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForDeleteOneEvent.__name__}: {str(e)}")
         return (e, 500)
     
 ##############################################
@@ -73,7 +73,7 @@ def logicForGetOneEventOfUser(eventID):
         return (event, None, 200)
     
     except Exception as e:
-        loggerError.error(f"Error in {logicForGetOneEventOfUser.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForGetOneEventOfUser.__name__}: {str(e)}")
         return (None, e, 500)
 
 ##############################################
@@ -86,5 +86,5 @@ def logicForGetAllEventsForUser(request):
         return (listOfEvents, None, 200)
     
     except Exception as e:
-        loggerError.error(f"Error in {logicForGetAllEventsForUser.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForGetAllEventsForUser.__name__}: {str(e)}")
         return (None, e, 500)

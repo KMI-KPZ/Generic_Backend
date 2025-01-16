@@ -55,7 +55,7 @@ def logicForGetUserDetails(request):
         return (userObj, None, 200)
 
     except Exception as e:
-        loggerError.error(f"Error in {logicForGetUserDetails.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForGetUserDetails.__name__}: {str(e)}")
         return (None, e, 500)
 
 ##############################################
@@ -118,7 +118,7 @@ def logicForDeleteUser(request):
             }
             response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', headers=headers) )
             if isinstance(response, Exception):
-                loggerError.error(f"Error in {logicForDeleteUser.cls.__name__}: {str(response)}")
+                loggerError.error(f"Error in {logicForDeleteUser.__name__}: {str(response)}")
                 return (Exception("Failed to delete user"), 500)
 
             signals.signalDispatcher.userDeleted.send(None,userID=userID)
@@ -127,7 +127,7 @@ def logicForDeleteUser(request):
         else:
             return (Exception("Failed to delete user"), 500)
     except Exception as e:
-        loggerError.error(f"Error in {logicForDeleteUser.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForDeleteUser.__name__}: {str(e)}")
         return (e, 500)
 
 ######################
@@ -147,6 +147,6 @@ def logicForAddUserTest(request):
         return (None, 200)
             
     except Exception as e:
-        loggerError.error(f"Error in {logicForAddUserTest.cls.__name__}: {str(e)}")
+        loggerError.error(f"Error in {logicForAddUserTest.__name__}: {str(e)}")
         return (e, 500)
     

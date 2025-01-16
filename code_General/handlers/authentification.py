@@ -219,7 +219,7 @@ def provideRightsFile(request:Request):
 @extend_schema(
     summary="Use fakeUser, fakeOrganization or fakeAdmin to log in from the swagger interface",
     description=" ",
-    tags=["BE - Authentification"],
+    tags=['BE - Authentification'],
     request=None,
     parameters=[OpenApiParameter(
         name='Usertype',
