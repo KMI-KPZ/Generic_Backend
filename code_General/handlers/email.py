@@ -72,15 +72,6 @@ def sendContactForm(request:Request):
         
         validatedInput = inSerializer.data
         result, exception, value = logicForSendContactForm(validatedInput)
-
-        # mailer = MailingClass()
-        # msg = ("Backendsettings: " + settings.BACKEND_SETTINGS +
-        #        "\nName: " +
-        #        validatedInput["name"] +
-        #        "\n" +
-        #        "Email: " +
-        #        validatedInput["email"] + "\n" + "Message: " + validatedInput["message"])
-        # result = mailer.sendMail(settings.EMAIL_ADDR_SUPPORT, validatedInput["subject"], msg)
         
         if exception is not None:
             message = str(exception)

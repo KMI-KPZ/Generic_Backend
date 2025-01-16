@@ -15,8 +15,8 @@ from ..connections import s3
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from userLogics import logicForUserUpdateContent
-from organizationLogics import logicsForOrganizationsUpdateContent
+from .userLogics import logicForUserUpdateContent
+from .organizationLogics import logicsForOrganizationsUpdateContent
 
 
 from logging import getLogger

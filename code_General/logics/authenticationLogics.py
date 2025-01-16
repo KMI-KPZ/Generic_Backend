@@ -5,7 +5,6 @@ Silvio Weging 2024
 
 Contains: Logic for Files
 """
-from io import BytesIO
 import logging, datetime, re
 from urllib.parse import quote_plus, urlencode
 
@@ -13,12 +12,12 @@ from django.conf import settings
 from django.urls import reverse
 import requests
 
-from ..utilities import basics, crypto, mocks, signals
+from ..utilities import basics, mocks, signals
 
 from ..definitions import *
-from ..connections.postgresql import pgProfiles, pgEvents, redis
+from ..connections.postgresql import pgProfiles
 
-from ..connections import s3, auth0
+from ..connections import auth0, redis
 
 
 from logging import getLogger
@@ -365,7 +364,7 @@ def logicForGetPermissionsOfUser(request):
 def logicForLogoutUser(request):
     try:
         if not basics.manualCheckifLoggedIn(request.session):
-            return ("Not logged in!", None, 401) #please correct if wrong
+            return (None, Exception("Not logged in!"), 401)
         mock = False
         if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
             mock = True

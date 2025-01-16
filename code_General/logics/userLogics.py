@@ -13,7 +13,8 @@ from django.utils import timezone
 from ..connections.postgresql import pgProfiles
 from ..connections import auth0
 from ..definitions import *
-from ..utilities import basics, handleTooManyRequestsError, checkIfNestedKeyExists, crypto, signals
+from ..utilities import basics, crypto, signals
+from ..utilities.basics import checkIfNestedKeyExists, handleTooManyRequestsError
 
 from ..modelFiles.userModel import User
 
