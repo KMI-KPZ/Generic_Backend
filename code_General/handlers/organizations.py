@@ -375,12 +375,16 @@ def organizationsGetInviteLink(request:Request):
             
         return Response(response["invitation_url"], status=status.HTTP_200_OK)
     
-    except Exception as e:
-        loggerError.error(f'Generic Exception while obtaining invite link: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsGetInviteLink.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 #########################################################################
 # organizationsAddUser
@@ -438,12 +442,16 @@ def organizationsAddUser(request:Request):
         
         return Response("Success", status=status.HTTP_200_OK)
 
-    except Exception as e:
-        loggerError.error(f'Generic Exception while adding user: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsAddUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 #########################################################################
 # organizationsFetchUsers
@@ -502,12 +510,16 @@ def organizationsFetchUsers(request:Request):
             return Response(outSerializer.data, status=status.HTTP_200_OK)
         else:
             raise Exception(outSerializer.errors)
-    except Exception as e:
-        loggerError.error(f'Generic Exception while fetching users: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsFetchUsers.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         
 #########################################################################
 # organizationsFetchInvitees
@@ -572,12 +584,16 @@ def organizationsFetchInvitees(request:Request):
             return Response(outSerializer.data, status=status.HTTP_200_OK)
         else:
             raise Exception(outSerializer.errors)
-    except Exception as e:
-        loggerError.error(f'Generic Exception while fetching users: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsFetchInvitees.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 #########################################################################
@@ -623,12 +639,16 @@ def organizationsDeleteInvite(request:Request, invitationID:str):
             
         return Response("Success", status=status.HTTP_200_OK)
 
-    except Exception as e:
-        loggerError.error(f'Generic Exception while deleting user: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsDeleteInvite.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 #########################################################################
 # organizationsDeleteUser
@@ -673,12 +693,16 @@ def organizationsDeleteUser(request:Request, userEMail:str):
         
         return Response("Success", status=status.HTTP_200_OK)
 
-    except Exception as e:
-        loggerError.error(f'Generic Exception while deleting user: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsDeleteUser.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     
 #########################################################################
 # organizationsCreateRole
@@ -743,12 +767,16 @@ def organizationsCreateRole(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response("Success", status=status.HTTP_200_OK)
     
-    except Exception as e:
-        loggerError.error(f'Generic Exception while creating role: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsCreateRole.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 #########################################################################
 # organizationsAssignRole
@@ -805,12 +833,15 @@ def organizationsAssignRole(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response("Success", status=status.HTTP_200_OK)
 
-    except Exception as e:
-        loggerError.error(f'Generic Exception while assigning role: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsAssignRole.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 #########################################################################
 # organizationsRemoveRole
@@ -867,12 +898,15 @@ def organizationsRemoveRole(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response("Success", status=status.HTTP_200_OK)
         
-    except Exception as e:
-        loggerError.error(f'Generic Exception while removing role: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsRemoveRole.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # organizationsEditRole
@@ -937,12 +971,15 @@ def organizationsEditRole(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response("Success", status=status.HTTP_200_OK)
 
-    except Exception as e:
-        loggerError.error(f'Generic Exception while editing role: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsEditRole.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # organizationsGetRoles
@@ -999,12 +1036,15 @@ def organizationsGetRoles(request:Request):
         else:
             raise Exception(outSerializer.errors)
     
-    except Exception as e:
-        loggerError.error(f'Generic Exception while fetching roles: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsGetRoles.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # organizationsDeleteRole
@@ -1049,12 +1089,15 @@ def organizationsDeleteRole(request:Request, roleID:str):
             
         return Response("Success", status=status.HTTP_200_OK)
 
-    except Exception as e:
-        loggerError.error(f'Generic Exception while deleting role: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsDeleteRole.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # organizationsSetPermissionsForRole
@@ -1118,12 +1161,15 @@ def organizationsSetPermissionsForRole(request:Request):
             
         return Response("Success", status=status.HTTP_200_OK)
 
-    except Exception as e:
-        loggerError.error(f'Generic Exception while setting permissions for role: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsSetPermissionsForRole.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # organizationsGetPermissions
@@ -1178,12 +1224,15 @@ def organizationsGetPermissions(request:Request):
         else:
             raise Exception(outSerializer.errors)
 
-    except Exception as e:
-        loggerError.error(f'Generic Exception while fetching permissions: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsGetPermissions.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # organizationsGetPermissionsForRole
@@ -1240,12 +1289,15 @@ def organizationsGetPermissionsForRole(request:Request, roleID:str):
         else:
             raise Exception(outSerializer.errors)
 
-    except Exception as e:
-        loggerError.error(f'Generic Exception while fetching permissions for role: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsGetPermissionsForRole.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #########################################################################
 # organizationsCreateNewOrganization
@@ -1311,10 +1363,12 @@ def organizationsCreateNewOrganization(request:Request):
             
         return Response("Success", status=status.HTTP_200_OK)
     
-    except Exception as e:
-        loggerError.error(f'Generic Exception while creating organization: {e}')
-        if "many requests" in e.args[0]:
-            return Response("Failed - " + str(e), status=status.HTTP_429_TOO_MANY_REQUESTS)
+    except Exception as error:
+        message = f"Error in {organizationsCreateNewOrganization.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response("Failed - " + str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
-
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

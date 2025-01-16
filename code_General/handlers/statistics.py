@@ -94,8 +94,15 @@ def getNumberOfUsers(request:Request):
             else:
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(output, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as error:
+        message = f"Error in {getNumberOfUsers.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 ##############################################
 def getIpAddress(request, *args, **kwargs):

@@ -60,7 +60,7 @@ def logicForGetUserDetails(request):
 
 ##############################################
 @staticmethod
-def getUserKeyWOSC(session=None, uID=None): #deprecated
+def getUserKeyWOSC(session=None, uID=None): # deprecated
     """
     Retrieve User ID from Session without special characters
 
