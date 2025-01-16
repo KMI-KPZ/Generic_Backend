@@ -15,9 +15,6 @@ from ..connections import s3
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from .userLogics import logicForUserUpdateContent
-from .organizationLogics import logicsForOrganizationsUpdateContent
-
 
 from logging import getLogger
 logger = getLogger("errors")
@@ -38,7 +35,7 @@ def logicForUpdateDetailsOfUserAsAdmin(request, content):
         changes = content["changes"]
         logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
         
-        flag = logicForUserUpdateContent(request.session, changes, userID)
+        flag = pgProfiles.ProfileManagementUser.updateContent(request.session, changes, userID)
         if flag is None: #updateContent returns None on success
             return (None, 200)
         else:
@@ -99,7 +96,7 @@ def logicForUpdateDetailsOfOrganizationAsAdmin(request, content):
 
         assert orgaHashedID != "", f"In {logicForUpdateDetailsOfOrganizationAsAdmin.cls.__name__}: orgaHashedID is blank"
         orgaID = orgaHashedID
-        exception  = logicsForOrganizationsUpdateContent(request.session, changes, orgaID)
+        exception  = pgProfiles.ProfileManagementOrganization.updateContent(request.session, changes, orgaID)
         if exception is None:
             return (None, 200)
         else:
@@ -113,7 +110,6 @@ def logicForUpdateDetailsOfOrganizationAsAdmin(request, content):
         return (e, 500)
 
 ##############################################
-
 def logicForDeleteOrganizationAsAdmin(request, orgaHashedID):
     try:
         assert orgaHashedID != "", f"In {logicForDeleteOrganizationAsAdmin.cls.__name__}: orgaHashedID is blank"

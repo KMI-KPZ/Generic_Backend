@@ -5,7 +5,7 @@ Silvio Weging 2024
 
 Contains: Logic for the users
 """
-import logging, numpy, requests, types, json, enum, datetime
+import logging, numpy, requests, types, json, enum, datetime, re
 
 from django.conf import settings
 from django.utils import timezone
@@ -60,169 +60,54 @@ def logicForGetUserDetails(request):
 
 ##############################################
 @staticmethod
-def logicForUserUpdateContent(session, updates, userID=""):
+def getUserKeyWOSC(session=None, uID=None): #deprecated
     """
-    Update user details.
+    Retrieve User ID from Session without special characters
 
-    :param session: GET request session
+    :param session: session
     :type session: Dictionary
-    :param updates: The user details to update
-    :type updates: differs
-    :param userID: The user ID who updates. If not given, the subID will be used	
-    :type userID: str
-    :return: If it worked or not
-    :rtype: None | Exception
+    :return: User key from database without stuff like | or ^
+    :rtype: Str
 
     """
-    if userID == "":
-        subID = session["user"]["userinfo"]["sub"]
-    else:
-        subID = userID
-    updated = timezone.now()
+    userID = ""
     try:
-        mocked = False
-        if SessionContent.MOCKED_LOGIN in session and session[SessionContent.MOCKED_LOGIN] is True:
-            mocked = True
-        existingObj = User.objects.get(subID=subID)
-        existingInfo = {UserDescription.name: existingObj.name, UserDescription.details: existingObj.details}
-        for updateType in updates:
-            details = updates[updateType]
-            if updateType == UserUpdateType.displayName:
-                assert isinstance(details, str), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str"
-                existingInfo[UserDescription.name] = details
-            elif updateType == UserUpdateType.email:
-                assert isinstance(details, str), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str"
-                existingInfo[UserDescription.details][UserDetails.email] = details
-                if not mocked:
-                    # send to id manager
-                    headers = {
-                        'authorization': f'Bearer {auth0.apiToken.accessToken}',
-                        'content-Type': 'application/json',
-                        "Accept": "application/json",
-                        "Cache-Control": "no-cache"
-                    }
-                    baseURL = f"https://{settings.AUTH0_DOMAIN}"
-                    payload = json.dumps({"email": details})
-                    response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{subID}', data=payload, headers=headers) )
-                    if isinstance(response, Exception):
-                        raise response
-            elif updateType == UserUpdateType.address:
-                assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
-                setToStandardAddress = details["standard"] # if the new address will be the standard address
-                addressAlreadyExists = False
-                newContentInDB = {}
-                if UserDetails.addresses in existingInfo[UserDescription.details]: # add old content
-                    newContentInDB = existingInfo[UserDescription.details][UserDetails.addresses] 
-                    for key in newContentInDB:
-                        if "id" in details and details["id"] == newContentInDB[key]["id"]:
-                            addressAlreadyExists = True
-                        if setToStandardAddress:
-                            newContentInDB[key]["standard"] = False
-                if addressAlreadyExists == False:
-                    # add new content
-                    idForNewAddress = crypto.generateURLFriendlyRandomString()
-                    details["id"] = idForNewAddress
-                else:
-                    # overwrite existing entry
-                    idForNewAddress = details["id"]
-                newContentInDB[idForNewAddress] = details
-                existingInfo[UserDescription.details][UserDetails.addresses] = newContentInDB
-            elif updateType == UserUpdateType.locale:
-                assert isinstance(details, str) and ("en" in details or "de" in details), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str or the locale didn't contain de or en"
-                existingInfo[UserDescription.details][UserDetails.locale] = details
-                if not mocked:
-                    # send to id manager
-                    headers = {
-                        'authorization': f'Bearer {auth0.apiToken.accessToken}',
-                        'content-Type': 'application/json',
-                        "Accept": "application/json",
-                        "Cache-Control": "no-cache"
-                    }
-                    baseURL = f"https://{settings.AUTH0_DOMAIN}"
-                    payload = json.dumps({"user_metadata": {"language": details}})
-                    response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{subID}', data=payload, headers=headers) )
-                    if isinstance(response, Exception):
-                        raise response
-            elif updateType == UserUpdateType.notifications:
-                assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
-                if ProfileClasses.user in details:
-                    for notification in details[ProfileClasses.user]: 
-                        if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification) \
-                            or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification, UserNotificationTargets.email) \
-                            or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.user, notification, UserNotificationTargets.event):
-                            existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
-
-                        if checkIfNestedKeyExists(details, ProfileClasses.user, notification, UserNotificationTargets.email):
-                            existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification][UserNotificationTargets.email] = details[ProfileClasses.user][notification][UserNotificationTargets.email]
-                        if checkIfNestedKeyExists(details, ProfileClasses.user, notification, UserNotificationTargets.event):
-                            existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.user][notification][UserNotificationTargets.event] = details[ProfileClasses.user][notification][UserNotificationTargets.event]
-                if ProfileClasses.organization in details:
-                    for notification in details[ProfileClasses.organization]: 
-                        if not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification) \
-                            or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.email) \
-                            or not checkIfNestedKeyExists(existingInfo, UserDescription.details, UserDetails.notificationSettings, ProfileClasses.organization, notification, UserNotificationTargets.event):
-                            existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True} 
-
-                        if checkIfNestedKeyExists(details, ProfileClasses.organization, notification, UserNotificationTargets.email):
-                            existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.email] = details[ProfileClasses.organization][notification][UserNotificationTargets.email]
-                        if checkIfNestedKeyExists(details, ProfileClasses.organization, notification, UserNotificationTargets.event):
-                            existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.event] = details[ProfileClasses.organization][notification][UserNotificationTargets.event]
-                
-            else:
-                raise Exception("updateType not defined")
-        
-        affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
-        return None
+        if session is not None:
+            userID = session["user"]["userinfo"]["sub"]
+        if uID is not None:
+            userID = uID
+        userID = re.sub(r"[^a-zA-Z0-9]", "", userID)
     except (Exception) as error:
-        logger.error(f"Error updating user details in {logicForUserUpdateContent.cls.__name__}: {str(error)}")
-        return error
-    
+        logger.error(f"Error getting user key WOSC: {str(error)}")
+
+    return userID
+
 ##############################################
 @staticmethod
-def logicForUserDeleteContent(session, updates, userID=""):
+def getUserKey(session):
     """
-    Delete certain user details.
+    Retrieve User ID from Session
 
-    :param session: GET request session
+    :param session: session
     :type session: Dictionary
-    :param updates: The user details to update
-    :type updates: differs
-    :param userID: The user ID to update. If not given, the subID will be used	
-    :type userID: str
-    :return: If it worked or not
-    :rtype: None | Exception
+    :return: User key session
+    :rtype: Str
 
     """
+    userID = ""
     try:
-        if userID == "":
-            subID = session["user"]["userinfo"]["sub"]
-        else:
-            subID = userID
-        updated = timezone.now()
-    
-        existingObj = User.objects.get(subID=subID)
-        existingInfo = {UserDescription.name: existingObj.name, UserDescription.details: existingObj.details}
-        for updateType in updates:
-            details = updates[updateType]
-            
-            if updateType == UserUpdateType.address:
-                assert isinstance(details, str), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of str"
-                del existingInfo[UserDescription.details][UserDetails.addresses][details]
-            else:
-                raise Exception("updateType not defined")
-        
-        affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
-        return None
+        userID = session["user"]["userinfo"]["sub"]
     except (Exception) as error:
-        logger.error(f"Error deleting user details in {logicForUserDeleteContent.cös.__name__}: {str(error)}")
-        return error
+        logger.error(f"Error getting user key: {str(error)}")
+
+    return userID
 
 ##############################################
 def logicForDeleteUser(request):
     # delete in database
     try:
         userName = pgProfiles.ProfileManagementBase.getUserName(request.session)
-        userID = pgProfiles.ProfileManagementBase.getUserKey(request.session)
+        userID = getUserKey(request.session)
         flag = pgProfiles.ProfileManagementUser.deleteUser(request.session)
         if flag is True:
             baseURL = f"https://{settings.AUTH0_DOMAIN}"

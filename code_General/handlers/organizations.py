@@ -241,11 +241,11 @@ def updateDetailsOfOrganization(request:Request):
         
         content = inSerializer.data
         if "changes" in content:
-            flag = logicsForOrganizationsUpdateContent(request.session, content["changes"]) 
+            flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, content["changes"]) 
             if isinstance(flag, Exception):
                 raise flag
         if "deletions" in content:
-            flag = logicsForOrganizationsDeleteContent(request.session, content["deletions"])
+            flag = pgProfiles.ProfileManagementOrganization.deleteContent(request.session, content["deletions"])
             if isinstance(flag, Exception):
                 raise flag
         
