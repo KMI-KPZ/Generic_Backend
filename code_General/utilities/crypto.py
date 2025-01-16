@@ -6,6 +6,7 @@ Silvio Weging 2023
 Contains: Services for cryptographics
 """
 import secrets, hashlib, xxhash, base64
+from ast import literal_eval
 from io import BytesIO
 from Cryptodome.Random import get_random_bytes
 from Cryptodome.Cipher import AES
@@ -122,7 +123,8 @@ def decryptObjectWithAES(key:str, obj:str) -> object:
     iv = base64.b64decode(obj)[0:16]
     restOfFile = base64.b64decode(obj)[16:]
     cipher = AES.new(base64.b64decode(key), AES.MODE_CFB, iv=iv)
-    return eval(cipher.decrypt(restOfFile).decode())
+    decodedString = cipher.decrypt(restOfFile).decode()
+    return literal_eval(decodedString)
 
 #######################################################
 def encryptFileWithAES(key:str, file:BytesIO) -> BytesIO:
@@ -170,11 +172,6 @@ def decryptFileWithAES(key:str, file:BytesIO) -> BytesIO:
     return BytesIO(decryptedFile)
 
 #######################################################
-
-class EncryptionAdapter:
-    pass
-
-
 class EncryptionAdapter():
     """
     Adapter class for encryption and decryption of file like objects
@@ -303,7 +300,7 @@ class EncryptionAdapter():
             self.inputFile.seek(0)
         return True
 
-    def setDebugLogger(self, logger) -> EncryptionAdapter:
+    def setDebugLogger(self, logger):
         """
         Set the debug logger for the adapter
 

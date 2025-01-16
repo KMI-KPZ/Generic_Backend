@@ -841,13 +841,15 @@ def organizations_deleteUser(request:Request, userEMail:str):
         response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}/members', headers=headers, json=data) )
         if isinstance(response, Exception):
             raise response
-        pgProfiles.ProfileManagementUser.deleteUser("", uID=userID)
-        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},user with email {userEMail} from {orgID}," + str(datetime.datetime.now()))
+        userHashID = pgProfiles.ProfileManagementUser.getUserHashID(userSubID=userID)
         
         # Send event to websocket
         retVal = sendEventViaWebsocket(orgID, baseURL, headers, "deleteUserFromOrganization", userID)
         if isinstance(retVal, Exception):
             raise retVal
+        
+        pgProfiles.ProfileManagementUser.deleteUser("", uHashedID=userHashID)
+        logger.info(f"{Logging.Subject.USER},{userName},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},user with email {userEMail} from {orgID}," + str(datetime.datetime.now()))
         
         return Response("Success", status=status.HTTP_200_OK)
 
