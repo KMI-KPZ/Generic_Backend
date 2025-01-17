@@ -286,17 +286,17 @@ def loginUser(request:Request):
 
     """
     try:
-        output, exception, value = logicForLoginUser(request)
-        if exception is not None:
-            message = str(exception)
-            loggerError.error(exception)
-            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        outputOrException, statusCode = logicForLoginUser(request)
+        if outputOrException is not None:
+            message = str(outputOrException)
+            loggerError.error(outputOrException)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": outputOrException})
             if exceptionSerializer.is_valid():
-                return Response(exceptionSerializer.data, status=value)
+                return Response(exceptionSerializer.data, status=statusCode)
             else:
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return Response(output)
+            return Response(outputOrException)
 
     except Exception as error:
         message = f"Error in {loginUser.cls.__name__}: {str(error)}"
@@ -344,11 +344,9 @@ def callbackLogin(request:Request):
         if exception is not None:
             message = str(exception)
             loggerError.error(exception)
-            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
-            if exceptionSerializer.is_valid():
-                raise exception
-            else:
-                raise Exception(message)#, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            returnObj = HttpResponseRedirect(output, status=value)
+            returnObj.write(message)
+            return returnObj
         else:
             # possibly check if Path in output is indeed viable
             return HttpResponseRedirect(output)

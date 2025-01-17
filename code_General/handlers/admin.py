@@ -7,21 +7,14 @@ Contains: Handling of admin view requests
 
 """
 
-import datetime, json, logging
+import logging
 
-from django.http import HttpResponse, JsonResponse
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
 
-from ..modelFiles.userModel import UserDescription
 from ..handlers.organizations import SReqChangesOrga
 from ..handlers.users import SReqChanges as SReqChangesUser
 
 from ..utilities import basics
 from  ..utilities.basics import ExceptionSerializerGeneric
-from ..connections.postgresql import pgProfiles
-from ..definitions import Logging
-from ..logics import organizationLogics, userLogics
 from ..logics.adminLogics import *
 
 from rest_framework import status, serializers
@@ -265,7 +258,7 @@ def deleteOrganizationAsAdmin(request:Request, orgaHashedID:str):
 
     """
     try:
-        exception, value = logicForDeleteOrganizationAsAdmin(orgaHashedID, request)
+        exception, value = logicForDeleteOrganizationAsAdmin(request, orgaHashedID)
         if exception is not None:
             message = str(exception)
             loggerError.error(exception)

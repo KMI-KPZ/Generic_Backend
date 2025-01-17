@@ -116,7 +116,7 @@ def logicForDeleteUser(request):
                 "customScopeKey": "permissions", 
                 "customUserKey": "auth"
             }
-            response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', headers=headers) )
+            response = handleTooManyRequestsError( lambda : requests.delete(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["users"]}/{userID}', headers=headers, timeout=5) )
             if isinstance(response, Exception):
                 loggerError.error(f"Error in {logicForDeleteUser.__name__}: {str(response)}")
                 return (Exception("Failed to delete user"), 500)

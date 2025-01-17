@@ -48,7 +48,7 @@ def logicForUpdateDetailsOfUserAsAdmin(request, content):
         return (e, 500)
 
 ##############################################
-def logicForDeleteUserAsAdmin(userHashedID, request):
+def logicForDeleteUserAsAdmin(request, userHashedID):
     try:
         assert userHashedID != "", f"In {logicForDeleteUserAsAdmin.__name__}: userHashedID is blank"
         userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
@@ -110,7 +110,7 @@ def logicForUpdateDetailsOfOrganizationAsAdmin(request, content):
         return (e, 500)
 
 ##############################################
-def logicForDeleteOrganizationAsAdmin(orgaHashedID, request):
+def logicForDeleteOrganizationAsAdmin(request, orgaHashedID):
     try:
         assert orgaHashedID != "", f"In {logicForDeleteOrganizationAsAdmin.__name__}: orgaHashedID is blank"
         flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaHashedID)

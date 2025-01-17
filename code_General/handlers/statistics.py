@@ -23,38 +23,6 @@ from drf_spectacular.utils import extend_schema
 from ..utilities.basics import checkIfTokenValid, ExceptionSerializerGeneric
 from ..logics.statisticsLogics import *
 
-
-##############################################
-async def checkSession(session):
-    """
-    Async check if user in session is logged in or not
-
-    :param session: coded session dict
-    :type session: Dictionary
-    :return: 1 or 0 if session is logged in or not
-    :rtype: Integer
-    """
-    data = session.get_decoded() # this is slow!
-    if "user" in data:
-        if checkIfTokenValid(data["user"]):
-            return 1
-    return 0
-
-##############################################
-async def getNumOfLoggedInUsers(activeSessions):
-    """
-    Async check how many users are currently logged in
-
-    :param activeSessions: sessions
-    :type activeSessions: hashtable 
-    :return: number of logged in users
-    :rtype: Integer
-    """
-    
-    results = await asyncio.gather(*[checkSession(session) for session in activeSessions])
-
-    return reduce(lambda x,y: x+y, results)
-
 #########################################################################
 # getNumberOfUsers
 #"statistics": ("public/getStatistics/",statistics.getNumberOfUsers)

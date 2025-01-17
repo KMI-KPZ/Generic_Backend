@@ -38,7 +38,8 @@ def logicForSetLocaleOfUser(validatedInput, request):
                 #update locale in user profile
                 pgProfiles.ProfileManagementUser.updateContent(request.session, updates={"locale": localeOfUser})
             return (None, 200)
-        else: return (Exception("Locale not supported"), 500)
+        else: 
+            return (Exception("Locale not supported"), 500)
     
     except Exception as e:
         return (e, 500)
@@ -327,7 +328,7 @@ def logicForCallbackLogin(request):
         logger.info(f"{Logging.Subject.USER},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.FETCHED},login,{Logging.Object.SELF},," + str(datetime.datetime.now()))
         return (request.session[SessionContent.PATH_AFTER_LOGIN], None, 200)
     except Exception as e:
-        return (e, 500)
+        return (request.session[SessionContent.PATH_AFTER_LOGIN], e, 500)
 
 #########################################################################
 def logicForGetRolesOfUser(request):
