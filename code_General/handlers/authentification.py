@@ -561,7 +561,7 @@ def logoutUser(request:Request):
             else:
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
-            return HttpResponse(output)
+            return HttpResponse(output, status=value)
 
     except Exception as error:
         message = f"Error in {logoutUser.cls.__name__}: {str(error)}"

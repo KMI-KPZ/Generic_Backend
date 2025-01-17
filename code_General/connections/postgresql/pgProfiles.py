@@ -1044,6 +1044,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
             for updateType in updates:
                 details = updates[updateType]
+                
                 if updateType == OrganizationUpdateType.supportedServices:
                     assert isinstance(details, list), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of list"
                     supportedServices = []
@@ -1053,9 +1054,11 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
                     sendSignals[OrganizationDescription.supportedServices] = supportedServices
                     existingInfo[OrganizationDescription.supportedServices] = supportedServices
+                
                 elif updateType == OrganizationUpdateType.services:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.services] = details
+                
                 elif updateType == OrganizationUpdateType.address:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     setToStandardAddress = details["standard"] # if the new address will be the standard address
@@ -1078,6 +1081,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                         idForNewAddress = details["id"]
                     newContentInDB[idForNewAddress] = details
                     existingInfo[OrganizationDescription.details][OrganizationDetails.addresses] = newContentInDB
+                
                 elif updateType == OrganizationUpdateType.displayName:
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.name] = details
@@ -1093,9 +1097,11 @@ class ProfileManagementOrganization(ProfileManagementBase):
                         response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}', headers=headers, data=payload) )
                         if isinstance(response, Exception):
                             raise response
+                        
                 elif updateType == OrganizationUpdateType.email:
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.email] = details
+
                 elif updateType == OrganizationUpdateType.branding:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     if not mocked:
@@ -1116,7 +1122,8 @@ class ProfileManagementOrganization(ProfileManagementBase):
                         response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}', headers=headers, data=payload) )
                         if isinstance(response, Exception):
                             raise response
-                        existingInfo[OrganizationDescription.details][OrganizationDetails.branding] = details
+                    existingInfo[OrganizationDescription.details][OrganizationDetails.branding] = details
+
                 elif updateType == OrganizationUpdateType.locale:
                     assert isinstance(details, str) and ("de" in details or "en" in details), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.locale] = details
@@ -1132,9 +1139,11 @@ class ProfileManagementOrganization(ProfileManagementBase):
                         response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}', headers=headers, data=payload) )
                         if isinstance(response, Exception):
                             raise response
+                        
                 elif updateType == OrganizationUpdateType.taxID:
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.taxID] = details
+
                 elif updateType == OrganizationUpdateType.notifications:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     if ProfileClasses.organization in details:
