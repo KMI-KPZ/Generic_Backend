@@ -353,24 +353,24 @@ class ProfileManagementBase():
         return ObjOfUserOrOrga.name
 
     ##############################################
-    # @staticmethod
-    # def getUserKey(session):
-    #     """
-    #     Retrieve User ID from Session
+    @staticmethod
+    def getUserKey(session):
+        """
+        Retrieve User ID from Session
 
-    #     :param session: session
-    #     :type session: Dictionary
-    #     :return: User key from session
-    #     :rtype: Str
+        :param session: session
+        :type session: Dictionary
+        :return: User key from session
+        :rtype: Str
 
-    #     """
-    #     userID = ""
-    #     try:
-    #         userID = session["user"]["userinfo"]["sub"]
-    #     except (Exception) as error:
-    #         logger.error(f"Error getting user key: {str(error)}")
+        """
+        userID = ""
+        try:
+            userID = session["user"]["userinfo"]["sub"]
+        except (Exception) as error:
+            logger.error(f"Error getting user key: {str(error)}")
 
-    #     return userID
+        return userID
     
     ##############################################
     @staticmethod
@@ -394,28 +394,28 @@ class ProfileManagementBase():
         return orgaID
 
     ##############################################
-    # @staticmethod
-    # def getUserKeyWOSC(session=None, uID=None): # deprecated moved to userLogics
-    #     """
-    #     Retrieve User ID from Session without special characters
+    @staticmethod
+    def getUserKeyWOSC(session=None, uID=None): # deprecated moved to userLogics
+        """
+        Retrieve User ID from Session without special characters
 
-    #     :param session: session
-    #     :type session: Dictionary
-    #     :return: User key from database without stuff like | or ^
-    #     :rtype: Str
+        :param session: session
+        :type session: Dictionary
+        :return: User key from database without stuff like | or ^
+        :rtype: Str
 
-    #     """
-    #     userID = ""
-    #     try:
-    #         if session is not None:
-    #             userID = session["user"]["userinfo"]["sub"]
-    #         if uID is not None:
-    #             userID = uID
-    #         userID = re.sub(r"[^a-zA-Z0-9]", "", userID)
-    #     except (Exception) as error:
-    #         logger.error(f"Error getting user key WOSC: {str(error)}")
+        """
+        userID = ""
+        try:
+            if session is not None:
+                userID = session["user"]["userinfo"]["sub"]
+            if uID is not None:
+                userID = uID
+            userID = re.sub(r"[^a-zA-Z0-9]", "", userID)
+        except (Exception) as error:
+            logger.error(f"Error getting user key WOSC: {str(error)}")
 
-    #     return userID
+        return userID
     
     ##############################################
     @staticmethod

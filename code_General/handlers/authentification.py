@@ -287,7 +287,7 @@ def loginUser(request:Request):
     """
     try:
         outputOrException, statusCode = logicForLoginUser(request)
-        if outputOrException is not None:
+        if isinstance(outputOrException, Exception):
             message = str(outputOrException)
             loggerError.error(outputOrException)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": outputOrException})
@@ -462,7 +462,7 @@ def getPermissionsOfUser(request:Request):
                 return Response([], status=status.HTTP_200_OK)
             else:
                 if output is not None:
-                    outSerializer = serializers.ListSerializer(child=serializers.CharField(), data=output)
+                    outSerializer = serializers.ListSerializer(child=SResPermissionsOfUser(), data=output)
                     if outSerializer.is_valid():
                         return Response(outSerializer.data, status=status.HTTP_200_OK)
                     else:

@@ -148,12 +148,12 @@ def getOrganizationDetails(request:Request):
     """
     # Read organization details from Database
     try:
-        returnVal, exception, value = logicsForGetOrganizationDetails(request)
+        returnVal, value = logicsForGetOrganizationDetails(request)
 
-        if exception is not None:
-            message = str(exception)
-            loggerError.error(exception)
-            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if isinstance(returnVal, Exception):
+            message = str(returnVal)
+            loggerError.error(returnVal)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": returnVal})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=value)
             else:
@@ -599,7 +599,7 @@ def organizationsFetchInvitees(request:Request):
 #########################################################################
 # organizationsDeleteInvite
 #########################################################################
-# Handler  
+# Handler
 @extend_schema(
     summary="Ask Auth0 API to revoke an invitation",
     description=" ",
