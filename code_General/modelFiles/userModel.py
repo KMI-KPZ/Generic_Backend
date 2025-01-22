@@ -200,27 +200,26 @@ class User(models.Model):
             self.details[UserDetails.statistics] = {UserStatistics.lastLogin: "", UserStatistics.locationOfLastLogin: "", UserStatistics.numberOfLoginsTotal: 0}
         if UserDetails.notificationSettings in existingDetails and isinstance(existingDetails[UserDetails.notificationSettings], dict):
             self.details[UserDetails.notificationSettings] = {"user": {}}
-            for entry in UserNotificationSettings:
-                setting = entry.value
-                existingNotificationSetting = existingDetails[UserDetails.notificationSettings]
-                if "user" in existingNotificationSetting:
-                    existingNotificationSetting = existingNotificationSetting["user"]
-                if setting in existingNotificationSetting:
-                    self.details[UserDetails.notificationSettings]["user"][setting] = {}
-                    if UserNotificationTargets.email in existingNotificationSetting[setting]:
-                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.email] = existingNotificationSetting[setting][UserNotificationTargets.email]
+            if "user" in existingDetails[UserDetails.notificationSettings]:
+                for entry in existingDetails[UserDetails.notificationSettings]["user"]:
+                    existingNotificationSetting = existingDetails[UserDetails.notificationSettings]
+                    if entry in UserNotificationSettings.__members__:
+                        self.details[UserDetails.notificationSettings]["user"][entry] = {}
+                        if UserNotificationTargets.email in existingNotificationSetting["user"][entry]:
+                            self.details[UserDetails.notificationSettings]["user"][entry][UserNotificationTargets.email] = existingNotificationSetting["user"][entry][UserNotificationTargets.email]
+                        else:
+                            self.details[UserDetails.notificationSettings]["user"][entry][UserNotificationTargets.email] = True
+                        if UserNotificationTargets.event in existingNotificationSetting["user"][entry]:
+                            self.details[UserDetails.notificationSettings]["user"][entry][UserNotificationTargets.event] = existingNotificationSetting["user"][entry][UserNotificationTargets.event]
+                        else:
+                            self.details[UserDetails.notificationSettings]["user"][entry][UserNotificationTargets.event] = True
                     else:
-                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.email] = True
-                    if UserNotificationTargets.event in existingNotificationSetting[setting]:
-                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.event] = existingNotificationSetting[setting][UserNotificationTargets.event]
-                    else:
-                        self.details[UserDetails.notificationSettings]["user"][setting][UserNotificationTargets.event] = True
-                else:
-                    self.details[UserDetails.notificationSettings]["user"][setting] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True}
-        else:
-            self.details[UserDetails.notificationSettings] = {"user": {}}
-            self.details[UserDetails.notificationSettings]["user"] = {UserNotificationSettings.newsletter: {UserNotificationTargets.email: True, UserNotificationTargets.event: True}}
-
+                        self.details[UserDetails.notificationSettings]["user"][entry] = existingNotificationSetting["user"][entry]
+            else:
+                for entry in UserNotificationSettings:
+                    self.details[UserDetails.notificationSettings]["user"][entry] = {UserNotificationTargets.email: True, UserNotificationTargets.event: True}
+            if "organization" in existingDetails[UserDetails.notificationSettings]: # user is part of an organization
+                self.details[UserDetails.notificationSettings]["organization"] = existingDetails[UserDetails.notificationSettings]["organization"]
         self.save()
         return self
 
