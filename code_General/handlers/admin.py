@@ -7,20 +7,15 @@ Contains: Handling of admin view requests
 
 """
 
-import datetime, json, logging
+import logging
 
-from django.http import HttpResponse, JsonResponse
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
 
-from ..modelFiles.userModel import UserDescription
 from ..handlers.organizations import SReqChangesOrga
 from ..handlers.users import SReqChanges as SReqChangesUser
 
 from ..utilities import basics
 from  ..utilities.basics import ExceptionSerializerGeneric
-from ..connections.postgresql import pgProfiles
-from ..definitions import Logging
+from ..logics.adminLogics import *
 
 from rest_framework import status, serializers
 from rest_framework.response import Response
@@ -71,11 +66,17 @@ def getAllAsAdmin(request:Request):
 
     """
     try:
-        # get all information if you're an admin
-        users, organizations = pgProfiles.ProfileManagementBase.getAll()
-        outLists = { "user" : users, "organizations": organizations }
-        logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.FETCHED},fetched,{Logging.Object.SYSTEM}, all users and orgas," + str(datetime.datetime.now()))
-        return Response(outLists)
+        outLists, exception, value = logicForGetAllAsAdmin(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(outLists, status=status.HTTP_200_OK)
+        
     except Exception as error:
         message = f"Error in {getAllAsAdmin.cls.__name__} : {str(error)}"
         exception = str(error)
@@ -133,21 +134,18 @@ def updateDetailsOfUserAsAdmin(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         content = inSerializer.data
-        assert "hashedID" in content.keys(), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: hashedID not in request"
-        userHashedID = content["hashedID"]
-        userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
-        assert isinstance(userID, str), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: expected userID to be of type string, instead got: {type(userID)}"
-        assert userID != "", f"In {updateDetailsOfUserAsAdmin.cls.__name__}: non-empty userID expected"
         
-        assert "changes" in content.keys(), f"In {updateDetailsOfUserAsAdmin.cls.__name__}: hashedID not in request"
-        changes = content["changes"]
-        logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
-        flag = pgProfiles.ProfileManagementUser.updateContent(request.session, changes, userID)
-        if flag is None: #updateContent returns None on success
-            return Response("Success", status=status.HTTP_200_OK)
-        else:
-            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        exception, value = logicForUpdateDetailsOfUserAsAdmin(request, content)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("Success", status=status.HTTP_200_OK)
+    
     except (Exception) as error:
         message = f"Error in {updateDetailsOfUserAsAdmin.cls.__name__}: {str(error)}"
         exception = str(error)
@@ -206,17 +204,17 @@ def updateDetailsOfOrganizationAsAdmin(request:Request):
         
         content = inSerializer.data
 
-        assert "hashedID" in content.keys(), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: hashedID not in JSON"
-        orgaHashedID = content["hashedID"]
-        orgaID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(orgaHashedID)
-        assert "changes" in content.keys(), f"In {updateDetailsOfOrganizationAsAdmin.cls.__name__}: changes not in JSON"
-        changes = content["changes"] 
-        logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.EDITED},updated,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
-        flag = pgProfiles.ProfileManagementOrganization.updateContent(request.session, changes, orgaID)
-        if flag is None: #updateContent returns None on success
-            return Response("Success", status=status.HTTP_200_OK)
-        else:
-            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        exception, value = logicForUpdateDetailsOfOrganizationAsAdmin(request, content)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("Success", status=status.HTTP_200_OK)
+    
     except (Exception) as error:
         message = f"Error in {updateDetailsOfOrganizationAsAdmin.cls.__name__}: {str(error)}"
         exception = str(error)
@@ -260,15 +258,17 @@ def deleteOrganizationAsAdmin(request:Request, orgaHashedID:str):
 
     """
     try:
-        assert orgaHashedID != "", f"In {deleteOrganizationAsAdmin.cls.__name__}: orgaHashedID is blank"
-        orgaID = orgaHashedID
-
-        flag = pgProfiles.ProfileManagementBase.deleteOrganization(request.session, orgaID)
-        if flag is True:
-            logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.ORGANISATION},{orgaID}," + str(datetime.datetime.now()))
-            return Response("Success", status=status.HTTP_200_OK)
-        else:
-            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        exception, value = logicForDeleteOrganizationAsAdmin(request, orgaHashedID)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("Success", status=status.HTTP_200_OK)
+        
     except (Exception) as error:
         message = f"Error in {deleteOrganizationAsAdmin.cls.__name__}: {str(error)}"
         exception = str(error)
@@ -312,24 +312,17 @@ def deleteUserAsAdmin(request:Request, userHashedID:str):
 
     """
     try:
-
-        assert userHashedID != "", f"In {deleteUserAsAdmin.cls.__name__}: userHashedID is blank"
-        userID = pgProfiles.ProfileManagementBase.getUserKeyViaHash(userHashedID)
-        assert userID != "", f"In {deleteUserAsAdmin.cls.__name__}: userID is blank"
+        exception, value = logicForDeleteUserAsAdmin(request, userHashedID)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("Success", status=status.HTTP_200_OK)
         
-        # websocket event for that user
-        channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(userHashedID[:80], {
-                "type": "sendMessageJSON",
-                "dict": {"eventType": "accountEvent", "context": "deleteUser"},
-            })
-
-        flag = pgProfiles.ProfileManagementUser.deleteUser(request.session, userHashedID)
-        if flag is True:
-            logger.info(f"{Logging.Subject.ADMIN},{request.session['user']['userinfo']['nickname']},{Logging.Predicate.DELETED},deleted,{Logging.Object.USER},{userID}," + str(datetime.datetime.now()))
-            return Response("Success", status=status.HTTP_200_OK)
-        else:
-            return Response("Failed", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     except (Exception) as error:
         message = f"Error in {deleteUserAsAdmin.cls.__name__}: {str(error)}"
         exception = str(error)

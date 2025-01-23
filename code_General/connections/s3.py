@@ -104,7 +104,7 @@ class ManageS3():
         file.seek(0) # because read() is called and has to start at the front of the file
         fileToBeUploaded = file
         if self.local is False:
-            fileToBeUploaded = crypto.encryptAES(self.aesEncryptionKey, file) # encrypt file for remote AWS
+            fileToBeUploaded = crypto.encryptFileWithAES(self.aesEncryptionKey, file) # encrypt file for remote AWS
         response = self.s3_client.upload_fileobj(fileToBeUploaded, self.bucketName, fileKey)
         # TODO if response...
 
@@ -149,7 +149,7 @@ class ManageS3():
         if output.getbuffer().nbytes == 0: # is empty so no file has been downloaded
             return (output, False)
         if self.local is False: # remote aws files are encrypted
-            decrypted_file = crypto.decryptAES(self.aesEncryptionKey, output)
+            decrypted_file = crypto.decryptFileWithAES(self.aesEncryptionKey, output)
             return (decrypted_file, True)
         else:
             return (output, True)

@@ -19,6 +19,7 @@ from drf_spectacular.utils import extend_schema
 from ..definitions import *
 from ..utilities.basics import ExceptionSerializerGeneric, checkIfUserIsLoggedIn, checkIfRightsAreSufficient, checkVersion
 from ..connections.postgresql import pgProfiles, pgEvents
+from ..logics.eventLogics import *
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -29,7 +30,7 @@ class SReqsEventContent(serializers.Serializer):
     primaryID =  serializers.CharField(max_length=513)
     secondaryID = serializers.CharField(max_length=513,  required=False)
     reason = serializers.CharField(max_length=513, required=False)
-    content = serializers.CharField(max_length=513, required=False)
+    content = serializers.CharField(max_length=513, required=False, allow_blank=True)
     additionalInformation = serializers.DictField(allow_empty=True, required=False)
 #######################################################
 class SReqsOneEvent(serializers.Serializer):
@@ -67,11 +68,16 @@ def getAllEventsForUser(request:Request):
 
     """
     try:
-        userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
-        listOfEvents = pgEvents.getAllEventsOfAUser(userHashedID)
-        if isinstance(listOfEvents, Exception):
-            raise listOfEvents
-
+        listOfEvents, exception, value = logicForGetAllEventsForUser(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         outSerializer = SReqsOneEvent(data=listOfEvents, many=True)
         if outSerializer.is_valid():
             return Response(outSerializer.data, status=status.HTTP_200_OK)
@@ -113,9 +119,15 @@ def getOneEventOfUser(request:Request, eventID:str):
 
     """
     try:
-        event = pgEvents.getOneEvent(eventID)
-        if isinstance(event, Exception):
-            raise event
+        event, exception, value = logicForGetOneEventOfUser(eventID)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         outSerializer = SReqsOneEvent(data=event)
         if outSerializer.is_valid():
             return Response(outSerializer.data, status=status.HTTP_200_OK)
@@ -169,15 +181,15 @@ def createEvent(request:Request):
                 return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         validatedInput = inSerializer.data
-        
-        if EventsDescriptionGeneric.userHashedID in validatedInput:
-            userHashedID = validatedInput[EventsDescriptionGeneric.userHashedID]
-        else:
-            userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
-
-        retVal = pgEvents.createEventEntry(userHashedID=userHashedID, eventType=validatedInput[EventsDescriptionGeneric.eventType], eventData=validatedInput[EventsDescriptionGeneric.eventData], triggerEvent=validatedInput[EventsDescriptionGeneric.triggerEvent])
-        if isinstance(retVal, Exception):
-            raise retVal
+        retVal, exception, value = logicForCreateEvent(validatedInput, Request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         outSerializer = SReqsOneEvent(data=retVal)
         if outSerializer.is_valid():
@@ -222,9 +234,16 @@ def deleteOneEvent(request:Request, eventID:str):
 
     """
     try:
-        retVal = pgEvents.removeEvent(eventID)
-        if isinstance(retVal, Exception):
-            raise retVal
+        exception, value = logicForDeleteOneEvent(eventID)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         return Response("Success", status=status.HTTP_200_OK)
     except (Exception) as error:
         message = f"Error in {deleteOneEvent.cls.__name__}: {str(error)}"
@@ -263,10 +282,16 @@ def deleteAllEventsForAUser(request:Request):
 
     """
     try:
-        userHashedID = pgProfiles.ProfileManagementBase.getUserHashID(request.session)
-        retVal = pgEvents.removeAllEventsForUser(userHashedID)
-        if isinstance(retVal, Exception):
-            raise retVal
+        exception, value = logicForDeleteAllEventsForAUser(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         return Response("Success", status=status.HTTP_200_OK)
     except (Exception) as error:
         message = f"Error in {deleteAllEventsForAUser.cls.__name__}: {str(error)}"

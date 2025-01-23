@@ -6,6 +6,7 @@ Silvio Weging 2023
 Contains: Services for cryptographics
 """
 import secrets, hashlib, xxhash, base64
+from ast import literal_eval
 from io import BytesIO
 from Cryptodome.Random import get_random_bytes
 from Cryptodome.Cipher import AES
@@ -89,7 +90,44 @@ def generateAESKey() -> str:
     return base64.b64encode(get_random_bytes(32)).decode('utf-8')
 
 #######################################################
-def encryptAES(key:str, file:BytesIO) -> BytesIO:
+def encryptObjectWithAES(key:str, obj:object) -> str:
+    """
+    Encrypt an object with a previously set key
+
+    :param key: String containing the encryption key
+    :type key: str
+    :param obj: The object to be encrypted
+    :type obj: object
+    :return: Encrypted object
+    :rtype: str
+
+    """
+
+    cipher = AES.new(base64.b64decode(key), AES.MODE_CFB)
+    return base64.b64encode(cipher.iv + cipher.encrypt(str(obj).encode())).decode('utf-8')
+
+#######################################################
+def decryptObjectWithAES(key:str, obj:str) -> object:
+    """
+    Decrypt an object with a previously set key
+
+    :param key: String containing the encryption key
+    :type key: str
+    :param obj: The object to be decrypted
+    :type obj: str
+    :return: Decrypted object
+    :rtype: object
+
+    """
+
+    iv = base64.b64decode(obj)[0:16]
+    restOfFile = base64.b64decode(obj)[16:]
+    cipher = AES.new(base64.b64decode(key), AES.MODE_CFB, iv=iv)
+    decodedString = cipher.decrypt(restOfFile).decode()
+    return literal_eval(decodedString)
+
+#######################################################
+def encryptFileWithAES(key:str, file:BytesIO) -> BytesIO:
     """
     Encrypt a file with a previously set key
 
@@ -113,7 +151,7 @@ def encryptAES(key:str, file:BytesIO) -> BytesIO:
     return outFile
 
 #######################################################
-def decryptAES(key:str, file:BytesIO) -> BytesIO:
+def decryptFileWithAES(key:str, file:BytesIO) -> BytesIO:
     """
     Decrypt a file with a previously set key
 
@@ -134,11 +172,6 @@ def decryptAES(key:str, file:BytesIO) -> BytesIO:
     return BytesIO(decryptedFile)
 
 #######################################################
-
-class EncryptionAdapter:
-    pass
-
-
 class EncryptionAdapter():
     """
     Adapter class for encryption and decryption of file like objects
@@ -267,7 +300,7 @@ class EncryptionAdapter():
             self.inputFile.seek(0)
         return True
 
-    def setDebugLogger(self, logger) -> EncryptionAdapter:
+    def setDebugLogger(self, logger):
         """
         Set the debug logger for the adapter
 

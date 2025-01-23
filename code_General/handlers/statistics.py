@@ -21,37 +21,7 @@ from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 
 from ..utilities.basics import checkIfTokenValid, ExceptionSerializerGeneric
-
-##############################################
-async def checkSession(session):
-    """
-    Async check if user in session is logged in or not
-
-    :param session: coded session dict
-    :type session: Dictionary
-    :return: 1 or 0 if session is logged in or not
-    :rtype: Integer
-    """
-    data = session.get_decoded() # this is slow!
-    if "user" in data:
-        if checkIfTokenValid(data["user"]):
-            return 1
-    return 0
-
-##############################################
-async def getNumOfLoggedInUsers(activeSessions):
-    """
-    Async check how many users are currently logged in
-
-    :param activeSessions: sessions
-    :type activeSessions: hashtable 
-    :return: number of logged in users
-    :rtype: Integer
-    """
-    
-    results = await asyncio.gather(*[checkSession(session) for session in activeSessions])
-
-    return reduce(lambda x,y: x+y, results)
+from ..logics.statisticsLogics import *
 
 #########################################################################
 # getNumberOfUsers
@@ -82,13 +52,25 @@ def getNumberOfUsers(request:Request):
 
     """
     try:
-        activeSessions = Session.objects.filter(expire_date__gte=timezone.now())
-        numOfActiveSessions = len(activeSessions)
-        numOfLoggedInUsers = asyncio.run(getNumOfLoggedInUsers(activeSessions))
-        output = {"active": numOfActiveSessions, "loggedIn": numOfLoggedInUsers}
+        output, exception, value = logicForGetNumberOfUsers(request)
+        if exception is not None:
+            message = str(exception)
+            loggerError.error(exception)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=value)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(output, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as error:
+        message = f"Error in {getNumberOfUsers.cls.__name__}: {str(error)}"
+        exception = str(error)
+        loggerError.error(message)
+        exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+        if exceptionSerializer.is_valid():
+            return Response(exceptionSerializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 ##############################################
 def getIpAddress(request, *args, **kwargs):

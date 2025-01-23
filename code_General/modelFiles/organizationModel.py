@@ -44,6 +44,7 @@ class OrganizationDetails(StrEnumExactlyAsDefined):
     branding = enum.auto()
     notificationSettings = enum.auto()
     priorities = enum.auto()
+    services = enum.auto()
 
 ###################################################
 # Enum what can be updated for a user
@@ -56,6 +57,7 @@ class OrganizationUpdateType(StrEnumExactlyAsDefined):
     email = enum.auto()
     branding = enum.auto()
     supportedServices = enum.auto()
+    services = enum.auto()
     notifications = enum.auto()
     locale = enum.auto()
     address = enum.auto()
@@ -193,28 +195,29 @@ class Organization(models.Model):
             self.details[OrganizationDetails.branding] = existingDetails[OrganizationDetails.branding]
         else:
             self.details[OrganizationDetails.branding] = {"logo_url": "", "colors": {"primary": "#000000", "page_background": "#FFFFFF"}}
+        if OrganizationDetails.services in existingDetails and isinstance(existingDetails[OrganizationDetails.services], dict):
+            self.details[OrganizationDetails.services] = existingDetails[OrganizationDetails.services]
+        else:
+            self.details[OrganizationDetails.services] = {}
         if OrganizationDetails.notificationSettings in existingDetails and isinstance(existingDetails[OrganizationDetails.notificationSettings], dict):
             self.details[OrganizationDetails.notificationSettings] = {"organization": {}}
-            for entry in OrganizationNotificationSettings:
-                setting = entry.value
-                existingNotificationSetting = existingDetails[OrganizationDetails.notificationSettings]
-                if "organization" in existingNotificationSetting:
-                    existingNotificationSetting = existingNotificationSetting["organization"]
-                if setting in existingNotificationSetting:
-                    self.details[OrganizationDetails.notificationSettings]["organization"][setting] = {}
-                    if OrganizationNotificationTargets.email in existingNotificationSetting[setting]:
-                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.email] = existingNotificationSetting[setting][OrganizationNotificationTargets.email]
+            if "organization" in existingDetails[OrganizationDetails.notificationSettings]:
+                for entry in existingDetails[OrganizationDetails.notificationSettings]["organization"]:
+                    existingNotificationSetting = existingDetails[OrganizationDetails.notificationSettings]
+                    if entry in OrganizationNotificationSettings.__members__:
+                        self.details[OrganizationDetails.notificationSettings]["organization"][entry] = {}
+                        if OrganizationNotificationTargets.email in existingNotificationSetting["organization"][entry]:
+                            self.details[OrganizationDetails.notificationSettings]["organization"][entry][OrganizationNotificationTargets.email] = existingNotificationSetting["organization"][entry][OrganizationNotificationTargets.email]
+                        else:
+                            self.details[OrganizationDetails.notificationSettings]["organization"][entry][OrganizationNotificationTargets.email] = True
+                        if OrganizationNotificationTargets.event in existingNotificationSetting["organization"][entry]:
+                            self.details[OrganizationDetails.notificationSettings]["organization"][entry][OrganizationNotificationTargets.event] = existingNotificationSetting["organization"][entry][OrganizationNotificationTargets.event]
+                        else:
+                            self.details[OrganizationDetails.notificationSettings]["organization"][entry][OrganizationNotificationTargets.event] = True
                     else:
-                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.email] = True
-                    if OrganizationNotificationTargets.event in existingNotificationSetting[setting]:
-                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.event] = existingNotificationSetting[setting][OrganizationNotificationTargets.event]
-                    else:
-                        self.details[OrganizationDetails.notificationSettings]["organization"][setting][OrganizationNotificationTargets.event] = True
-                else:
-                    self.details[OrganizationDetails.notificationSettings]["organization"][setting] = {OrganizationNotificationTargets.email: True, OrganizationNotificationTargets.event: True}
-        else:
-            self.details[OrganizationDetails.notificationSettings] = {"organization": {}}
-            self.details[OrganizationDetails.notificationSettings]["organization"] = {OrganizationNotificationSettings.newsletter: {OrganizationNotificationTargets.email: True, OrganizationNotificationTargets.event: True}}
-        
+                        self.details[OrganizationDetails.notificationSettings]["organization"][entry] = existingNotificationSetting["organization"][entry]
+            else:
+                self.details[OrganizationDetails.notificationSettings]["organization"][OrganizationNotificationSettings.newsletter] = {OrganizationNotificationTargets.email: True, OrganizationNotificationTargets.event: True}
+
         self.save()
         return self

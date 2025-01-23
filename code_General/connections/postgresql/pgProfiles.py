@@ -25,12 +25,14 @@ logger = getLogger("errors")
 
 #TODO: switch to async versions at some point
 
+# TODO alles raus was keine Datenbankcalls raus (LUKAS)
+
 ####################################################################################
 # Profile
 class ProfileManagementBase():
     ##############################################
     @staticmethod
-    def getUser(session):
+    def getUser(session): 
         """
         Check whether a user exists or not and retrieve dictionary.
 
@@ -52,7 +54,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getUserObj(session):
+    def getUserObj(session): 
         """
         Check whether a user exists or not and retrieve entry.
 
@@ -75,7 +77,7 @@ class ProfileManagementBase():
         
     ##############################################
     @staticmethod
-    def getUserName(session):
+    def getUserName(session): 
         """
         Check whether a user exists or not and retrieve entry.
 
@@ -96,7 +98,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getOrganization(session = {}, hashedID:str=""):
+    def getOrganization(session = {}, hashedID:str=""): 
         """
         Check whether an organization exists or not and retrieve information.
 
@@ -105,7 +107,7 @@ class ProfileManagementBase():
         :param hashedID: The hash ID can be used instead
         :type hashedID: str
         :return: Organization details from database
-        :rtype: Dictionary
+        :rtype: Dictionary | Exception
 
         """
         if session != {}:
@@ -115,7 +117,7 @@ class ProfileManagementBase():
                 obj = Organization.objects.get(subID=orgaID).toDict()
             except (Exception) as error:
                 logger.error(f"Error getting organization: {str(error)}")
-
+                return error
             return obj
         if hashedID != "":
             obj = {}
@@ -123,14 +125,14 @@ class ProfileManagementBase():
                 obj = Organization.objects.get(hashedID=hashedID).toDict()
             except (Exception) as error:
                 logger.error(f"Error getting organization: {str(error)}")
-
+                return error
             return obj
         logger.error(f"Error getting organization because no parameter was given!")
         return {}
 
     ##############################################
     @staticmethod
-    def getUsersOfOrganization(session= {}, hashedID:str="") -> list[User]:
+    def getUsersOfOrganization(session= {}, hashedID:str="") -> list[User]: 
         """
         Get all user hashIDs belonging to an organization
 
@@ -165,7 +167,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getOrganizationObject(session=None, hashID=""):
+    def getOrganizationObject(session=None, hashID=""): 
         """
         Check whether an organization exists or not and retrieve the object.
 
@@ -192,7 +194,7 @@ class ProfileManagementBase():
 
     ##############################################
     @staticmethod
-    def getUserHashID(session={},userSubID=""):
+    def getUserHashID(session={},userSubID=""): 
         """
         Retrieve hashed User ID from Session
 
@@ -220,7 +222,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getOrganizationHashID(session={}, orgaSubID=""):
+    def getOrganizationHashID(session={}, orgaSubID=""): 
         """
         Retrieve Organization object via hashID
 
@@ -247,7 +249,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getOrganizationName(hashedID:str):
+    def getOrganizationName(hashedID:str): 
         """
         Retrieve Organization name via hashID
 
@@ -266,19 +268,19 @@ class ProfileManagementBase():
         return orgaName
 
     ##############################################
-    @staticmethod
-    def getOrganizationID(session):
-        """
-        Retrieve Organization ID
+    # @staticmethod
+    # def getOrganizationID(session):
+    #     """
+    #     Retrieve Organization ID
 
-        :param session: session
-        :type session: Str
-        :return: ID of the organization
-        :rtype: Str
+    #     :param session: session
+    #     :type session: Str
+    #     :return: ID of the organization
+    #     :rtype: Str
 
-        """
-        orgaID = session["user"]["userinfo"]["org_id"]
-        return orgaID
+    #     """
+    #     orgaID = session["user"]["userinfo"]["org_id"]
+    #     return orgaID
     
     ##############################################
     @staticmethod
@@ -304,7 +306,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getUserViaHash(hashedID):
+    def getUserViaHash(hashedID): 
         """
         Retrieve User/Orga Object via Database and hashkey
 
@@ -328,7 +330,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getUserNameViaHash(hashedID):
+    def getUserNameViaHash(hashedID): 
         """
         Retrieve User Object via Database and hashkey
 
@@ -358,7 +360,7 @@ class ProfileManagementBase():
 
         :param session: session
         :type session: Dictionary
-        :return: User key from database
+        :return: User key from session
         :rtype: Str
 
         """
@@ -372,13 +374,13 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getUserOrgaKey(session):
+    def getUserOrgaKey(session): # deprecated 
         """
         Retrieve User ID from Session
 
         :param session: session
         :type session: Dictionary
-        :return: User key from database
+        :return: User key from session
         :rtype: Str
 
         """
@@ -393,7 +395,7 @@ class ProfileManagementBase():
 
     ##############################################
     @staticmethod
-    def getUserKeyWOSC(session=None, uID=None):
+    def getUserKeyWOSC(session=None, uID=None): # deprecated moved to userLogics
         """
         Retrieve User ID from Session without special characters
 
@@ -417,7 +419,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def setLoginTime(userIDHash):
+    def setLoginTime(userIDHash): 
         """
         Sets the last login Time to now. Used for 'Last Login'.
 
@@ -433,7 +435,7 @@ class ProfileManagementBase():
 
     ##############################################
     @staticmethod
-    def setUserLocale(session):
+    def setUserLocale(session): 
         """
         Sets the locale of the user in the profile.
 
@@ -455,7 +457,7 @@ class ProfileManagementBase():
 
     ##############################################
     @staticmethod
-    def getUserLocale(session=None, hashedID=""):
+    def getUserLocale(session=None, hashedID=""): 
         """
         Gets the locale of the user from the profile or session.
 
@@ -507,7 +509,7 @@ class ProfileManagementBase():
 
     ##############################################
     @staticmethod
-    def deleteUser(session, uHashedID=""):
+    def deleteUser(session, uHashedID=""): 
         """
         Delete User.
 
@@ -529,7 +531,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def deleteOrganization(session, orgID=""):
+    def deleteOrganization(session, orgID=""): 
         """
         Delete Organization.
 
@@ -552,7 +554,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getAll():
+    def getAll(): 
         """
         Get all Users and Organizations.
 
@@ -576,7 +578,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def checkIfUserIsInOrganization(session=None, hashID=""):
+    def checkIfUserIsInOrganization(session=None, hashID=""): 
         """
         Check if a user is in an organization or not. Can be used to decide if additional code specific for orgas should be run
 
@@ -605,7 +607,7 @@ class ProfileManagementBase():
         
     ##############################################
     @staticmethod
-    def checkIfHashIDBelongsToOrganization(hashID):
+    def checkIfHashIDBelongsToOrganization(hashID): 
         """
         Checks if the ID belongs to an organization or not
 
@@ -625,7 +627,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getNotificationPreferences(ID:str) -> dict | None:
+    def getNotificationPreferences(ID:str) -> dict | None: 
         """
         Get notification preferences of orga if available
 
@@ -651,7 +653,7 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
-    def getEMailAddress(ID:str) -> str | None:
+    def getEMailAddress(ID:str) -> str | None: 
         """
         Get Mail address of user if available
 
@@ -682,7 +684,7 @@ class ProfileManagementUser(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def addUserIfNotExists(session, organization=None):
+    def addUserIfNotExists(session, organization=None): 
         """
         Add user if the entry doesn't already exists.
 
@@ -735,7 +737,7 @@ class ProfileManagementUser(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def updateContent(session, updates, userID=""):
+    def updateContent(session, updates, userID=""): 
         """
         Update user details.
 
@@ -893,7 +895,7 @@ class ProfileManagementUser(ProfileManagementBase):
     
     ##############################################
     @staticmethod
-    def getClientID(session):
+    def getClientID(session): # deprecated
         """
         Get ID of current client (can be organization or user)
 
@@ -910,7 +912,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def addUserIfNotExists(session, organization):
+    def addUserIfNotExists(session, organization): 
         """
         Add user if the entry doesn't already exists.
 
@@ -939,7 +941,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def addUserToOrganization(userToBeAdded:User, organizationID:str):
+    def addUserToOrganization(userToBeAdded:User, organizationID:str): 
         """
         Add user to organization.
 
@@ -972,7 +974,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def addOrGetOrganization(session):
+    def addOrGetOrganization(session): 
         """
         Add organization if the entry doesn't already exists.
 
@@ -1011,7 +1013,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def updateContent(session, updates, orgaID=""):
+    def updateContent(session, updates, orgaID=""): 
         """
         Update user details and more.
 
@@ -1037,12 +1039,26 @@ class ProfileManagementOrganization(ProfileManagementBase):
             mocked = False
             if SessionContent.MOCKED_LOGIN in session and session[SessionContent.MOCKED_LOGIN] is True:
                 mocked = True
+            
+            sendSignals = {}
 
             for updateType in updates:
                 details = updates[updateType]
+                
                 if updateType == OrganizationUpdateType.supportedServices:
                     assert isinstance(details, list), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of list"
-                    existingInfo[OrganizationDescription.supportedServices] = details
+                    supportedServices = []
+                    for supportedService in details:
+                        supportedServices.append(supportedService)
+                    supportedServices.extend(existingInfo[OrganizationDescription.supportedServices])
+
+                    sendSignals[OrganizationDescription.supportedServices] = supportedServices
+                    existingInfo[OrganizationDescription.supportedServices] = supportedServices
+                
+                elif updateType == OrganizationUpdateType.services:
+                    assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
+                    existingInfo[OrganizationDescription.details][OrganizationDetails.services] = details
+                
                 elif updateType == OrganizationUpdateType.address:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     setToStandardAddress = details["standard"] # if the new address will be the standard address
@@ -1065,6 +1081,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                         idForNewAddress = details["id"]
                     newContentInDB[idForNewAddress] = details
                     existingInfo[OrganizationDescription.details][OrganizationDetails.addresses] = newContentInDB
+                
                 elif updateType == OrganizationUpdateType.displayName:
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.name] = details
@@ -1080,9 +1097,11 @@ class ProfileManagementOrganization(ProfileManagementBase):
                         response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}', headers=headers, data=payload) )
                         if isinstance(response, Exception):
                             raise response
+                        
                 elif updateType == OrganizationUpdateType.email:
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.email] = details
+
                 elif updateType == OrganizationUpdateType.branding:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     if not mocked:
@@ -1103,7 +1122,8 @@ class ProfileManagementOrganization(ProfileManagementBase):
                         response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}', headers=headers, data=payload) )
                         if isinstance(response, Exception):
                             raise response
-                        existingInfo[OrganizationDescription.details][OrganizationDetails.branding] = details
+                    existingInfo[OrganizationDescription.details][OrganizationDetails.branding] = details
+
                 elif updateType == OrganizationUpdateType.locale:
                     assert isinstance(details, str) and ("de" in details or "en" in details), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str or locale string was wrong"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.locale] = details
@@ -1119,9 +1139,11 @@ class ProfileManagementOrganization(ProfileManagementBase):
                         response = handleTooManyRequestsError( lambda : requests.patch(f'{baseURL}/{auth0.auth0Config["APIPaths"]["APIBasePath"]}/{auth0.auth0Config["APIPaths"]["organizations"]}/{orgID}', headers=headers, data=payload) )
                         if isinstance(response, Exception):
                             raise response
+                        
                 elif updateType == OrganizationUpdateType.taxID:
                     assert isinstance(details, str), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of str"
                     existingInfo[OrganizationDescription.details][OrganizationDetails.taxID] = details
+
                 elif updateType == OrganizationUpdateType.notifications:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     if ProfileClasses.organization in details:
@@ -1144,6 +1166,13 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     raise Exception("updateType not defined")
                 
             affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], updatedWhen=updated)
+            
+            if len(sendSignals) > 0:
+                for key in sendSignals:
+                    match key:
+                        case OrganizationDescription.supportedServices:
+                            signals.signalDispatcher.orgaServiceDetails.send(None, orgaID=existingObj.hashedID, details=sendSignals[key])
+            
             return None
         except (Exception) as error:
             logger.error(f"Error updating organization details: {str(error)}")
@@ -1151,7 +1180,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
         
     ##############################################
     @staticmethod
-    def deleteContent(session, updates, orgaID=""):
+    def deleteContent(session, updates, orgaID=""): 
         """
         Delete certain orga details.
 
@@ -1173,6 +1202,9 @@ class ProfileManagementOrganization(ProfileManagementBase):
         try:
             existingObj = Organization.objects.get(subID=orgID)
             existingInfo = {OrganizationDescription.details: existingObj.details, OrganizationDescription.supportedServices: existingObj.supportedServices, OrganizationDescription.name: existingObj.name}
+            
+            sendSignals = {}
+            
             for updateType in updates:
                 details = updates[updateType]
                 
@@ -1181,12 +1213,18 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     del existingInfo[OrganizationDescription.details][OrganizationDetails.addresses][details]
                 elif updateType == OrganizationUpdateType.supportedServices:
                     assert isinstance(details, list), f"deleteContent failed because the wrong type for details was given: {type(details)} instead of list"
-                    for serviceNumber in details:
-                        del existingInfo[OrganizationDescription.supportedServices][serviceNumber]
+                    # deletion not necessary because the array is set in the changes function without the not set services
+                    existingInfo[OrganizationDescription.supportedServices] = [elem for elem in existingInfo[OrganizationDescription.supportedServices] if elem not in details]
+                    sendSignals[OrganizationDescription.supportedServices] = details
                 else:
                     raise Exception("updateType not defined")
             
             affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], updatedWhen=updated)
+            
+            for key in sendSignals:
+                match key:
+                    case OrganizationUpdateType.supportedServices:
+                        signals.signalDispatcher.orgaServiceDeletion.send(None, orgaID=existingObj.hashedID, details=sendSignals[key])
             return None
         except (Exception) as error:
             logger.error(f"Error deleting orga details: {str(error)}")
@@ -1194,7 +1232,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def getClientID(session):
+    def getClientID(session): # deprecated
         """
         Get ID of current client (can be organization or user)
         :param session: request session
@@ -1207,7 +1245,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
 
     ##############################################
     @staticmethod
-    def getSupportedServices(orgaID:str) -> list[int]:
+    def getSupportedServices(orgaID:str) -> list[int]: 
         """
         Get a list of all services of the organization
 

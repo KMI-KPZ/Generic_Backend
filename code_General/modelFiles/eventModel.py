@@ -48,7 +48,7 @@ class Event(models.Model):
     class Meta:
         ordering = ["createdWhen"]
         indexes = [
-            models.Index(fields=["userHashedID"], name="event_user_idx")
+            models.Index(fields=["userHashedID"], name="GB_event_user_idx")
         ]
 
     ##################################################
