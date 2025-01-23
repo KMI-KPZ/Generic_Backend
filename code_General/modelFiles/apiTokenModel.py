@@ -24,6 +24,7 @@ class APITokenDescription(StrEnumExactlyAsDefined):
     """
     user = enum.auto()
     organization = enum.auto()
+    admin = enum.auto()
     token = enum.auto()
     createdWhen = enum.auto()
 
@@ -35,11 +36,13 @@ class APIToken(models.Model):
     
     :user: User linked to that token...
     :organization: ... or organization linked to that token
+    :admin: Boolean whether the user is an admin or not
     :token: Created url friendly token for that user
     :createdWhen: Automatically assigned date and time(UTC+0) when the entry is created
     """
     user = models.OneToOneField("User", on_delete=models.CASCADE, blank=True, null=True)
     organization = models.OneToOneField("Organization", on_delete=models.CASCADE, blank=True, null=True)
+    admin = models.BooleanField(default=False)
     token = models.CharField(max_length=512, primary_key=True)
     createdWhen = models.DateTimeField(auto_now_add=True)
 
@@ -51,13 +54,14 @@ class APIToken(models.Model):
 
     ###################################################
     def __str__(self):
-        return self.user + " " + self.organization + " " + self.token + " " + str(self.createdWhen)
+        return self.user.__str__ + " " + self.organization.__str__ + " " + str(self.admin) + " " +  self.token + " " + str(self.createdWhen)
 
     ###################################################
     def toDict(self):
         return {
             APITokenDescription.user: self.user,
             APITokenDescription.organization: self.organization,
+            APITokenDescription.admin: self.admin,
             APITokenDescription.token: self.token,
             APITokenDescription.createdWhen: str(self.createdWhen)
         }
