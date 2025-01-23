@@ -32,7 +32,7 @@ def loginViaAPITokenIfAvailable():
             if "api/" in request.path:
                 if "HTTP_AUTHORIZATION" in request.META:
                     token = request.META["HTTP_AUTHORIZATION"]
-                    isOrganization, objectAssWithToken = checkAPITokenAndRetrieveUserObject(token)
+                    isOrganization, objectAssWithToken, adminOrNot = checkAPITokenAndRetrieveUserObject(token)
                     if objectAssWithToken != None:
                         currentTime = datetime.datetime.now()
                         request.session[SessionContent.INITIALIZED] = True
@@ -57,6 +57,9 @@ def loginViaAPITokenIfAvailable():
                             request.session[SessionContent.USER_PERMISSIONS] = {"processes:read": "", "processes:messages": "","processes:edit": "","processes:delete": "","processes:files": ""}
                             request.session[SessionContent.usertype] = "user"
                             request.session[SessionContent.PG_PROFILE_CLASS] = "user"
+                            if adminOrNot:
+                                request.session[SessionContent.USER_PERMISSIONS] = {"processes:read": "", "processes:messages": "","processes:edit": "","processes:delete": "","processes:files": "", "orga:edit": "", "orga:read": "", "resources:read": "", "resources:edit": ""}
+                                request.session[SessionContent.usertype] = "admin"
 
                         request.session["user"]["tokenExpiresOn"] = str(datetime.datetime(currentTime.year+1, currentTime.month, currentTime.day, currentTime.hour, currentTime.minute, currentTime.second, tzinfo=datetime.timezone.utc))
                         request.session.save()
