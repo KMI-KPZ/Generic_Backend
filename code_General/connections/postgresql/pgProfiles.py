@@ -706,7 +706,7 @@ class ProfileManagementUser(ProfileManagementBase):
             result.details[UserDetails.statistics][UserStatistics.lastLogin] = str(timezone.now())
             result.details[UserDetails.statistics][UserStatistics.numberOfLoginsTotal] += 1
             result.save()
-            signals.signalDispatcher.userUpdated.send(None, userID=result.hashedID, session=session)
+            signals.signalDispatcher.userCreated.send(None, userID=result.hashedID, session=session)
             return result
 
         except (ObjectDoesNotExist) as error:
@@ -725,7 +725,7 @@ class ProfileManagementUser(ProfileManagementBase):
                 createdUser.details[UserDetails.statistics]= {UserStatistics.lastLogin: str(timezone.now()), UserStatistics.numberOfLoginsTotal: 1, UserStatistics.locationOfLastLogin: ""}
                 createdUser.details[UserDetails.locale] = userLocale
                 createdUser.save()
-                signals.signalDispatcher.userUpdated.send(None, userID=idHash, session=session)
+                signals.signalDispatcher.userCreated.send(None, userID=idHash, session=session)
 
                 return createdUser
             except (Exception) as error:
@@ -785,25 +785,30 @@ class ProfileManagementUser(ProfileManagementBase):
                             raise response
                 elif updateType == UserUpdateType.address:
                     assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
-                    setToStandardAddress = details["standard"] # if the new address will be the standard address
+                    for contentKey in details:
+                        if contentKey not in Addresses.__members__:
+                            raise Exception(f"Unknown key {contentKey} in address!")
+                    setToStandardAddress = details[Addresses.standard] # if the new address will be the standard address
                     addressAlreadyExists = False
                     newContentInDB = {}
                     if UserDetails.addresses in existingInfo[UserDescription.details]: # add old content
                         newContentInDB = existingInfo[UserDescription.details][UserDetails.addresses] 
                         for key in newContentInDB:
-                            if "id" in details and details["id"] == newContentInDB[key]["id"]:
+                            if Addresses.id.value in details and details[Addresses.id] == newContentInDB[key][Addresses.id]:
                                 addressAlreadyExists = True
                             if setToStandardAddress:
-                                newContentInDB[key]["standard"] = False
+                                newContentInDB[key][Addresses.standard] = False
+
                     if addressAlreadyExists == False:
                         # add new content
                         idForNewAddress = crypto.generateURLFriendlyRandomString()
-                        details["id"] = idForNewAddress
+                        details[Addresses.id] = idForNewAddress
                     else:
                         # overwrite existing entry
-                        idForNewAddress = details["id"]
+                        idForNewAddress = details[Addresses.id]
                     newContentInDB[idForNewAddress] = details
                     existingInfo[UserDescription.details][UserDetails.addresses] = newContentInDB
+
                 elif updateType == UserUpdateType.locale:
                     assert isinstance(details, str) and ("en" in details or "de" in details), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str or the locale didn't contain de or en"
                     existingInfo[UserDescription.details][UserDetails.locale] = details
@@ -849,6 +854,8 @@ class ProfileManagementUser(ProfileManagementBase):
                     raise Exception("updateType not defined")
             
             affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
+            signals.signalDispatcher.userUpdated.send(None, userID=existingObj.hashedID, session=session)
+
             return None
         except (Exception) as error:
             logger.error(f"Error updating user details: {str(error)}")
@@ -992,7 +999,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
             # first get, then create
             resultObj = Organization.objects.get(subID=orgaID)
             resultObj = resultObj.updateDetails()
-            signals.signalDispatcher.orgaUpdated.send(None, orgaID=resultObj.hashedID)
+            signals.signalDispatcher.orgaCreated.send(None, orgaID=resultObj.hashedID)
             return resultObj
         except (ObjectDoesNotExist) as error:
             try:
@@ -1002,7 +1009,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                 supportedServices = [0]
                 resultObj = Organization.objects.create(subID=orgaID, hashedID=idHash, supportedServices=supportedServices, name=orgaName, details={}, uri=uri, updatedWhen=updated) 
                 resultObj = resultObj.initializeDetails()
-                signals.signalDispatcher.orgaUpdated.send(None, orgaID=idHash)
+                signals.signalDispatcher.orgaCreated.send(None, orgaID=idHash)
                 return resultObj
             except (Exception) as error:
                 logger.error(f"Error adding organization: {str(error)}")
@@ -1061,24 +1068,27 @@ class ProfileManagementOrganization(ProfileManagementBase):
                 
                 elif updateType == OrganizationUpdateType.address:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
-                    setToStandardAddress = details["standard"] # if the new address will be the standard address
+                    for contentKey in details:
+                        if contentKey not in Addresses.__members__:
+                            raise Exception(f"Unknown key {contentKey} in address!")
+                    setToStandardAddress = details[Addresses.standard] # if the new address will be the standard address
                     addressAlreadyExists = False
                     newContentInDB = {}
                     if OrganizationDetails.addresses in existingInfo[OrganizationDescription.details]: # add old content
                         newContentInDB = existingInfo[OrganizationDescription.details][OrganizationDetails.addresses]
                         for key in newContentInDB:
-                            if "id" in details and details["id"] == newContentInDB[key]["id"]:
+                            if Addresses.id in details and details[Addresses.id] == newContentInDB[key][Addresses.id]:
                                 addressAlreadyExists = True
                             if setToStandardAddress:
-                                newContentInDB[key]["standard"] = False
+                                newContentInDB[key][Addresses.standard] = False
 
                     if addressAlreadyExists == False:
                         # add new content
                         idForNewAddress = crypto.generateURLFriendlyRandomString()
-                        details["id"] = idForNewAddress
+                        details[Addresses.id] = idForNewAddress
                     else:
                         # overwrite existing entry
-                        idForNewAddress = details["id"]
+                        idForNewAddress = details[Addresses.id]
                     newContentInDB[idForNewAddress] = details
                     existingInfo[OrganizationDescription.details][OrganizationDetails.addresses] = newContentInDB
                 
@@ -1166,7 +1176,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     raise Exception("updateType not defined")
                 
             affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], updatedWhen=updated)
-            
+            signals.signalDispatcher.orgaUpdated.send(None, orgaID=existingObj.hashedID, session=session)
             if len(sendSignals) > 0:
                 for key in sendSignals:
                     match key:

@@ -149,3 +149,21 @@ class EventsDescriptionGeneric(StrEnumExactlyAsDefined):
     content = enum.auto()
     createdWhen = enum.auto()
     additionalInformation = enum.auto()
+
+##################################################
+# Enum for addresses of users
+class Addresses(StrEnumExactlyAsDefined):
+    """
+    What do addresses consist of?
+
+    """
+    id = enum.auto()
+    country = enum.auto()
+    city = enum.auto()
+    zipcode = enum.auto()
+    houseNumber = enum.auto()
+    street = enum.auto()
+    company = enum.auto()
+    standard = enum.auto()
+    lastName = enum.auto()
+    firstName = enum.auto()

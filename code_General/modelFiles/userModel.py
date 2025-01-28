@@ -42,7 +42,6 @@ class UserDetails(StrEnumExactlyAsDefined):
     notificationSettings = enum.auto()
     statistics = enum.auto()
 
-
 ###################################################
 # Enum for notification settings for users
 class UserNotificationSettings(StrEnumExactlyAsDefined):

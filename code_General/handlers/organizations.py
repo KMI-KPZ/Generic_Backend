@@ -93,6 +93,7 @@ class SReqAddressOrga(serializers.Serializer):
     company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
     lastName = serializers.CharField(max_length=200)
     firstName = serializers.CharField(max_length=200)
+    coordinates = serializers.ListField(child=serializers.FloatField(), required=False)
 #######################################################
 class SReqNotificationsContentOrga(serializers.Serializer):
     event = serializers.BooleanField(required=False)
