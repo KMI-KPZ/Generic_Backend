@@ -116,7 +116,7 @@ class ProfileManagementBase():
             try:
                 obj = Organization.objects.get(subID=orgaID).toDict()
             except (Exception) as error:
-                logger.error(f"Error getting organization: {str(error)}")
+                logger.error(f"Error getting organization via session: {str(error)}")
                 return error
             return obj
         if hashedID != "":
@@ -124,7 +124,7 @@ class ProfileManagementBase():
             try:
                 obj = Organization.objects.get(hashedID=hashedID).toDict()
             except (Exception) as error:
-                logger.error(f"Error getting organization: {str(error)}")
+                logger.error(f"Error getting organization via hashID {hashedID}: {str(error)}")
                 return error
             return obj
         logger.error(f"Error getting organization because no parameter was given!")
