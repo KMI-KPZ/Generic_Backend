@@ -854,7 +854,7 @@ class ProfileManagementUser(ProfileManagementBase):
                     raise Exception("updateType not defined")
             
             affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
-            signals.signalDispatcher.userUpdated.send(None, userID=existingObj.hashedID, session=session)
+            signals.signalDispatcher.userUpdated.send(None, userID=existingObj.hashedID, session=session, updates=updates)
 
             return None
         except (Exception) as error:
@@ -1176,7 +1176,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     raise Exception("updateType not defined")
                 
             affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], updatedWhen=updated)
-            signals.signalDispatcher.orgaUpdated.send(None, orgaID=existingObj.hashedID, session=session)
+            signals.signalDispatcher.orgaUpdated.send(None, orgaID=existingObj.hashedID, session=session, updates=updates)
             if len(sendSignals) > 0:
                 for key in sendSignals:
                     match key:
