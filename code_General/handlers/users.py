@@ -238,7 +238,7 @@ def updateDetails(request:Request):
         if not inSerializer.is_valid():
             message = f"Verification failed in {updateDetails.cls.__name__}"
             exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
+            loggerError.error(message)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
@@ -311,7 +311,7 @@ def updateDetails(request:Request):
 #         if not inSerializer.is_valid():
 #             message = f"Creating address failed in {createAddress.cls.__name__}"
 #             exception = "Creation of address failed"
-#             logger.error(message)
+#             loggerError.error(message)
 #             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
 #             if exceptionSerializer.is_valid():
 #                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
@@ -392,7 +392,7 @@ def updateDetails(request:Request):
 #         if not inSerializer.is_valid():
 #             message = f"Updating address failed in {updateAddress.cls.__name__}"
 #             exception = "Updating the address failed"
-#             logger.error(message)
+#             loggerError.error(message)
 #             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
 #             if exceptionSerializer.is_valid():
 #                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
