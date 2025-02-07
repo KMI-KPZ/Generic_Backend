@@ -345,12 +345,15 @@ class ProfileManagementBase():
             if hashedID == "SYSTEM":
                 return "SYSTEM"
             ObjOfUserOrOrga = Organization.objects.get(hashedID=hashedID)
+            return ObjOfUserOrOrga.name
         except (ObjectDoesNotExist) as error:
             ObjOfUserOrOrga = User.objects.get(hashedID=hashedID)
+            return ObjOfUserOrOrga.name
         except (Exception) as error:
             logger.error(f"Error getting user via hash: {str(error)}")
+            return ""
 
-        return ObjOfUserOrOrga.name
+        
 
     ##############################################
     @staticmethod
