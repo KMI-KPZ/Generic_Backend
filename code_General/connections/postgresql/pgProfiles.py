@@ -298,8 +298,15 @@ class ProfileManagementBase():
             IDOfUserOrOrga = Organization.objects.get(hashedID=hashedID).subID
             return IDOfUserOrOrga
         except (ObjectDoesNotExist) as error:
-            IDOfUserOrOrga = User.objects.get(hashedID=hashedID).subID
-            return IDOfUserOrOrga
+            try:
+                IDOfUserOrOrga = User.objects.get(hashedID=hashedID).subID
+                return IDOfUserOrOrga
+            except (ObjectDoesNotExist) as error:
+                logger.error(f"Error getting user key via hash: {str(error)}")
+                return error
+            except (Exception) as error:
+                logger.error(f"Error getting user key via hash: {str(error)}")
+                return error
         except (Exception) as error:
             logger.error(f"Error getting user key via hash: {str(error)}")
             return error
@@ -321,8 +328,13 @@ class ProfileManagementBase():
         try:
             ObjOfUserOrOrga = Organization.objects.get(hashedID=hashedID)
         except (ObjectDoesNotExist) as error:
-            ObjOfUserOrOrga = User.objects.get(hashedID=hashedID)
-            organizationOrNot = False
+            try:
+                ObjOfUserOrOrga = User.objects.get(hashedID=hashedID)
+                organizationOrNot = False
+            except (ObjectDoesNotExist) as error:
+                logger.error(f"Error getting user via hash: {str(error)}")
+            except (Exception) as error:
+                logger.error(f"Error getting user via hash: {str(error)}")
         except (Exception) as error:
             logger.error(f"Error getting user via hash: {str(error)}")
 
@@ -347,8 +359,15 @@ class ProfileManagementBase():
             ObjOfUserOrOrga = Organization.objects.get(hashedID=hashedID)
             return ObjOfUserOrOrga.name
         except (ObjectDoesNotExist) as error:
-            ObjOfUserOrOrga = User.objects.get(hashedID=hashedID)
-            return ObjOfUserOrOrga.name
+            try:
+                ObjOfUserOrOrga = User.objects.get(hashedID=hashedID)
+                return ObjOfUserOrOrga.name
+            except (ObjectDoesNotExist) as error:
+                logger.error(f"Error getting user via hash: {str(error)}")
+                return ""
+            except (Exception) as error:
+                logger.error(f"Error getting user via hash: {str(error)}")
+                return ""
         except (Exception) as error:
             logger.error(f"Error getting user via hash: {str(error)}")
             return ""
@@ -627,6 +646,7 @@ class ProfileManagementBase():
             return False
         except Exception as error:
             logger.error(f"Error checking whether ID belongs to orga: {str(error)}")
+            return False
     
     ##############################################
     @staticmethod
@@ -975,12 +995,13 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     userToBeAdded.details[UserDetails.notificationSettings][ProfileClasses.user][key] = result.details[OrganizationDetails.notificationSettings][ProfileClasses.organization][key]
                 userToBeAdded.save()
             result.save()
+            return True
         except (ObjectDoesNotExist) as error:
             logger.error(f"Error adding user to organization, organization does not exist: {str(error)}")
-
             return False
-
-        return True
+        except (Exception) as error:
+            logger.error(f"Error adding user to organization: {str(error)}")
+            return False
 
     ##############################################
     @staticmethod
