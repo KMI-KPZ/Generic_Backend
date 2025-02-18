@@ -115,7 +115,7 @@ class SResOrgaDetails(serializers.Serializer):
     taxID = serializers.CharField(max_length=200, required=False, allow_blank=True)
     services = serializers.DictField(required=False, allow_empty=True)
     resilienceScore = serializers.ListField(required=False) # SKI specific
-    maturityLevel = serializers.IntegerField(required=False)#serializers.ListField(required=False) # SKI specific
+    maturityLevel =  serializers.ListField(required=False) # SKI specific
 #######################################################
 class SResOrga(serializers.Serializer):
     hashedID = serializers.CharField(max_length=200)

@@ -5,10 +5,11 @@ Silvio Weging 2023
 
 Contains: Services for database calls to manage a user/organization profile
 """
-from django.conf import settings
-import types, json, enum, re, requests
+
+import types, json, enum, re, requests, copy
 
 from django.utils import timezone
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 from ...connections import auth0
@@ -1041,8 +1042,9 @@ class ProfileManagementOrganization(ProfileManagementBase):
         try:
             # first get, then create
             resultObj = Organization.objects.get(subID=orgaID)
+            oldDetails = copy.deepcopy(resultObj.details)
             resultObj = resultObj.updateDetails()
-            signals.signalDispatcher.orgaCreated.send(None, orgaID=resultObj.hashedID)
+            signals.signalDispatcher.orgaCreated.send(None, orgaID=resultObj.hashedID, oldDetails=oldDetails)
             return resultObj
         except (ObjectDoesNotExist) as error:
             try:
@@ -1052,7 +1054,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                 supportedServices = [0]
                 resultObj = Organization.objects.create(subID=orgaID, hashedID=idHash, supportedServices=supportedServices, name=orgaName, details={}, uri=uri, updatedWhen=updated) 
                 resultObj = resultObj.initializeDetails()
-                signals.signalDispatcher.orgaCreated.send(None, orgaID=idHash)
+                signals.signalDispatcher.orgaCreated.send(None, orgaID=idHash, oldDetails=resultObj.details)
                 return resultObj
             except (Exception) as error:
                 logger.error(f"Error adding organization: {str(error)}")
