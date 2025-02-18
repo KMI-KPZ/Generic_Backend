@@ -600,6 +600,25 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
+    def getOrganisationWithSupportedService(serviceType:int) -> list[Organization]: 
+        """
+        Get all Organizations with a certain service.
+
+        :param serviceType: The service type
+        :type serviceType: str
+        :return: List of organizations
+        :rtype: List
+            
+        """
+        try:
+            outList = Organization.objects.filter(supportedServices__contains=[serviceType])
+            return outList
+        except Exception as e:
+            logger.error(f"Error getting orga with supported service: {str(e)}")
+            return []
+    
+    ##############################################
+    @staticmethod
     def checkIfUserIsInOrganization(session=None, hashID=""): 
         """
         Check if a user is in an organization or not. Can be used to decide if additional code specific for orgas should be run
