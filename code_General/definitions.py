@@ -79,6 +79,7 @@ class FileObjectContent(StrEnumExactlyAsDefined):
     size = enum.auto()
     type = enum.auto()
     origin = enum.auto()
+    deleteFromStorage = enum.auto()
 
 ###################################################
 # File object content as enum

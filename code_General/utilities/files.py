@@ -10,6 +10,26 @@ import os
 from io import BytesIO
 
 from django.http import FileResponse
+from Generic_Backend.code_General.connections import s3
+from Generic_Backend.code_General.definitions import FileObjectContent
+
+#######################################################
+def deleteFileHelper(fileContent: dict) -> None:
+    """
+    Deletes the file from either the remote or the local storage if so desired and flagged
+
+    :param fileContent: the file content object
+    :type fileContent: dict
+    :return: None
+    :rtype: None
+    
+    """
+    if FileObjectContent.deleteFromStorage not in fileContent or fileContent[FileObjectContent.deleteFromStorage]:
+        if FileObjectContent.isFile not in fileContent or fileContent[FileObjectContent.isFile]:
+            if fileContent[FileObjectContent.remote]:
+                s3.manageRemoteS3.deleteFile(fileContent[FileObjectContent.path])
+            else:
+                s3.manageLocalS3.deleteFile(fileContent[FileObjectContent.path])
 
 #######################################################
 def syncBytesioIterator(bytesio: BytesIO, chunk_size: int = 8192):
