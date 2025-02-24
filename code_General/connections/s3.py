@@ -131,7 +131,7 @@ class ManageS3():
 
 
     #######################################################
-    def downloadFile(self, fileKey) -> tuple[BytesIO, bool]:
+    def downloadFile(self, fileKey, decrypt:bool=True) -> tuple[BytesIO, bool]:
         """
         Download a binary in-memory file to storage.
 
@@ -151,7 +151,7 @@ class ManageS3():
         output.seek(0)
         if output.getbuffer().nbytes == 0: # is empty so no file has been downloaded
             return (output, False)
-        if self.local is False: # remote aws files are encrypted
+        if self.local is False and decrypt: # remote aws files are encrypted
             decrypted_file = crypto.decryptFileWithAES(self.aesEncryptionKey, output)
             return (decrypted_file, True)
         else:
