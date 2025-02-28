@@ -283,7 +283,7 @@ def checkIfNestedKeyExists(dictionary:dict, *keys) -> bool:
     
     """
     if not isinstance(dictionary, dict):
-        raise AttributeError('checkIfNestedKeyExists() expects dict as first argument.')
+        raise AttributeError(f'checkIfNestedKeyExists() expects dict as first argument.Got {type(dictionary)} {dictionary}')
     if len(keys) == 0:
         raise AttributeError('checkIfNestedKeyExists() expects at least two arguments, one given.')
 

@@ -93,6 +93,7 @@ class SReqAddressOrga(serializers.Serializer):
     company = serializers.CharField(max_length=200, required=False, default="", allow_blank=True)
     lastName = serializers.CharField(max_length=200)
     firstName = serializers.CharField(max_length=200)
+    coordinates = serializers.ListField(child=serializers.FloatField(), required=False)
 #######################################################
 class SReqNotificationsContentOrga(serializers.Serializer):
     event = serializers.BooleanField(required=False)
@@ -113,6 +114,8 @@ class SResOrgaDetails(serializers.Serializer):
     priorities = serializers.DictField(child=SReqPriorities(), required=False)
     taxID = serializers.CharField(max_length=200, required=False, allow_blank=True)
     services = serializers.DictField(required=False, allow_empty=True)
+    resilienceScore = serializers.ListField(required=False) # SKI specific
+    maturityLevel =  serializers.ListField(required=False) # SKI specific
 #######################################################
 class SResOrga(serializers.Serializer):
     hashedID = serializers.CharField(max_length=200)
@@ -232,7 +235,7 @@ def updateDetailsOfOrganization(request:Request):
         if not inSerializer.is_valid():
             message = f"Verification failed in {updateDetailsOfOrganization.cls.__name__}"
             exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
+            loggerError.error(message)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
@@ -355,7 +358,7 @@ def organizationsGetInviteLink(request:Request):
         if not inSerializer.is_valid():
             message = f"Verification failed in {organizationsGetInviteLink.cls.__name__}"
             exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
+            loggerError.error(message)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
@@ -422,7 +425,7 @@ def organizationsAddUser(request:Request):
         if not inSerializer.is_valid():
             message = f"Verification failed in {organizationsAddUser.cls.__name__}"
             exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
+            loggerError.error(message)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
@@ -746,7 +749,7 @@ def organizationsCreateRole(request:Request):
         if not inSerializer.is_valid():
             message = f"Verification failed in {organizationsCreateRole.cls.__name__}"
             exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
+            loggerError.error(message)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
@@ -814,7 +817,7 @@ def organizationsAssignRole(request:Request):
         if not inSerializer.is_valid():
             message = f"Verification failed in {organizationsAssignRole.cls.__name__}"
             exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
+            loggerError.error(message)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
@@ -879,7 +882,7 @@ def organizationsRemoveRole(request:Request):
         if not inSerializer.is_valid():
             message = f"Verification failed in {organizationsRemoveRole.cls.__name__}"
             exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
+            loggerError.error(message)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
@@ -951,7 +954,7 @@ def organizationsEditRole(request:Request):
         if not inSerializer.is_valid():
             message = f"Verification failed in {organizationsEditRole.cls.__name__}"
             exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
+            loggerError.error(message)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
@@ -1141,7 +1144,7 @@ def organizationsSetPermissionsForRole(request:Request):
         if not inSerializer.is_valid():
             message = f"Verification failed in {organizationsSetPermissionsForRole.cls.__name__}"
             exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
+            loggerError.error(message)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
@@ -1342,7 +1345,7 @@ def organizationsCreateNewOrganization(request:Request):
         if not inSerializer.is_valid():
             message = f"Verification failed in {organizationsCreateNewOrganization.cls.__name__}"
             exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
+            loggerError.error(message)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)

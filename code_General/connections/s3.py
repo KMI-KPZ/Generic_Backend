@@ -86,7 +86,7 @@ class ManageS3():
         return True
     
     #######################################################
-    def uploadFile(self, fileKey, file):
+    def uploadFile(self, fileKey, file, isPublicFile:bool = False):
         """
         Upload a binary in-memory file to storage.
 
@@ -103,9 +103,12 @@ class ManageS3():
 
         file.seek(0) # because read() is called and has to start at the front of the file
         fileToBeUploaded = file
-        if self.local is False:
-            fileToBeUploaded = crypto.encryptFileWithAES(self.aesEncryptionKey, file) # encrypt file for remote AWS
+        if not isPublicFile:
+            if self.local is False:
+                fileToBeUploaded = crypto.encryptFileWithAES(self.aesEncryptionKey, file) # encrypt file for remote AWS
         response = self.s3_client.upload_fileobj(fileToBeUploaded, self.bucketName, fileKey)
+        if isPublicFile:
+            self.s3_client.put_object_acl(ACL='public-read', Bucket=self.bucketName, Key=fileKey)
         # TODO if response...
 
         return True
@@ -128,7 +131,7 @@ class ManageS3():
 
 
     #######################################################
-    def downloadFile(self, fileKey) -> tuple[BytesIO, bool]:
+    def downloadFile(self, fileKey, decrypt:bool=True) -> tuple[BytesIO, bool]:
         """
         Download a binary in-memory file to storage.
 
@@ -148,7 +151,7 @@ class ManageS3():
         output.seek(0)
         if output.getbuffer().nbytes == 0: # is empty so no file has been downloaded
             return (output, False)
-        if self.local is False: # remote aws files are encrypted
+        if self.local is False and decrypt: # remote aws files are encrypted
             decrypted_file = crypto.decryptFileWithAES(self.aesEncryptionKey, output)
             return (decrypted_file, True)
         else:
@@ -275,4 +278,5 @@ class ManageS3():
 
 manageLocalS3 = ManageS3(settings.AES_ENCRYPTION_KEY,'us-east-1','files',settings.LOCALSTACK_ENDPOINT, settings.LOCALSTACK_ACCESS_KEY, settings.LOCALSTACK_SECRET, True, "")
 manageRemoteS3 = ManageS3(settings.AES_ENCRYPTION_KEY,settings.AWS_LOCATION, settings.AWS_BUCKET_NAME, f"https://{settings.AWS_BUCKET_NAME}.{settings.AWS_REGION_NAME}.{settings.AWS_S3_ENDPOINT_URL}", settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, False, f"https://{settings.AWS_BUCKET_NAME}.{settings.AWS_REGION_NAME}.{settings.AWS_CDN_ENDPOINT}/")
+manageStaticsS3 = ManageS3(settings.AES_ENCRYPTION_KEY,settings.AWS_STATICS_LOCATION, settings.AWS_STATICS_BUCKET_NAME, f"https://{settings.AWS_STATICS_LOCATION}.{settings.AWS_REGION_NAME}.{settings.AWS_S3_ENDPOINT_URL}", settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, False, f"https://{settings.AWS_STATICS_LOCATION}.{settings.AWS_REGION_NAME}.{settings.AWS_CDN_ENDPOINT}/")
 manageRemoteS3Buckets = ManageS3(settings.AES_ENCRYPTION_KEY,settings.AWS_LOCATION, settings.AWS_BUCKET_NAME, f"https://{settings.AWS_REGION_NAME}.{settings.AWS_S3_ENDPOINT_URL}", settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, False, f"https://{settings.AWS_BUCKET_NAME}.{settings.AWS_REGION_NAME}.{settings.AWS_CDN_ENDPOINT}/")

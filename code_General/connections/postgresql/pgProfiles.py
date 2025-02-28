@@ -5,10 +5,11 @@ Silvio Weging 2023
 
 Contains: Services for database calls to manage a user/organization profile
 """
-from django.conf import settings
-import types, json, enum, re, requests
+
+import types, json, enum, re, requests, copy
 
 from django.utils import timezone
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 from ...connections import auth0
@@ -116,7 +117,7 @@ class ProfileManagementBase():
             try:
                 obj = Organization.objects.get(subID=orgaID).toDict()
             except (Exception) as error:
-                logger.error(f"Error getting organization: {str(error)}")
+                logger.error(f"Error getting organization via session: {str(error)}")
                 return error
             return obj
         if hashedID != "":
@@ -124,7 +125,7 @@ class ProfileManagementBase():
             try:
                 obj = Organization.objects.get(hashedID=hashedID).toDict()
             except (Exception) as error:
-                logger.error(f"Error getting organization: {str(error)}")
+                logger.error(f"Error getting organization via hashID {hashedID}: {str(error)}")
                 return error
             return obj
         logger.error(f"Error getting organization because no parameter was given!")
@@ -298,8 +299,15 @@ class ProfileManagementBase():
             IDOfUserOrOrga = Organization.objects.get(hashedID=hashedID).subID
             return IDOfUserOrOrga
         except (ObjectDoesNotExist) as error:
-            IDOfUserOrOrga = User.objects.get(hashedID=hashedID).subID
-            return IDOfUserOrOrga
+            try:
+                IDOfUserOrOrga = User.objects.get(hashedID=hashedID).subID
+                return IDOfUserOrOrga
+            except (ObjectDoesNotExist) as error:
+                logger.error(f"Error getting user key via hash: {str(error)}")
+                return error
+            except (Exception) as error:
+                logger.error(f"Error getting user key via hash: {str(error)}")
+                return error
         except (Exception) as error:
             logger.error(f"Error getting user key via hash: {str(error)}")
             return error
@@ -321,8 +329,13 @@ class ProfileManagementBase():
         try:
             ObjOfUserOrOrga = Organization.objects.get(hashedID=hashedID)
         except (ObjectDoesNotExist) as error:
-            ObjOfUserOrOrga = User.objects.get(hashedID=hashedID)
-            organizationOrNot = False
+            try:
+                ObjOfUserOrOrga = User.objects.get(hashedID=hashedID)
+                organizationOrNot = False
+            except (ObjectDoesNotExist) as error:
+                logger.error(f"Error getting user via hash: {str(error)}")
+            except (Exception) as error:
+                logger.error(f"Error getting user via hash: {str(error)}")
         except (Exception) as error:
             logger.error(f"Error getting user via hash: {str(error)}")
 
@@ -345,12 +358,22 @@ class ProfileManagementBase():
             if hashedID == "SYSTEM":
                 return "SYSTEM"
             ObjOfUserOrOrga = Organization.objects.get(hashedID=hashedID)
+            return ObjOfUserOrOrga.name
         except (ObjectDoesNotExist) as error:
-            ObjOfUserOrOrga = User.objects.get(hashedID=hashedID)
+            try:
+                ObjOfUserOrOrga = User.objects.get(hashedID=hashedID)
+                return ObjOfUserOrOrga.name
+            except (ObjectDoesNotExist) as error:
+                logger.error(f"Error getting user via hash: {str(error)}")
+                return ""
+            except (Exception) as error:
+                logger.error(f"Error getting user via hash: {str(error)}")
+                return ""
         except (Exception) as error:
             logger.error(f"Error getting user via hash: {str(error)}")
+            return ""
 
-        return ObjOfUserOrOrga.name
+        
 
     ##############################################
     @staticmethod
@@ -578,6 +601,25 @@ class ProfileManagementBase():
     
     ##############################################
     @staticmethod
+    def getOrganisationWithSupportedService(serviceType:int) -> list[Organization]: 
+        """
+        Get all Organizations with a certain service.
+
+        :param serviceType: The service type
+        :type serviceType: str
+        :return: List of organizations
+        :rtype: List
+            
+        """
+        try:
+            outList = Organization.objects.filter(supportedServices__contains=[serviceType])
+            return outList
+        except Exception as e:
+            logger.error(f"Error getting orga with supported service: {str(e)}")
+            return []
+    
+    ##############################################
+    @staticmethod
     def checkIfUserIsInOrganization(session=None, hashID=""): 
         """
         Check if a user is in an organization or not. Can be used to decide if additional code specific for orgas should be run
@@ -624,6 +666,7 @@ class ProfileManagementBase():
             return False
         except Exception as error:
             logger.error(f"Error checking whether ID belongs to orga: {str(error)}")
+            return False
     
     ##############################################
     @staticmethod
@@ -706,7 +749,7 @@ class ProfileManagementUser(ProfileManagementBase):
             result.details[UserDetails.statistics][UserStatistics.lastLogin] = str(timezone.now())
             result.details[UserDetails.statistics][UserStatistics.numberOfLoginsTotal] += 1
             result.save()
-            signals.signalDispatcher.userUpdated.send(None, userID=result.hashedID, session=session)
+            signals.signalDispatcher.userCreated.send(None, userID=result.hashedID, session=session)
             return result
 
         except (ObjectDoesNotExist) as error:
@@ -725,7 +768,7 @@ class ProfileManagementUser(ProfileManagementBase):
                 createdUser.details[UserDetails.statistics]= {UserStatistics.lastLogin: str(timezone.now()), UserStatistics.numberOfLoginsTotal: 1, UserStatistics.locationOfLastLogin: ""}
                 createdUser.details[UserDetails.locale] = userLocale
                 createdUser.save()
-                signals.signalDispatcher.userUpdated.send(None, userID=idHash, session=session)
+                signals.signalDispatcher.userCreated.send(None, userID=idHash, session=session)
 
                 return createdUser
             except (Exception) as error:
@@ -785,25 +828,30 @@ class ProfileManagementUser(ProfileManagementBase):
                             raise response
                 elif updateType == UserUpdateType.address:
                     assert isinstance(details, dict), f"updateUser failed because the wrong type for details was given: {type(details)} instead of dict"
-                    setToStandardAddress = details["standard"] # if the new address will be the standard address
+                    for contentKey in details:
+                        if contentKey not in Addresses.__members__:
+                            raise Exception(f"Unknown key {contentKey} in address!")
+                    setToStandardAddress = details[Addresses.standard] # if the new address will be the standard address
                     addressAlreadyExists = False
                     newContentInDB = {}
                     if UserDetails.addresses in existingInfo[UserDescription.details]: # add old content
                         newContentInDB = existingInfo[UserDescription.details][UserDetails.addresses] 
                         for key in newContentInDB:
-                            if "id" in details and details["id"] == newContentInDB[key]["id"]:
+                            if Addresses.id.value in details and details[Addresses.id] == newContentInDB[key][Addresses.id]:
                                 addressAlreadyExists = True
                             if setToStandardAddress:
-                                newContentInDB[key]["standard"] = False
+                                newContentInDB[key][Addresses.standard] = False
+
                     if addressAlreadyExists == False:
                         # add new content
                         idForNewAddress = crypto.generateURLFriendlyRandomString()
-                        details["id"] = idForNewAddress
+                        details[Addresses.id] = idForNewAddress
                     else:
                         # overwrite existing entry
-                        idForNewAddress = details["id"]
+                        idForNewAddress = details[Addresses.id]
                     newContentInDB[idForNewAddress] = details
                     existingInfo[UserDescription.details][UserDetails.addresses] = newContentInDB
+
                 elif updateType == UserUpdateType.locale:
                     assert isinstance(details, str) and ("en" in details or "de" in details), f"updateUser failed because the wrong type for details was given: {type(details)} instead of str or the locale didn't contain de or en"
                     existingInfo[UserDescription.details][UserDetails.locale] = details
@@ -849,6 +897,8 @@ class ProfileManagementUser(ProfileManagementBase):
                     raise Exception("updateType not defined")
             
             affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
+            signals.signalDispatcher.userUpdated.send(None, userID=existingObj.hashedID, session=session, updates=updates)
+
             return None
         except (Exception) as error:
             logger.error(f"Error updating user details: {str(error)}")
@@ -965,12 +1015,13 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     userToBeAdded.details[UserDetails.notificationSettings][ProfileClasses.user][key] = result.details[OrganizationDetails.notificationSettings][ProfileClasses.organization][key]
                 userToBeAdded.save()
             result.save()
+            return True
         except (ObjectDoesNotExist) as error:
             logger.error(f"Error adding user to organization, organization does not exist: {str(error)}")
-
             return False
-
-        return True
+        except (Exception) as error:
+            logger.error(f"Error adding user to organization: {str(error)}")
+            return False
 
     ##############################################
     @staticmethod
@@ -991,8 +1042,9 @@ class ProfileManagementOrganization(ProfileManagementBase):
         try:
             # first get, then create
             resultObj = Organization.objects.get(subID=orgaID)
+            oldDetails = copy.deepcopy(resultObj.details)
             resultObj = resultObj.updateDetails()
-            signals.signalDispatcher.orgaUpdated.send(None, orgaID=resultObj.hashedID)
+            signals.signalDispatcher.orgaCreated.send(None, orgaID=resultObj.hashedID, oldDetails=oldDetails)
             return resultObj
         except (ObjectDoesNotExist) as error:
             try:
@@ -1002,7 +1054,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                 supportedServices = [0]
                 resultObj = Organization.objects.create(subID=orgaID, hashedID=idHash, supportedServices=supportedServices, name=orgaName, details={}, uri=uri, updatedWhen=updated) 
                 resultObj = resultObj.initializeDetails()
-                signals.signalDispatcher.orgaUpdated.send(None, orgaID=idHash)
+                signals.signalDispatcher.orgaCreated.send(None, orgaID=idHash, oldDetails=resultObj.details)
                 return resultObj
             except (Exception) as error:
                 logger.error(f"Error adding organization: {str(error)}")
@@ -1061,24 +1113,27 @@ class ProfileManagementOrganization(ProfileManagementBase):
                 
                 elif updateType == OrganizationUpdateType.address:
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
-                    setToStandardAddress = details["standard"] # if the new address will be the standard address
+                    for contentKey in details:
+                        if contentKey not in Addresses.__members__:
+                            raise Exception(f"Unknown key {contentKey} in address!")
+                    setToStandardAddress = details[Addresses.standard] # if the new address will be the standard address
                     addressAlreadyExists = False
                     newContentInDB = {}
                     if OrganizationDetails.addresses in existingInfo[OrganizationDescription.details]: # add old content
                         newContentInDB = existingInfo[OrganizationDescription.details][OrganizationDetails.addresses]
                         for key in newContentInDB:
-                            if "id" in details and details["id"] == newContentInDB[key]["id"]:
+                            if Addresses.id in details and details[Addresses.id] == newContentInDB[key][Addresses.id]:
                                 addressAlreadyExists = True
                             if setToStandardAddress:
-                                newContentInDB[key]["standard"] = False
+                                newContentInDB[key][Addresses.standard] = False
 
                     if addressAlreadyExists == False:
                         # add new content
                         idForNewAddress = crypto.generateURLFriendlyRandomString()
-                        details["id"] = idForNewAddress
+                        details[Addresses.id] = idForNewAddress
                     else:
                         # overwrite existing entry
-                        idForNewAddress = details["id"]
+                        idForNewAddress = details[Addresses.id]
                     newContentInDB[idForNewAddress] = details
                     existingInfo[OrganizationDescription.details][OrganizationDetails.addresses] = newContentInDB
                 
@@ -1166,7 +1221,7 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     raise Exception("updateType not defined")
                 
             affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], updatedWhen=updated)
-            
+            signals.signalDispatcher.orgaUpdated.send(None, orgaID=existingObj.hashedID, session=session, updates=updates)
             if len(sendSignals) > 0:
                 for key in sendSignals:
                     match key:

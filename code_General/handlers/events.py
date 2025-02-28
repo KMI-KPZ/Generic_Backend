@@ -173,7 +173,7 @@ def createEvent(request:Request):
         if not inSerializer.is_valid():
             message = f"Verification failed in {createEvent.cls.__name__}"
             exception = f"Verification failed {inSerializer.errors}"
-            logger.error(message)
+            loggerError.error(message)
             exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
             if exceptionSerializer.is_valid():
                 return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)

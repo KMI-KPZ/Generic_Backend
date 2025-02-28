@@ -78,7 +78,7 @@ def getUserKeyWOSC(session=None, uID=None): # deprecated
             userID = uID
         userID = re.sub(r"[^a-zA-Z0-9]", "", userID)
     except (Exception) as error:
-        logger.error(f"Error getting user key WOSC: {str(error)}")
+        loggerError.error(f"Error getting user key WOSC: {str(error)}")
 
     return userID
 
@@ -98,7 +98,7 @@ def getUserKey(session):
     try:
         userID = session["user"]["userinfo"]["sub"]
     except (Exception) as error:
-        logger.error(f"Error getting user key: {str(error)}")
+        loggerError.error(f"Error getting user key: {str(error)}")
 
     return userID
 

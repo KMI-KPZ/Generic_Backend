@@ -37,5 +37,5 @@ def logicForSendContactForm(validatedInput):
         return (result, None, 200)
     
     except Exception as e:
-        logger.error(f"Error in {logicForSendContactForm.__name__}: {e}")
+        loggerError.error(f"Error in {logicForSendContactForm.__name__}: {e}")
         return (None, e, 500)

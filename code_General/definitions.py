@@ -79,6 +79,7 @@ class FileObjectContent(StrEnumExactlyAsDefined):
     size = enum.auto()
     type = enum.auto()
     origin = enum.auto()
+    deleteFromStorage = enum.auto()
 
 ###################################################
 # File object content as enum
@@ -149,3 +150,22 @@ class EventsDescriptionGeneric(StrEnumExactlyAsDefined):
     content = enum.auto()
     createdWhen = enum.auto()
     additionalInformation = enum.auto()
+
+##################################################
+# Enum for addresses of users
+class Addresses(StrEnumExactlyAsDefined):
+    """
+    What do addresses consist of?
+
+    """
+    id = enum.auto()
+    country = enum.auto()
+    city = enum.auto()
+    zipcode = enum.auto()
+    houseNumber = enum.auto()
+    street = enum.auto()
+    company = enum.auto()
+    standard = enum.auto()
+    lastName = enum.auto()
+    firstName = enum.auto()
+    coordinates = enum.auto() # defined in semper ki but could be used here so it is defined here as well
