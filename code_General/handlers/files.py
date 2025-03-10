@@ -6,23 +6,15 @@ Silvio Weging 2023
 Contains: File upload handling
 """
 
-import logging, zipfile
-from io import BytesIO
-from datetime import datetime
-
-from django.http import HttpResponse
-from django.views.decorators.http import require_http_methods
+import logging
 
 from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.decorators import api_view
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
-from ..utilities import crypto
-from ..definitions import Logging
-from ..connections.postgresql import pgProfiles
-from ..utilities.basics import manualCheckifLoggedIn, manualCheckIfRightsAreSufficient, checkIfUserIsLoggedIn, checkIfRightsAreSufficient, ExceptionSerializerGeneric
+from ..utilities.basics import ExceptionSerializerGeneric
 from ..utilities.files import createFileResponse
 from ..connections import s3
 from ..logics.filesLogics import *
@@ -37,13 +29,17 @@ loggerError = logging.getLogger("errors")
 # genericUploadFiles
 #"genericUploadFiles": ("private/genericUploadFiles/",files.genericUploadFiles)
 #########################################################################
-#TODO Add serializer for genericUploadFiles
+#######################################################
+class SReqGenericUploadFiles(serializers.Serializer):
+    file = serializers.FileField(required=False)
 #########################################################################
 # Handler  
 @extend_schema(
     summary="Generic file upload",
     description=" ",
-    request=None,
+    request={
+        "multipart/form-data": SReqGenericUploadFiles
+    },
     tags=['FE - Files'],
     responses={
         200: None,
@@ -61,6 +57,17 @@ def genericUploadFiles(request:Request):
     :rtype: HTTP Response
     """
     try:
+        inSerializer = SReqGenericUploadFiles(data=request.data)
+        if not inSerializer.is_valid():
+            message = f"Verification failed in {genericUploadFiles.cls.__name__}"
+            exception = f"Verification failed {inSerializer.errors}"
+            loggerError.error(message)
+            exceptionSerializer = ExceptionSerializerGeneric(data={"message": message, "exception": exception})
+            if exceptionSerializer.is_valid():
+                return Response(exceptionSerializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         exception, value = logicForGenericUploadFiles(request)
         if exception is not None:
             message = str(exception)
@@ -83,14 +90,10 @@ def genericUploadFiles(request:Request):
             return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #######################################################
-# TODO Transfer from local to remote
-# implement in your more specific code!
+# TODO Transfer from local to remote handler, function is in logics
 
 #########################################################################
 # genericDownloadFile
-#"genericDownloadFile": ("private/genericDownloadFile/",files.genericDownloadFile)
-#########################################################################
-#TODO Add serializer for genericDownloadFile
 #########################################################################
 # Handler  
 @extend_schema(
@@ -141,9 +144,6 @@ def genericDownloadFile(request:Request, fileID):
 
 #########################################################################
 # genericDownloadFilesAsZip
-#"genericDownloadFilesAsZip": ("private/genericDownloadFilesAsZip/",files.genericDownloadFilesAsZip)
-#########################################################################
-#TODO Add serializer for genericDownloadFilesAsZip
 #########################################################################
 # Handler  
 @extend_schema(
@@ -156,6 +156,14 @@ def genericDownloadFile(request:Request, fileID):
         404: ExceptionSerializerGeneric,
         500: ExceptionSerializerGeneric,
     },
+    parameters=[OpenApiParameter(
+        name='fileIDs',
+        type={'type': 'array', 'minItems': 1, 'items': {'type': 'string'}},
+        location=OpenApiParameter.QUERY,
+        required=True,
+        style='form',
+        explode=False,
+    )],
 )
 @api_view(["GET"])
 def genericDownloadFilesAsZip(request:Request):
@@ -193,9 +201,6 @@ def genericDownloadFilesAsZip(request:Request):
     
 #########################################################################
 # genericDeleteFile
-#"genericDeleteFile": ("private/genericDeleteFile/",files.genericDeleteFile)
-#########################################################################
-#TODO Add serializer for genericDeleteFile
 #########################################################################
 # Handler  
 @extend_schema(
