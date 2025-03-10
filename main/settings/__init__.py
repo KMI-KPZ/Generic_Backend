@@ -1,5 +1,5 @@
 """
-Part of Semper-KI software
+Generic Backend
 
 Thomas Skodawessely 2023
 
@@ -19,7 +19,7 @@ class BackendManagement(ManagementUtility):
 
         """
         text = super().main_help_text(commands_only)
-        text += '\n\n' + 'SemperKi environment setting: --env production|development|debug|debug_local (default=production):\n'
+        text += '\n\n' + 'Environment setting: --env production|development|debug|debug_local (default=production):\n'
         text += '  production:  use production settings\n'
         text += '  development: use development settings\n'
         text += '  debug:       use debug settings\n'

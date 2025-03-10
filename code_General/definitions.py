@@ -1,5 +1,5 @@
 """
-Part of Semper-KI software
+Generic Backend
 
 Silvio Weging 2023
 
@@ -168,4 +168,4 @@ class Addresses(StrEnumExactlyAsDefined):
     standard = enum.auto()
     lastName = enum.auto()
     firstName = enum.auto()
-    coordinates = enum.auto() # defined in semper ki but could be used here so it is defined here as well
+    coordinates = enum.auto() # coordinates for openstreetmap

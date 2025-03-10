@@ -1,5 +1,5 @@
 """
-Part of Semper-KI software
+Generic Backend
 
 Silvio Weging 2023
 
@@ -35,6 +35,7 @@ from drf_spectacular.utils import extend_schema
     },
 )
 @csrf_exempt # ONLY FOR TESTING!!!!
+#@loginViaAPITokenIfAvailable()
 @api_view(['GET'])
 def testResponse(request:Request):
     """

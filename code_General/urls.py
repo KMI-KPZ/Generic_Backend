@@ -1,5 +1,5 @@
 """
-Part of Semper-KI software
+Generic Backend
 
 Silvio Weging 2023
 
@@ -97,6 +97,9 @@ newPaths = {
     "statistics": ("public/statistics/get/",statistics.getNumberOfUsers),
 
     "contactForm": ("public/contact/",email.sendContactForm),
+
+    ########################## API ##############################
+    "apiTest": ('public/api/test/',testResponse.testResponse),
 }
 
 paths.update(newPaths)
