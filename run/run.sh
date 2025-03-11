@@ -65,7 +65,7 @@ fi
 
 if [ $DEBUG -eq 1 ]; then
   echo -e "\nrunning python manage.py runserver"
-  exec main.asgi:application --reload --reload-include *.* --reload-dir ./ --log-level info --env-file $ENV --host 0.0.0.0 --port 8000
+  exec main.asgi:application --reload --reload-include *.py --reload-dir ./ --log-level info --env-file $ENV --host 0.0.0.0 --port 8000
 fi
 
 exec gunicorn --bind 0.0.0.0:8000 main.asgi --reload --forwarded-allow-ips="*" --env MODE="$ENV"  --capture-output  -k uvicorn.workers.UvicornWorker --workers 16 --threads 16 --timeout 12000

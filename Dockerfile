@@ -13,6 +13,8 @@ ENV PYTHONUNBUFFERED=1
 # Install necessary libraries
 RUN apt-get update \
     && apt-get -y install libpq-dev gcc bash iputils-ping curl gawk
+# Install libraries needed to create a file preview. Delete if not needed or wanted
+RUN apt-get update && apt-get -y install poppler-utils libfile-mimeinfo-perl libimage-exiftool-perl ghostscript libsecret-1-0 zlib1g-dev libjpeg-dev imagemagick libmagic1 webp inkscape libreoffice ffmpeg xvfb libsm6 libxext6 libgl1
 
 # Tell docker, that /app is the working directory inside the container
 WORKDIR /app
@@ -22,6 +24,10 @@ WORKDIR /app
 COPY requirements.txt /app/
 RUN --mount=type=cache,target=/root/.cache \
     pip install -r requirements.txt
+
+# Also just for preview
+RUN pip install preview-generator[3D]
+RUN pip install preview-generator[all]
 
 # copy current directory to /app
 COPY . /app

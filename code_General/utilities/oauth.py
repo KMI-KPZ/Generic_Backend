@@ -1,5 +1,5 @@
 """
-Part of Semper-KI software
+Generic Backend
 
 Thomas Skodawessely & Silvio Weging 2024
 

@@ -1,5 +1,5 @@
 """
-Part of Semper-KI software
+Generic Backend
 
 Thomas Skodawessely 2023
 
@@ -10,8 +10,8 @@ import os
 from io import BytesIO
 
 from django.http import FileResponse
-from Generic_Backend.code_General.connections import s3
-from Generic_Backend.code_General.definitions import FileObjectContent
+from ..connections import s3
+from ..definitions import FileObjectContent
 
 #######################################################
 def deleteFileHelper(fileContent: dict) -> None:

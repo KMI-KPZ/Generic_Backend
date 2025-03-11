@@ -1,5 +1,5 @@
 """
-Part of Semper-KI software
+Generic Backend
 
 Silvio Weging 2024
 
@@ -184,7 +184,7 @@ def setRoleAndPermissionsOfUser(request):
         # check if person is admin, global role so check works differently
         if settings.AUTH0_CLAIMS_URL+"claims/roles" in request.session["user"]["userinfo"]:
             if len(request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]) != 0:
-                if "semper-admin" in request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]:
+                if "semper-admin" in request.session["user"]["userinfo"][settings.AUTH0_CLAIMS_URL+"claims/roles"]: #TODO change admin role name!
                     request.session[SessionContent.usertype] = "admin"
 
         return True

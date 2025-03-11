@@ -4,7 +4,7 @@ import sys
 from dotenv import load_dotenv, find_dotenv
 
 """
-Part of Semper-KI software
+Generic Backend
 
 Silvio Weging 2024
 

@@ -15,4 +15,4 @@ python manage.py makemigrations main
 python manage.py migrate main
 python manage.py migrate
  
-exec gunicorn --bind 0.0.0.0:8000 main.asgi --reload --forwarded-allow-ips="*" --env DJANGO_SETTINGS_MODULE=main.settings.development --capture-output  -k uvicorn.workers.UvicornWorker --workers 16 --threads 16 --timeout 12000
+exec gunicorn --bind 0.0.0.0:8000 main.asgi --reload --reload-exclude 'minio/*' --reload-include *.py --forwarded-allow-ips="*" --env DJANGO_SETTINGS_MODULE=main.settings.development --capture-output  -k uvicorn.workers.UvicornWorker --workers 16 --threads 16 --timeout 12000

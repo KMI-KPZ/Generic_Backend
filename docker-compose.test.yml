@@ -27,7 +27,7 @@ services:
     networks:
       - production-network
 
-  files-production:
+  redis-production:
     image: redis:7
     env_file:
     - .env.production
