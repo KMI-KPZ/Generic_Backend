@@ -123,10 +123,11 @@ class SResUserDetails(serializers.Serializer):
     addresses = SReqAddressContent(many=True, required=False)
     statistics = SResStatistics(required=False)
     notificationSettings = SReqProfileClassesForNotifications(required=False)
+    todos = serializers.DictField(required=False, allow_empty=True) # Semper-KI specific, delete if not needed
 #######################################################
 class SResUserProfile(serializers.Serializer):
     hashedID = serializers.CharField(max_length=200)
-    name = serializers.CharField(max_length=200)	
+    name = serializers.CharField(max_length=200)
     details = SResUserDetails()
     createdWhen = serializers.CharField(max_length=200)
     updatedWhen = serializers.CharField(max_length=200)
@@ -200,6 +201,7 @@ class SReqChanges(serializers.Serializer):
     address = SReqAddressContent(required=False)
     locale = serializers.CharField(max_length=200, required=False)
     notifications = SReqProfileClassesForNotifications(required=False)
+    todos = serializers.DictField(required=False, allow_empty=True) # Semper-KI specific, delete if not needed
 
 #######################################################
 class SReqDeletions(serializers.Serializer):

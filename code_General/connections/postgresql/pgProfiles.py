@@ -744,12 +744,13 @@ class ProfileManagementUser(ProfileManagementBase):
         try:
             # first get, then create
             result = User.objects.get(subID=userID)
+            oldDetails = copy.deepcopy(result.details)
             # check if up to current state
             result = result.updateDetails()
             result.details[UserDetails.statistics][UserStatistics.lastLogin] = str(timezone.now())
             result.details[UserDetails.statistics][UserStatistics.numberOfLoginsTotal] += 1
             result.save()
-            signals.signalDispatcher.userCreated.send(None, userID=result.hashedID, session=session)
+            signals.signalDispatcher.userCreated.send(None, userID=result.hashedID, session=session, oldDetails=oldDetails)
             return result
 
         except (ObjectDoesNotExist) as error:
@@ -768,7 +769,7 @@ class ProfileManagementUser(ProfileManagementBase):
                 createdUser.details[UserDetails.statistics]= {UserStatistics.lastLogin: str(timezone.now()), UserStatistics.numberOfLoginsTotal: 1, UserStatistics.locationOfLastLogin: ""}
                 createdUser.details[UserDetails.locale] = userLocale
                 createdUser.save()
-                signals.signalDispatcher.userCreated.send(None, userID=idHash, session=session)
+                signals.signalDispatcher.userCreated.send(None, userID=idHash, session=session, oldDetails=createdUser.details)
 
                 return createdUser
             except (Exception) as error:
@@ -893,8 +894,8 @@ class ProfileManagementUser(ProfileManagementBase):
                             if checkIfNestedKeyExists(details, ProfileClasses.organization, notification, UserNotificationTargets.event):
                                 existingInfo[UserDescription.details][UserDetails.notificationSettings][ProfileClasses.organization][notification][UserNotificationTargets.event] = details[ProfileClasses.organization][notification][UserNotificationTargets.event]
                     
-                else:
-                    raise Exception("updateType not defined")
+                #else:
+                    #raise Exception("updateType not defined") # there could be other types used in the signal receivers
             
             affected = User.objects.filter(subID=subID).update(details=existingInfo[UserDescription.details], name=existingInfo[UserDescription.name], updatedWhen=updated)
             signals.signalDispatcher.userUpdated.send(None, userID=existingObj.hashedID, session=session, updates=updates)
@@ -1217,8 +1218,8 @@ class ProfileManagementOrganization(ProfileManagementBase):
                     assert isinstance(details, dict), f"updateOrga failed because the wrong type for details was given: {type(details)} instead of dict"
                     for key in details:
                         existingInfo[OrganizationDescription.details][OrganizationDetails.priorities][key] = details[key]
-                else:
-                    raise Exception("updateType not defined")
+                #else:
+                    #raise Exception("updateType not defined") # there could be other updateTypes for signal receivers
                 
             affected = Organization.objects.filter(subID=orgID).update(details=existingInfo[OrganizationDescription.details], supportedServices=existingInfo[OrganizationDescription.supportedServices], name=existingInfo[OrganizationDescription.name], updatedWhen=updated)
             signals.signalDispatcher.orgaUpdated.send(None, orgaID=existingObj.hashedID, session=session, updates=updates)

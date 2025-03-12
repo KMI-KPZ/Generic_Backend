@@ -114,8 +114,9 @@ class SResOrgaDetails(serializers.Serializer):
     priorities = serializers.DictField(child=SReqPriorities(), required=False)
     taxID = serializers.CharField(max_length=200, required=False, allow_blank=True)
     services = serializers.DictField(required=False, allow_empty=True)
-    resilienceScore = serializers.ListField(required=False) # SKI specific
-    maturityLevel =  serializers.ListField(required=False) # SKI specific
+    resilienceScore = serializers.ListField(required=False, allow_empty=True) # Semper-KI specific, delete if not needed
+    maturityLevel =  serializers.ListField(required=False, allow_empty=True) # Semper-KI specific, delete if not needed
+    todos = serializers.DictField(required=False, allow_empty=True) # Semper-KI specific, delete if not needed
 #######################################################
 class SResOrga(serializers.Serializer):
     hashedID = serializers.CharField(max_length=200)
@@ -193,6 +194,9 @@ class SReqChangesOrga(serializers.Serializer):
     taxID = serializers.CharField(max_length=200, required=False)
     priorities = serializers.DictField(child=SReqPriorities(), required=False)
     services = serializers.DictField(required=False, allow_empty=True)
+    resilienceScore = serializers.ListField(required=False, allow_empty=True) # Semper-KI specific, delete if not needed
+    maturityLevel =  serializers.ListField(required=False, allow_empty=True) # Semper-KI specific, delete if not needed
+    todos = serializers.DictField(required=False, allow_empty=True) # Semper-KI specific, delete if not needed
 
 #######################################################
 class SReqDeletionsOrga(serializers.Serializer):
