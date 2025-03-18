@@ -1342,8 +1342,8 @@ def organizationsCreateNewOrganization(request:Request):
     """    
 
     try:
-        if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
-            return Response("Mock")
+        #if SessionContent.MOCKED_LOGIN in request.session and request.session[SessionContent.MOCKED_LOGIN] is True:
+        #    return Response("Mock")
 
         inSerializer = SReqNewOrganization(data=request.data)
         if not inSerializer.is_valid():
