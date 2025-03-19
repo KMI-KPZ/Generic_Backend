@@ -1,0 +1,32 @@
+main.asgi
+=========
+
+.. py:module:: main.asgi
+
+.. autoapi-nested-parse::
+
+   ASGI config for this project.
+
+   It exposes the ASGI callable as a module-level variable named ``application``.
+
+   For more information on this file, see
+   https://docs.djangoproject.com/en/4.1/howto/deployment/asgi/
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   main.asgi.django_asgi_app
+   main.asgi.application
+
+
+Module Contents
+---------------
+
+.. py:data:: django_asgi_app
+
+.. py:data:: application
+

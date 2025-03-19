@@ -1,25 +1,28 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>code_General.settings.base &#8212; KISS-backend 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <title>code_General.settings.base &#8212; Generic-backend 0.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=7f00635f"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.templates" href="../../templates/index.html" />
+    <link rel="prev" title="code_General.settings" href="../index.html" />
    
   <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -32,362 +35,24 @@
           <div class="body" role="main">
             
   <section id="module-code_General.settings.base">
-<span id="code-general-settings-base"></span><h1><a class="reference internal" href="#module-code_General.settings.base" title="code_General.settings.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_General.settings.base</span></code></a><a class="headerlink" href="#module-code_General.settings.base" title="Permalink to this heading">¶</a></h1>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
-<section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<span id="code-general-settings-base"></span><h1>code_General.settings.base<a class="headerlink" href="#module-code_General.settings.base" title="Link to this heading">¶</a></h1>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.BackendConfigHelper" title="code_General.settings.base.BackendConfigHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BackendConfigHelper</span></code></a></p></td>
-<td><p>Helping with config stuff</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.TEMPLATE_DIR" title="code_General.settings.base.TEMPLATE_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TEMPLATE_DIR</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#id0" title="code_General.settings.base.file_base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">file_base</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id0" title="code_General.settings.base.file_base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">file_base</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.BASE_DIR" title="code_General.settings.base.BASE_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BASE_DIR</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.PRODUCTION" title="code_General.settings.base.PRODUCTION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PRODUCTION</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.DEVELOPMENT" title="code_General.settings.base.DEVELOPMENT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEVELOPMENT</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.DEBUG" title="code_General.settings.base.DEBUG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEBUG</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.BACKEND_SETTINGS" title="code_General.settings.base.BACKEND_SETTINGS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BACKEND_SETTINGS</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.CSRF_TRUSTED_ORIGINS" title="code_General.settings.base.CSRF_TRUSTED_ORIGINS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CSRF_TRUSTED_ORIGINS</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.CORS_ALLOWED_ORIGINS" title="code_General.settings.base.CORS_ALLOWED_ORIGINS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CORS_ALLOWED_ORIGINS</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.CORS_ORIGIN_WHITELIST" title="code_General.settings.base.CORS_ORIGIN_WHITELIST"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CORS_ORIGIN_WHITELIST</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.CORS_ALLOW_CREDENTIALS" title="code_General.settings.base.CORS_ALLOW_CREDENTIALS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CORS_ALLOW_CREDENTIALS</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.CORS_ALLOW_HEADERS" title="code_General.settings.base.CORS_ALLOW_HEADERS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CORS_ALLOW_HEADERS</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.INSTALLED_APPS" title="code_General.settings.base.INSTALLED_APPS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.MIDDLEWARE" title="code_General.settings.base.MIDDLEWARE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MIDDLEWARE</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.ROOT_URLCONF" title="code_General.settings.base.ROOT_URLCONF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ROOT_URLCONF</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.TEMPLATE_DIR" title="code_General.settings.base.TEMPLATE_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TEMPLATE_DIR</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.ADDITIONAL_TEMPLATE_DIR_SEMPER_KI" title="code_General.settings.base.ADDITIONAL_TEMPLATE_DIR_SEMPER_KI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ADDITIONAL_TEMPLATE_DIR_SEMPER_KI</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.DOC_DIR" title="code_General.settings.base.DOC_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DOC_DIR</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.TEMPLATES" title="code_General.settings.base.TEMPLATES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TEMPLATES</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.CHANNEL_LAYERS" title="code_General.settings.base.CHANNEL_LAYERS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CHANNEL_LAYERS</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.SESSION_COOKIE_SECURE" title="code_General.settings.base.SESSION_COOKIE_SECURE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SESSION_COOKIE_SECURE</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.CSRF_COOKIE_SECURE" title="code_General.settings.base.CSRF_COOKIE_SECURE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CSRF_COOKIE_SECURE</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.SESSION_COOKIE_HTTPONLY" title="code_General.settings.base.SESSION_COOKIE_HTTPONLY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SESSION_COOKIE_HTTPONLY</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.CONN_MAX_AGE" title="code_General.settings.base.CONN_MAX_AGE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONN_MAX_AGE</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.AUTH_PASSWORD_VALIDATORS" title="code_General.settings.base.AUTH_PASSWORD_VALIDATORS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AUTH_PASSWORD_VALIDATORS</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.LANGUAGE_CODE" title="code_General.settings.base.LANGUAGE_CODE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LANGUAGE_CODE</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.TIME_ZONE" title="code_General.settings.base.TIME_ZONE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TIME_ZONE</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.USE_I18N" title="code_General.settings.base.USE_I18N"><code class="xref py py-obj docutils literal notranslate"><span class="pre">USE_I18N</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.USE_TZ" title="code_General.settings.base.USE_TZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">USE_TZ</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.DEFAULT_AUTO_FIELD" title="code_General.settings.base.DEFAULT_AUTO_FIELD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_AUTO_FIELD</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.FILE_UPLOAD_MAX_MEMORY_SIZE" title="code_General.settings.base.FILE_UPLOAD_MAX_MEMORY_SIZE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FILE_UPLOAD_MAX_MEMORY_SIZE</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.LOGGING" title="code_General.settings.base.LOGGING"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LOGGING</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.SESSION_ENGINE" title="code_General.settings.base.SESSION_ENGINE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SESSION_ENGINE</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.WSGI_APPLICATION" title="code_General.settings.base.WSGI_APPLICATION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WSGI_APPLICATION</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.ASGI_APPLICATION" title="code_General.settings.base.ASGI_APPLICATION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ASGI_APPLICATION</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.settings_helper" title="code_General.settings.base.settings_helper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">settings_helper</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.settings.base.STORAGES" title="code_General.settings.base.STORAGES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STORAGES</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.settings.base.STATIC_URL" title="code_General.settings.base.STATIC_URL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STATIC_URL</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="code_General.settings.base.BackendConfigHelper">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">BackendConfigHelper</span></span><a class="headerlink" href="#code_General.settings.base.BackendConfigHelper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../helper/classes/index.html#code_General.helper.classes.ConfigHelper" title="code_General.helper.classes.ConfigHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.helper.classes.ConfigHelper</span></code></a></p>
-<p>Helping with config stuff</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="code_General.settings.base.BackendConfigHelper.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">backend</span></em><a class="headerlink" href="#code_General.settings.base.BackendConfigHelper.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="code_General.settings.base.BackendConfigHelper.dbs">
-<span class="sig-name descname"><span class="pre">dbs</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['default']</span></em><a class="headerlink" href="#code_General.settings.base.BackendConfigHelper.dbs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="code_General.settings.base.BackendConfigHelper.env_vars_external">
-<span class="sig-name descname"><span class="pre">env_vars_external</span></span><a class="headerlink" href="#code_General.settings.base.BackendConfigHelper.env_vars_external" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="code_General.settings.base.BackendConfigHelper.env_vars_internal">
-<span class="sig-name descname"><span class="pre">env_vars_internal</span></span><a class="headerlink" href="#code_General.settings.base.BackendConfigHelper.env_vars_internal" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="code_General.settings.base.BackendConfigHelper.configure_database">
-<span class="sig-name descname"><span class="pre">configure_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.settings.base.BackendConfigHelper.configure_database" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.file_base">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">file_base</span></span><a class="headerlink" href="#code_General.settings.base.file_base" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">file_base</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">.env</span></em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.BASE_DIR">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">BASE_DIR</span></span><a class="headerlink" href="#code_General.settings.base.BASE_DIR" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.PRODUCTION">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">PRODUCTION</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#code_General.settings.base.PRODUCTION" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.DEVELOPMENT">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">DEVELOPMENT</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#code_General.settings.base.DEVELOPMENT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.DEBUG">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">DEBUG</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#code_General.settings.base.DEBUG" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.BACKEND_SETTINGS">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">BACKEND_SETTINGS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">base</span></em><a class="headerlink" href="#code_General.settings.base.BACKEND_SETTINGS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.CSRF_TRUSTED_ORIGINS">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">CSRF_TRUSTED_ORIGINS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['http://localhost:3000',</span> <span class="pre">'http://127.0.0.1:3000',</span> <span class="pre">'http://localhost:8000',...</span></em><a class="headerlink" href="#code_General.settings.base.CSRF_TRUSTED_ORIGINS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.CORS_ALLOWED_ORIGINS">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">CORS_ALLOWED_ORIGINS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['http://localhost:3000',</span> <span class="pre">'http://127.0.0.1:3000',</span> <span class="pre">'http://localhost:8000',...</span></em><a class="headerlink" href="#code_General.settings.base.CORS_ALLOWED_ORIGINS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.CORS_ORIGIN_WHITELIST">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">CORS_ORIGIN_WHITELIST</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['http://localhost:3000',</span> <span class="pre">'http://localhost:8000',</span> <span class="pre">'http://127.0.0.1:3000',...</span></em><a class="headerlink" href="#code_General.settings.base.CORS_ORIGIN_WHITELIST" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.CORS_ALLOW_CREDENTIALS">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">CORS_ALLOW_CREDENTIALS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#code_General.settings.base.CORS_ALLOW_CREDENTIALS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.CORS_ALLOW_HEADERS">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">CORS_ALLOW_HEADERS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['content-type',</span> <span class="pre">'accept',</span> <span class="pre">'X-CSRFToken',</span> <span class="pre">'Access-Control-Allow-Origin',...</span></em><a class="headerlink" href="#code_General.settings.base.CORS_ALLOW_HEADERS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.INSTALLED_APPS">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">INSTALLED_APPS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['django.contrib.admin',</span> <span class="pre">'django.contrib.auth',</span> <span class="pre">'django.contrib.contenttypes',...</span></em><a class="headerlink" href="#code_General.settings.base.INSTALLED_APPS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.MIDDLEWARE">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">MIDDLEWARE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['corsheaders.middleware.CorsMiddleware',</span> <span class="pre">'django.middleware.security.SecurityMiddleware',...</span></em><a class="headerlink" href="#code_General.settings.base.MIDDLEWARE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.ROOT_URLCONF">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">ROOT_URLCONF</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">code_General.urls</span></em><a class="headerlink" href="#code_General.settings.base.ROOT_URLCONF" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py data">
 <dt class="sig sig-object py" id="code_General.settings.base.TEMPLATE_DIR">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">TEMPLATE_DIR</span></span><a class="headerlink" href="#code_General.settings.base.TEMPLATE_DIR" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">TEMPLATE_DIR</span></span><a class="headerlink" href="#code_General.settings.base.TEMPLATE_DIR" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.ADDITIONAL_TEMPLATE_DIR_SEMPER_KI">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">ADDITIONAL_TEMPLATE_DIR_SEMPER_KI</span></span><a class="headerlink" href="#code_General.settings.base.ADDITIONAL_TEMPLATE_DIR_SEMPER_KI" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.DOC_DIR">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">DOC_DIR</span></span><a class="headerlink" href="#code_General.settings.base.DOC_DIR" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.TEMPLATES">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">TEMPLATES</span></span><a class="headerlink" href="#code_General.settings.base.TEMPLATES" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.CHANNEL_LAYERS">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">CHANNEL_LAYERS</span></span><a class="headerlink" href="#code_General.settings.base.CHANNEL_LAYERS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.SESSION_COOKIE_SECURE">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">SESSION_COOKIE_SECURE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#code_General.settings.base.SESSION_COOKIE_SECURE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.CSRF_COOKIE_SECURE">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">CSRF_COOKIE_SECURE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#code_General.settings.base.CSRF_COOKIE_SECURE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.SESSION_COOKIE_HTTPONLY">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">SESSION_COOKIE_HTTPONLY</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#code_General.settings.base.SESSION_COOKIE_HTTPONLY" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.CONN_MAX_AGE">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">CONN_MAX_AGE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">10</span></em><a class="headerlink" href="#code_General.settings.base.CONN_MAX_AGE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.AUTH_PASSWORD_VALIDATORS">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">AUTH_PASSWORD_VALIDATORS</span></span><a class="headerlink" href="#code_General.settings.base.AUTH_PASSWORD_VALIDATORS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.LANGUAGE_CODE">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">LANGUAGE_CODE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">en-us</span></em><a class="headerlink" href="#code_General.settings.base.LANGUAGE_CODE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.TIME_ZONE">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">TIME_ZONE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">UTC</span></em><a class="headerlink" href="#code_General.settings.base.TIME_ZONE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.USE_I18N">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">USE_I18N</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#code_General.settings.base.USE_I18N" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.USE_TZ">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">USE_TZ</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#code_General.settings.base.USE_TZ" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.DEFAULT_AUTO_FIELD">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_AUTO_FIELD</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">django.db.models.BigAutoField</span></em><a class="headerlink" href="#code_General.settings.base.DEFAULT_AUTO_FIELD" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.FILE_UPLOAD_MAX_MEMORY_SIZE">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">FILE_UPLOAD_MAX_MEMORY_SIZE</span></span><a class="headerlink" href="#code_General.settings.base.FILE_UPLOAD_MAX_MEMORY_SIZE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.LOGGING">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">LOGGING</span></span><a class="headerlink" href="#code_General.settings.base.LOGGING" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.SESSION_ENGINE">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">SESSION_ENGINE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">django.contrib.sessions.backends.cached_db</span></em><a class="headerlink" href="#code_General.settings.base.SESSION_ENGINE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.WSGI_APPLICATION">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">WSGI_APPLICATION</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">code_General.wsgi.application</span></em><a class="headerlink" href="#code_General.settings.base.WSGI_APPLICATION" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.ASGI_APPLICATION">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">ASGI_APPLICATION</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">code_General.asgi.application</span></em><a class="headerlink" href="#code_General.settings.base.ASGI_APPLICATION" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.settings_helper">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">settings_helper</span></span><a class="headerlink" href="#code_General.settings.base.settings_helper" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.STORAGES">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">STORAGES</span></span><a class="headerlink" href="#code_General.settings.base.STORAGES" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="code_General.settings.base.STATIC_URL">
-<span class="sig-prename descclassname"><span class="pre">code_General.settings.base.</span></span><span class="sig-name descname"><span class="pre">STATIC_URL</span></span><a class="headerlink" href="#code_General.settings.base.STATIC_URL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</section>
 </section>
 </section>
 
@@ -396,9 +61,9 @@
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+<h1 class="logo"><a href="../../../../index.html">Generic-backend</a></h1>
 
 
 
@@ -407,28 +72,72 @@
 
 
 
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../handlers/index.html">code_General.handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../logics/index.html">code_General.logics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelFiles/index.html">code_General.modelFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.settings</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.settings.base</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.settings.base.TEMPLATE_DIR"><code class="docutils literal notranslate"><span class="pre">TEMPLATE_DIR</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">code_General.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.settings</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">code_General.settings</a></li>
+      <li>Next: <a href="../../templates/index.html" title="next chapter">code_General.templates</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -442,11 +151,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2023, Silvio Weging.
+      &#169;2025, Silvio Weging.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../../../_sources/autoapi/code_General/settings/base/index.rst.txt"

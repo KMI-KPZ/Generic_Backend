@@ -1,11 +1,11 @@
-:py:mod:`code_General.connections.mailer`
-=========================================
+code_General.connections.mailer
+===============================
 
 .. py:module:: code_General.connections.mailer
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Thomas Skodawessely 2023
 
@@ -13,21 +13,8 @@
 
 
 
-Module Contents
----------------
-
-Classes
-~~~~~~~
-
-.. autoapisummary::
-
-   code_General.connections.mailer.KissMailer
-
-
-
-
 Attributes
-~~~~~~~~~~
+----------
 
 .. autoapisummary::
 
@@ -35,22 +22,28 @@ Attributes
    code_General.connections.mailer.loggerError
 
 
-.. py:data:: loggerDebug
-   
+Classes
+-------
 
-   
+.. autoapisummary::
+
+   code_General.connections.mailer.MailingClass
+
+
+Module Contents
+---------------
+
+.. py:data:: loggerDebug
 
 .. py:data:: loggerError
-   
 
-   
-
-.. py:class:: KissMailer
+.. py:class:: MailingClass
 
    later add some other stuff and configuration things as well as perhaps a html template.
    For now just send a mail via default django smtp sendmail
 
-   .. py:method:: sendmail(to, subject, message)
+
+   .. py:method:: sendMail(to, subject, message)
 
       Send a mail
 
@@ -64,6 +57,21 @@ Attributes
       :type message: str
       :return: number of sent emails or False on failure
       :rtype: int or bool
+
+
+
+   .. py:method:: mailingTemplate(subject, language, content)
+
+      Template to use for E-Mail content
+
+      :param subject: Who is it about
+      :type subject: str
+      :param language: In what language should the mail be send in
+      :type language: locale string e.g. de-de, en-gb, ...
+      :param content: What this mail is about
+      :type content: str
+      :return: The Template as HTML string
+      :rtype: str
 
 
 

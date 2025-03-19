@@ -1,0 +1,15 @@
+main.management
+===============
+
+.. py:module:: main.management
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/main/management/commands/index
+
+

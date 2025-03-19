@@ -1,11 +1,11 @@
-:py:mod:`code_General.handlers.organizations`
-=============================================
+code_General.handlers.organizations
+===================================
 
 .. py:module:: code_General.handlers.organizations
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,36 +13,8 @@
 
 
 
-Module Contents
----------------
-
-
-Functions
-~~~~~~~~~
-
-.. autoapisummary::
-
-   code_General.handlers.organizations.sendEventViaWebsocket
-   code_General.handlers.organizations.getOrganizationName
-   code_General.handlers.organizations.organizations_getInviteLink
-   code_General.handlers.organizations.organizations_addUser
-   code_General.handlers.organizations.organizations_fetchUsers
-   code_General.handlers.organizations.organizations_deleteUser
-   code_General.handlers.organizations.organizations_createRole
-   code_General.handlers.organizations.organizations_assignRole
-   code_General.handlers.organizations.organizations_removeRole
-   code_General.handlers.organizations.organizations_editRole
-   code_General.handlers.organizations.organizations_getRoles
-   code_General.handlers.organizations.organizations_deleteRole
-   code_General.handlers.organizations.organizations_setPermissionsForRole
-   code_General.handlers.organizations.organizations_getPermissions
-   code_General.handlers.organizations.organizations_getPermissionsForRole
-   code_General.handlers.organizations.organizations_createNewOrganization
-
-
-
 Attributes
-~~~~~~~~~~
+----------
 
 .. autoapisummary::
 
@@ -50,49 +22,620 @@ Attributes
    code_General.handlers.organizations.loggerError
 
 
-.. py:data:: logger
-   
+Classes
+-------
 
-   
+.. autoapisummary::
+
+   code_General.handlers.organizations.SReqBrandingColor
+   code_General.handlers.organizations.SReqBrandingOrga
+   code_General.handlers.organizations.SReqAddressOrga
+   code_General.handlers.organizations.SReqNotificationsContentOrga
+   code_General.handlers.organizations.SReqProfileClassForNotifications
+   code_General.handlers.organizations.SReqPriorities
+   code_General.handlers.organizations.SResOrgaDetails
+   code_General.handlers.organizations.SResOrga
+   code_General.handlers.organizations.SReqChangesOrga
+   code_General.handlers.organizations.SReqDeletionsOrga
+   code_General.handlers.organizations.SReqUpdateOrga
+   code_General.handlers.organizations.SReqRoleAndMail
+   code_General.handlers.organizations.SResRolesForUsers
+   code_General.handlers.organizations.SResUsersAndRoles
+   code_General.handlers.organizations.SResInvitee
+   code_General.handlers.organizations.SResInviter
+   code_General.handlers.organizations.SResInvites
+   code_General.handlers.organizations.SReqCreateRole
+   code_General.handlers.organizations.SReqEditRole
+   code_General.handlers.organizations.SResRoles
+   code_General.handlers.organizations.SReqPermissionsAndRoles
+   code_General.handlers.organizations.SResPermissions
+   code_General.handlers.organizations.SResPermissionsForRole
+   code_General.handlers.organizations.SReqNewOrganization
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.handlers.organizations.addOrganizationTest
+   code_General.handlers.organizations.getOrganizationDetails
+   code_General.handlers.organizations.updateDetailsOfOrganization
+   code_General.handlers.organizations.deleteOrganization
+   code_General.handlers.organizations.organizationsGetInviteLink
+   code_General.handlers.organizations.organizationsAddUser
+   code_General.handlers.organizations.organizationsFetchUsers
+   code_General.handlers.organizations.organizationsFetchInvitees
+   code_General.handlers.organizations.organizationsDeleteInvite
+   code_General.handlers.organizations.organizationsDeleteUser
+   code_General.handlers.organizations.organizationsCreateRole
+   code_General.handlers.organizations.organizationsAssignRole
+   code_General.handlers.organizations.organizationsRemoveRole
+   code_General.handlers.organizations.organizationsEditRole
+   code_General.handlers.organizations.organizationsGetRoles
+   code_General.handlers.organizations.organizationsDeleteRole
+   code_General.handlers.organizations.organizationsSetPermissionsForRole
+   code_General.handlers.organizations.organizationsGetPermissions
+   code_General.handlers.organizations.organizationsGetPermissionsForRole
+   code_General.handlers.organizations.organizationsCreateNewOrganization
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
 
 .. py:data:: loggerError
-   
 
-   
+.. py:function:: addOrganizationTest(request: rest_framework.request.Request)
 
-.. py:function:: sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args)
+   For testing.
 
-   Send events to the respective websockets.
-
-   :param orgID: ID of that organization
-   :type orgID: str
-   :param baseURL: stuff for Auth0
-   :type baseURL: str
-   :param baseHeader: stuff for Auth0
-   :type baseHeader: str
-   :param eventName: stuff for frontend
-   :type eventName: str
-   :param args: other arguments
-   :type args: str
-   :return: True or exception
-   :rtype: Bool or exception
+   :param request: GET request
+   :type request: HTTP GET
+   :return: HTTP response
+   :rtype: HTTP status
 
 
-.. py:function:: getOrganizationName(session, orgID, baseURL, baseHeader)
 
-   Get Name of the Organization
+.. py:class:: SReqBrandingColor(instance=None, data=empty, **kwargs)
 
-   :param orgID: the id of the current organization
-   :type orgID: str
-   :param baseURL: start of the url
-   :type baseURL: str
-   :param baseHeader: Header with basic stuff
-   :type baseHeader: Dict
-   :return: If successful, name of organization, error if not
-   :rtype: str or error
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
 
 
-.. py:function:: organizations_getInviteLink(request)
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: primary
+
+
+   .. py:attribute:: page_background
+
+
+.. py:class:: SReqBrandingOrga(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: logo_url
+
+
+   .. py:attribute:: colors
+
+
+.. py:class:: SReqAddressOrga(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: id
+
+
+   .. py:attribute:: standard
+
+
+   .. py:attribute:: country
+
+
+   .. py:attribute:: city
+
+
+   .. py:attribute:: zipcode
+
+
+   .. py:attribute:: houseNumber
+
+
+   .. py:attribute:: street
+
+
+   .. py:attribute:: company
+
+
+   .. py:attribute:: lastName
+
+
+   .. py:attribute:: firstName
+
+
+   .. py:attribute:: coordinates
+
+
+.. py:class:: SReqNotificationsContentOrga(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: event
+
+
+   .. py:attribute:: email
+
+
+.. py:class:: SReqProfileClassForNotifications(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: organization
+
+
+.. py:class:: SReqPriorities(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: value
+
+
+.. py:class:: SResOrgaDetails(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: addresses
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: locale
+
+
+   .. py:attribute:: notificationSettings
+
+
+   .. py:attribute:: branding
+
+
+   .. py:attribute:: priorities
+
+
+   .. py:attribute:: taxID
+
+
+   .. py:attribute:: services
+
+
+   .. py:attribute:: resilienceScore
+
+
+   .. py:attribute:: maturityLevel
+
+
+   .. py:attribute:: todos
+
+
+.. py:class:: SResOrga(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: hashedID
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: details
+
+
+   .. py:attribute:: accessedWhen
+
+
+   .. py:attribute:: createdWhen
+
+
+   .. py:attribute:: updatedWhen
+
+
+   .. py:attribute:: supportedServices
+
+
+.. py:function:: getOrganizationDetails(request: rest_framework.request.Request)
+
+   Return details about organization. 
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: Organization details
+   :rtype: Json
+
+
+
+.. py:class:: SReqChangesOrga(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: displayName
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: address
+
+
+   .. py:attribute:: locale
+
+
+   .. py:attribute:: notifications
+
+
+   .. py:attribute:: supportedServices
+
+
+   .. py:attribute:: branding
+
+
+   .. py:attribute:: taxID
+
+
+   .. py:attribute:: priorities
+
+
+   .. py:attribute:: services
+
+
+   .. py:attribute:: resilienceScore
+
+
+   .. py:attribute:: maturityLevel
+
+
+   .. py:attribute:: todos
+
+
+.. py:class:: SReqDeletionsOrga(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: address
+
+
+   .. py:attribute:: supportedServices
+
+
+.. py:class:: SReqUpdateOrga(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: changes
+
+
+   .. py:attribute:: deletions
+
+
+.. py:function:: updateDetailsOfOrganization(request: rest_framework.request.Request)
+
+   Update details of organization of that user.
+
+   :param request: PATCH request
+   :type request: HTTP PATCH
+   :return: HTTP response
+   :rtype: HTTP status
+
+
+
+.. py:function:: deleteOrganization(request: rest_framework.request.Request)
+
+   Deletes an organization from the database and auth0.
+
+   :param request: DELETE request
+   :type request: HTTP DELETE
+   :return: HTTP response
+   :rtype: HTTP status
+
+
+
+.. py:class:: SReqRoleAndMail(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: roleID
+
+
+.. py:function:: organizationsGetInviteLink(request: rest_framework.request.Request)
 
    Ask Auth0 API to invite someone via e-mail and retrieve the link
 
@@ -102,7 +645,7 @@ Attributes
    :rtype: HTTPResponse
 
 
-.. py:function:: organizations_addUser(request)
+.. py:function:: organizationsAddUser(request: rest_framework.request.Request)
 
    Ask Auth0 API to invite someone via e-mail
 
@@ -112,7 +655,81 @@ Attributes
    :rtype: HTTPResponse
 
 
-.. py:function:: organizations_fetchUsers(request)
+.. py:class:: SResRolesForUsers(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: id
+
+
+   .. py:attribute:: name
+
+
+.. py:class:: SResUsersAndRoles(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: picture
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: roles
+
+
+.. py:function:: organizationsFetchUsers(request: rest_framework.request.Request)
 
    Ask Auth0 API for all users of an organization
 
@@ -122,17 +739,182 @@ Attributes
    :rtype: Json or error
 
 
-.. py:function:: organizations_deleteUser(request)
+.. py:class:: SResInvitee(instance=None, data=empty, **kwargs)
 
-   Ask Auth0 API to delete someone from an organization via their name
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
 
-   :param request: Request with content as json
-   :type request: HTTP POST
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: email
+
+
+.. py:class:: SResInviter(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: name
+
+
+.. py:class:: SResInvites(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: id
+
+
+   .. py:attribute:: inviter
+
+
+   .. py:attribute:: invitee
+
+
+   .. py:attribute:: invitation_url
+
+
+   .. py:attribute:: created_at
+
+
+   .. py:attribute:: expires_at
+
+
+   .. py:attribute:: roles
+
+
+.. py:function:: organizationsFetchInvitees(request: rest_framework.request.Request)
+
+   Ask Auth0 API for all invited people of an organization
+
+   :param request: Request with session in it
+   :type request: HTTP GET
+   :return: If successful or not
+   :rtype: Json or error
+
+
+.. py:function:: organizationsDeleteInvite(request: rest_framework.request.Request, invitationID: str)
+
+   Ask Auth0 API to revoke an invitation
+
+   :param request: Request with parameter
+   :type request: HTTP DELETE
    :return: If successful or not
    :rtype: HTTPResponse or error
 
 
-.. py:function:: organizations_createRole(request)
+.. py:function:: organizationsDeleteUser(request: rest_framework.request.Request, userEMail: str)
+
+   Ask Auth0 API to delete someone from an organization via their mail address
+
+   :param request: Request with parameter
+   :type request: HTTP DELETE
+   :return: If successful or not
+   :rtype: HTTPResponse or error
+
+
+.. py:class:: SReqCreateRole(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: roleName
+
+
+   .. py:attribute:: roleDescription
+
+
+.. py:function:: organizationsCreateRole(request: rest_framework.request.Request)
 
    Ask Auth0 API to create a new role
 
@@ -142,27 +924,64 @@ Attributes
    :rtype: JSON or Error
 
 
-.. py:function:: organizations_assignRole(request)
+.. py:function:: organizationsAssignRole(request: rest_framework.request.Request)
 
    Assign a role to a person
 
    :param request: request with content as json
-   :type request: HTTP POST
+   :type request: HTTP PATCH
    :return: If successful or not
    :rtype: HTTPResponse
 
 
-.. py:function:: organizations_removeRole(request)
+.. py:function:: organizationsRemoveRole(request: rest_framework.request.Request)
 
    Remove a role from a person
 
    :param request: request with content as json
-   :type request: HTTP POST
+   :type request: HTTP PATCH
    :return: If successful or not
    :rtype: True or error
 
 
-.. py:function:: organizations_editRole(request)
+.. py:class:: SReqEditRole(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: roleID
+
+
+   .. py:attribute:: roleName
+
+
+   .. py:attribute:: roleDescription
+
+
+.. py:function:: organizationsEditRole(request: rest_framework.request.Request)
 
    Ask Auth0 API to edit a role
 
@@ -172,7 +991,44 @@ Attributes
    :rtype: Bool or error
 
 
-.. py:function:: organizations_getRoles(request)
+.. py:class:: SResRoles(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: id
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: description
+
+
+.. py:function:: organizationsGetRoles(request: rest_framework.request.Request)
 
    Fetch all roles for the organization
 
@@ -182,27 +1038,95 @@ Attributes
    :rtype: JSON or error
 
 
-.. py:function:: organizations_deleteRole(request)
+.. py:function:: organizationsDeleteRole(request: rest_framework.request.Request, roleID: str)
 
    Delete role via ID
 
    :param request: request with content as json
-   :type request: HTTP POST
+   :type request: HTTP DELETE
    :return: If successful or not
    :rtype: HTTPResponse or error
 
 
-.. py:function:: organizations_setPermissionsForRole(request)
+.. py:class:: SReqPermissionsAndRoles(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: roleID
+
+
+   .. py:attribute:: permissionIDs
+
+
+.. py:function:: organizationsSetPermissionsForRole(request: rest_framework.request.Request)
 
    Add Permissions to role
 
    :param request: request with content as json
-   :type request: HTTP POST
+   :type request: HTTP PATCH
    :return: If successful or not
    :rtype: HTTPResponse or error
 
 
-.. py:function:: organizations_getPermissions(request)
+.. py:class:: SResPermissions(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: value
+
+
+   .. py:attribute:: description
+
+
+.. py:function:: organizationsGetPermissions(request: rest_framework.request.Request)
 
    Get all Permissions
 
@@ -212,17 +1136,94 @@ Attributes
    :rtype: JSON or error
 
 
-.. py:function:: organizations_getPermissionsForRole(request)
+.. py:class:: SResPermissionsForRole(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: resource_server_identifier
+
+
+   .. py:attribute:: permission_name
+
+
+   .. py:attribute:: resource_server_name
+
+
+   .. py:attribute:: description
+
+
+.. py:function:: organizationsGetPermissionsForRole(request: rest_framework.request.Request, roleID: str)
 
    Get Permissions of role
 
    :param request: request with content as json
-   :type request: HTTP POST
+   :type request: HTTP GET
    :return: If successful, list of permissions for role as array, error if not
    :rtype: JSON or error
 
 
-.. py:function:: organizations_createNewOrganization(request)
+.. py:class:: SReqNewOrganization(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: metadata
+
+
+   .. py:attribute:: display_name
+
+
+   .. py:attribute:: email
+
+
+.. py:function:: organizationsCreateNewOrganization(request: rest_framework.request.Request)
 
    Create a new organization, create an admin role, invite a person via email as admin.
    All via Auth0s API.

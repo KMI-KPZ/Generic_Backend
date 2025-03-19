@@ -1,0 +1,220 @@
+main.settings.base
+==================
+
+.. py:module:: main.settings.base
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   main.settings.base.file_base
+   main.settings.base.file_base
+   main.settings.base.settings_helper
+   main.settings.base.BASE_DIR
+   main.settings.base.PRODUCTION
+   main.settings.base.DEVELOPMENT
+   main.settings.base.STAGING
+   main.settings.base.DEBUG
+   main.settings.base.BACKEND_SETTINGS
+   main.settings.base.CSRF_TRUSTED_ORIGINS
+   main.settings.base.CORS_ALLOWED_ORIGINS
+   main.settings.base.CORS_ORIGIN_WHITELIST
+   main.settings.base.CORS_ALLOW_CREDENTIALS
+   main.settings.base.CORS_ALLOW_HEADERS
+   main.settings.base.INSTALLED_APPS
+   main.settings.base.MIDDLEWARE
+   main.settings.base.ROOT_URLCONF
+   main.settings.base.DOC_DIR
+   main.settings.base.TEMPLATES
+   main.settings.base.CHANNEL_LAYERS
+   main.settings.base.SESSION_COOKIE_SECURE
+   main.settings.base.CSRF_COOKIE_SECURE
+   main.settings.base.SESSION_COOKIE_HTTPONLY
+   main.settings.base.CONN_MAX_AGE
+   main.settings.base.AUTH_PASSWORD_VALIDATORS
+   main.settings.base.LANGUAGE_CODE
+   main.settings.base.TIME_ZONE
+   main.settings.base.USE_I18N
+   main.settings.base.USE_TZ
+   main.settings.base.DEFAULT_AUTO_FIELD
+   main.settings.base.FILE_UPLOAD_MAX_MEMORY_SIZE
+   main.settings.base.LOGGING
+   main.settings.base.SESSION_ENGINE
+   main.settings.base.WSGI_APPLICATION
+   main.settings.base.ASGI_APPLICATION
+   main.settings.base.STORAGES
+   main.settings.base.STATIC_URL
+   main.settings.base.REST_FRAMEWORK
+   main.settings.base.SPECTACULAR_SETTINGS
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   main.settings.base.BackendConfigHelper
+
+
+Module Contents
+---------------
+
+.. py:class:: BackendConfigHelper
+
+   Bases: :py:obj:`main.helper.classes.ConfigHelper`
+
+
+   Helping with config stuff
+
+
+
+   .. py:attribute:: name
+      :value: 'backend'
+
+
+
+   .. py:attribute:: dbs
+      :value: ('default',)
+
+
+
+   .. py:attribute:: env_vars_external
+
+
+   .. py:attribute:: env_vars_internal
+
+
+   .. py:attribute:: env_vars
+
+
+   .. py:method:: configure_database(module)
+
+
+.. py:data:: file_base
+
+.. py:data:: file_base
+   :value: '.env'
+
+
+.. py:data:: settings_helper
+
+.. py:data:: BASE_DIR
+
+.. py:data:: PRODUCTION
+   :value: False
+
+
+.. py:data:: DEVELOPMENT
+   :value: False
+
+
+.. py:data:: STAGING
+   :value: False
+
+
+.. py:data:: DEBUG
+   :value: True
+
+
+.. py:data:: BACKEND_SETTINGS
+   :value: 'base'
+
+
+.. py:data:: CSRF_TRUSTED_ORIGINS
+
+.. py:data:: CORS_ALLOWED_ORIGINS
+
+.. py:data:: CORS_ORIGIN_WHITELIST
+
+.. py:data:: CORS_ALLOW_CREDENTIALS
+   :value: True
+
+
+.. py:data:: CORS_ALLOW_HEADERS
+   :value: ('content-type', 'accept', 'X-CSRFToken', 'Access-Control-Allow-Origin',...
+
+
+.. py:data:: INSTALLED_APPS
+   :value: ['django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',...
+
+
+.. py:data:: MIDDLEWARE
+   :value: ['corsheaders.middleware.CorsMiddleware', 'django.middleware.security.SecurityMiddleware',...
+
+
+.. py:data:: ROOT_URLCONF
+   :value: 'main.urls'
+
+
+.. py:data:: DOC_DIR
+
+.. py:data:: TEMPLATES
+
+.. py:data:: CHANNEL_LAYERS
+
+.. py:data:: SESSION_COOKIE_SECURE
+   :value: True
+
+
+.. py:data:: CSRF_COOKIE_SECURE
+   :value: True
+
+
+.. py:data:: SESSION_COOKIE_HTTPONLY
+   :value: True
+
+
+.. py:data:: CONN_MAX_AGE
+   :value: 10
+
+
+.. py:data:: AUTH_PASSWORD_VALIDATORS
+
+.. py:data:: LANGUAGE_CODE
+   :value: 'en-us'
+
+
+.. py:data:: TIME_ZONE
+   :value: 'UTC'
+
+
+.. py:data:: USE_I18N
+   :value: True
+
+
+.. py:data:: USE_TZ
+   :value: True
+
+
+.. py:data:: DEFAULT_AUTO_FIELD
+   :value: 'django.db.models.BigAutoField'
+
+
+.. py:data:: FILE_UPLOAD_MAX_MEMORY_SIZE
+   :value: 104857600
+
+
+.. py:data:: LOGGING
+
+.. py:data:: SESSION_ENGINE
+   :value: 'django.contrib.sessions.backends.cached_db'
+
+
+.. py:data:: WSGI_APPLICATION
+   :value: 'main.wsgi.application'
+
+
+.. py:data:: ASGI_APPLICATION
+   :value: 'main.asgi.application'
+
+
+.. py:data:: STORAGES
+
+.. py:data:: STATIC_URL
+
+.. py:data:: REST_FRAMEWORK
+
+.. py:data:: SPECTACULAR_SETTINGS
+

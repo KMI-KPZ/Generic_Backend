@@ -1,0 +1,17 @@
+main.management.commands
+========================
+
+.. py:module:: main.management.commands
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/main/management/commands/create_db/index
+   /autoapi/main/management/commands/generate_env/index
+   /autoapi/main/management/commands/mail/index
+
+

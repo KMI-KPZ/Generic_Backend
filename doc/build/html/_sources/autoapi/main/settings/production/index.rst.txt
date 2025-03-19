@@ -1,0 +1,58 @@
+main.settings.production
+========================
+
+.. py:module:: main.settings.production
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2023
+
+   Contains: Further settings for production mode
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   main.settings.production.DEBUG
+   main.settings.production.PRODUCTION
+   main.settings.production.BACKEND_SETTINGS
+   main.settings.production.USE_X_FORWARDED_HOST
+   main.settings.production.SECURE_PROXY_SSL_HEADER
+   main.settings.production.CSRF_COOKIE_DOMAIN
+   main.settings.production.CACHES
+
+
+Module Contents
+---------------
+
+.. py:data:: DEBUG
+   :value: False
+
+
+.. py:data:: PRODUCTION
+   :value: True
+
+
+.. py:data:: BACKEND_SETTINGS
+   :value: 'production'
+
+
+.. py:data:: USE_X_FORWARDED_HOST
+   :value: True
+
+
+.. py:data:: SECURE_PROXY_SSL_HEADER
+   :value: ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+.. py:data:: CSRF_COOKIE_DOMAIN
+   :value: '.*'
+
+
+.. py:data:: CACHES
+

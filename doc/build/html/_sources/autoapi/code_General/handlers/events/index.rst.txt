@@ -1,0 +1,196 @@
+code_General.handlers.events
+============================
+
+.. py:module:: code_General.handlers.events
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Akshay NS 2024
+
+   Contains: handlers for events
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.handlers.events.logger
+   code_General.handlers.events.loggerError
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.handlers.events.SReqsEventContent
+   code_General.handlers.events.SReqsOneEvent
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.handlers.events.getAllEventsForUser
+   code_General.handlers.events.getOneEventOfUser
+   code_General.handlers.events.createEvent
+   code_General.handlers.events.deleteOneEvent
+   code_General.handlers.events.deleteAllEventsForAUser
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: loggerError
+
+.. py:class:: SReqsEventContent(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: primaryID
+
+
+   .. py:attribute:: secondaryID
+
+
+   .. py:attribute:: reason
+
+
+   .. py:attribute:: content
+
+
+   .. py:attribute:: additionalInformation
+
+
+.. py:class:: SReqsOneEvent(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: eventType
+
+
+   .. py:attribute:: eventID
+
+
+   .. py:attribute:: userHashedID
+
+
+   .. py:attribute:: eventData
+
+
+   .. py:attribute:: createdWhen
+
+
+   .. py:attribute:: triggerEvent
+
+
+.. py:function:: getAllEventsForUser(request: rest_framework.request.Request)
+
+   Return all events related to a user
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: list of events
+   :rtype: Response
+
+
+
+.. py:function:: getOneEventOfUser(request: rest_framework.request.Request, eventID: str)
+
+   Retrieve one event in particular
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: Dict
+   :rtype: JSONResponse
+
+
+
+.. py:function:: createEvent(request: rest_framework.request.Request)
+
+   Create an event from the frontend
+
+   :param request: POST Request
+   :type request: HTTP POST
+   :return: Nothing
+   :rtype: Response
+
+
+
+.. py:function:: deleteOneEvent(request: rest_framework.request.Request, eventID: str)
+
+   Deletes one event
+
+   :param request: DELETE Request
+   :type request: HTTP DELETE
+   :return: Success or not
+   :rtype: Response
+
+
+
+.. py:function:: deleteAllEventsForAUser(request: rest_framework.request.Request)
+
+   Deletes all events of a user
+
+   :param request: DELETE Request
+   :type request: HTTP DELETE
+   :return: Success or not
+   :rtype: Response
+
+
+

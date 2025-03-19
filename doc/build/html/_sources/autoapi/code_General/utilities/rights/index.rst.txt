@@ -1,11 +1,11 @@
-:py:mod:`code_General.utilities.rights`
-=======================================
+code_General.utilities.rights
+=============================
 
 .. py:module:: code_General.utilities.rights
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,45 +13,40 @@
 
 
 
-Module Contents
----------------
-
-Classes
-~~~~~~~
-
-.. autoapisummary::
-
-   code_General.utilities.rights.Rights
-
-
-
-
 Attributes
-~~~~~~~~~~
+----------
 
 .. autoapisummary::
 
    code_General.utilities.rights.rightsManagement
 
 
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.utilities.rights.Rights
+
+
+Module Contents
+---------------
+
 .. py:class:: Rights
 
    Manage the rights for every path.
 
-   .. py:attribute:: rightsDict
-      
 
-      
+   .. py:attribute:: rightsDict
+
 
    .. py:attribute:: rightsList
-      :annotation: = []
+      :value: []
 
-      
+
 
    .. py:attribute:: rightsFile
-      
 
-      
 
    .. py:method:: getFile()
 
@@ -59,6 +54,7 @@ Attributes
 
       :return: File in JSON Format
       :rtype: JSON Object
+
 
 
    .. py:method:: checkIfAllowed(permissions, path)
@@ -71,6 +67,7 @@ Attributes
       :type path: Str
       :return: True of permission sufficient, false if not.
       :rtype: Bool
+
 
 
    .. py:method:: checkIfAllowedWithOperation(permissions, path, operation)
@@ -87,6 +84,7 @@ Attributes
       :rtype: Bool
 
 
+
    .. py:method:: getPermissionsNeededForPath(path)
 
       Return list of permissions that correspond to the given path
@@ -95,6 +93,7 @@ Attributes
       :type path: str
       :return: list of permissions
       :rtype: list
+
 
 
    .. py:method:: getRightsList()
@@ -108,7 +107,4 @@ Attributes
 
 
 .. py:data:: rightsManagement
-   
-
-   
 

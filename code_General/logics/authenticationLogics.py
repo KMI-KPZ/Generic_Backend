@@ -21,7 +21,6 @@ from ..connections import auth0, redis
 
 
 from logging import getLogger
-logger = getLogger("errors")
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")

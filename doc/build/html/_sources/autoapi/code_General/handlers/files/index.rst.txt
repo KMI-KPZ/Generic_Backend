@@ -1,11 +1,11 @@
-:py:mod:`code_General.handlers.files`
-=====================================
+code_General.handlers.files
+===========================
 
 .. py:module:: code_General.handlers.files
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,12 +13,25 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.handlers.files.logger
+   code_General.handlers.files.loggerError
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.handlers.files.SReqGenericUploadFiles
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -28,27 +41,45 @@ Functions
    code_General.handlers.files.genericDeleteFile
 
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   code_General.handlers.files.logger
-   code_General.handlers.files.loggerError
-
+Module Contents
+---------------
 
 .. py:data:: logger
-   
-
-   
 
 .. py:data:: loggerError
-   
 
-   
+.. py:class:: SReqGenericUploadFiles(instance=None, data=empty, **kwargs)
 
-.. py:function:: genericUploadFiles(request)
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: file
+
+
+.. py:function:: genericUploadFiles(request: rest_framework.request.Request)
 
    Generic file upload
 
@@ -58,7 +89,7 @@ Attributes
    :rtype: HTTP Response
 
 
-.. py:function:: genericDownloadFile(request, fileID)
+.. py:function:: genericDownloadFile(request: rest_framework.request.Request, fileID)
 
    Send file to user from storage
 
@@ -71,7 +102,7 @@ Attributes
 
 
 
-.. py:function:: genericDownloadFilesAsZip(request)
+.. py:function:: genericDownloadFilesAsZip(request: rest_framework.request.Request)
 
    Send files to user as zip
 
@@ -82,7 +113,7 @@ Attributes
 
 
 
-.. py:function:: genericDeleteFile(request, fileID)
+.. py:function:: genericDeleteFile(request: rest_framework.request.Request, fileID)
 
    Delete a file from storage
 

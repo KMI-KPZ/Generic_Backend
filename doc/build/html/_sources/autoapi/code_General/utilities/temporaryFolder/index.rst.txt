@@ -1,0 +1,75 @@
+code_General.utilities.temporaryFolder
+======================================
+
+.. py:module:: code_General.utilities.temporaryFolder
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2025
+
+   Contains: Temporary Folder utility
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.utilities.temporaryFolder.loggerError
+   code_General.utilities.temporaryFolder.temporaryDirectory
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.utilities.temporaryFolder.TemporaryFolder
+
+
+Module Contents
+---------------
+
+.. py:data:: loggerError
+
+.. py:class:: TemporaryFolder
+
+   A class to manage the temporary folder and create temporary files
+
+
+
+   .. py:attribute:: _temporaryFolder
+
+
+   .. py:attribute:: _temporaryFolderPath
+
+
+   .. py:method:: __del__()
+
+
+   .. py:method:: getTemporaryFolderPath() -> str
+
+      Get the path to the temporary folder
+
+
+
+
+   .. py:method:: createTemporaryFile(fileName: str, fileContent: bytes) -> str
+
+      Create a temporary file
+
+
+
+
+   .. py:method:: deleteTemporaryFile(fileName: str) -> None
+
+      Delete a temporary file
+
+
+
+
+.. py:data:: temporaryDirectory
+

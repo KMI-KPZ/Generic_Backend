@@ -1,0 +1,63 @@
+main.settings.staging
+=====================
+
+.. py:module:: main.settings.staging
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2023
+
+   Contains: Further settings for development mode
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   main.settings.staging.DEBUG
+   main.settings.staging.DEVELOPMENT
+   main.settings.staging.STAGING
+   main.settings.staging.BACKEND_SETTINGS
+   main.settings.staging.USE_X_FORWARDED_HOST
+   main.settings.staging.SECURE_PROXY_SSL_HEADER
+   main.settings.staging.CSRF_COOKIE_DOMAIN
+   main.settings.staging.CACHES
+
+
+Module Contents
+---------------
+
+.. py:data:: DEBUG
+   :value: False
+
+
+.. py:data:: DEVELOPMENT
+   :value: True
+
+
+.. py:data:: STAGING
+   :value: True
+
+
+.. py:data:: BACKEND_SETTINGS
+   :value: 'staging'
+
+
+.. py:data:: USE_X_FORWARDED_HOST
+   :value: True
+
+
+.. py:data:: SECURE_PROXY_SSL_HEADER
+   :value: ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+.. py:data:: CSRF_COOKIE_DOMAIN
+   :value: '.*'
+
+
+.. py:data:: CACHES
+

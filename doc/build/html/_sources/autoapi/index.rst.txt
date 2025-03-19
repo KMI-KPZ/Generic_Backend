@@ -6,9 +6,10 @@ This page contains auto-generated API reference documentation [#f1]_.
 .. toctree::
    :titlesonly:
 
-   /autoapi/manage/index
-   /autoapi/BenchyMcMarkface/index
-   /autoapi/code_General/index
    /autoapi/conf/index
+   /autoapi/main/index
+   /autoapi/manage/index
+   /autoapi/code_General/index
+   /autoapi/BenchyMcMarkface/index
 
 .. [#f1] Created with `sphinx-autoapi <https://github.com/readthedocs/sphinx-autoapi>`_

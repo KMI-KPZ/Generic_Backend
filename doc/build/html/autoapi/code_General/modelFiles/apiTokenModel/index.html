@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>code_General.modelFiles.apiTokenModel &#8212; Generic-backend 0.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=7f00635f"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.modelFiles.eventModel" href="../eventModel/index.html" />
+    <link rel="prev" title="code_General.modelFiles" href="../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.modelFiles.apiTokenModel">
+<span id="code-general-modelfiles-apitokenmodel"></span><h1>code_General.modelFiles.apiTokenModel<a class="headerlink" href="#module-code_General.modelFiles.apiTokenModel" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
+<p>Silvio Weging 2024</p>
+<dl class="simple">
+<dt>Contains: Model for all api tokens</dt><dd><p>Could have used the drf variant but would then have to use django admin and user accounts as well which sucks because we already have an ID Manager (auth0)</p>
+</dd>
+</dl>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APITokenDescription" title="code_General.modelFiles.apiTokenModel.APITokenDescription"><code class="xref py py-obj docutils literal notranslate"><span class="pre">APITokenDescription</span></code></a></p></td>
+<td><p>The model consists of the following:</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APIToken" title="code_General.modelFiles.apiTokenModel.APIToken"><code class="xref py py-obj docutils literal notranslate"><span class="pre">APIToken</span></code></a></p></td>
+<td><p>Management class for API Tokens.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APITokenDescription">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.modelFiles.apiTokenModel.</span></span><span class="sig-name descname"><span class="pre">APITokenDescription</span></span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APITokenDescription" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactlyAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactlyAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactlyAsDefined</span></code></a></p>
+<p>The model consists of the following:</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APITokenDescription.user">
+<span class="sig-name descname"><span class="pre">user</span></span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APITokenDescription.user" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APITokenDescription.organization">
+<span class="sig-name descname"><span class="pre">organization</span></span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APITokenDescription.organization" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APITokenDescription.admin">
+<span class="sig-name descname"><span class="pre">admin</span></span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APITokenDescription.admin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APITokenDescription.token">
+<span class="sig-name descname"><span class="pre">token</span></span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APITokenDescription.token" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APITokenDescription.createdWhen">
+<span class="sig-name descname"><span class="pre">createdWhen</span></span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APITokenDescription.createdWhen" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APIToken">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.modelFiles.apiTokenModel.</span></span><span class="sig-name descname"><span class="pre">APIToken</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APIToken" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">django.db.models.Model</span></code></p>
+<p>Management class for API Tokens.</p>
+<dl class="field-list simple">
+<dt class="field-odd">User<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User linked to that token…</p>
+</dd>
+<dt class="field-even">Organization<span class="colon">:</span></dt>
+<dd class="field-even"><p>… or organization linked to that token</p>
+</dd>
+<dt class="field-odd">Admin<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Boolean whether the user is an admin or not</p>
+</dd>
+<dt class="field-even">Token<span class="colon">:</span></dt>
+<dd class="field-even"><p>Created url friendly token for that user</p>
+</dd>
+<dt class="field-odd">CreatedWhen<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Automatically assigned date and time(UTC+0) when the entry is created</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APIToken.user">
+<span class="sig-name descname"><span class="pre">user</span></span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APIToken.user" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APIToken.organization">
+<span class="sig-name descname"><span class="pre">organization</span></span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APIToken.organization" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APIToken.admin">
+<span class="sig-name descname"><span class="pre">admin</span></span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APIToken.admin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APIToken.token">
+<span class="sig-name descname"><span class="pre">token</span></span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APIToken.token" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APIToken.createdWhen">
+<span class="sig-name descname"><span class="pre">createdWhen</span></span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APIToken.createdWhen" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APIToken.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APIToken.save" title="Link to this definition">¶</a></dt>
+<dd><p>Save the current instance. Override this in a subclass if you want to
+control the saving process.</p>
+<p>The ‘force_insert’ and ‘force_update’ parameters can be used to insist
+that the “save” must be an SQL insert or update (or equivalent for
+non-SQL backends), respectively. Normally, they should not be set.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APIToken.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APIToken.__str__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.modelFiles.apiTokenModel.APIToken.toDict">
+<span class="sig-name descname"><span class="pre">toDict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.apiTokenModel.APIToken.toDict" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Generic-backend</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../handlers/index.html">code_General.handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../logics/index.html">code_General.logics</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.modelFiles</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.modelFiles.apiTokenModel</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APITokenDescription"><code class="docutils literal notranslate"><span class="pre">APITokenDescription</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APITokenDescription.user"><code class="docutils literal notranslate"><span class="pre">APITokenDescription.user</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APITokenDescription.organization"><code class="docutils literal notranslate"><span class="pre">APITokenDescription.organization</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APITokenDescription.admin"><code class="docutils literal notranslate"><span class="pre">APITokenDescription.admin</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APITokenDescription.token"><code class="docutils literal notranslate"><span class="pre">APITokenDescription.token</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APITokenDescription.createdWhen"><code class="docutils literal notranslate"><span class="pre">APITokenDescription.createdWhen</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APIToken"><code class="docutils literal notranslate"><span class="pre">APIToken</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APIToken.user"><code class="docutils literal notranslate"><span class="pre">APIToken.user</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APIToken.organization"><code class="docutils literal notranslate"><span class="pre">APIToken.organization</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APIToken.admin"><code class="docutils literal notranslate"><span class="pre">APIToken.admin</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APIToken.token"><code class="docutils literal notranslate"><span class="pre">APIToken.token</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APIToken.createdWhen"><code class="docutils literal notranslate"><span class="pre">APIToken.createdWhen</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APIToken.save"><code class="docutils literal notranslate"><span class="pre">APIToken.save()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APIToken.__str__"><code class="docutils literal notranslate"><span class="pre">APIToken.__str__()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.apiTokenModel.APIToken.toDict"><code class="docutils literal notranslate"><span class="pre">APIToken.toDict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../eventModel/index.html">code_General.modelFiles.eventModel</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../filesModel/index.html">code_General.modelFiles.filesModel</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../organizationModel/index.html">code_General.modelFiles.organizationModel</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../userModel/index.html">code_General.modelFiles.userModel</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">code_General.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.modelFiles</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">code_General.modelFiles</a></li>
+      <li>Next: <a href="../eventModel/index.html" title="next chapter">code_General.modelFiles.eventModel</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Silvio Weging.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_General/modelFiles/apiTokenModel/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

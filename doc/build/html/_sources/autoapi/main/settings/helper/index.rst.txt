@@ -1,0 +1,32 @@
+main.settings.helper
+====================
+
+.. py:module:: main.settings.helper
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Helper functions
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   main.settings.helper.filteredEndpointsForAPI
+
+
+Module Contents
+---------------
+
+.. py:function:: filteredEndpointsForAPI(endpoints)
+
+   Filter endpoints if the public api view is desired
+
+
+

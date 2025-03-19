@@ -1,0 +1,53 @@
+code_General.logics.eventLogics
+===============================
+
+.. py:module:: code_General.logics.eventLogics
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Logic for Events
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.logics.eventLogics.logger
+   code_General.logics.eventLogics.loggerError
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.logics.eventLogics.logicForCreateEvent
+   code_General.logics.eventLogics.logicForDeleteAllEventsForAUser
+   code_General.logics.eventLogics.logicForDeleteOneEvent
+   code_General.logics.eventLogics.logicForGetOneEventOfUser
+   code_General.logics.eventLogics.logicForGetAllEventsForUser
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: loggerError
+
+.. py:function:: logicForCreateEvent(validatedInput, request)
+
+.. py:function:: logicForDeleteAllEventsForAUser(request)
+
+.. py:function:: logicForDeleteOneEvent(eventID)
+
+.. py:function:: logicForGetOneEventOfUser(eventID)
+
+.. py:function:: logicForGetAllEventsForUser(request)
+

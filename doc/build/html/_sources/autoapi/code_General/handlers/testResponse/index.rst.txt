@@ -1,11 +1,11 @@
-:py:mod:`code_General.handlers.testResponse`
-============================================
+code_General.handlers.testResponse
+==================================
 
 .. py:module:: code_General.handlers.testResponse
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,11 +13,16 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.handlers.testResponse.counter
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -25,9 +30,8 @@ Classes
    code_General.handlers.testResponse.Counter
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -35,18 +39,13 @@ Functions
    code_General.handlers.testResponse.testResponseCsrf
    code_General.handlers.testResponse.testCallToWebsocket
    code_General.handlers.testResponse.dynamic
+   code_General.handlers.testResponse.getSettingsToken
 
 
+Module Contents
+---------------
 
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   code_General.handlers.testResponse.counter
-
-
-.. py:function:: testResponse(request)
+.. py:function:: testResponse(request: rest_framework.request.Request)
 
    Tests whether request and response scheme works.
 
@@ -57,7 +56,7 @@ Attributes
 
 
 
-.. py:function:: testResponseCsrf(request)
+.. py:function:: testResponseCsrf(request: rest_framework.request.Request)
 
    Ensures that the csrf cookie is set correctly.
 
@@ -72,45 +71,56 @@ Attributes
 
    Bases: :py:obj:`channels.generic.websocket.AsyncWebsocketConsumer`
 
+
    Base WebSocket consumer, async version. Provides a general encapsulation
    for the WebSocket handling model that other applications can build on.
+
 
    .. py:method:: connect()
       :async:
 
 
+
    .. py:method:: disconnect(code)
       :async:
 
+
       Called when a WebSocket connection is closed.
+
 
 
    .. py:method:: receive(text_data=None, bytes_data=None)
       :async:
 
+
       Called with a decoded WebSocket frame.
 
 
 
-.. py:function:: testCallToWebsocket(request)
-
+.. py:function:: testCallToWebsocket(request: rest_framework.request.Request)
 
 .. py:class:: Counter
 
    .. py:attribute:: counter
-      :annotation: = 1
+      :value: 1
 
-      
 
 
 .. py:data:: counter
-   
 
-   
-
-.. py:function:: dynamic(request)
+.. py:function:: dynamic(request: rest_framework.request.Request)
 
    Dynamically generate buttons just for fun
 
+
+
+.. py:function:: getSettingsToken(request)
+
+   Return Settings of django
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: JSON with Settings
+   :rtype: JSONResponse
 
 

@@ -1,0 +1,102 @@
+code_General.logics.authenticationLogics
+========================================
+
+.. py:module:: code_General.logics.authenticationLogics
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Logic for Files
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.logics.authenticationLogics.logger
+   code_General.logics.authenticationLogics.loggerError
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.logics.authenticationLogics.logicForSetLocaleOfUser
+   code_General.logics.authenticationLogics.setOrganizationName
+   code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForMemberOfOrganization
+   code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForStandardUser
+   code_General.logics.authenticationLogics.setRoleAndPermissionsOfUser
+   code_General.logics.authenticationLogics.logicForLoginUser
+   code_General.logics.authenticationLogics.logicForCallbackLogin
+   code_General.logics.authenticationLogics.logicForGetRolesOfUser
+   code_General.logics.authenticationLogics.logicForGetPermissionsOfUser
+   code_General.logics.authenticationLogics.logicForLogoutUser
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: loggerError
+
+.. py:function:: logicForSetLocaleOfUser(validatedInput, request)
+
+.. py:function:: setOrganizationName(request)
+
+   Set's the Organization name based on the information of the token
+
+   :param request: request containing OAuth Token
+   :type request: Dict
+   :return: Nothing
+   :rtype: None
+
+
+
+.. py:function:: retrieveRolesAndPermissionsForMemberOfOrganization(session)
+
+   Get the roles and the permissions via API from Auth0
+
+   :param session: The session of the user
+   :type session: Dict
+   :return: Dict with roles and permissions
+   :rtype: Dict
+
+
+.. py:function:: retrieveRolesAndPermissionsForStandardUser(session)
+
+   Get the roles and the permissions via API from Auth0
+
+   :param session: The session of the user
+   :type session: Dict
+   :return: Dict with roles and permissions
+   :rtype: Dict
+
+
+.. py:function:: setRoleAndPermissionsOfUser(request)
+
+   Set's the role and the permissions of the user based on the information of the token
+
+   :param request: request containing OAuth Token
+   :type request: Dict
+   :return: Exception or True
+   :rtype: Exception or Bool
+
+
+
+.. py:function:: logicForLoginUser(request)
+
+.. py:function:: logicForCallbackLogin(request)
+
+.. py:function:: logicForGetRolesOfUser(request)
+
+.. py:function:: logicForGetPermissionsOfUser(request)
+
+.. py:function:: logicForLogoutUser(request)
+

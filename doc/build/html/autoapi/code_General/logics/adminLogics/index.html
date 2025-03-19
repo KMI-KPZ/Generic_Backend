@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>code_General.logics.adminLogics &#8212; Generic-backend 0.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=7f00635f"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.logics.authenticationLogics" href="../authenticationLogics/index.html" />
+    <link rel="prev" title="code_General.logics" href="../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.logics.adminLogics">
+<span id="code-general-logics-adminlogics"></span><h1>code_General.logics.adminLogics<a class="headerlink" href="#module-code_General.logics.adminLogics" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
+<p>Silvio Weging 2024</p>
+<p>Contains: Logic for Admin</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.adminLogics.logger" title="code_General.logics.adminLogics.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.logics.adminLogics.loggerError" title="code_General.logics.adminLogics.loggerError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loggerError</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.adminLogics.logicForUpdateDetailsOfUserAsAdmin" title="code_General.logics.adminLogics.logicForUpdateDetailsOfUserAsAdmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForUpdateDetailsOfUserAsAdmin</span></code></a>(request, content)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.logics.adminLogics.logicForDeleteUserAsAdmin" title="code_General.logics.adminLogics.logicForDeleteUserAsAdmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForDeleteUserAsAdmin</span></code></a>(request, userHashedID)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.adminLogics.logicForGetAllAsAdmin" title="code_General.logics.adminLogics.logicForGetAllAsAdmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForGetAllAsAdmin</span></code></a>(request)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.logics.adminLogics.logicForUpdateDetailsOfOrganizationAsAdmin" title="code_General.logics.adminLogics.logicForUpdateDetailsOfOrganizationAsAdmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForUpdateDetailsOfOrganizationAsAdmin</span></code></a>(request, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.adminLogics.logicForDeleteOrganizationAsAdmin" title="code_General.logics.adminLogics.logicForDeleteOrganizationAsAdmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForDeleteOrganizationAsAdmin</span></code></a>(request, orgaHashedID)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.logics.adminLogics.logger">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.adminLogics.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#code_General.logics.adminLogics.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.logics.adminLogics.loggerError">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.adminLogics.</span></span><span class="sig-name descname"><span class="pre">loggerError</span></span><a class="headerlink" href="#code_General.logics.adminLogics.loggerError" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.adminLogics.logicForUpdateDetailsOfUserAsAdmin">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.adminLogics.</span></span><span class="sig-name descname"><span class="pre">logicForUpdateDetailsOfUserAsAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.adminLogics.logicForUpdateDetailsOfUserAsAdmin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.adminLogics.logicForDeleteUserAsAdmin">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.adminLogics.</span></span><span class="sig-name descname"><span class="pre">logicForDeleteUserAsAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userHashedID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.adminLogics.logicForDeleteUserAsAdmin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.adminLogics.logicForGetAllAsAdmin">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.adminLogics.</span></span><span class="sig-name descname"><span class="pre">logicForGetAllAsAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.adminLogics.logicForGetAllAsAdmin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.adminLogics.logicForUpdateDetailsOfOrganizationAsAdmin">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.adminLogics.</span></span><span class="sig-name descname"><span class="pre">logicForUpdateDetailsOfOrganizationAsAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.adminLogics.logicForUpdateDetailsOfOrganizationAsAdmin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.adminLogics.logicForDeleteOrganizationAsAdmin">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.adminLogics.</span></span><span class="sig-name descname"><span class="pre">logicForDeleteOrganizationAsAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orgaHashedID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.adminLogics.logicForDeleteOrganizationAsAdmin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Generic-backend</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../handlers/index.html">code_General.handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.logics</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.logics.adminLogics</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.adminLogics.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.adminLogics.loggerError"><code class="docutils literal notranslate"><span class="pre">loggerError</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.adminLogics.logicForUpdateDetailsOfUserAsAdmin"><code class="docutils literal notranslate"><span class="pre">logicForUpdateDetailsOfUserAsAdmin()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.adminLogics.logicForDeleteUserAsAdmin"><code class="docutils literal notranslate"><span class="pre">logicForDeleteUserAsAdmin()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.adminLogics.logicForGetAllAsAdmin"><code class="docutils literal notranslate"><span class="pre">logicForGetAllAsAdmin()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.adminLogics.logicForUpdateDetailsOfOrganizationAsAdmin"><code class="docutils literal notranslate"><span class="pre">logicForUpdateDetailsOfOrganizationAsAdmin()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.adminLogics.logicForDeleteOrganizationAsAdmin"><code class="docutils literal notranslate"><span class="pre">logicForDeleteOrganizationAsAdmin()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../authenticationLogics/index.html">code_General.logics.authenticationLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../emailLogics/index.html">code_General.logics.emailLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../eventLogics/index.html">code_General.logics.eventLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../filesLogics/index.html">code_General.logics.filesLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../organizationLogics/index.html">code_General.logics.organizationLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../statisticsLogics/index.html">code_General.logics.statisticsLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../userLogics/index.html">code_General.logics.userLogics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelFiles/index.html">code_General.modelFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">code_General.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.logics</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">code_General.logics</a></li>
+      <li>Next: <a href="../authenticationLogics/index.html" title="next chapter">code_General.logics.authenticationLogics</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Silvio Weging.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_General/logics/adminLogics/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

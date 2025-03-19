@@ -1,11 +1,11 @@
-:py:mod:`code_General.connections.s3`
-=====================================
+code_General.connections.s3
+===========================
 
 .. py:module:: code_General.connections.s3
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,39 +13,66 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.connections.s3.manageLocalS3
+   code_General.connections.s3.manageRemoteS3
+   code_General.connections.s3.manageStaticsS3
+   code_General.connections.s3.manageRemoteS3Buckets
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    code_General.connections.s3.ManageS3
 
 
+Module Contents
+---------------
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   code_General.connections.s3.manageLocalS3
-   code_General.connections.s3.manageRemoteS3
-
-
-.. py:class:: ManageS3(aesKey, location, bucketName, endpoint, key, secret, local: bool)
+.. py:class:: ManageS3(aesKey, location, bucketName, endpoint, key, secret, local: bool, downloadLinkPrefix)
 
    Class for managing access to local/remote AWS
 
 
+
    .. py:method:: __getattr__(item)
+
+      Lazy loading of the boto client. Is stored in a function object that is called in __getattr__
+
+      :param item: the attribute to get
+      :type item: str
+      :return: the attribute
+      :rtype: object
+
+
+
+   .. py:attribute:: initClient
+
+
+   .. py:attribute:: initResource
+
+
+   .. py:attribute:: bucketName
+
+
+   .. py:attribute:: aesEncryptionKey
+
+
+   .. py:attribute:: local
+
+
+   .. py:attribute:: downloadLinkPrefix
 
 
    .. py:method:: createBucket(bucketName)
 
-      Create a named bucket to put stuff in. Should only be used freely for localstack!
+      Create a named bucket to put stuff in. Should only be used freely for minio!
 
       :param bucketName: Name of the bucket
       :type bucketName: Str
@@ -53,7 +80,8 @@ Attributes
       :rtype: Bool or Error
 
 
-   .. py:method:: uploadFile(fileKey, file)
+
+   .. py:method:: uploadFile(fileKey, file, isPublicFile: bool = False)
 
       Upload a binary in-memory file to storage.
 
@@ -65,14 +93,67 @@ Attributes
       :rtype: Bool or Error
 
 
-   .. py:method:: downloadFile(fileKey) -> (io.BytesIO, bool)
 
-      Upload a binary in-memory file to storage.
+   .. py:method:: uploadFileObject(fileKey, file, config=None)
+
+      Upload a binary in-memory file like object to storage.
+      :param fileKey: the key with which to retrieve the file again later
+      :type fileKey: str
+      :param file: the file like object to be uploaded - should have a read method
+      :type file: object
+      :param config: the configuration for the upload (see boto3 documentation)
+      :type config: dict
+      :return: Pass through of the boto3 upload_fileobj response
+      :rtype: dict
+
+
+
+   .. py:method:: downloadFile(fileKey, decrypt: bool = True) -> tuple[io.BytesIO, bool]
+
+      Download a binary in-memory file to storage.
 
       :param fileKey: The key with which to retrieve the file again later
       :type fileKey: Str
       :return: File or error
       :rtype: BytesIO or Error
+
+
+
+   .. py:method:: getFileObject(fileKey)
+
+      Get the file object from storage.
+
+      :param fileKey: The key with which to retrieve the file again later in combination with the bucket name
+      :type fileKey: Str
+      :return: ( FileObject or None , true if successful)
+      :rtype: ( object, bool )
+
+
+
+
+   .. py:method:: getFileStreamingBody(fileKey) -> tuple[botocore.response.StreamingBody, bool]
+
+      Get the file object stream from storage.
+
+      :param fileKey: the key with which to retrieve the file again later
+      :type fileKey: str
+      :return: ( the objects streaming body or None , true if successful)
+      :rtype: ( StreamingBody, bool )
+
+
+
+   .. py:method:: copyFile(inPath: str, outPath: str)
+
+      Copy a file inside the same bucket
+
+      :param inPath: The file to be copied
+      :type inPath: str
+      :param outPath: The new file path
+      :type outPath: str
+      :return: Nothing
+      :rtype: None
+
+
 
 
    .. py:method:: deleteFile(fileKey)
@@ -86,13 +167,33 @@ Attributes
 
 
 
-.. py:data:: manageLocalS3
-   
+   .. py:method:: getContentOfBucket(prefix)
 
-   
+      Retrieve the content of a certain bucket from the storage.
+
+      :param prefix: The prefix of the folder
+      :type prefix: str
+      :return: Dictionary of files
+      :rtype: Dict
+
+
+
+
+   .. py:method:: getDownloadLinkPrefix()
+
+      What is the prefix for downloading files?
+
+      :return: Link prefix
+      :rtype: str
+
+
+
+
+.. py:data:: manageLocalS3
 
 .. py:data:: manageRemoteS3
-   
 
-   
+.. py:data:: manageStaticsS3
+
+.. py:data:: manageRemoteS3Buckets
 

@@ -1,11 +1,11 @@
-:py:mod:`code_General.handlers.frontpage`
-=========================================
+code_General.handlers.frontpage
+===============================
 
 .. py:module:: code_General.handlers.frontpage
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,34 +13,28 @@
 
 
 
-Module Contents
----------------
-
-
-Functions
-~~~~~~~~~
-
-.. autoapisummary::
-
-   code_General.handlers.frontpage.landingPage
-   code_General.handlers.frontpage.docPage
-   code_General.handlers.frontpage.benchyPage
-   code_General.handlers.frontpage.getSettingsToken
-
-
-
 Attributes
-~~~~~~~~~~
+----------
 
 .. autoapisummary::
 
    code_General.handlers.frontpage.logger
 
 
-.. py:data:: logger
-   
+Functions
+---------
 
-   
+.. autoapisummary::
+
+   code_General.handlers.frontpage.landingPage
+   code_General.handlers.frontpage.docPage
+   code_General.handlers.frontpage.benchyPage
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
 
 .. py:function:: landingPage(request)
 
@@ -73,15 +67,5 @@ Attributes
    :return: Rendered page
    :rtype: HTTPResponse
 
-
-
-.. py:function:: getSettingsToken(request)
-
-   Return Settings of django
-
-   :param request: GET request
-   :type request: HTTP GET
-   :return: JSON with Settings
-   :rtype: JSONResponse
 
 

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>main.apps &#8212; Generic-backend 0.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../_static/documentation_options.js?v=7f00635f"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="main.asgi" href="../asgi/index.html" />
+    <link rel="prev" title="main" href="../index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-main.apps">
+<span id="main-apps"></span><h1>main.apps<a class="headerlink" href="#module-main.apps" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
+<p>Silvio Weging &amp; Thomas Skodawessely 2023</p>
+<p>Contains: Modules that need to be imported</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#main.apps.logger" title="main.apps.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#main.apps.BackendDjangoConfig" title="main.apps.BackendDjangoConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BackendDjangoConfig</span></code></a></p></td>
+<td><p>Readying the main app</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="main.apps.logger">
+<span class="sig-prename descclassname"><span class="pre">main.apps.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#main.apps.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="main.apps.BackendDjangoConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.apps.</span></span><span class="sig-name descname"><span class="pre">BackendDjangoConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.apps.BackendDjangoConfig" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">django.apps.AppConfig</span></code>, <a class="reference internal" href="../settings/base/index.html#main.settings.base.BackendConfigHelper" title="main.settings.base.BackendConfigHelper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main.settings.base.BackendConfigHelper</span></code></a></p>
+<p>Readying the main app</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.apps.BackendDjangoConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'main'</span></em><a class="headerlink" href="#main.apps.BackendDjangoConfig.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.apps.BackendDjangoConfig.checks_disable">
+<span class="sig-name descname"><span class="pre">checks_disable</span></span><a class="headerlink" href="#main.apps.BackendDjangoConfig.checks_disable" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.apps.BackendDjangoConfig.collectAllImports">
+<span class="sig-name descname"><span class="pre">collectAllImports</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.apps.BackendDjangoConfig.collectAllImports" title="Link to this definition">¶</a></dt>
+<dd><p>Collect all “imports.py” files and imports content</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.apps.BackendDjangoConfig.ready">
+<span class="sig-name descname"><span class="pre">ready</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.apps.BackendDjangoConfig.ready" title="Link to this definition">¶</a></dt>
+<dd><p>Start app</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.apps.BackendDjangoConfig.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.apps.BackendDjangoConfig.__repr__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.apps.BackendDjangoConfig.doCheck">
+<span class="sig-name descname"><span class="pre">doCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">check_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.apps.BackendDjangoConfig.doCheck" title="Link to this definition">¶</a></dt>
+<dd><p>determine if check should be executed
+:param check_name: Name of the check
+:type check_name: str
+:return: True if check should be executed
+:rtype: bool</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Generic-backend</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../conf/index.html">conf</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">main</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">main.apps</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#main.apps.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="#main.apps.BackendDjangoConfig"><code class="docutils literal notranslate"><span class="pre">BackendDjangoConfig</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#main.apps.BackendDjangoConfig.name"><code class="docutils literal notranslate"><span class="pre">BackendDjangoConfig.name</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="#main.apps.BackendDjangoConfig.checks_disable"><code class="docutils literal notranslate"><span class="pre">BackendDjangoConfig.checks_disable</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="#main.apps.BackendDjangoConfig.collectAllImports"><code class="docutils literal notranslate"><span class="pre">BackendDjangoConfig.collectAllImports()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="#main.apps.BackendDjangoConfig.ready"><code class="docutils literal notranslate"><span class="pre">BackendDjangoConfig.ready()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="#main.apps.BackendDjangoConfig.__repr__"><code class="docutils literal notranslate"><span class="pre">BackendDjangoConfig.__repr__()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="#main.apps.BackendDjangoConfig.doCheck"><code class="docutils literal notranslate"><span class="pre">BackendDjangoConfig.doCheck()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../asgi/index.html">main.asgi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../checks/index.html">main.checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../helper/index.html">main.helper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../management/index.html">main.management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../settings/index.html">main.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../urls/index.html">main.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../wsgi/index.html">main.wsgi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../manage/index.html">manage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../code_General/index.html">code_General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">API Reference</a><ul>
+  <li><a href="../index.html">main</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">main</a></li>
+      <li>Next: <a href="../asgi/index.html" title="next chapter">main.asgi</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Silvio Weging.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../_sources/autoapi/main/apps/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

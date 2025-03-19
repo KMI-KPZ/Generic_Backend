@@ -1,15 +1,17 @@
-:py:mod:`code_General.connections.postgresql`
-=============================================
+code_General.connections.postgresql
+===================================
 
 .. py:module:: code_General.connections.postgresql
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   pgProfiles/index.rst
+   /autoapi/code_General/connections/postgresql/pgAPIToken/index
+   /autoapi/code_General/connections/postgresql/pgEvents/index
+   /autoapi/code_General/connections/postgresql/pgProfiles/index
 
 

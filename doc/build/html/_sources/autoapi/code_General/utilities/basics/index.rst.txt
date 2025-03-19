@@ -1,11 +1,11 @@
-:py:mod:`code_General.utilities.basics`
-=======================================
+code_General.utilities.basics
+=============================
 
 .. py:module:: code_General.utilities.basics
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,33 +13,37 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
-   code_General.utilities.basics.Logging
-
+   code_General.utilities.basics.ExceptionSerializerGeneric
+   code_General.utilities.basics.VersioningForHandlers
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    code_General.utilities.basics.checkIfTokenValid
    code_General.utilities.basics.manualCheckifLoggedIn
+   code_General.utilities.basics.manualCheckifAdmin
    code_General.utilities.basics.checkIfUserIsLoggedIn
    code_General.utilities.basics.checkIfUserIsAdmin
    code_General.utilities.basics.handleTooManyRequestsError
    code_General.utilities.basics.manualCheckIfRightsAreSufficient
    code_General.utilities.basics.manualCheckIfRightsAreSufficientForSpecificOperation
    code_General.utilities.basics.checkIfRightsAreSufficient
+   code_General.utilities.basics.findFirstOccurence
+   code_General.utilities.basics.checkIfNestedKeyExists
+   code_General.utilities.basics.getNestedValue
+   code_General.utilities.basics.checkVersion
 
 
+Module Contents
+---------------
 
 .. py:function:: checkIfTokenValid(token)
 
@@ -58,6 +62,16 @@ Functions
    :param session: Session of user
    :type session: dict
    :return: Response whether the user is logged in or not.
+   :rtype: Bool
+
+
+.. py:function:: manualCheckifAdmin(session)
+
+   Check whether a user is an admin or not.
+
+   :param session: Session of user
+   :type session: dict
+   :return: Response whether the user is an admin or not.
    :rtype: Bool
 
 
@@ -124,106 +138,110 @@ Functions
    :rtype: HTTPRespone/JSONResponse, Func
 
 
-.. py:class:: Logging
+.. py:function:: findFirstOccurence(iterable, default=False, pred=None)
 
-   .. py:class:: Subject
+   Returns the first true value in the iterable.
 
-      Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+   If no true value is found, returns *default*
 
-      .. py:attribute:: USER
-         
+   If *pred* is not None, returns the first item
+   for which pred(item) is true.
 
-         
-
-      .. py:attribute:: ADMIN
-         
-
-         
-
-      .. py:attribute:: ORGANISATION
-         
-
-         
-
-      .. py:attribute:: SYSTEM
-         
-
-         
-
-      .. py:attribute:: SUBJECT
-         
-
-         
+   :param iterable: The object (list, ...)
+   :type iterable: iterable object
+   :param default: The default returned, mostly None
+   :type default: depends
+   :param pred: A lambda function which an element of the list must fulfill
+   :type pred: function
+   :return: Element or default
+   :rtype: depends
 
 
-   .. py:class:: Predicate
 
-      Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+.. py:function:: checkIfNestedKeyExists(dictionary: dict, *keys) -> bool
 
-      .. py:attribute:: CREATED
-         
+   Check if nested keys exist in a dictionary.
+   Equivalent to: if key1 in dictionary and key2 in dictionary[key1] and ...
 
-         
-
-      .. py:attribute:: DEFINED
-         
-
-         
-
-      .. py:attribute:: FETCHED
-         
-
-         
-
-      .. py:attribute:: EDITED
-         
-
-         
-
-      .. py:attribute:: DELETED
-         
-
-         
-
-      .. py:attribute:: PREDICATE
-         
-
-         
+   :param dictionary: The dictionary in question
+   :type dictionary: dict
+   :param keys: Key Parameters, must be in order
+   :type keys: Any
+   :return: True if all keys are in Dictionary
+   :rtype: bool
 
 
-   .. py:class:: Object
 
-      Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+.. py:function:: getNestedValue(dictionary: dict, *keys)
 
-      .. py:attribute:: USER
-         
+   Check if nested keys exist in a dictionary and return the final value.
+   Equivalent to: if key1 in dictionary and key2 in dictionary[key1] and ... dictionary[key1][key2]...[keyN]
 
-         
+   :param dictionary: The dictionary in question
+   :type dictionary: dict
+   :param keys: Key Parameters, must be in order
+   :type keys: Any
+   :return: The last value if all keys are in Dictionary, None if not
+   :rtype: Any | None
 
-      .. py:attribute:: ADMIN
-         
 
-         
 
-      .. py:attribute:: ORGANISATION
-         
+.. py:class:: ExceptionSerializerGeneric(instance=None, data=empty, **kwargs)
 
-         
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
 
-      .. py:attribute:: SYSTEM
-         
 
-         
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
 
-      .. py:attribute:: SELF
-         
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
 
-         
+   In particular, if a `data=` argument is passed then:
 
-      .. py:attribute:: OBJECT
-         
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
 
-         
+   If a `data=` argument is not passed then:
 
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: message
+
+
+   .. py:attribute:: exception
+
+
+.. py:class:: VersioningForHandlers(allowedVersions)
+
+   Bases: :py:obj:`rest_framework.versioning.AcceptHeaderVersioning`
+
+
+   GET /something/ HTTP/1.1
+   Host: example.com
+   Accept: application/json; version=1.0
+
+
+   .. py:attribute:: allowed_versions
+      :value: ['0.3']
+
+
+
+.. py:function:: checkVersion(version=0.3)
+
+   Checks if the version is supported or not. If not, returns an error message.
+
+   :param version: Version of the API to check if it is supported or not
+   :type version: Float
+   :return: Response whether the version is supported or not
+   :rtype: HTTPRespone
 
 

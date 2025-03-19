@@ -1,0 +1,38 @@
+main.settings.debug_local
+=========================
+
+.. py:module:: main.settings.debug_local
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2023
+
+   Contains: Further settings for debug mode
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   main.settings.debug_local.DEBUG
+   main.settings.debug_local.BACKEND_SETTINGS
+   main.settings.debug_local.CACHES
+
+
+Module Contents
+---------------
+
+.. py:data:: DEBUG
+   :value: True
+
+
+.. py:data:: BACKEND_SETTINGS
+   :value: 'debug_local'
+
+
+.. py:data:: CACHES
+

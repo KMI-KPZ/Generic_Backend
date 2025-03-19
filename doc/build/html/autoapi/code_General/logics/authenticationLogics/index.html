@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>code_General.logics.authenticationLogics &#8212; Generic-backend 0.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=7f00635f"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.logics.emailLogics" href="../emailLogics/index.html" />
+    <link rel="prev" title="code_General.logics.adminLogics" href="../adminLogics/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.logics.authenticationLogics">
+<span id="code-general-logics-authenticationlogics"></span><h1>code_General.logics.authenticationLogics<a class="headerlink" href="#module-code_General.logics.authenticationLogics" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
+<p>Silvio Weging 2024</p>
+<p>Contains: Logic for Files</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.logger" title="code_General.logics.authenticationLogics.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.loggerError" title="code_General.logics.authenticationLogics.loggerError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loggerError</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForSetLocaleOfUser" title="code_General.logics.authenticationLogics.logicForSetLocaleOfUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForSetLocaleOfUser</span></code></a>(validatedInput, request)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.setOrganizationName" title="code_General.logics.authenticationLogics.setOrganizationName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setOrganizationName</span></code></a>(request)</p></td>
+<td><p>Set's the Organization name based on the information of the token</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForMemberOfOrganization" title="code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForMemberOfOrganization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieveRolesAndPermissionsForMemberOfOrganization</span></code></a>(session)</p></td>
+<td><p>Get the roles and the permissions via API from Auth0</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForStandardUser" title="code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForStandardUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieveRolesAndPermissionsForStandardUser</span></code></a>(session)</p></td>
+<td><p>Get the roles and the permissions via API from Auth0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.setRoleAndPermissionsOfUser" title="code_General.logics.authenticationLogics.setRoleAndPermissionsOfUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setRoleAndPermissionsOfUser</span></code></a>(request)</p></td>
+<td><p>Set's the role and the permissions of the user based on the information of the token</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForLoginUser" title="code_General.logics.authenticationLogics.logicForLoginUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForLoginUser</span></code></a>(request)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForCallbackLogin" title="code_General.logics.authenticationLogics.logicForCallbackLogin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForCallbackLogin</span></code></a>(request)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForGetRolesOfUser" title="code_General.logics.authenticationLogics.logicForGetRolesOfUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForGetRolesOfUser</span></code></a>(request)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForGetPermissionsOfUser" title="code_General.logics.authenticationLogics.logicForGetPermissionsOfUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForGetPermissionsOfUser</span></code></a>(request)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForLogoutUser" title="code_General.logics.authenticationLogics.logicForLogoutUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForLogoutUser</span></code></a>(request)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.logger">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#code_General.logics.authenticationLogics.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.loggerError">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">loggerError</span></span><a class="headerlink" href="#code_General.logics.authenticationLogics.loggerError" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.logicForSetLocaleOfUser">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">logicForSetLocaleOfUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validatedInput</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.authenticationLogics.logicForSetLocaleOfUser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.setOrganizationName">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">setOrganizationName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.authenticationLogics.setOrganizationName" title="Link to this definition">¶</a></dt>
+<dd><p>Set’s the Organization name based on the information of the token</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>Dict</em>) – request containing OAuth Token</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForMemberOfOrganization">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">retrieveRolesAndPermissionsForMemberOfOrganization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForMemberOfOrganization" title="Link to this definition">¶</a></dt>
+<dd><p>Get the roles and the permissions via API from Auth0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dict</em>) – The session of the user</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict with roles and permissions</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForStandardUser">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">retrieveRolesAndPermissionsForStandardUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForStandardUser" title="Link to this definition">¶</a></dt>
+<dd><p>Get the roles and the permissions via API from Auth0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dict</em>) – The session of the user</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict with roles and permissions</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.setRoleAndPermissionsOfUser">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">setRoleAndPermissionsOfUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.authenticationLogics.setRoleAndPermissionsOfUser" title="Link to this definition">¶</a></dt>
+<dd><p>Set’s the role and the permissions of the user based on the information of the token</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>Dict</em>) – request containing OAuth Token</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Exception or True</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Exception or Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.logicForLoginUser">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">logicForLoginUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.authenticationLogics.logicForLoginUser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.logicForCallbackLogin">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">logicForCallbackLogin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.authenticationLogics.logicForCallbackLogin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.logicForGetRolesOfUser">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">logicForGetRolesOfUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.authenticationLogics.logicForGetRolesOfUser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.logicForGetPermissionsOfUser">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">logicForGetPermissionsOfUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.authenticationLogics.logicForGetPermissionsOfUser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.authenticationLogics.logicForLogoutUser">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.authenticationLogics.</span></span><span class="sig-name descname"><span class="pre">logicForLogoutUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.authenticationLogics.logicForLogoutUser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Generic-backend</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../handlers/index.html">code_General.handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.logics</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../adminLogics/index.html">code_General.logics.adminLogics</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.logics.authenticationLogics</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.loggerError"><code class="docutils literal notranslate"><span class="pre">loggerError</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForSetLocaleOfUser"><code class="docutils literal notranslate"><span class="pre">logicForSetLocaleOfUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.setOrganizationName"><code class="docutils literal notranslate"><span class="pre">setOrganizationName()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForMemberOfOrganization"><code class="docutils literal notranslate"><span class="pre">retrieveRolesAndPermissionsForMemberOfOrganization()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.retrieveRolesAndPermissionsForStandardUser"><code class="docutils literal notranslate"><span class="pre">retrieveRolesAndPermissionsForStandardUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.setRoleAndPermissionsOfUser"><code class="docutils literal notranslate"><span class="pre">setRoleAndPermissionsOfUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForLoginUser"><code class="docutils literal notranslate"><span class="pre">logicForLoginUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForCallbackLogin"><code class="docutils literal notranslate"><span class="pre">logicForCallbackLogin()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForGetRolesOfUser"><code class="docutils literal notranslate"><span class="pre">logicForGetRolesOfUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForGetPermissionsOfUser"><code class="docutils literal notranslate"><span class="pre">logicForGetPermissionsOfUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.authenticationLogics.logicForLogoutUser"><code class="docutils literal notranslate"><span class="pre">logicForLogoutUser()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../emailLogics/index.html">code_General.logics.emailLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../eventLogics/index.html">code_General.logics.eventLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../filesLogics/index.html">code_General.logics.filesLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../organizationLogics/index.html">code_General.logics.organizationLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../statisticsLogics/index.html">code_General.logics.statisticsLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../userLogics/index.html">code_General.logics.userLogics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelFiles/index.html">code_General.modelFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">code_General.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.logics</a><ul>
+      <li>Previous: <a href="../adminLogics/index.html" title="previous chapter">code_General.logics.adminLogics</a></li>
+      <li>Next: <a href="../emailLogics/index.html" title="next chapter">code_General.logics.emailLogics</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Silvio Weging.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_General/logics/authenticationLogics/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

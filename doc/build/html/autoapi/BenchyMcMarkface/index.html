@@ -1,25 +1,27 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>BenchyMcMarkface &#8212; KISS-backend 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <title>BenchyMcMarkface &#8212; Generic-backend 0.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../_static/documentation_options.js?v=7f00635f"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="code_General.utilities.temporaryFolder" href="../code_General/utilities/temporaryFolder/index.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -32,18 +34,16 @@
           <div class="body" role="main">
             
   <section id="module-BenchyMcMarkface">
-<span id="benchymcmarkface"></span><h1><a class="reference internal" href="#module-BenchyMcMarkface" title="BenchyMcMarkface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">BenchyMcMarkface</span></code></a><a class="headerlink" href="#module-BenchyMcMarkface" title="Permalink to this heading">¶</a></h1>
-<p>Part of Semper-KI software</p>
+<span id="benchymcmarkface"></span><h1>BenchyMcMarkface<a class="headerlink" href="#module-BenchyMcMarkface" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
 <p>Silvio Weging 2023</p>
 <p>Contains: BenchyMcMarkface, it is a script that can be used to benchmark a website</p>
 <p>Needed as parameters:</p>
 <p>The main url of the website</p>
 <p>A file containing suburls, one per line</p>
 <p>Number of async calls to be made randomly to the suburls</p>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#BenchyMcMarkface.request" title="BenchyMcMarkface.request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">request</span></code></a>(url)</p></td>
@@ -63,32 +63,34 @@
 </tr>
 </tbody>
 </table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="BenchyMcMarkface.request">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BenchyMcMarkface.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BenchyMcMarkface.request" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BenchyMcMarkface.</span></span><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BenchyMcMarkface.request" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="BenchyMcMarkface.runLoop">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BenchyMcMarkface.</span></span><span class="sig-name descname"><span class="pre">runLoop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BenchyMcMarkface.runLoop" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BenchyMcMarkface.</span></span><span class="sig-name descname"><span class="pre">runLoop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BenchyMcMarkface.runLoop" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="BenchyMcMarkface.main">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BenchyMcMarkface.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BenchyMcMarkface.main" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BenchyMcMarkface.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BenchyMcMarkface.main" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="BenchyMcMarkface.mainDjango">
-<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BenchyMcMarkface.</span></span><span class="sig-name descname"><span class="pre">mainDjango</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BenchyMcMarkface.mainDjango" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BenchyMcMarkface.</span></span><span class="sig-name descname"><span class="pre">mainDjango</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BenchyMcMarkface.mainDjango" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="BenchyMcMarkface.startFromDjango">
-<span class="sig-prename descclassname"><span class="pre">BenchyMcMarkface.</span></span><span class="sig-name descname"><span class="pre">startFromDjango</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BenchyMcMarkface.startFromDjango" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">BenchyMcMarkface.</span></span><span class="sig-name descname"><span class="pre">startFromDjango</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BenchyMcMarkface.startFromDjango" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</section>
 </section>
 </section>
 
@@ -97,9 +99,9 @@
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../index.html">KISS-backend</a></h1>
+<h1 class="logo"><a href="../../index.html">Generic-backend</a></h1>
 
 
 
@@ -108,28 +110,48 @@
 
 
 
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../index.html">API Reference</a></li>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../manage/index.html">manage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../code_General/index.html">code_General</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">BenchyMcMarkface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#BenchyMcMarkface.request"><code class="docutils literal notranslate"><span class="pre">request()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#BenchyMcMarkface.runLoop"><code class="docutils literal notranslate"><span class="pre">runLoop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#BenchyMcMarkface.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#BenchyMcMarkface.mainDjango"><code class="docutils literal notranslate"><span class="pre">mainDjango()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#BenchyMcMarkface.startFromDjango"><code class="docutils literal notranslate"><span class="pre">startFromDjango()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+      <li>Previous: <a href="../code_General/utilities/temporaryFolder/index.html" title="previous chapter">code_General.utilities.temporaryFolder</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -143,11 +165,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2023, Silvio Weging.
+      &#169;2025, Silvio Weging.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../_sources/autoapi/BenchyMcMarkface/index.rst.txt"

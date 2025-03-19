@@ -1,0 +1,75 @@
+main.checks
+===========
+
+.. py:module:: main.checks
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Thomas Skodawessely 2023
+
+   Contains: Checks
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   main.checks.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   main.checks.Tags
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   main.checks.checkEnv
+   main.checks.checkDb
+   main.checks.checkRedis
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:class:: Tags
+
+   Bases: :py:obj:`django.core.checks.Tags`
+
+
+   Built-in tags for internal checks.
+
+
+   .. py:attribute:: env_check
+      :value: 'env_check'
+
+
+
+   .. py:attribute:: db_check
+      :value: 'db_check'
+
+
+
+   .. py:attribute:: redis_check
+      :value: 'redis_check'
+
+
+
+.. py:function:: checkEnv(app_configs=None, **kwargs)
+
+.. py:function:: checkDb(app_configs=None, **kwargs)
+
+.. py:function:: checkRedis(app_configs=None, **kwargs)
+

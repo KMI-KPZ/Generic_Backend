@@ -1,11 +1,11 @@
-:py:mod:`code_General.utilities.signals`
-========================================
+code_General.utilities.signals
+==============================
 
 .. py:module:: code_General.utilities.signals
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,22 +13,8 @@
 
 
 
-Module Contents
----------------
-
-Classes
-~~~~~~~
-
-.. autoapisummary::
-
-   code_General.utilities.signals.SignalDispatchers
-   code_General.utilities.signals.SignalReceivers
-
-
-
-
 Attributes
-~~~~~~~~~~
+----------
 
 .. autoapisummary::
 
@@ -36,36 +22,61 @@ Attributes
    code_General.utilities.signals.signalReceiver
 
 
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.utilities.signals.SignalDispatchers
+   code_General.utilities.signals.SignalReceivers
+
+
+Module Contents
+---------------
+
 .. py:class:: SignalDispatchers
 
    Defines signal dispatchers that send signals to other apps
 
 
-   .. py:attribute:: userLoggedIn
-      
 
-      
+   .. py:attribute:: userLoggedIn
+
 
    .. py:attribute:: userLoggedOut
-      
 
-      
+
+   .. py:attribute:: userDeleted
+
+
+   .. py:attribute:: userCreated
+
+
+   .. py:attribute:: userUpdated
+
+
+   .. py:attribute:: orgaCreated
+
+
+   .. py:attribute:: orgaUpdated
+
+
+   .. py:attribute:: orgaServiceDetails
+
+
+   .. py:attribute:: orgaServiceDeletion
+
+
+   .. py:attribute:: orgaDeleted
+
 
    .. py:attribute:: websocketConnected
-      
 
-      
 
    .. py:attribute:: websocketDisconnected
-      
-
-      
 
 
 .. py:data:: signalDispatcher
-   
-
-   
 
 .. py:class:: SignalReceivers
 
@@ -74,7 +85,4 @@ Attributes
 
 
 .. py:data:: signalReceiver
-   
-
-   
 

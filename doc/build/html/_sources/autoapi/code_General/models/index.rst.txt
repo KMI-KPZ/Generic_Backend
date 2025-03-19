@@ -1,11 +1,11 @@
-:py:mod:`code_General.models`
-=============================
+code_General.models
+===================
 
 .. py:module:: code_General.models
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 

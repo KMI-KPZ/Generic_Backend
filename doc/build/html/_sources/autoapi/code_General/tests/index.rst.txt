@@ -1,11 +1,11 @@
-:py:mod:`code_General.tests`
-============================
+code_General.tests
+==================
 
 .. py:module:: code_General.tests
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,22 +13,21 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    code_General.tests.TestProfiles
 
 
-
+Module Contents
+---------------
 
 .. py:class:: TestProfiles(methodName='runTest')
 
    Bases: :py:obj:`django.test.TestCase`
+
 
    Similar to TransactionTestCase, but use `transaction.atomic()` to achieve
    test isolation.
@@ -41,12 +40,15 @@ Classes
    On database backends with no transaction support, TestCase behaves as
    TransactionTestCase.
 
-   .. py:method:: createOrganization(client: django.test.Client, id='', userID='')
+
+   .. py:method:: createOrganization(client: django.test.Client)
       :classmethod:
 
 
-   .. py:method:: createUser(client: django.test.Client, sub='', name='')
+
+   .. py:method:: createUser(client: django.test.Client)
       :staticmethod:
+
 
 
    .. py:method:: test_updateUser()
@@ -62,6 +64,5 @@ Classes
 
 
    .. py:method:: test_deleteOrganization()
-
 
 

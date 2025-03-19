@@ -1,27 +1,19 @@
-:py:mod:`code_General.connections`
-==================================
+code_General.connections
+========================
 
 .. py:module:: code_General.connections
 
 
-Subpackages
------------
-.. toctree::
-   :titlesonly:
-   :maxdepth: 3
-
-   postgresql/index.rst
-
-
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   auth0/index.rst
-   mailer/index.rst
-   redis/index.rst
-   s3/index.rst
+   /autoapi/code_General/connections/auth0/index
+   /autoapi/code_General/connections/mailer/index
+   /autoapi/code_General/connections/postgresql/index
+   /autoapi/code_General/connections/redis/index
+   /autoapi/code_General/connections/s3/index
 
 

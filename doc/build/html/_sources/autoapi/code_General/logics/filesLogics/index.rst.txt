@@ -1,0 +1,82 @@
+code_General.logics.filesLogics
+===============================
+
+.. py:module:: code_General.logics.filesLogics
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Logic for Files
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.logics.filesLogics.logger
+   code_General.logics.filesLogics.loggerError
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.logics.filesLogics.logicForGenericUploadFiles
+   code_General.logics.filesLogics.moveFileToRemote
+   code_General.logics.filesLogics.logicForGenericDownloadFile
+   code_General.logics.filesLogics.logicForGenericDownloadFilesAsZip
+   code_General.logics.filesLogics.logicForGenericDeleteFile
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: loggerError
+
+.. py:function:: logicForGenericUploadFiles(request)
+
+   Generic file upload
+
+
+
+.. py:function:: moveFileToRemote(fileKeyLocal, fileKeyRemote, deleteLocal=True) -> bool
+
+   Move a file from local to remote storage with on the fly encryption not managing other information
+
+   :param fileKeyLocal: The key with which to retrieve the file again later
+   :type fileKeyLocal: Str
+   :param fileKeyRemote: The key with which to retrieve the file again later
+   :type fileKeyRemote: Str
+   :param delteLocal: If set to True the local file will be deleted after the transfer
+   :type delteLocal: bool
+   :return: Success or error
+   :rtype: Bool or Error
+
+
+
+.. py:function:: logicForGenericDownloadFile(fileID, request)
+
+   Generic file download
+
+
+
+.. py:function:: logicForGenericDownloadFilesAsZip(request)
+
+   Generic file download as zip
+
+
+
+.. py:function:: logicForGenericDeleteFile(fileID, request)
+
+   Generic file delete
+
+
+

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>code_General.handlers.users &#8212; Generic-backend 0.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=7f00635f"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.handlers.websocket" href="../websocket/index.html" />
+    <link rel="prev" title="code_General.handlers.testResponse" href="../testResponse/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.handlers.users">
+<span id="code-general-handlers-users"></span><h1>code_General.handlers.users<a class="headerlink" href="#module-code_General.handlers.users" title="Link to this heading">¶</a></h1>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.users.logger" title="code_General.handlers.users.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.users.loggerError" title="code_General.handlers.users.loggerError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loggerError</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent" title="code_General.handlers.users.SReqAddressContent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SReqAddressContent</span></code></a></p></td>
+<td><p>The BaseSerializer class provides a minimal class which may be used</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.users.SResStatistics" title="code_General.handlers.users.SResStatistics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SResStatistics</span></code></a></p></td>
+<td><p>The BaseSerializer class provides a minimal class which may be used</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.users.SReqNotificationsContent" title="code_General.handlers.users.SReqNotificationsContent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SReqNotificationsContent</span></code></a></p></td>
+<td><p>The BaseSerializer class provides a minimal class which may be used</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.users.SReqProfileClassesForNotifications" title="code_General.handlers.users.SReqProfileClassesForNotifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SReqProfileClassesForNotifications</span></code></a></p></td>
+<td><p>The BaseSerializer class provides a minimal class which may be used</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.users.SResUserDetails" title="code_General.handlers.users.SResUserDetails"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SResUserDetails</span></code></a></p></td>
+<td><p>The BaseSerializer class provides a minimal class which may be used</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.users.SResUserProfile" title="code_General.handlers.users.SResUserProfile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SResUserProfile</span></code></a></p></td>
+<td><p>The BaseSerializer class provides a minimal class which may be used</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.users.SReqChanges" title="code_General.handlers.users.SReqChanges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SReqChanges</span></code></a></p></td>
+<td><p>The BaseSerializer class provides a minimal class which may be used</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.users.SReqDeletions" title="code_General.handlers.users.SReqDeletions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SReqDeletions</span></code></a></p></td>
+<td><p>The BaseSerializer class provides a minimal class which may be used</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.users.SReqUpdateUser" title="code_General.handlers.users.SReqUpdateUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SReqUpdateUser</span></code></a></p></td>
+<td><p>The BaseSerializer class provides a minimal class which may be used</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.users.addUserTest" title="code_General.handlers.users.addUserTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">addUserTest</span></code></a>(request)</p></td>
+<td><p>For testing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.users.getUserDetails" title="code_General.handlers.users.getUserDetails"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getUserDetails</span></code></a>(request)</p></td>
+<td><p>Return details about user.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.users.updateDetails" title="code_General.handlers.users.updateDetails"><code class="xref py py-obj docutils literal notranslate"><span class="pre">updateDetails</span></code></a>(request)</p></td>
+<td><p>Update user details.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.users.deleteUser" title="code_General.handlers.users.deleteUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deleteUser</span></code></a>(request)</p></td>
+<td><p>Deletes a user from the database and auth0.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.handlers.users.logger">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#code_General.handlers.users.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.handlers.users.loggerError">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">loggerError</span></span><a class="headerlink" href="#code_General.handlers.users.loggerError" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.handlers.users.addUserTest">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">addUserTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.addUserTest" title="Link to this definition">¶</a></dt>
+<dd><p>For testing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP GET</em>) – GET request</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>HTTP response</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP status</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">SReqAddressContent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">empty</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+<p>The BaseSerializer class provides a minimal class which may be used
+for writing custom serializer implementations.</p>
+<p>Note that we strongly restrict the ordering of operations/properties
+that may be used on the serializer in order to enforce correct usage.</p>
+<p>In particular, if a <cite>data=</cite> argument is passed then:</p>
+<p>.is_valid() - Available.
+.initial_data - Available.
+.validated_data - Only available after calling <cite>is_valid()</cite>
+.errors - Only available after calling <cite>is_valid()</cite>
+.data - Only available after calling <cite>is_valid()</cite></p>
+<p>If a <cite>data=</cite> argument is not passed then:</p>
+<p>.is_valid() - Not available.
+.initial_data - Not available.
+.validated_data - Not available.
+.errors - Not available.
+.data - Available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent.id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent.standard">
+<span class="sig-name descname"><span class="pre">standard</span></span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent.standard" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent.country">
+<span class="sig-name descname"><span class="pre">country</span></span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent.country" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent.city">
+<span class="sig-name descname"><span class="pre">city</span></span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent.city" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent.zipcode">
+<span class="sig-name descname"><span class="pre">zipcode</span></span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent.zipcode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent.houseNumber">
+<span class="sig-name descname"><span class="pre">houseNumber</span></span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent.houseNumber" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent.street">
+<span class="sig-name descname"><span class="pre">street</span></span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent.street" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent.company">
+<span class="sig-name descname"><span class="pre">company</span></span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent.company" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent.lastName">
+<span class="sig-name descname"><span class="pre">lastName</span></span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent.lastName" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent.firstName">
+<span class="sig-name descname"><span class="pre">firstName</span></span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent.firstName" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqAddressContent.coordinates">
+<span class="sig-name descname"><span class="pre">coordinates</span></span><a class="headerlink" href="#code_General.handlers.users.SReqAddressContent.coordinates" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResStatistics">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">SResStatistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">empty</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.SResStatistics" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+<p>The BaseSerializer class provides a minimal class which may be used
+for writing custom serializer implementations.</p>
+<p>Note that we strongly restrict the ordering of operations/properties
+that may be used on the serializer in order to enforce correct usage.</p>
+<p>In particular, if a <cite>data=</cite> argument is passed then:</p>
+<p>.is_valid() - Available.
+.initial_data - Available.
+.validated_data - Only available after calling <cite>is_valid()</cite>
+.errors - Only available after calling <cite>is_valid()</cite>
+.data - Only available after calling <cite>is_valid()</cite></p>
+<p>If a <cite>data=</cite> argument is not passed then:</p>
+<p>.is_valid() - Not available.
+.initial_data - Not available.
+.validated_data - Not available.
+.errors - Not available.
+.data - Available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResStatistics.lastLogin">
+<span class="sig-name descname"><span class="pre">lastLogin</span></span><a class="headerlink" href="#code_General.handlers.users.SResStatistics.lastLogin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResStatistics.numberOfLoginsTotal">
+<span class="sig-name descname"><span class="pre">numberOfLoginsTotal</span></span><a class="headerlink" href="#code_General.handlers.users.SResStatistics.numberOfLoginsTotal" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResStatistics.locationOfLastLogin">
+<span class="sig-name descname"><span class="pre">locationOfLastLogin</span></span><a class="headerlink" href="#code_General.handlers.users.SResStatistics.locationOfLastLogin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqNotificationsContent">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">SReqNotificationsContent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">empty</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.SReqNotificationsContent" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+<p>The BaseSerializer class provides a minimal class which may be used
+for writing custom serializer implementations.</p>
+<p>Note that we strongly restrict the ordering of operations/properties
+that may be used on the serializer in order to enforce correct usage.</p>
+<p>In particular, if a <cite>data=</cite> argument is passed then:</p>
+<p>.is_valid() - Available.
+.initial_data - Available.
+.validated_data - Only available after calling <cite>is_valid()</cite>
+.errors - Only available after calling <cite>is_valid()</cite>
+.data - Only available after calling <cite>is_valid()</cite></p>
+<p>If a <cite>data=</cite> argument is not passed then:</p>
+<p>.is_valid() - Not available.
+.initial_data - Not available.
+.validated_data - Not available.
+.errors - Not available.
+.data - Available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqNotificationsContent.event">
+<span class="sig-name descname"><span class="pre">event</span></span><a class="headerlink" href="#code_General.handlers.users.SReqNotificationsContent.event" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqNotificationsContent.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#code_General.handlers.users.SReqNotificationsContent.email" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqProfileClassesForNotifications">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">SReqProfileClassesForNotifications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">empty</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.SReqProfileClassesForNotifications" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+<p>The BaseSerializer class provides a minimal class which may be used
+for writing custom serializer implementations.</p>
+<p>Note that we strongly restrict the ordering of operations/properties
+that may be used on the serializer in order to enforce correct usage.</p>
+<p>In particular, if a <cite>data=</cite> argument is passed then:</p>
+<p>.is_valid() - Available.
+.initial_data - Available.
+.validated_data - Only available after calling <cite>is_valid()</cite>
+.errors - Only available after calling <cite>is_valid()</cite>
+.data - Only available after calling <cite>is_valid()</cite></p>
+<p>If a <cite>data=</cite> argument is not passed then:</p>
+<p>.is_valid() - Not available.
+.initial_data - Not available.
+.validated_data - Not available.
+.errors - Not available.
+.data - Available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqProfileClassesForNotifications.user">
+<span class="sig-name descname"><span class="pre">user</span></span><a class="headerlink" href="#code_General.handlers.users.SReqProfileClassesForNotifications.user" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqProfileClassesForNotifications.organization">
+<span class="sig-name descname"><span class="pre">organization</span></span><a class="headerlink" href="#code_General.handlers.users.SReqProfileClassesForNotifications.organization" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserDetails">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">SResUserDetails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">empty</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.SResUserDetails" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+<p>The BaseSerializer class provides a minimal class which may be used
+for writing custom serializer implementations.</p>
+<p>Note that we strongly restrict the ordering of operations/properties
+that may be used on the serializer in order to enforce correct usage.</p>
+<p>In particular, if a <cite>data=</cite> argument is passed then:</p>
+<p>.is_valid() - Available.
+.initial_data - Available.
+.validated_data - Only available after calling <cite>is_valid()</cite>
+.errors - Only available after calling <cite>is_valid()</cite>
+.data - Only available after calling <cite>is_valid()</cite></p>
+<p>If a <cite>data=</cite> argument is not passed then:</p>
+<p>.is_valid() - Not available.
+.initial_data - Not available.
+.validated_data - Not available.
+.errors - Not available.
+.data - Available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserDetails.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserDetails.email" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserDetails.locale">
+<span class="sig-name descname"><span class="pre">locale</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserDetails.locale" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserDetails.addresses">
+<span class="sig-name descname"><span class="pre">addresses</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserDetails.addresses" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserDetails.statistics">
+<span class="sig-name descname"><span class="pre">statistics</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserDetails.statistics" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserDetails.notificationSettings">
+<span class="sig-name descname"><span class="pre">notificationSettings</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserDetails.notificationSettings" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserDetails.todos">
+<span class="sig-name descname"><span class="pre">todos</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserDetails.todos" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserProfile">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">SResUserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">empty</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.SResUserProfile" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+<p>The BaseSerializer class provides a minimal class which may be used
+for writing custom serializer implementations.</p>
+<p>Note that we strongly restrict the ordering of operations/properties
+that may be used on the serializer in order to enforce correct usage.</p>
+<p>In particular, if a <cite>data=</cite> argument is passed then:</p>
+<p>.is_valid() - Available.
+.initial_data - Available.
+.validated_data - Only available after calling <cite>is_valid()</cite>
+.errors - Only available after calling <cite>is_valid()</cite>
+.data - Only available after calling <cite>is_valid()</cite></p>
+<p>If a <cite>data=</cite> argument is not passed then:</p>
+<p>.is_valid() - Not available.
+.initial_data - Not available.
+.validated_data - Not available.
+.errors - Not available.
+.data - Available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserProfile.hashedID">
+<span class="sig-name descname"><span class="pre">hashedID</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserProfile.hashedID" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserProfile.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserProfile.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserProfile.details">
+<span class="sig-name descname"><span class="pre">details</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserProfile.details" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserProfile.createdWhen">
+<span class="sig-name descname"><span class="pre">createdWhen</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserProfile.createdWhen" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserProfile.updatedWhen">
+<span class="sig-name descname"><span class="pre">updatedWhen</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserProfile.updatedWhen" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserProfile.accessedWhen">
+<span class="sig-name descname"><span class="pre">accessedWhen</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserProfile.accessedWhen" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserProfile.organization">
+<span class="sig-name descname"><span class="pre">organization</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserProfile.organization" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserProfile.lastSeen">
+<span class="sig-name descname"><span class="pre">lastSeen</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserProfile.lastSeen" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SResUserProfile.usertype">
+<span class="sig-name descname"><span class="pre">usertype</span></span><a class="headerlink" href="#code_General.handlers.users.SResUserProfile.usertype" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.handlers.users.getUserDetails">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">getUserDetails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.getUserDetails" title="Link to this definition">¶</a></dt>
+<dd><p>Return details about user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP GET</em>) – GET request</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>User details</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqChanges">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">SReqChanges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">empty</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.SReqChanges" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+<p>The BaseSerializer class provides a minimal class which may be used
+for writing custom serializer implementations.</p>
+<p>Note that we strongly restrict the ordering of operations/properties
+that may be used on the serializer in order to enforce correct usage.</p>
+<p>In particular, if a <cite>data=</cite> argument is passed then:</p>
+<p>.is_valid() - Available.
+.initial_data - Available.
+.validated_data - Only available after calling <cite>is_valid()</cite>
+.errors - Only available after calling <cite>is_valid()</cite>
+.data - Only available after calling <cite>is_valid()</cite></p>
+<p>If a <cite>data=</cite> argument is not passed then:</p>
+<p>.is_valid() - Not available.
+.initial_data - Not available.
+.validated_data - Not available.
+.errors - Not available.
+.data - Available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqChanges.displayName">
+<span class="sig-name descname"><span class="pre">displayName</span></span><a class="headerlink" href="#code_General.handlers.users.SReqChanges.displayName" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqChanges.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#code_General.handlers.users.SReqChanges.email" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqChanges.address">
+<span class="sig-name descname"><span class="pre">address</span></span><a class="headerlink" href="#code_General.handlers.users.SReqChanges.address" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqChanges.locale">
+<span class="sig-name descname"><span class="pre">locale</span></span><a class="headerlink" href="#code_General.handlers.users.SReqChanges.locale" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqChanges.notifications">
+<span class="sig-name descname"><span class="pre">notifications</span></span><a class="headerlink" href="#code_General.handlers.users.SReqChanges.notifications" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqChanges.todos">
+<span class="sig-name descname"><span class="pre">todos</span></span><a class="headerlink" href="#code_General.handlers.users.SReqChanges.todos" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqDeletions">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">SReqDeletions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">empty</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.SReqDeletions" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+<p>The BaseSerializer class provides a minimal class which may be used
+for writing custom serializer implementations.</p>
+<p>Note that we strongly restrict the ordering of operations/properties
+that may be used on the serializer in order to enforce correct usage.</p>
+<p>In particular, if a <cite>data=</cite> argument is passed then:</p>
+<p>.is_valid() - Available.
+.initial_data - Available.
+.validated_data - Only available after calling <cite>is_valid()</cite>
+.errors - Only available after calling <cite>is_valid()</cite>
+.data - Only available after calling <cite>is_valid()</cite></p>
+<p>If a <cite>data=</cite> argument is not passed then:</p>
+<p>.is_valid() - Not available.
+.initial_data - Not available.
+.validated_data - Not available.
+.errors - Not available.
+.data - Available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqDeletions.address">
+<span class="sig-name descname"><span class="pre">address</span></span><a class="headerlink" href="#code_General.handlers.users.SReqDeletions.address" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqUpdateUser">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">SReqUpdateUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">empty</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.SReqUpdateUser" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+<p>The BaseSerializer class provides a minimal class which may be used
+for writing custom serializer implementations.</p>
+<p>Note that we strongly restrict the ordering of operations/properties
+that may be used on the serializer in order to enforce correct usage.</p>
+<p>In particular, if a <cite>data=</cite> argument is passed then:</p>
+<p>.is_valid() - Available.
+.initial_data - Available.
+.validated_data - Only available after calling <cite>is_valid()</cite>
+.errors - Only available after calling <cite>is_valid()</cite>
+.data - Only available after calling <cite>is_valid()</cite></p>
+<p>If a <cite>data=</cite> argument is not passed then:</p>
+<p>.is_valid() - Not available.
+.initial_data - Not available.
+.validated_data - Not available.
+.errors - Not available.
+.data - Available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqUpdateUser.changes">
+<span class="sig-name descname"><span class="pre">changes</span></span><a class="headerlink" href="#code_General.handlers.users.SReqUpdateUser.changes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.users.SReqUpdateUser.deletions">
+<span class="sig-name descname"><span class="pre">deletions</span></span><a class="headerlink" href="#code_General.handlers.users.SReqUpdateUser.deletions" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.handlers.users.updateDetails">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">updateDetails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.updateDetails" title="Link to this definition">¶</a></dt>
+<dd><p>Update user details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP PATCH</em>) – PATCH request</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>HTTP response</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP status</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.handlers.users.deleteUser">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.users.</span></span><span class="sig-name descname"><span class="pre">deleteUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.users.deleteUser" title="Link to this definition">¶</a></dt>
+<dd><p>Deletes a user from the database and auth0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP DELETE</em>) – DELETE request</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>HTTP response</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP status</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Generic-backend</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.handlers</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../admin/index.html">code_General.handlers.admin</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../apiToken/index.html">code_General.handlers.apiToken</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../authentification/index.html">code_General.handlers.authentification</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../email/index.html">code_General.handlers.email</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../events/index.html">code_General.handlers.events</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../files/index.html">code_General.handlers.files</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../frontpage/index.html">code_General.handlers.frontpage</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../organizations/index.html">code_General.handlers.organizations</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../statistics/index.html">code_General.handlers.statistics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../testResponse/index.html">code_General.handlers.testResponse</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.handlers.users</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.loggerError"><code class="docutils literal notranslate"><span class="pre">loggerError</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.addUserTest"><code class="docutils literal notranslate"><span class="pre">addUserTest()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent.id"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent.id</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent.standard"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent.standard</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent.country"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent.country</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent.city"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent.city</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent.zipcode"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent.zipcode</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent.houseNumber"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent.houseNumber</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent.street"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent.street</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent.company"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent.company</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent.lastName"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent.lastName</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent.firstName"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent.firstName</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqAddressContent.coordinates"><code class="docutils literal notranslate"><span class="pre">SReqAddressContent.coordinates</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.SResStatistics"><code class="docutils literal notranslate"><span class="pre">SResStatistics</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResStatistics.lastLogin"><code class="docutils literal notranslate"><span class="pre">SResStatistics.lastLogin</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResStatistics.numberOfLoginsTotal"><code class="docutils literal notranslate"><span class="pre">SResStatistics.numberOfLoginsTotal</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResStatistics.locationOfLastLogin"><code class="docutils literal notranslate"><span class="pre">SResStatistics.locationOfLastLogin</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.SReqNotificationsContent"><code class="docutils literal notranslate"><span class="pre">SReqNotificationsContent</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqNotificationsContent.event"><code class="docutils literal notranslate"><span class="pre">SReqNotificationsContent.event</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqNotificationsContent.email"><code class="docutils literal notranslate"><span class="pre">SReqNotificationsContent.email</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.SReqProfileClassesForNotifications"><code class="docutils literal notranslate"><span class="pre">SReqProfileClassesForNotifications</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqProfileClassesForNotifications.user"><code class="docutils literal notranslate"><span class="pre">SReqProfileClassesForNotifications.user</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqProfileClassesForNotifications.organization"><code class="docutils literal notranslate"><span class="pre">SReqProfileClassesForNotifications.organization</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.SResUserDetails"><code class="docutils literal notranslate"><span class="pre">SResUserDetails</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserDetails.email"><code class="docutils literal notranslate"><span class="pre">SResUserDetails.email</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserDetails.locale"><code class="docutils literal notranslate"><span class="pre">SResUserDetails.locale</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserDetails.addresses"><code class="docutils literal notranslate"><span class="pre">SResUserDetails.addresses</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserDetails.statistics"><code class="docutils literal notranslate"><span class="pre">SResUserDetails.statistics</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserDetails.notificationSettings"><code class="docutils literal notranslate"><span class="pre">SResUserDetails.notificationSettings</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserDetails.todos"><code class="docutils literal notranslate"><span class="pre">SResUserDetails.todos</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.SResUserProfile"><code class="docutils literal notranslate"><span class="pre">SResUserProfile</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserProfile.hashedID"><code class="docutils literal notranslate"><span class="pre">SResUserProfile.hashedID</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserProfile.name"><code class="docutils literal notranslate"><span class="pre">SResUserProfile.name</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserProfile.details"><code class="docutils literal notranslate"><span class="pre">SResUserProfile.details</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserProfile.createdWhen"><code class="docutils literal notranslate"><span class="pre">SResUserProfile.createdWhen</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserProfile.updatedWhen"><code class="docutils literal notranslate"><span class="pre">SResUserProfile.updatedWhen</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserProfile.accessedWhen"><code class="docutils literal notranslate"><span class="pre">SResUserProfile.accessedWhen</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserProfile.organization"><code class="docutils literal notranslate"><span class="pre">SResUserProfile.organization</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserProfile.lastSeen"><code class="docutils literal notranslate"><span class="pre">SResUserProfile.lastSeen</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SResUserProfile.usertype"><code class="docutils literal notranslate"><span class="pre">SResUserProfile.usertype</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.getUserDetails"><code class="docutils literal notranslate"><span class="pre">getUserDetails()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.SReqChanges"><code class="docutils literal notranslate"><span class="pre">SReqChanges</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqChanges.displayName"><code class="docutils literal notranslate"><span class="pre">SReqChanges.displayName</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqChanges.email"><code class="docutils literal notranslate"><span class="pre">SReqChanges.email</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqChanges.address"><code class="docutils literal notranslate"><span class="pre">SReqChanges.address</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqChanges.locale"><code class="docutils literal notranslate"><span class="pre">SReqChanges.locale</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqChanges.notifications"><code class="docutils literal notranslate"><span class="pre">SReqChanges.notifications</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqChanges.todos"><code class="docutils literal notranslate"><span class="pre">SReqChanges.todos</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.SReqDeletions"><code class="docutils literal notranslate"><span class="pre">SReqDeletions</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqDeletions.address"><code class="docutils literal notranslate"><span class="pre">SReqDeletions.address</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.SReqUpdateUser"><code class="docutils literal notranslate"><span class="pre">SReqUpdateUser</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqUpdateUser.changes"><code class="docutils literal notranslate"><span class="pre">SReqUpdateUser.changes</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.users.SReqUpdateUser.deletions"><code class="docutils literal notranslate"><span class="pre">SReqUpdateUser.deletions</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.updateDetails"><code class="docutils literal notranslate"><span class="pre">updateDetails()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.users.deleteUser"><code class="docutils literal notranslate"><span class="pre">deleteUser()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../websocket/index.html">code_General.handlers.websocket</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../logics/index.html">code_General.logics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelFiles/index.html">code_General.modelFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">code_General.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.handlers</a><ul>
+      <li>Previous: <a href="../testResponse/index.html" title="previous chapter">code_General.handlers.testResponse</a></li>
+      <li>Next: <a href="../websocket/index.html" title="next chapter">code_General.handlers.websocket</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Silvio Weging.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_General/handlers/users/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

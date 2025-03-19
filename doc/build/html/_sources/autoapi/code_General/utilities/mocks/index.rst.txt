@@ -1,0 +1,74 @@
+code_General.utilities.mocks
+============================
+
+.. py:module:: code_General.utilities.mocks
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Mocks for various purposes
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.utilities.mocks.logger
+   code_General.utilities.mocks.loggerError
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.utilities.mocks.createMockUserInSession
+   code_General.utilities.mocks.createMockOrganizationInSession
+   code_General.utilities.mocks.createMockAdminInSession
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: loggerError
+
+.. py:function:: createMockUserInSession(session)
+
+   Creates everything necessary to login a mocked user on the plattform
+
+   :param session: The session where it's saved
+   :type session: Dictionary-like object
+   :return: Nothing
+   :rtype: None
+
+
+
+.. py:function:: createMockOrganizationInSession(session)
+
+   Creates everything necessary to login a mocked organization on the plattform
+
+   :param session: The session where it's saved
+   :type session: Dictionary-like object
+   :return: Nothing
+   :rtype: None
+
+
+
+.. py:function:: createMockAdminInSession(session)
+
+   Creates everything necessary to login a mocked admin on the plattform
+
+   :param session: The session where it's saved
+   :type session: Dictionary-like object
+   :return: Nothing
+   :rtype: None
+
+
+

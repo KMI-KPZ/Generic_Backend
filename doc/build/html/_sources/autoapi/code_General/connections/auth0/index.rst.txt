@@ -1,11 +1,11 @@
-:py:mod:`code_General.connections.auth0`
-========================================
+code_General.connections.auth0
+==============================
 
 .. py:module:: code_General.connections.auth0
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,11 +13,20 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.connections.auth0.logger
+   code_General.connections.auth0.auth0Config
+   code_General.connections.auth0.oauth_auth0
+   code_General.connections.auth0.oauth_auth0_orga
+   code_General.connections.auth0.apiToken
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -25,9 +34,8 @@ Classes
    code_General.connections.auth0.ManageAPIToken
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -39,26 +47,17 @@ Functions
    code_General.connections.auth0.authorizeRedirectOrga
 
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   code_General.connections.auth0.logger
-   code_General.connections.auth0.oauth_auth0
-   code_General.connections.auth0.oauth_auth0_orga
-   code_General.connections.auth0.apiToken
-
+Module Contents
+---------------
 
 .. py:data:: logger
-   
 
-   
+.. py:data:: auth0Config
 
 .. py:class:: OAuthLazy
 
    Bases: :py:obj:`authlib.integrations.django_client.OAuth`
+
 
    Registry for oauth clients.
 
@@ -66,15 +65,16 @@ Attributes
 
        oauth = OAuth()
 
-   .. py:attribute:: lazy_fn
-      
 
-      
+   .. py:attribute:: lazy_fn
+      :value: None
+
+
 
    .. py:attribute:: lazy_fn_called
-      :annotation: = False
+      :value: False
 
-      
+
 
    .. py:method:: __getattr__(item)
 
@@ -82,14 +82,9 @@ Attributes
    .. py:method:: setLazyFn(fn)
 
 
-
 .. py:function:: auth0Register(instance)
 
-
 .. py:data:: oauth_auth0
-   
-
-   
 
 .. py:function:: authorizeToken(request)
 
@@ -117,11 +112,7 @@ Attributes
 
 .. py:function:: auth0OrgaRegister(instance: authlib.integrations.django_client.OAuth)
 
-
 .. py:data:: oauth_auth0_orga
-   
-
-   
 
 .. py:function:: authorizeTokenOrga(request)
 
@@ -151,25 +142,22 @@ Attributes
 
    Manage oauth token class.
 
-   .. py:attribute:: savedToken
-      
 
-      
+   .. py:attribute:: savedToken
+
 
    .. py:attribute:: accessTokenString
-      :annotation: = 
+      :value: ''
 
-      
+
 
    .. py:attribute:: redisConn
-      
 
-      
 
    .. py:attribute:: redisKey
-      :annotation: = auth0_access_token
+      :value: 'auth0_access_token'
 
-      
+
 
    .. py:method:: __getattr__(item)
 
@@ -185,7 +173,4 @@ Attributes
 
 
 .. py:data:: apiToken
-   
-
-   
 

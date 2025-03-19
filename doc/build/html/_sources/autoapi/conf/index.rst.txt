@@ -1,64 +1,71 @@
-:py:mod:`conf`
-==============
+conf
+====
 
 .. py:module:: conf
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   conf.project
+   conf.copyright
+   conf.author
+   conf.release
+   conf.extensions
+   conf.autoapi_type
+   conf.autoapi_dirs
+   conf.templates_path
+   conf.exclude_patterns
+   conf.html_theme
+   conf.html_static_path
 
 
 Module Contents
 ---------------
 
 .. py:data:: project
-   :annotation: = KISS-backend
+   :value: 'Generic-backend'
 
-   
 
 .. py:data:: copyright
-   :annotation: = 2023, Silvio Weging
+   :value: '2025, Silvio Weging'
 
-   
 
 .. py:data:: author
-   :annotation: = Silvio Weging
+   :value: 'Silvio Weging'
 
-   
 
 .. py:data:: release
-   :annotation: = 0.1
+   :value: '0.4'
 
-   
 
 .. py:data:: extensions
-   :annotation: = ['sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'autoapi.extension']
+   :value: ['sphinx.ext.autodoc', 'sphinx.ext.autosummary', 'autoapi.extension']
 
-   
 
 .. py:data:: autoapi_type
-   :annotation: = python
+   :value: 'python'
 
-   
 
 .. py:data:: autoapi_dirs
-   :annotation: = ['../../']
+   :value: ['../../']
 
-   
 
 .. py:data:: templates_path
-   :annotation: = ['_templates']
+   :value: ['_templates']
 
-   
 
 .. py:data:: exclude_patterns
-   :annotation: = []
+   :value: []
 
-   
 
 .. py:data:: html_theme
-   :annotation: = alabaster
+   :value: 'alabaster'
 
-   
 
 .. py:data:: html_static_path
-   :annotation: = ['_static']
+   :value: ['_static']
 
-   
 

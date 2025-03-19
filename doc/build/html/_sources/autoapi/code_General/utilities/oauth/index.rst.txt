@@ -1,0 +1,81 @@
+code_General.utilities.oauth
+============================
+
+.. py:module:: code_General.utilities.oauth
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Thomas Skodawessely & Silvio Weging 2024
+
+   Contains: Oauth token management class
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.utilities.oauth.ManageToken
+
+
+Module Contents
+---------------
+
+.. py:class:: ManageToken(client_id, client_secret, token_endpoint, token_endpoint_auth_method)
+
+   Manage oauth token class.
+
+
+   .. py:attribute:: _token
+      :value: None
+
+
+
+   .. py:attribute:: client
+      :type:  authlib.integrations.requests_client.OAuth2Session
+      :value: None
+
+
+
+   .. py:attribute:: client_id
+      :value: None
+
+
+
+   .. py:attribute:: client_secret
+      :value: None
+
+
+
+   .. py:attribute:: token_endpoint
+      :value: None
+
+
+
+   .. py:attribute:: token_endpoint_auth_method
+      :value: None
+
+
+
+   .. py:method:: __getattr__(item)
+
+
+   .. py:method:: __del__()
+
+
+   .. py:method:: getAccessToken()
+
+      Get initial token. Made as a function to be callable from outside. 
+      Reminder for me: It makes no sense to save this access token in redis because it expires much to quickly!
+
+
+
+   .. py:method:: checkIfExpired()
+
+      Check if token has expired and if so, refresh it. 
+
+
+

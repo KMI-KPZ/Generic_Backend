@@ -1,0 +1,139 @@
+code_General.logics.organizationLogics
+======================================
+
+.. py:module:: code_General.logics.organizationLogics
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Logic for the organizations
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.logics.organizationLogics.logger
+   code_General.logics.organizationLogics.loggerError
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.logics.organizationLogics.sendEventViaWebsocket
+   code_General.logics.organizationLogics.logicsForOrganizationsAssignRole
+   code_General.logics.organizationLogics.getOrganizationName
+   code_General.logics.organizationLogics.logicsForOrganizationsFetchUsers
+   code_General.logics.organizationLogics.logicsForOrganizationsFetchInvitees
+   code_General.logics.organizationLogics.logicsForOrganizationsCreateRole
+   code_General.logics.organizationLogics.logicsForOrganizationsEditRole
+   code_General.logics.organizationLogics.logicsForOrganizationSetPermissionsForRole
+   code_General.logics.organizationLogics.logicsForOrganizationsDeleteUser
+   code_General.logics.organizationLogics.logicsForDeleteOrganization
+   code_General.logics.organizationLogics.logicsForOrganizationsRemoveRole
+   code_General.logics.organizationLogics.logicsForOrganizationsGetRoles
+   code_General.logics.organizationLogics.logicsForOrganizationsDeleteRole
+   code_General.logics.organizationLogics.logicsForOrganizationsGetPermissions
+   code_General.logics.organizationLogics.logicsForOrganizationsGetPermissionsForRole
+   code_General.logics.organizationLogics.logicsForOrganizationsCreateNewOrganization
+   code_General.logics.organizationLogics.logicsForOrganizationDeleteInvite
+   code_General.logics.organizationLogics.logicsForOrganizationsAddUser
+   code_General.logics.organizationLogics.logicsForOrganizationsGetInviteLink
+   code_General.logics.organizationLogics.logicsForGetOrganizationDetails
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: loggerError
+
+.. py:method:: getOrganizationID(session)
+   :staticmethod:
+
+
+   Retrieve Organization ID
+
+   :param session: session
+   :type session: Str
+   :return: ID of the organization
+   :rtype: Str
+
+
+
+.. py:function:: sendEventViaWebsocket(orgID, baseURL, baseHeader, eventName, args)
+
+   Send events to the respective websockets.
+
+   :param orgID: ID of that organization
+   :type orgID: str
+   :param baseURL: stuff for Auth0
+   :type baseURL: str
+   :param baseHeader: stuff for Auth0
+   :type baseHeader: str
+   :param eventName: stuff for frontend
+   :type eventName: str
+   :param args: other arguments
+   :type args: str
+   :return: True or exception
+   :rtype: Bool or exception
+
+
+.. py:function:: logicsForOrganizationsAssignRole(validatedInput, request)
+
+.. py:function:: getOrganizationName(session, orgID, baseURL, baseHeader)
+
+   Get Name of the Organization
+
+   :param orgID: the id of the current organization
+   :type orgID: str
+   :param baseURL: start of the url
+   :type baseURL: str
+   :param baseHeader: Header with basic stuff
+   :type baseHeader: Dict
+   :return: If successful, name of organization, error if not
+   :rtype: str or error
+
+
+.. py:function:: logicsForOrganizationsFetchUsers(request)
+
+.. py:function:: logicsForOrganizationsFetchInvitees(request)
+
+.. py:function:: logicsForOrganizationsCreateRole(validatedInput, request)
+
+.. py:function:: logicsForOrganizationsEditRole(validatedInput, request)
+
+.. py:function:: logicsForOrganizationSetPermissionsForRole(validatedInput, request)
+
+.. py:function:: logicsForOrganizationsDeleteUser(request, userEMail)
+
+.. py:function:: logicsForDeleteOrganization(request)
+
+.. py:function:: logicsForOrganizationsRemoveRole(validatedInput, request)
+
+.. py:function:: logicsForOrganizationsGetRoles(request)
+
+.. py:function:: logicsForOrganizationsDeleteRole(request, roleID)
+
+.. py:function:: logicsForOrganizationsGetPermissions()
+
+.. py:function:: logicsForOrganizationsGetPermissionsForRole(roleID)
+
+.. py:function:: logicsForOrganizationsCreateNewOrganization(validatedInput)
+
+.. py:function:: logicsForOrganizationDeleteInvite(request, invitationID)
+
+.. py:function:: logicsForOrganizationsAddUser(validatedInput, request)
+
+.. py:function:: logicsForOrganizationsGetInviteLink(validatedInput, request)
+
+.. py:function:: logicsForGetOrganizationDetails(request)
+

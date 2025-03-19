@@ -1,25 +1,28 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>code_General.utilities.crypto &#8212; KISS-backend 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <title>code_General.utilities.crypto &#8212; Generic-backend 0.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=7f00635f"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.utilities.customStrEnum" href="../customStrEnum/index.html" />
+    <link rel="prev" title="code_General.utilities.createFilePreviews" href="../createFilePreviews/index.html" />
    
   <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -32,14 +35,22 @@
           <div class="body" role="main">
             
   <section id="module-code_General.utilities.crypto">
-<span id="code-general-utilities-crypto"></span><h1><a class="reference internal" href="#module-code_General.utilities.crypto" title="code_General.utilities.crypto"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_General.utilities.crypto</span></code></a><a class="headerlink" href="#module-code_General.utilities.crypto" title="Permalink to this heading">¶</a></h1>
-<p>Part of Semper-KI software</p>
+<span id="code-general-utilities-crypto"></span><h1>code_General.utilities.crypto<a class="headerlink" href="#module-code_General.utilities.crypto" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
 <p>Silvio Weging 2023</p>
 <p>Contains: Services for cryptographics</p>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter" title="code_General.utilities.crypto.EncryptionAdapter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EncryptionAdapter</span></code></a></p></td>
+<td><p>Adapter class for encryption and decryption of file like objects</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.crypto.generateMD5" title="code_General.utilities.crypto.generateMD5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generateMD5</span></code></a>(→ str)</p></td>
@@ -60,17 +71,26 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.crypto.generateAESKey" title="code_General.utilities.crypto.generateAESKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generateAESKey</span></code></a>(→ str)</p></td>
 <td><p>Generate a one time use AES Key</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.crypto.encryptAES" title="code_General.utilities.crypto.encryptAES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encryptAES</span></code></a>(→ io.BytesIO)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.crypto.encryptObjectWithAES" title="code_General.utilities.crypto.encryptObjectWithAES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encryptObjectWithAES</span></code></a>(→ str)</p></td>
+<td><p>Encrypt an object with a previously set key</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.crypto.decryptObjectWithAES" title="code_General.utilities.crypto.decryptObjectWithAES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decryptObjectWithAES</span></code></a>(→ object)</p></td>
+<td><p>Decrypt an object with a previously set key</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.crypto.encryptFileWithAES" title="code_General.utilities.crypto.encryptFileWithAES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encryptFileWithAES</span></code></a>(→ io.BytesIO)</p></td>
 <td><p>Encrypt a file with a previously set key</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.crypto.decryptAES" title="code_General.utilities.crypto.decryptAES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decryptAES</span></code></a>(→ io.BytesIO)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.crypto.decryptFileWithAES" title="code_General.utilities.crypto.decryptFileWithAES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decryptFileWithAES</span></code></a>(→ io.BytesIO)</p></td>
 <td><p>Decrypt a file with a previously set key</p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="code_General.utilities.crypto.generateMD5">
-<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateMD5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">someString</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateMD5" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateMD5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">someString</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateMD5" title="Link to this definition">¶</a></dt>
 <dd><p>Convert string to md5 hashed string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -87,7 +107,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="code_General.utilities.crypto.generateSecureID">
-<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateSecureID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">someString</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateSecureID" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateSecureID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">someString</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateSecureID" title="Link to this definition">¶</a></dt>
 <dd><p>Convert string to as secure as possible hashed string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -104,7 +124,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="code_General.utilities.crypto.generateSalt">
-<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateSalt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateSalt" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateSalt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateSalt" title="Link to this definition">¶</a></dt>
 <dd><p>Generate unique random salt string to be attached to another string before hashing</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -121,7 +141,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="code_General.utilities.crypto.generateNoncryptographicHash">
-<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateNoncryptographicHash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">someString</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateNoncryptographicHash" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateNoncryptographicHash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">someString</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateNoncryptographicHash" title="Link to this definition">¶</a></dt>
 <dd><p>Convert string to hashed string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -138,7 +158,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="code_General.utilities.crypto.generateURLFriendlyRandomString">
-<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateURLFriendlyRandomString</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateURLFriendlyRandomString" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateURLFriendlyRandomString</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateURLFriendlyRandomString" title="Link to this definition">¶</a></dt>
 <dd><p>Generate random string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -152,7 +172,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="code_General.utilities.crypto.generateAESKey">
-<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateAESKey</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateAESKey" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">generateAESKey</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.generateAESKey" title="Link to this definition">¶</a></dt>
 <dd><p>Generate a one time use AES Key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -165,8 +185,48 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="code_General.utilities.crypto.encryptAES">
-<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">encryptAES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">io.BytesIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">io.BytesIO</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.encryptAES" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="code_General.utilities.crypto.encryptObjectWithAES">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">encryptObjectWithAES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.encryptObjectWithAES" title="Link to this definition">¶</a></dt>
+<dd><p>Encrypt an object with a previously set key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – String containing the encryption key</p></li>
+<li><p><strong>obj</strong> (<em>object</em>) – The object to be encrypted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Encrypted object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.decryptObjectWithAES">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">decryptObjectWithAES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.decryptObjectWithAES" title="Link to this definition">¶</a></dt>
+<dd><p>Decrypt an object with a previously set key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – String containing the encryption key</p></li>
+<li><p><strong>obj</strong> (<em>str</em>) – The object to be decrypted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Decrypted object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.encryptFileWithAES">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">encryptFileWithAES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">io.BytesIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">io.BytesIO</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.encryptFileWithAES" title="Link to this definition">¶</a></dt>
 <dd><p>Encrypt a file with a previously set key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -185,8 +245,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="code_General.utilities.crypto.decryptAES">
-<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">decryptAES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">io.BytesIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">io.BytesIO</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.decryptAES" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="code_General.utilities.crypto.decryptFileWithAES">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">decryptFileWithAES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">io.BytesIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">io.BytesIO</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.decryptFileWithAES" title="Link to this definition">¶</a></dt>
 <dd><p>Decrypt a file with a previously set key</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -204,7 +264,131 @@
 </dl>
 </dd></dl>
 
-</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.utilities.crypto.</span></span><span class="sig-name descname"><span class="pre">EncryptionAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputFile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter" title="Link to this definition">¶</a></dt>
+<dd><p>Adapter class for encryption and decryption of file like objects
+usage:
+create an instance of this class with a filelike object or stream which has a read method
+call setupDecryptOnRead with a key to decrypt the file while you are reading from it
+call setupEncryptOnRead with a key to encrypt the file while you are reading from it</p>
+<p>if en/de-cryption is set up you can read from the filelike object and it will be encrypted/decrypted on the fly
+while encrypting the iv is sent first and then the encrypted file content
+while decrypting the iv is read from the file and then the file content is decrypted on the fly and returned (without the iv)</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.iv">
+<span class="sig-name descname"><span class="pre">iv</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.iv" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.cipher">
+<span class="sig-name descname"><span class="pre">cipher</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.cipher" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.inputFile">
+<span class="sig-name descname"><span class="pre">inputFile</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.inputFile" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.doDecrypt">
+<span class="sig-name descname"><span class="pre">doDecrypt</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.doDecrypt" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.doEncrypt">
+<span class="sig-name descname"><span class="pre">doEncrypt</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.doEncrypt" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.readBlocks">
+<span class="sig-name descname"><span class="pre">readBlocks</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.readBlocks" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.bytesSent">
+<span class="sig-name descname"><span class="pre">bytesSent</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.bytesSent" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.key">
+<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.debugLogger">
+<span class="sig-name descname"><span class="pre">debugLogger</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.debugLogger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.setupDecryptOnRead">
+<span class="sig-name descname"><span class="pre">setupDecryptOnRead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.setupDecryptOnRead" title="Link to this definition">¶</a></dt>
+<dd><p>Set up the adapter to decrypt the file while reading from it | obviously encrypting is disabled</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – The key to use for decryption</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.setupEncryptOnRead">
+<span class="sig-name descname"><span class="pre">setupEncryptOnRead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.setupEncryptOnRead" title="Link to this definition">¶</a></dt>
+<dd><p>Set up the adapter to encrypt the file while reading from it | obviously decrypting is disabled</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – The key to use for encryption</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.read" title="Link to this definition">¶</a></dt>
+<dd><p>Read from the filelike object and encrypt/decrypt the content on the fly (or do nothing)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> (<em>int</em>) – The amount of (net) bytes to read</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the bytes read from the filelike object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes | bytearray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.reset" title="Link to this definition">¶</a></dt>
+<dd><p>Reset the filelike object to the beginning</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter.setDebugLogger">
+<span class="sig-name descname"><span class="pre">setDebugLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter.setDebugLogger" title="Link to this definition">¶</a></dt>
+<dd><p>Set the debug logger for the adapter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>logger</strong> (<em>Logger</em>) – The logger to use</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.crypto.EncryptionAdapter._logMemInfo">
+<span class="sig-name descname"><span class="pre">_logMemInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.crypto.EncryptionAdapter._logMemInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Print memory info with a comment to the debug logger if it is set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>comment</strong> (<em>str</em>) – The comment to print</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -213,9 +397,9 @@
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+<h1 class="logo"><a href="../../../../index.html">Generic-backend</a></h1>
 
 
 
@@ -224,28 +408,111 @@
 
 
 
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../handlers/index.html">code_General.handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../logics/index.html">code_General.logics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelFiles/index.html">code_General.modelFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.utilities</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../apiCalls/index.html">code_General.utilities.apiCalls</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../asyncTask/index.html">code_General.utilities.asyncTask</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../basics/index.html">code_General.utilities.basics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../createFilePreviews/index.html">code_General.utilities.createFilePreviews</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.utilities.crypto</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.crypto.generateMD5"><code class="docutils literal notranslate"><span class="pre">generateMD5()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.crypto.generateSecureID"><code class="docutils literal notranslate"><span class="pre">generateSecureID()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.crypto.generateSalt"><code class="docutils literal notranslate"><span class="pre">generateSalt()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.crypto.generateNoncryptographicHash"><code class="docutils literal notranslate"><span class="pre">generateNoncryptographicHash()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.crypto.generateURLFriendlyRandomString"><code class="docutils literal notranslate"><span class="pre">generateURLFriendlyRandomString()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.crypto.generateAESKey"><code class="docutils literal notranslate"><span class="pre">generateAESKey()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.crypto.encryptObjectWithAES"><code class="docutils literal notranslate"><span class="pre">encryptObjectWithAES()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.crypto.decryptObjectWithAES"><code class="docutils literal notranslate"><span class="pre">decryptObjectWithAES()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.crypto.encryptFileWithAES"><code class="docutils literal notranslate"><span class="pre">encryptFileWithAES()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.crypto.decryptFileWithAES"><code class="docutils literal notranslate"><span class="pre">decryptFileWithAES()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.iv"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.iv</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.cipher"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.cipher</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.inputFile"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.inputFile</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.doDecrypt"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.doDecrypt</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.doEncrypt"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.doEncrypt</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.readBlocks"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.readBlocks</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.bytesSent"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.bytesSent</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.key"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.key</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.debugLogger"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.debugLogger</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.setupDecryptOnRead"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.setupDecryptOnRead()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.setupEncryptOnRead"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.setupEncryptOnRead()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.read"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.read()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.reset"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.reset()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter.setDebugLogger"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter.setDebugLogger()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.crypto.EncryptionAdapter._logMemInfo"><code class="docutils literal notranslate"><span class="pre">EncryptionAdapter._logMemInfo()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../customStrEnum/index.html">code_General.utilities.customStrEnum</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../files/index.html">code_General.utilities.files</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../mocks/index.html">code_General.utilities.mocks</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../oauth/index.html">code_General.utilities.oauth</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../rights/index.html">code_General.utilities.rights</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../signals/index.html">code_General.utilities.signals</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../temporaryFolder/index.html">code_General.utilities.temporaryFolder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.utilities</a><ul>
+      <li>Previous: <a href="../createFilePreviews/index.html" title="previous chapter">code_General.utilities.createFilePreviews</a></li>
+      <li>Next: <a href="../customStrEnum/index.html" title="next chapter">code_General.utilities.customStrEnum</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -259,11 +526,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2023, Silvio Weging.
+      &#169;2025, Silvio Weging.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../../../_sources/autoapi/code_General/utilities/crypto/index.rst.txt"

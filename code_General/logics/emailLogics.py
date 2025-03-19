@@ -17,7 +17,6 @@ from ..connections.mailer import MailingClass
 
 
 from logging import getLogger
-logger = getLogger("errors")
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")

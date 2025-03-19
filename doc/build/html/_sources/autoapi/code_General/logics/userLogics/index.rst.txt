@@ -1,0 +1,79 @@
+code_General.logics.userLogics
+==============================
+
+.. py:module:: code_General.logics.userLogics
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Logic for the users
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.logics.userLogics.logger
+   code_General.logics.userLogics.loggerError
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.logics.userLogics.logicForGetUserDetails
+   code_General.logics.userLogics.logicForDeleteUser
+   code_General.logics.userLogics.logicForAddUserTest
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: loggerError
+
+.. py:function:: logicForGetUserDetails(request)
+
+   Get the contractors for the service
+
+   :return: The contractors
+   :rtype: list
+
+
+.. py:method:: getUserKeyWOSC(session=None, uID=None)
+   :staticmethod:
+
+
+   Retrieve User ID from Session without special characters
+
+   :param session: session
+   :type session: Dictionary
+   :return: User key from database without stuff like | or ^
+   :rtype: Str
+
+
+
+.. py:method:: getUserKey(session)
+   :staticmethod:
+
+
+   Retrieve User ID from Session
+
+   :param session: session
+   :type session: Dictionary
+   :return: User key session
+   :rtype: Str
+
+
+
+.. py:function:: logicForDeleteUser(request)
+
+.. py:function:: logicForAddUserTest(request)
+

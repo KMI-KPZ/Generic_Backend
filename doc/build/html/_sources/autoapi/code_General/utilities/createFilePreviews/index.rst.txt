@@ -1,0 +1,42 @@
+code_General.utilities.createFilePreviews
+=========================================
+
+.. py:module:: code_General.utilities.createFilePreviews
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2025
+
+   Contains: Functions to create, store and retrieve preview jpgs to uploaded files
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.utilities.createFilePreviews.loggerError
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.utilities.createFilePreviews.createAndStorePreview
+
+
+Module Contents
+---------------
+
+.. py:data:: loggerError
+
+.. py:function:: createAndStorePreview(file: django.core.files.uploadedfile.InMemoryUploadedFile, fileName: str, locale: str, storagePath: str) -> str | Exception
+
+   Create a preview of a file and store it in a given path
+
+
+

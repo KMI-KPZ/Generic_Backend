@@ -32,7 +32,6 @@ from ..utilities import crypto, signals
 from ..utilities.basics import checkIfNestedKeyExists
 
 from logging import getLogger
-logger = getLogger("errors")
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
@@ -605,8 +604,9 @@ def logicsForOrganizationsCreateNewOrganization(validatedInput):
         # create organization
         metadata = {} if "metadata" not in validatedInput else validatedInput["metadata"]
         displayName = validatedInput["display_name"]
-        name =  displayName.strip().lower().replace(" ", "_")[:49]
-        data = { "name": name, 
+        name =  displayName.strip().lower().replace(" ", "_")[:49] # auth0 has some very hard restrictions on the unique name of the organization
+        name = ''.join(e for e in name if (e.isalnum() or e in "_-") and e not in "²³äüö").rstrip("-_")
+        data = { "name": name,
                 "display_name": displayName, 
                 "metadata": metadata,
                 "enabled_connections": [ { "connection_id": auth0.auth0Config["IDs"]["connection_id"], "assign_membership_on_login": False } ] }

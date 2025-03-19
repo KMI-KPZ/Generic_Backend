@@ -14,3 +14,4 @@ from .modelFiles.userModel import *
 from .modelFiles.organizationModel import *
 from .modelFiles.apiTokenModel import *
 from .modelFiles.eventModel import *
+from .modelFiles.filesModel import *

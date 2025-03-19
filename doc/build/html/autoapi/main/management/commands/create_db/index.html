@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>main.management.commands.create_db &#8212; Generic-backend 0.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../../_static/documentation_options.js?v=7f00635f"></script>
+    <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="main.management.commands.generate_env" href="../generate_env/index.html" />
+    <link rel="prev" title="main.management.commands" href="../index.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-main.management.commands.create_db">
+<span id="main-management-commands-create-db"></span><h1>main.management.commands.create_db<a class="headerlink" href="#module-main.management.commands.create_db" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
+<p>Thomas Skodawessely 2023</p>
+<p>Contains: Manual creation of db</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#main.management.commands.create_db.logger" title="main.management.commands.create_db.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#main.management.commands.create_db.Command" title="main.management.commands.create_db.Command"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Command</span></code></a></p></td>
+<td><p>The base class from which all management commands ultimately</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="main.management.commands.create_db.logger">
+<span class="sig-prename descclassname"><span class="pre">main.management.commands.create_db.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#main.management.commands.create_db.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="main.management.commands.create_db.Command">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.management.commands.create_db.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.management.commands.create_db.Command" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">django.core.management.base.BaseCommand</span></code></p>
+<p>The base class from which all management commands ultimately
+derive.</p>
+<p>Use this class if you want access to all of the mechanisms which
+parse the command-line arguments and work out what code to call in
+response; if you don’t need to change any of that behavior,
+consider using one of the subclasses defined in this file.</p>
+<p>If you are interested in overriding/customizing various aspects of
+the command-parsing and -execution behavior, the normal flow works
+as follows:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">django-admin</span></code> or <code class="docutils literal notranslate"><span class="pre">manage.py</span></code> loads the command class
+and calls its <code class="docutils literal notranslate"><span class="pre">run_from_argv()</span></code> method.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">run_from_argv()</span></code> method calls <code class="docutils literal notranslate"><span class="pre">create_parser()</span></code> to get
+an <code class="docutils literal notranslate"><span class="pre">ArgumentParser</span></code> for the arguments, parses them, performs
+any environment changes requested by options like
+<code class="docutils literal notranslate"><span class="pre">pythonpath</span></code>, and then calls the <code class="docutils literal notranslate"><span class="pre">execute()</span></code> method,
+passing the parsed arguments.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">execute()</span></code> method attempts to carry out the command by
+calling the <code class="docutils literal notranslate"><span class="pre">handle()</span></code> method with the parsed arguments; any
+output produced by <code class="docutils literal notranslate"><span class="pre">handle()</span></code> will be printed to standard
+output and, if the command is intended to produce a block of
+SQL statements, will be wrapped in <code class="docutils literal notranslate"><span class="pre">BEGIN</span></code> and <code class="docutils literal notranslate"><span class="pre">COMMIT</span></code>.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">handle()</span></code> or <code class="docutils literal notranslate"><span class="pre">execute()</span></code> raised any exception (e.g.
+<code class="docutils literal notranslate"><span class="pre">CommandError</span></code>), <code class="docutils literal notranslate"><span class="pre">run_from_argv()</span></code> will  instead print an error
+message to <code class="docutils literal notranslate"><span class="pre">stderr</span></code>.</p></li>
+</ol>
+<p>Thus, the <code class="docutils literal notranslate"><span class="pre">handle()</span></code> method is typically the starting point for
+subclasses; many built-in commands and command types either place
+all of their logic in <code class="docutils literal notranslate"><span class="pre">handle()</span></code>, or perform some additional
+parsing work in <code class="docutils literal notranslate"><span class="pre">handle()</span></code> and then delegate from it to more
+specialized methods as needed.</p>
+<p>Several attributes affect behavior at various steps along the way:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">help</span></code></dt><dd><p>A short description of the command, which will be printed in
+help messages.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">output_transaction</span></code></dt><dd><p>A boolean indicating whether the command outputs SQL
+statements; if <code class="docutils literal notranslate"><span class="pre">True</span></code>, the output will automatically be
+wrapped with <code class="docutils literal notranslate"><span class="pre">BEGIN;</span></code> and <code class="docutils literal notranslate"><span class="pre">COMMIT;</span></code>. Default value is
+<code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">requires_migrations_checks</span></code></dt><dd><p>A boolean; if <code class="docutils literal notranslate"><span class="pre">True</span></code>, the command prints a warning if the set of
+migrations on disk don’t match the migrations in the database.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">requires_system_checks</span></code></dt><dd><p>A list or tuple of tags, e.g. [Tags.staticfiles, Tags.models]. System
+checks registered in the chosen tags will be checked for errors prior
+to executing the command. The value ‘__all__’ can be used to specify
+that all system checks should be performed. Default value is ‘__all__’.</p>
+<p>To validate an individual application’s models
+rather than all applications’ models, call
+<code class="docutils literal notranslate"><span class="pre">self.check(app_configs)</span></code> from <code class="docutils literal notranslate"><span class="pre">handle()</span></code>, where <code class="docutils literal notranslate"><span class="pre">app_configs</span></code>
+is the list of application’s configuration provided by the
+app registry.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">stealth_options</span></code></dt><dd><p>A tuple of any options the command uses which aren’t defined by the
+argument parser.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.management.commands.create_db.Command.help">
+<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'creates</span> <span class="pre">database</span> <span class="pre">from</span> <span class="pre">configured</span> <span class="pre">environment</span> <span class="pre">variables</span> <span class="pre">in</span> <span class="pre">apps.py</span> <span class="pre">if</span> <span class="pre">not</span> <span class="pre">exists'</span></em><a class="headerlink" href="#main.management.commands.create_db.Command.help" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="main.management.commands.create_db.Command.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main.management.commands.create_db.Command.handle" title="Link to this definition">¶</a></dt>
+<dd><p>The actual logic of the command. Subclasses must implement
+this method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">Generic-backend</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../conf/index.html">conf</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">main</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../apps/index.html">main.apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../asgi/index.html">main.asgi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../checks/index.html">main.checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../helper/index.html">main.helper</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html">main.management</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6 current"><a class="reference internal" href="../index.html">main.management.commands</a><ul class="current">
+<li class="toctree-l7 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l8 current"><a class="current reference internal" href="#">main.management.commands.create_db</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l9"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l9"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="#main.management.commands.create_db.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toctree-l10"><a class="reference internal" href="#main.management.commands.create_db.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul>
+<li class="toctree-l11"><a class="reference internal" href="#main.management.commands.create_db.Command.help"><code class="docutils literal notranslate"><span class="pre">Command.help</span></code></a></li>
+<li class="toctree-l11"><a class="reference internal" href="#main.management.commands.create_db.Command.handle"><code class="docutils literal notranslate"><span class="pre">Command.handle()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="../generate_env/index.html">main.management.commands.generate_env</a></li>
+<li class="toctree-l8"><a class="reference internal" href="../mail/index.html">main.management.commands.mail</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../settings/index.html">main.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../urls/index.html">main.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../wsgi/index.html">main.wsgi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../manage/index.html">manage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../code_General/index.html">code_General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">API Reference</a><ul>
+  <li><a href="../../../index.html">main</a><ul>
+  <li><a href="../../index.html">main.management</a><ul>
+  <li><a href="../index.html">main.management.commands</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">main.management.commands</a></li>
+      <li>Next: <a href="../generate_env/index.html" title="next chapter">main.management.commands.generate_env</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Silvio Weging.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../../_sources/autoapi/main/management/commands/create_db/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

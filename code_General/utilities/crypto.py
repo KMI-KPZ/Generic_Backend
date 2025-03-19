@@ -176,13 +176,14 @@ class EncryptionAdapter():
     """
     Adapter class for encryption and decryption of file like objects
     usage:
-        create an instance of this class with a filelike object or stream which has a read method
-        call setupDecryptOnRead with a key to decrypt the file while you are reading from it
-        call setupEncryptOnRead with a key to encrypt the file while you are reading from it
+    create an instance of this class with a filelike object or stream which has a read method
+    call setupDecryptOnRead with a key to decrypt the file while you are reading from it
+    call setupEncryptOnRead with a key to encrypt the file while you are reading from it
 
-        if en/de-cryption is set up you can read from the filelike object and it will be encrypted/decrypted on the fly
-        while encrypting the iv is sent first and then the encrypted file content
-        while decrypting the iv is read from the file and then the file content is decrypted on the fly and returned (without the iv)
+    if en/de-cryption is set up you can read from the filelike object and it will be encrypted/decrypted on the fly
+    while encrypting the iv is sent first and then the encrypted file content
+    while decrypting the iv is read from the file and then the file content is decrypted on the fly and returned (without the iv)
+
     """
 
     iv = None
@@ -202,6 +203,7 @@ class EncryptionAdapter():
         :type inputFile: filelike (must have a read method)
         :param doDebug: If set to True the adapter will print debug information
         :type doDebug: bool
+
         """
         self.inputFile = inputFile
 
@@ -215,6 +217,7 @@ class EncryptionAdapter():
 
         :param key: The key to use for decryption
         :type key: str
+        
         """
 
         if hasattr(self.inputFile,'seek'):
@@ -237,6 +240,7 @@ class EncryptionAdapter():
 
         :param key: The key to use for encryption
         :type key: str
+
         """
 
         self.iv = get_random_bytes(16)
@@ -306,6 +310,7 @@ class EncryptionAdapter():
 
         :param logger: The logger to use
         :type logger: Logger
+
         """
         self.debugLogger = logger
         return self

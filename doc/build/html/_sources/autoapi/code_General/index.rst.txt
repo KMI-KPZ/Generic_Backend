@@ -1,39 +1,26 @@
-:py:mod:`code_General`
-======================
+code_General
+============
 
 .. py:module:: code_General
 
 
-Subpackages
------------
-.. toctree::
-   :titlesonly:
-   :maxdepth: 3
-
-   connections/index.rst
-   handlers/index.rst
-   helper/index.rst
-   management/index.rst
-   modelFiles/index.rst
-   settings/index.rst
-   templates/index.rst
-   utilities/index.rst
-
-
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   apps/index.rst
-   asgi/index.rst
-   checks/index.rst
-   definitions/index.rst
-   imports/index.rst
-   models/index.rst
-   tests/index.rst
-   urls/index.rst
-   wsgi/index.rst
+   /autoapi/code_General/connections/index
+   /autoapi/code_General/definitions/index
+   /autoapi/code_General/handlers/index
+   /autoapi/code_General/imports/index
+   /autoapi/code_General/logics/index
+   /autoapi/code_General/modelFiles/index
+   /autoapi/code_General/models/index
+   /autoapi/code_General/settings/index
+   /autoapi/code_General/templates/index
+   /autoapi/code_General/tests/index
+   /autoapi/code_General/urls/index
+   /autoapi/code_General/utilities/index
 
 
