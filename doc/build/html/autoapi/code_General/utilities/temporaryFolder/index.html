@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>code_General.utilities.temporaryFolder &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="BenchyMcMarkface" href="../../../BenchyMcMarkface/index.html" />
+    <link rel="prev" title="code_General.utilities.signals" href="../signals/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.utilities.temporaryFolder">
+<span id="code-general-utilities-temporaryfolder"></span><h1>code_General.utilities.temporaryFolder<a class="headerlink" href="#module-code_General.utilities.temporaryFolder" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
+<p>Silvio Weging 2025</p>
+<p>Contains: Temporary Folder utility</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.temporaryFolder.loggerError" title="code_General.utilities.temporaryFolder.loggerError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loggerError</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.utilities.temporaryFolder.temporaryDirectory" title="code_General.utilities.temporaryFolder.temporaryDirectory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">temporaryDirectory</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.temporaryFolder.TemporaryFolder" title="code_General.utilities.temporaryFolder.TemporaryFolder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TemporaryFolder</span></code></a></p></td>
+<td><p>A class to manage the temporary folder and create temporary files</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.utilities.temporaryFolder.loggerError">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.temporaryFolder.</span></span><span class="sig-name descname"><span class="pre">loggerError</span></span><a class="headerlink" href="#code_General.utilities.temporaryFolder.loggerError" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.utilities.temporaryFolder.TemporaryFolder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.utilities.temporaryFolder.</span></span><span class="sig-name descname"><span class="pre">TemporaryFolder</span></span><a class="headerlink" href="#code_General.utilities.temporaryFolder.TemporaryFolder" title="Link to this definition">¶</a></dt>
+<dd><p>A class to manage the temporary folder and create temporary files</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.temporaryFolder.TemporaryFolder._temporaryFolder">
+<span class="sig-name descname"><span class="pre">_temporaryFolder</span></span><a class="headerlink" href="#code_General.utilities.temporaryFolder.TemporaryFolder._temporaryFolder" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.temporaryFolder.TemporaryFolder._temporaryFolderPath">
+<span class="sig-name descname"><span class="pre">_temporaryFolderPath</span></span><a class="headerlink" href="#code_General.utilities.temporaryFolder.TemporaryFolder._temporaryFolderPath" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.temporaryFolder.TemporaryFolder.__del__">
+<span class="sig-name descname"><span class="pre">__del__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.temporaryFolder.TemporaryFolder.__del__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.temporaryFolder.TemporaryFolder.getTemporaryFolderPath">
+<span class="sig-name descname"><span class="pre">getTemporaryFolderPath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.temporaryFolder.TemporaryFolder.getTemporaryFolderPath" title="Link to this definition">¶</a></dt>
+<dd><p>Get the path to the temporary folder</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.temporaryFolder.TemporaryFolder.createTemporaryFile">
+<span class="sig-name descname"><span class="pre">createTemporaryFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileContent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#code_General.utilities.temporaryFolder.TemporaryFolder.createTemporaryFile" title="Link to this definition">¶</a></dt>
+<dd><p>Create a temporary file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.temporaryFolder.TemporaryFolder.deleteTemporaryFile">
+<span class="sig-name descname"><span class="pre">deleteTemporaryFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#code_General.utilities.temporaryFolder.TemporaryFolder.deleteTemporaryFile" title="Link to this definition">¶</a></dt>
+<dd><p>Delete a temporary file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.utilities.temporaryFolder.temporaryDirectory">
+<span class="sig-prename descclassname"><span class="pre">code_General.utilities.temporaryFolder.</span></span><span class="sig-name descname"><span class="pre">temporaryDirectory</span></span><a class="headerlink" href="#code_General.utilities.temporaryFolder.temporaryDirectory" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../handlers/index.html">code_General.handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../logics/index.html">code_General.logics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelFiles/index.html">code_General.modelFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.utilities</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../apiCalls/index.html">code_General.utilities.apiCalls</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../asyncTask/index.html">code_General.utilities.asyncTask</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../basics/index.html">code_General.utilities.basics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../createFilePreviews/index.html">code_General.utilities.createFilePreviews</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../crypto/index.html">code_General.utilities.crypto</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../customStrEnum/index.html">code_General.utilities.customStrEnum</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../files/index.html">code_General.utilities.files</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../mocks/index.html">code_General.utilities.mocks</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../oauth/index.html">code_General.utilities.oauth</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../rights/index.html">code_General.utilities.rights</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../signals/index.html">code_General.utilities.signals</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.utilities.temporaryFolder</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.temporaryFolder.loggerError"><code class="docutils literal notranslate"><span class="pre">loggerError</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.temporaryFolder.TemporaryFolder"><code class="docutils literal notranslate"><span class="pre">TemporaryFolder</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.temporaryFolder.TemporaryFolder._temporaryFolder"><code class="docutils literal notranslate"><span class="pre">TemporaryFolder._temporaryFolder</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.temporaryFolder.TemporaryFolder._temporaryFolderPath"><code class="docutils literal notranslate"><span class="pre">TemporaryFolder._temporaryFolderPath</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.temporaryFolder.TemporaryFolder.__del__"><code class="docutils literal notranslate"><span class="pre">TemporaryFolder.__del__()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.temporaryFolder.TemporaryFolder.getTemporaryFolderPath"><code class="docutils literal notranslate"><span class="pre">TemporaryFolder.getTemporaryFolderPath()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.temporaryFolder.TemporaryFolder.createTemporaryFile"><code class="docutils literal notranslate"><span class="pre">TemporaryFolder.createTemporaryFile()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.temporaryFolder.TemporaryFolder.deleteTemporaryFile"><code class="docutils literal notranslate"><span class="pre">TemporaryFolder.deleteTemporaryFile()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.temporaryFolder.temporaryDirectory"><code class="docutils literal notranslate"><span class="pre">temporaryDirectory</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.utilities</a><ul>
+      <li>Previous: <a href="../signals/index.html" title="previous chapter">code_General.utilities.signals</a></li>
+      <li>Next: <a href="../../../BenchyMcMarkface/index.html" title="next chapter">BenchyMcMarkface</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_General/utilities/temporaryFolder/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

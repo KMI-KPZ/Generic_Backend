@@ -1,24 +1,26 @@
-:py:mod:`code_General.handlers`
-===============================
+code_General.handlers
+=====================
 
 .. py:module:: code_General.handlers
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   admin/index.rst
-   authentification/index.rst
-   email/index.rst
-   files/index.rst
-   frontpage/index.rst
-   organizations/index.rst
-   profiles/index.rst
-   statistics/index.rst
-   testResponse/index.rst
-   websocket/index.rst
+   /autoapi/code_General/handlers/admin/index
+   /autoapi/code_General/handlers/apiToken/index
+   /autoapi/code_General/handlers/authentification/index
+   /autoapi/code_General/handlers/email/index
+   /autoapi/code_General/handlers/events/index
+   /autoapi/code_General/handlers/files/index
+   /autoapi/code_General/handlers/frontpage/index
+   /autoapi/code_General/handlers/organizations/index
+   /autoapi/code_General/handlers/statistics/index
+   /autoapi/code_General/handlers/testResponse/index
+   /autoapi/code_General/handlers/users/index
+   /autoapi/code_General/handlers/websocket/index
 
 

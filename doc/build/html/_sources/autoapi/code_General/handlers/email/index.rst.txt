@@ -1,11 +1,11 @@
-:py:mod:`code_General.handlers.email`
-=====================================
+code_General.handlers.email
+===========================
 
 .. py:module:: code_General.handlers.email
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Thomas Skodawessely 2023
 
@@ -13,33 +13,79 @@
 
 
 
-Module Contents
----------------
-
-
-Functions
-~~~~~~~~~
-
-.. autoapisummary::
-
-   code_General.handlers.email.send_contact_form
-
-
-
 Attributes
-~~~~~~~~~~
+----------
 
 .. autoapisummary::
 
    code_General.handlers.email.logger
+   code_General.handlers.email.loggerError
 
+
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.handlers.email.SReqMail
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.handlers.email.sendContactForm
+
+
+Module Contents
+---------------
 
 .. py:data:: logger
-   
 
-   
+.. py:data:: loggerError
 
-.. py:function:: send_contact_form(request)
+.. py:class:: SReqMail(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: subject
+
+
+   .. py:attribute:: message
+
+
+.. py:function:: sendContactForm(request: rest_framework.request.Request)
 
    Send an email from the contact form from the front end
 

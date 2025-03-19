@@ -1,11 +1,11 @@
-:py:mod:`code_General.utilities.crypto`
-=======================================
+code_General.utilities.crypto
+=============================
 
 .. py:module:: code_General.utilities.crypto
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,12 +13,16 @@
 
 
 
-Module Contents
----------------
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.utilities.crypto.EncryptionAdapter
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -28,10 +32,14 @@ Functions
    code_General.utilities.crypto.generateNoncryptographicHash
    code_General.utilities.crypto.generateURLFriendlyRandomString
    code_General.utilities.crypto.generateAESKey
-   code_General.utilities.crypto.encryptAES
-   code_General.utilities.crypto.decryptAES
+   code_General.utilities.crypto.encryptObjectWithAES
+   code_General.utilities.crypto.decryptObjectWithAES
+   code_General.utilities.crypto.encryptFileWithAES
+   code_General.utilities.crypto.decryptFileWithAES
 
 
+Module Contents
+---------------
 
 .. py:function:: generateMD5(someString) -> str
 
@@ -95,7 +103,33 @@ Functions
 
 
 
-.. py:function:: encryptAES(key: str, file: io.BytesIO) -> io.BytesIO
+.. py:function:: encryptObjectWithAES(key: str, obj: object) -> str
+
+   Encrypt an object with a previously set key
+
+   :param key: String containing the encryption key
+   :type key: str
+   :param obj: The object to be encrypted
+   :type obj: object
+   :return: Encrypted object
+   :rtype: str
+
+
+
+.. py:function:: decryptObjectWithAES(key: str, obj: str) -> object
+
+   Decrypt an object with a previously set key
+
+   :param key: String containing the encryption key
+   :type key: str
+   :param obj: The object to be decrypted
+   :type obj: str
+   :return: Decrypted object
+   :rtype: object
+
+
+
+.. py:function:: encryptFileWithAES(key: str, file: io.BytesIO) -> io.BytesIO
 
    Encrypt a file with a previously set key
 
@@ -108,7 +142,7 @@ Functions
 
 
 
-.. py:function:: decryptAES(key: str, file: io.BytesIO) -> io.BytesIO
+.. py:function:: decryptFileWithAES(key: str, file: io.BytesIO) -> io.BytesIO
 
    Decrypt a file with a previously set key
 
@@ -118,6 +152,124 @@ Functions
    :type file: BytesIO or inMemoryFile
    :return: Decrypted file
    :rtype: BytesIO
+
+
+
+.. py:class:: EncryptionAdapter(inputFile)
+
+   Adapter class for encryption and decryption of file like objects
+   usage:
+   create an instance of this class with a filelike object or stream which has a read method
+   call setupDecryptOnRead with a key to decrypt the file while you are reading from it
+   call setupEncryptOnRead with a key to encrypt the file while you are reading from it
+
+   if en/de-cryption is set up you can read from the filelike object and it will be encrypted/decrypted on the fly
+   while encrypting the iv is sent first and then the encrypted file content
+   while decrypting the iv is read from the file and then the file content is decrypted on the fly and returned (without the iv)
+
+
+
+   .. py:attribute:: iv
+      :value: None
+
+
+
+   .. py:attribute:: cipher
+      :value: None
+
+
+
+   .. py:attribute:: inputFile
+      :value: None
+
+
+
+   .. py:attribute:: doDecrypt
+      :value: False
+
+
+
+   .. py:attribute:: doEncrypt
+      :value: False
+
+
+
+   .. py:attribute:: readBlocks
+      :value: 0
+
+
+
+   .. py:attribute:: bytesSent
+      :value: 0
+
+
+
+   .. py:attribute:: key
+      :value: None
+
+
+
+   .. py:attribute:: debugLogger
+      :value: None
+
+
+
+   .. py:method:: setupDecryptOnRead(key: str)
+
+      Set up the adapter to decrypt the file while reading from it | obviously encrypting is disabled
+
+      :param key: The key to use for decryption
+      :type key: str
+
+
+
+
+   .. py:method:: setupEncryptOnRead(key: str)
+
+      Set up the adapter to encrypt the file while reading from it | obviously decrypting is disabled
+
+      :param key: The key to use for encryption
+      :type key: str
+
+
+
+
+   .. py:method:: read(size=-1)
+
+      Read from the filelike object and encrypt/decrypt the content on the fly (or do nothing)
+
+      :param size: The amount of (net) bytes to read
+      :type size: int
+      :return: the bytes read from the filelike object
+      :rtype: bytes | bytearray
+
+
+
+
+   .. py:method:: reset() -> bool
+
+      Reset the filelike object to the beginning
+
+
+
+
+   .. py:method:: setDebugLogger(logger)
+
+      Set the debug logger for the adapter
+
+      :param logger: The logger to use
+      :type logger: Logger
+
+
+
+
+   .. py:method:: _logMemInfo(comment='')
+
+      Print memory info with a comment to the debug logger if it is set
+
+      :param comment: The comment to print
+      :type comment: str
+
 
 
 

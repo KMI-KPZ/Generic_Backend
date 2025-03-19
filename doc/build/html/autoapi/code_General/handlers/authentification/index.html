@@ -1,25 +1,28 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>code_General.handlers.authentification &#8212; KISS-backend 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.handlers.email" href="../email/index.html" />
+    <link rel="prev" title="code_General.handlers.apiToken" href="../apiToken/index.html" />
    
   <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -32,57 +35,12 @@
           <div class="body" role="main">
             
   <section id="module-code_General.handlers.authentification">
-<span id="code-general-handlers-authentification"></span><h1><a class="reference internal" href="#module-code_General.handlers.authentification" title="code_General.handlers.authentification"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_General.handlers.authentification</span></code></a><a class="headerlink" href="#module-code_General.handlers.authentification" title="Permalink to this heading">¶</a></h1>
-<p>Part of Semper-KI software</p>
+<span id="code-general-handlers-authentification"></span><h1>code_General.handlers.authentification<a class="headerlink" href="#module-code_General.handlers.authentification" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
 <p>Silvio Weging 2023</p>
 <p>Contains: Authentification handling using Auth0</p>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
-<section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.isLoggedIn" title="code_General.handlers.authentification.isLoggedIn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isLoggedIn</span></code></a>(request)</p></td>
-<td><p>Check whether the token of a user has expired and a new login is necessary</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.provideRightsFile" title="code_General.handlers.authentification.provideRightsFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provideRightsFile</span></code></a>(request)</p></td>
-<td><p>Returns the json file containing the rights for the frontend</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.loginUser" title="code_General.handlers.authentification.loginUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loginUser</span></code></a>(request)</p></td>
-<td><p>Return a link for redirection to Auth0.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.setOrganizationName" title="code_General.handlers.authentification.setOrganizationName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setOrganizationName</span></code></a>(request)</p></td>
-<td><p>Set's the Organization name based on the information of the token</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.retrieveRolesAndPermissionsForMemberOfOrganization" title="code_General.handlers.authentification.retrieveRolesAndPermissionsForMemberOfOrganization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieveRolesAndPermissionsForMemberOfOrganization</span></code></a>(session)</p></td>
-<td><p>Get the roles and the permissions via API from Auth0</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.retrieveRolesAndPermissionsForStandardUser" title="code_General.handlers.authentification.retrieveRolesAndPermissionsForStandardUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieveRolesAndPermissionsForStandardUser</span></code></a>(session)</p></td>
-<td><p>Get the roles and the permissions via API from Auth0</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.setRoleAndPermissionsOfUser" title="code_General.handlers.authentification.setRoleAndPermissionsOfUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setRoleAndPermissionsOfUser</span></code></a>(request)</p></td>
-<td><p>Set's the role and the permissions of the user based on the information of the token</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.callbackLogin" title="code_General.handlers.authentification.callbackLogin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbackLogin</span></code></a>(request)</p></td>
-<td><p>TODO: Check if user really is part of an organization or not -&gt; check if misclick at login, and set flags and instances here</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.getRolesOfUser" title="code_General.handlers.authentification.getRolesOfUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getRolesOfUser</span></code></a>(request)</p></td>
-<td><p>Get Roles of User.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.getPermissionsOfUser" title="code_General.handlers.authentification.getPermissionsOfUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getPermissionsOfUser</span></code></a>(request)</p></td>
-<td><p>Get Permissions of User.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.getNewRoleAndPermissionsForUser" title="code_General.handlers.authentification.getNewRoleAndPermissionsForUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getNewRoleAndPermissionsForUser</span></code></a>(request)</p></td>
-<td><p>In case the role changed, get new role and new permissions from auth0</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.logoutUser" title="code_General.handlers.authentification.logoutUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logoutUser</span></code></a>(request)</p></td>
-<td><p>Delete session for this user and log out.</p></td>
-</tr>
-</tbody>
-</table>
-</section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.logger" title="code_General.handlers.authentification.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
@@ -93,19 +51,92 @@
 </tr>
 </tbody>
 </table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.SReqLocale" title="code_General.handlers.authentification.SReqLocale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SReqLocale</span></code></a></p></td>
+<td><p>The BaseSerializer class provides a minimal class which may be used</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.SResPermissionsOfUser" title="code_General.handlers.authentification.SResPermissionsOfUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SResPermissionsOfUser</span></code></a></p></td>
+<td><p>The BaseSerializer class provides a minimal class which may be used</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.createCsrfCookie" title="code_General.handlers.authentification.createCsrfCookie"><code class="xref py py-obj docutils literal notranslate"><span class="pre">createCsrfCookie</span></code></a>(request)</p></td>
+<td><p>Ensures that the csrf cookie is set correctly.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.isLoggedIn" title="code_General.handlers.authentification.isLoggedIn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isLoggedIn</span></code></a>(request)</p></td>
+<td><p>Check whether the token of a user has expired and a new login is necessary</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.setLocaleOfUser" title="code_General.handlers.authentification.setLocaleOfUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setLocaleOfUser</span></code></a>(request)</p></td>
+<td><p>Get the preferred language of the user from the frontend</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.provideRightsFile" title="code_General.handlers.authentification.provideRightsFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provideRightsFile</span></code></a>(request)</p></td>
+<td><p>Returns the json file containing the rights for the frontend</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.loginAsTestUser" title="code_General.handlers.authentification.loginAsTestUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loginAsTestUser</span></code></a>(request)</p></td>
+<td><p>Use fakeUser, fakeOrganization or fakeAdmin to log in from the swagger interface.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.loginUser" title="code_General.handlers.authentification.loginUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loginUser</span></code></a>(request)</p></td>
+<td><p>Return a link for redirection to Auth0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.callbackLogin" title="code_General.handlers.authentification.callbackLogin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">callbackLogin</span></code></a>(request)</p></td>
+<td><p>TODO: Check if user really is part of an organization or not -&gt; check if misclick at login, and set flags and instances here</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.getRolesOfUser" title="code_General.handlers.authentification.getRolesOfUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getRolesOfUser</span></code></a>(request)</p></td>
+<td><p>Get Roles of User.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.getPermissionsOfUser" title="code_General.handlers.authentification.getPermissionsOfUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getPermissionsOfUser</span></code></a>(request)</p></td>
+<td><p>Get Permissions of User.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.handlers.authentification.getNewRoleAndPermissionsForUser" title="code_General.handlers.authentification.getNewRoleAndPermissionsForUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getNewRoleAndPermissionsForUser</span></code></a>(request)</p></td>
+<td><p>In case the role changed, get new role and new permissions from auth0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.authentification.logoutUser" title="code_General.handlers.authentification.logoutUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logoutUser</span></code></a>(request)</p></td>
+<td><p>Delete session for this user and log out.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py data">
 <dt class="sig sig-object py" id="code_General.handlers.authentification.logger">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#code_General.handlers.authentification.logger" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#code_General.handlers.authentification.logger" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="code_General.handlers.authentification.loggerError">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">loggerError</span></span><a class="headerlink" href="#code_General.handlers.authentification.loggerError" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">loggerError</span></span><a class="headerlink" href="#code_General.handlers.authentification.loggerError" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="code_General.handlers.authentification.createCsrfCookie">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">createCsrfCookie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.createCsrfCookie" title="Link to this definition">¶</a></dt>
+<dd><p>Ensures that the csrf cookie is set correctly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP GET</em>) – GET request</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response with cookie</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HTTP Response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="code_General.handlers.authentification.isLoggedIn">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">isLoggedIn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.isLoggedIn" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">isLoggedIn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.isLoggedIn" title="Link to this definition">¶</a></dt>
 <dd><p>Check whether the token of a user has expired and a new login is necessary</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -115,14 +146,58 @@
 <dd class="field-even"><p>True if the token is valid or False if not</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Bool</p>
+<dd class="field-odd"><p>HttpResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.handlers.authentification.SReqLocale">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">SReqLocale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">empty</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.SReqLocale" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+<p>The BaseSerializer class provides a minimal class which may be used
+for writing custom serializer implementations.</p>
+<p>Note that we strongly restrict the ordering of operations/properties
+that may be used on the serializer in order to enforce correct usage.</p>
+<p>In particular, if a <cite>data=</cite> argument is passed then:</p>
+<p>.is_valid() - Available.
+.initial_data - Available.
+.validated_data - Only available after calling <cite>is_valid()</cite>
+.errors - Only available after calling <cite>is_valid()</cite>
+.data - Only available after calling <cite>is_valid()</cite></p>
+<p>If a <cite>data=</cite> argument is not passed then:</p>
+<p>.is_valid() - Not available.
+.initial_data - Not available.
+.validated_data - Not available.
+.errors - Not available.
+.data - Available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.authentification.SReqLocale.locale">
+<span class="sig-name descname"><span class="pre">locale</span></span><a class="headerlink" href="#code_General.handlers.authentification.SReqLocale.locale" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.handlers.authentification.setLocaleOfUser">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">setLocaleOfUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.setLocaleOfUser" title="Link to this definition">¶</a></dt>
+<dd><p>Get the preferred language of the user from the frontend</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>Dictionary-like object</em><em> (</em><em>nonmutable</em><em>)</em>) – Information from the frontend</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Success if language could be saved in session, failed if not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>HttpResponse</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="code_General.handlers.authentification.provideRightsFile">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">provideRightsFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.provideRightsFile" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">provideRightsFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.provideRightsFile" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the json file containing the rights for the frontend</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -138,8 +213,25 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="code_General.handlers.authentification.loginAsTestUser">
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">loginAsTestUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.loginAsTestUser" title="Link to this definition">¶</a></dt>
+<dd><p>Use fakeUser, fakeOrganization or fakeAdmin to log in from the swagger interface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>HTTP GET</em>) – GET Request</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="code_General.handlers.authentification.loginUser">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">loginUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.loginUser" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">loginUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.loginUser" title="Link to this definition">¶</a></dt>
 <dd><p>Return a link for redirection to Auth0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -155,76 +247,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="code_General.handlers.authentification.setOrganizationName">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">setOrganizationName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.setOrganizationName" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set’s the Organization name based on the information of the token</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>Dict</em>) – request containing OAuth Token</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Nothing</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="code_General.handlers.authentification.retrieveRolesAndPermissionsForMemberOfOrganization">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">retrieveRolesAndPermissionsForMemberOfOrganization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.retrieveRolesAndPermissionsForMemberOfOrganization" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the roles and the permissions via API from Auth0</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>session</strong> (<em>Dict</em>) – The session of the user</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dict with roles and permissions</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="code_General.handlers.authentification.retrieveRolesAndPermissionsForStandardUser">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">retrieveRolesAndPermissionsForStandardUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.retrieveRolesAndPermissionsForStandardUser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the roles and the permissions via API from Auth0</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>session</strong> (<em>Dict</em>) – The session of the user</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dict with roles and permissions</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="code_General.handlers.authentification.setRoleAndPermissionsOfUser">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">setRoleAndPermissionsOfUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.setRoleAndPermissionsOfUser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set’s the role and the permissions of the user based on the information of the token</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>request</strong> (<em>Dict</em>) – request containing OAuth Token</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Exception or True</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Exception or Bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="code_General.handlers.authentification.callbackLogin">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">callbackLogin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.callbackLogin" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">callbackLogin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.callbackLogin" title="Link to this definition">¶</a></dt>
 <dd><p>TODO: Check if user really is part of an organization or not -&gt; check if misclick at login, and set flags and instances here
 Get information back from Auth0.
 Add user to database if entry doesn’t exist.</p>
@@ -243,7 +267,7 @@ Add user to database if entry doesn’t exist.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="code_General.handlers.authentification.getRolesOfUser">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">getRolesOfUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.getRolesOfUser" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">getRolesOfUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.getRolesOfUser" title="Link to this definition">¶</a></dt>
 <dd><p>Get Roles of User.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -258,9 +282,42 @@ Add user to database if entry doesn’t exist.</p>
 </dl>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.handlers.authentification.SResPermissionsOfUser">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">SResPermissionsOfUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">empty</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.SResPermissionsOfUser" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">rest_framework.serializers.Serializer</span></code></p>
+<p>The BaseSerializer class provides a minimal class which may be used
+for writing custom serializer implementations.</p>
+<p>Note that we strongly restrict the ordering of operations/properties
+that may be used on the serializer in order to enforce correct usage.</p>
+<p>In particular, if a <cite>data=</cite> argument is passed then:</p>
+<p>.is_valid() - Available.
+.initial_data - Available.
+.validated_data - Only available after calling <cite>is_valid()</cite>
+.errors - Only available after calling <cite>is_valid()</cite>
+.data - Only available after calling <cite>is_valid()</cite></p>
+<p>If a <cite>data=</cite> argument is not passed then:</p>
+<p>.is_valid() - Not available.
+.initial_data - Not available.
+.validated_data - Not available.
+.errors - Not available.
+.data - Available.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.authentification.SResPermissionsOfUser.context">
+<span class="sig-name descname"><span class="pre">context</span></span><a class="headerlink" href="#code_General.handlers.authentification.SResPermissionsOfUser.context" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the context as passed to the root serializer on initialization.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.handlers.authentification.SResPermissionsOfUser.permission">
+<span class="sig-name descname"><span class="pre">permission</span></span><a class="headerlink" href="#code_General.handlers.authentification.SResPermissionsOfUser.permission" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="code_General.handlers.authentification.getPermissionsOfUser">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">getPermissionsOfUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.getPermissionsOfUser" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">getPermissionsOfUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.getPermissionsOfUser" title="Link to this definition">¶</a></dt>
 <dd><p>Get Permissions of User.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -277,24 +334,24 @@ Add user to database if entry doesn’t exist.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="code_General.handlers.authentification.getNewRoleAndPermissionsForUser">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">getNewRoleAndPermissionsForUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.getNewRoleAndPermissionsForUser" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">getNewRoleAndPermissionsForUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.getNewRoleAndPermissionsForUser" title="Link to this definition">¶</a></dt>
 <dd><p>In case the role changed, get new role and new permissions from auth0</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>request</strong> (<em>HTTP GET</em>) – GET request</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>New Permissions for User</p>
+<dd class="field-even"><p>If successfull or not</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>JSONResponse</p>
+<dd class="field-odd"><p>Bool</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="code_General.handlers.authentification.logoutUser">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">logoutUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.logoutUser" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.authentification.</span></span><span class="sig-name descname"><span class="pre">logoutUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">rest_framework.request.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.authentification.logoutUser" title="Link to this definition">¶</a></dt>
 <dd><p>Delete session for this user and log out.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -311,14 +368,13 @@ Add user to database if entry doesn’t exist.</p>
 
 </section>
 </section>
-</section>
 
 
           </div>
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
 
@@ -329,28 +385,106 @@ Add user to database if entry doesn’t exist.</p>
 
 
 
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.handlers</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../admin/index.html">code_General.handlers.admin</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../apiToken/index.html">code_General.handlers.apiToken</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.handlers.authentification</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.loggerError"><code class="docutils literal notranslate"><span class="pre">loggerError</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.createCsrfCookie"><code class="docutils literal notranslate"><span class="pre">createCsrfCookie()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.isLoggedIn"><code class="docutils literal notranslate"><span class="pre">isLoggedIn()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.SReqLocale"><code class="docutils literal notranslate"><span class="pre">SReqLocale</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.authentification.SReqLocale.locale"><code class="docutils literal notranslate"><span class="pre">SReqLocale.locale</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.setLocaleOfUser"><code class="docutils literal notranslate"><span class="pre">setLocaleOfUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.provideRightsFile"><code class="docutils literal notranslate"><span class="pre">provideRightsFile()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.loginAsTestUser"><code class="docutils literal notranslate"><span class="pre">loginAsTestUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.loginUser"><code class="docutils literal notranslate"><span class="pre">loginUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.callbackLogin"><code class="docutils literal notranslate"><span class="pre">callbackLogin()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.getRolesOfUser"><code class="docutils literal notranslate"><span class="pre">getRolesOfUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.SResPermissionsOfUser"><code class="docutils literal notranslate"><span class="pre">SResPermissionsOfUser</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.authentification.SResPermissionsOfUser.context"><code class="docutils literal notranslate"><span class="pre">SResPermissionsOfUser.context</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.authentification.SResPermissionsOfUser.permission"><code class="docutils literal notranslate"><span class="pre">SResPermissionsOfUser.permission</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.getPermissionsOfUser"><code class="docutils literal notranslate"><span class="pre">getPermissionsOfUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.getNewRoleAndPermissionsForUser"><code class="docutils literal notranslate"><span class="pre">getNewRoleAndPermissionsForUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.authentification.logoutUser"><code class="docutils literal notranslate"><span class="pre">logoutUser()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../email/index.html">code_General.handlers.email</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../events/index.html">code_General.handlers.events</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../files/index.html">code_General.handlers.files</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../frontpage/index.html">code_General.handlers.frontpage</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../organizations/index.html">code_General.handlers.organizations</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../statistics/index.html">code_General.handlers.statistics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../testResponse/index.html">code_General.handlers.testResponse</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../users/index.html">code_General.handlers.users</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../websocket/index.html">code_General.handlers.websocket</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../logics/index.html">code_General.logics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelFiles/index.html">code_General.modelFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">code_General.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.handlers</a><ul>
+      <li>Previous: <a href="../apiToken/index.html" title="previous chapter">code_General.handlers.apiToken</a></li>
+      <li>Next: <a href="../email/index.html" title="next chapter">code_General.handlers.email</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -364,11 +498,11 @@ Add user to database if entry doesn’t exist.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2023, Silvio Weging.
+      &#169;2023, Silvio Weging.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../../../_sources/autoapi/code_General/handlers/authentification/index.rst.txt"

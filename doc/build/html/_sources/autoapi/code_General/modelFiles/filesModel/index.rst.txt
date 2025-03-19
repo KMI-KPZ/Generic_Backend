@@ -1,0 +1,15 @@
+code_General.modelFiles.filesModel
+==================================
+
+.. py:module:: code_General.modelFiles.filesModel
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2025
+
+   Contains: Dummy for filesModel
+
+
+

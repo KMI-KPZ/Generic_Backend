@@ -1,11 +1,11 @@
-:py:mod:`code_General.definitions`
-==================================
+code_General.definitions
+========================
 
 .. py:module:: code_General.definitions
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,21 +13,93 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
+   code_General.definitions.Logging
    code_General.definitions.FileObject
    code_General.definitions.FileObjectContent
+   code_General.definitions.FileTypes
    code_General.definitions.SessionContent
    code_General.definitions.ProfileClasses
-   code_General.definitions.OrganizationDetails
    code_General.definitions.GlobalDefaults
+   code_General.definitions.EventsDescriptionGeneric
+   code_General.definitions.Addresses
 
+
+Module Contents
+---------------
+
+.. py:class:: Logging
+
+   .. py:class:: Subject
+
+      Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+      .. py:attribute:: USER
+
+
+      .. py:attribute:: ADMIN
+
+
+      .. py:attribute:: ORGANISATION
+
+
+      .. py:attribute:: SYSTEM
+
+
+      .. py:attribute:: SUBJECT
+
+
+
+   .. py:class:: Predicate
+
+      Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+      .. py:attribute:: CREATED
+
+
+      .. py:attribute:: DEFINED
+
+
+      .. py:attribute:: FETCHED
+
+
+      .. py:attribute:: EDITED
+
+
+      .. py:attribute:: DELETED
+
+
+      .. py:attribute:: PREDICATE
+
+
+
+   .. py:class:: Object
+
+      Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+      .. py:attribute:: USER
+
+
+      .. py:attribute:: ADMIN
+
+
+      .. py:attribute:: ORGANISATION
+
+
+      .. py:attribute:: SYSTEM
+
+
+      .. py:attribute:: SELF
+
+
+      .. py:attribute:: OBJECT
 
 
 
@@ -36,215 +108,289 @@ Classes
    How should a file Object look like?
 
 
-   .. py:attribute:: id
-      :annotation: = 
 
-      
+   .. py:attribute:: id
+      :value: ''
+
+
 
    .. py:attribute:: path
-      :annotation: = 
+      :value: ''
 
-      
+
 
    .. py:attribute:: fileName
-      :annotation: = 
+      :value: ''
 
-      
+
 
    .. py:attribute:: tags
-      :annotation: = []
+      :value: []
 
-      
+
 
    .. py:attribute:: date
-      :annotation: = 
+      :value: ''
 
-      
+
 
    .. py:attribute:: licenses
-      :annotation: = []
+      :value: []
 
-      
+
 
    .. py:attribute:: certificates
-      :annotation: = []
+      :value: []
 
-      
+
 
    .. py:attribute:: URI
-      :annotation: = 
+      :value: ''
 
-      
+
 
    .. py:attribute:: createdBy
-      :annotation: = 
+      :value: ''
 
-      
+
+
+   .. py:attribute:: remote
+      :value: False
+
 
 
 .. py:class:: FileObjectContent
 
-   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   What can be the metadata of a file?
+
 
    .. py:attribute:: id
-      
 
-      
 
    .. py:attribute:: path
-      
 
-      
 
    .. py:attribute:: fileName
-      
 
-      
+
+   .. py:attribute:: imgPath
+
 
    .. py:attribute:: tags
-      
 
-      
-
-   .. py:attribute:: date
-      
-
-      
 
    .. py:attribute:: licenses
-      
 
-      
 
    .. py:attribute:: certificates
-      
 
-      
 
-   .. py:attribute:: URI
-      
+   .. py:attribute:: quantity
 
-      
+
+   .. py:attribute:: levelOfDetail
+
+
+   .. py:attribute:: date
+
 
    .. py:attribute:: createdBy
-      
 
-      
+
+   .. py:attribute:: createdByID
+
+
+   .. py:attribute:: remote
+
+
+   .. py:attribute:: isFile
+
+
+   .. py:attribute:: size
+
+
+   .. py:attribute:: type
+
+
+   .. py:attribute:: origin
+
+
+   .. py:attribute:: deleteFromStorage
+
+
+.. py:class:: FileTypes
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   What types are there (see FileObjectContent.type)
+
+
+
+   .. py:attribute:: Model
+
+
+   .. py:attribute:: File
 
 
 .. py:class:: SessionContent
 
-   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
 
    What is saved into the session?
 
 
-   .. py:attribute:: INITIALIZED
-      
 
-      
+   .. py:attribute:: INITIALIZED
+
 
    .. py:attribute:: NUMBER_OF_LOGIN_ATTEMPTS
-      
 
-      
 
    .. py:attribute:: LAST_LOGIN_ATTEMPT
-      
 
-      
 
    .. py:attribute:: usertype
-      
 
-      
 
    .. py:attribute:: IS_PART_OF_ORGANIZATION
-      
 
-      
 
    .. py:attribute:: PG_PROFILE_CLASS
-      
 
-      
 
    .. py:attribute:: PATH_AFTER_LOGIN
-      
 
-      
 
    .. py:attribute:: MOCKED_LOGIN
-      
 
-      
 
    .. py:attribute:: ORGANIZATION_NAME
-      
 
-      
 
    .. py:attribute:: USER_ROLES
-      
 
-      
 
    .. py:attribute:: USER_PERMISSIONS
-      
 
-      
+
+   .. py:attribute:: LOCALE
 
 
 .. py:class:: ProfileClasses
 
-   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
 
    Which classes exist?
 
-   .. py:attribute:: user
-      
 
-      
+   .. py:attribute:: user
+
 
    .. py:attribute:: organization
-      
-
-      
-
-
-.. py:class:: OrganizationDetails
-
-   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
-
-   What details can an organization have?
-
-
-   .. py:attribute:: adress
-      
-
-      
-
-   .. py:attribute:: email
-      
-
-      
-
-   .. py:attribute:: taxID
-      
-
-      
 
 
 .. py:class:: GlobalDefaults
 
-   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
 
    Some things need to be defined globally in name
 
 
-   .. py:attribute:: anonymous
-      
 
-      
+   .. py:attribute:: anonymous
+
+
+.. py:class:: EventsDescriptionGeneric
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   Websocket events and missed events should be in the same format
+
+
+
+   .. py:attribute:: eventType
+
+
+   .. py:attribute:: eventID
+
+
+   .. py:attribute:: userHashedID
+
+
+   .. py:attribute:: eventData
+
+
+   .. py:attribute:: orgaEvent
+
+
+   .. py:attribute:: triggerEvent
+
+
+   .. py:attribute:: primaryID
+
+
+   .. py:attribute:: secondaryID
+
+
+   .. py:attribute:: reason
+
+
+   .. py:attribute:: content
+
+
+   .. py:attribute:: createdWhen
+
+
+   .. py:attribute:: additionalInformation
+
+
+.. py:class:: Addresses
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   What do addresses consist of?
+
+
+
+   .. py:attribute:: id
+
+
+   .. py:attribute:: country
+
+
+   .. py:attribute:: city
+
+
+   .. py:attribute:: zipcode
+
+
+   .. py:attribute:: houseNumber
+
+
+   .. py:attribute:: street
+
+
+   .. py:attribute:: company
+
+
+   .. py:attribute:: standard
+
+
+   .. py:attribute:: lastName
+
+
+   .. py:attribute:: firstName
+
+
+   .. py:attribute:: coordinates
 
 

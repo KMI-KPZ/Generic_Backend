@@ -1,5 +1,5 @@
-:py:mod:`manage`
-================
+manage
+======
 
 .. py:module:: manage
 
@@ -9,19 +9,16 @@
 
 
 
-Module Contents
----------------
-
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    manage.main
 
 
+Module Contents
+---------------
 
 .. py:function:: main()
-
 

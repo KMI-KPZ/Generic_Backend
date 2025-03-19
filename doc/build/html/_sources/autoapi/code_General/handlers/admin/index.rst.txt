@@ -1,11 +1,11 @@
-:py:mod:`code_General.handlers.admin`
-=====================================
+code_General.handlers.admin
+===========================
 
 .. py:module:: code_General.handlers.admin
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,12 +13,27 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.handlers.admin.logger
+   code_General.handlers.admin.loggerError
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.handlers.admin.SResGetAllAsAdmin
+   code_General.handlers.admin.SReqUpdateDetailsOfUserAsAdmin
+   code_General.handlers.admin.SReqUpdateDetailsOfOrganisationAsAdmin
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -29,32 +44,93 @@ Functions
    code_General.handlers.admin.deleteUserAsAdmin
 
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   code_General.handlers.admin.logger
-
+Module Contents
+---------------
 
 .. py:data:: logger
-   
 
-   
+.. py:data:: loggerError
 
-.. py:function:: getAllAsAdmin(request)
+.. py:class:: SResGetAllAsAdmin(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: users
+
+
+   .. py:attribute:: orga
+
+
+.. py:function:: getAllAsAdmin(request: rest_framework.request.Request)
 
    Drop all information (of the DB) about all users for admin view.
 
    :param request: GET request
    :type request: HTTP GET
    :return: JSON response containing all entries of users
-   :rtype: JSON Respone
+   :rtype: JSON response
 
 
 
-.. py:function:: updateDetailsOfUserAsAdmin(request)
+.. py:class:: SReqUpdateDetailsOfUserAsAdmin(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: hashedID
+
+
+   .. py:attribute:: changes
+
+
+.. py:function:: updateDetailsOfUserAsAdmin(request: rest_framework.request.Request)
 
    Update user details.
 
@@ -65,7 +141,41 @@ Attributes
 
 
 
-.. py:function:: updateDetailsOfOrganizationAsAdmin(request)
+.. py:class:: SReqUpdateDetailsOfOrganisationAsAdmin(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: hashedID
+
+
+   .. py:attribute:: changes
+
+
+.. py:function:: updateDetailsOfOrganizationAsAdmin(request: rest_framework.request.Request)
 
    Update details of organization of that user.
 
@@ -76,23 +186,27 @@ Attributes
 
 
 
-.. py:function:: deleteOrganizationAsAdmin(request)
+.. py:function:: deleteOrganizationAsAdmin(request: rest_framework.request.Request, orgaHashedID: str)
 
    Deletes an entry in the database corresponding to orga id.
 
    :param request: DELETE request
    :type request: HTTP DELETE
+   :param orgaHashedID: hashed ID of the organisation to be deleted
+   :type orgaHashedID: str
    :return: HTTP response
    :rtype: HTTP status
 
 
 
-.. py:function:: deleteUserAsAdmin(request)
+.. py:function:: deleteUserAsAdmin(request: rest_framework.request.Request, userHashedID: str)
 
    Deletes an entry in the database corresponding to user id.
 
    :param request: DELETE request
    :type request: HTTP DELETE
+   :param userHashedID: hashed ID of the user to be deleted
+   :type userHashedID: str
    :return: HTTP response
    :rtype: HTTP status
 

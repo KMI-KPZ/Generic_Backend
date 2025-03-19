@@ -1,0 +1,97 @@
+code_General.modelFiles.apiTokenModel
+=====================================
+
+.. py:module:: code_General.modelFiles.apiTokenModel
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Model for all api tokens
+    Could have used the drf variant but would then have to use django admin and user accounts as well which sucks because we already have an ID Manager (auth0)
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.modelFiles.apiTokenModel.APITokenDescription
+   code_General.modelFiles.apiTokenModel.APIToken
+
+
+Module Contents
+---------------
+
+.. py:class:: APITokenDescription
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   The model consists of the following:
+
+
+   .. py:attribute:: user
+
+
+   .. py:attribute:: organization
+
+
+   .. py:attribute:: admin
+
+
+   .. py:attribute:: token
+
+
+   .. py:attribute:: createdWhen
+
+
+.. py:class:: APIToken(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+
+   Management class for API Tokens.
+
+   :user: User linked to that token...
+   :organization: ... or organization linked to that token
+   :admin: Boolean whether the user is an admin or not
+   :token: Created url friendly token for that user
+   :createdWhen: Automatically assigned date and time(UTC+0) when the entry is created
+
+
+   .. py:attribute:: user
+
+
+   .. py:attribute:: organization
+
+
+   .. py:attribute:: admin
+
+
+   .. py:attribute:: token
+
+
+   .. py:attribute:: createdWhen
+
+
+   .. py:method:: save(*args, **kwargs)
+
+      Save the current instance. Override this in a subclass if you want to
+      control the saving process.
+
+      The 'force_insert' and 'force_update' parameters can be used to insist
+      that the "save" must be an SQL insert or update (or equivalent for
+      non-SQL backends), respectively. Normally, they should not be set.
+
+
+
+   .. py:method:: __str__()
+
+
+   .. py:method:: toDict()
+
+

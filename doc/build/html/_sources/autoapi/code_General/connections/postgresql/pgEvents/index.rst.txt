@@ -1,0 +1,96 @@
+code_General.connections.postgresql.pgEvents
+============================================
+
+.. py:module:: code_General.connections.postgresql.pgEvents
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Access to the event database
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.connections.postgresql.pgEvents.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.connections.postgresql.pgEvents.createEventEntry
+   code_General.connections.postgresql.pgEvents.getOneEvent
+   code_General.connections.postgresql.pgEvents.getAllEventsOfAUser
+   code_General.connections.postgresql.pgEvents.removeEvent
+   code_General.connections.postgresql.pgEvents.removeAllEventsForUser
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: createEventEntry(userHashedID: str, eventType: str, eventData: dict, triggerEvent: bool) -> dict | Exception
+
+   Saves the event to the database
+
+   :param userHashedID: The hashed id of the user to which the event belongs
+   :type userHashedID: str
+   :param event: The event to be saved to the database
+   :type event: Dict
+   :return: The created Object
+   :rtype: dict | Exception
+
+
+.. py:function:: getOneEvent(eventID: str) -> dict | Exception
+
+   Return one event
+
+   :param eventID: The ID of the event
+   :type eventID: str
+   :return: Event itself
+   :rtype: Dict
+
+
+
+.. py:function:: getAllEventsOfAUser(userHashedID: str) -> list
+
+   Return all events of a user
+
+   :param userHashedID: The hashed ID of the user
+   :type userHashedID: str
+   :return: list of entries for that user
+   :rtype: list[dict]
+
+
+
+.. py:function:: removeEvent(eventID: str) -> None | Exception
+
+   Remove event
+
+   :param eventID: The event ID
+   :type eventID: str
+   :return: None
+   :rtype: None | Exception
+
+
+
+.. py:function:: removeAllEventsForUser(userHashedID: str) -> None | Exception
+
+   Remove all events for a user
+
+   :param userHashedID: The user's hashed ID
+   :type userHashedID: str
+   :return: None
+   :rtype: None | Exception
+
+
+

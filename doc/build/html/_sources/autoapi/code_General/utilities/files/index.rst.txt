@@ -1,11 +1,11 @@
-:py:mod:`code_General.utilities.files`
-======================================
+code_General.utilities.files
+============================
 
 .. py:module:: code_General.utilities.files
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Thomas Skodawessely 2023
 
@@ -13,18 +13,28 @@
 
 
 
-Module Contents
----------------
-
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
+   code_General.utilities.files.deleteFileHelper
    code_General.utilities.files.syncBytesioIterator
    code_General.utilities.files.asyncBytesioIterator
    code_General.utilities.files.createFileResponse
+
+
+Module Contents
+---------------
+
+.. py:function:: deleteFileHelper(fileContent: dict) -> None
+
+   Deletes the file from either the remote or the local storage if so desired and flagged
+
+   :param fileContent: the file content object
+   :type fileContent: dict
+   :return: None
+   :rtype: None
 
 
 
@@ -43,6 +53,7 @@ Functions
 
 .. py:function:: asyncBytesioIterator(bytesio: io.BytesIO, chunk_size: int = 8192)
    :async:
+
 
    Asynchronous iterator for bytesio
 

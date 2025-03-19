@@ -1,11 +1,11 @@
-:py:mod:`code_General.connections.redis`
-========================================
+code_General.connections.redis
+==============================
 
 .. py:module:: code_General.connections.redis
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,38 +13,33 @@
 
 
 
-Module Contents
----------------
-
-Classes
-~~~~~~~
-
-.. autoapisummary::
-
-   code_General.connections.redis.RedisConnection
-
-
-
-
 Attributes
-~~~~~~~~~~
+----------
 
 .. autoapisummary::
 
    code_General.connections.redis.logger
 
 
-.. py:data:: logger
-   
+Classes
+-------
 
-   
+.. autoapisummary::
+
+   code_General.connections.redis.RedisConnection
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
 
 .. py:class:: RedisConnection
 
    .. py:attribute:: redis_instance
-      :annotation: = 
+      :value: ''
 
-      
+
 
    .. py:method:: addContent(key, content, expire=False)
 
@@ -56,6 +51,7 @@ Attributes
       :type content: Differs, will be set to binary here
       :return: Either "true" if it worked or an error if not
       :rtype: Bool
+
 
 
 
@@ -72,14 +68,16 @@ Attributes
 
 
 
+
    .. py:method:: deleteKey(key)
 
       Delete key and value from redis by key.
 
       :param key: key, usually a session ID
       :type key: String
-      :return: Flag to show if it worked or not
+      :return: flag to show if it worked or not
       :rtype: Bool
+
 
 
 
@@ -94,6 +92,7 @@ Attributes
       :type deleteOrNot: Bool
       :return: content
       :rtype: Differs, not binary
+
 
 
 

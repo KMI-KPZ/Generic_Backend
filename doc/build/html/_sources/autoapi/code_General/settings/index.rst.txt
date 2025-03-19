@@ -1,57 +1,15 @@
-:py:mod:`code_General.settings`
-===============================
+code_General.settings
+=====================
 
 .. py:module:: code_General.settings
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   base/index.rst
-   debug/index.rst
-   debug_local/index.rst
-   local/index.rst
-   local_container/index.rst
-   production/index.rst
-   stage/index.rst
-
-
-Package Contents
-----------------
-
-Classes
-~~~~~~~
-
-.. autoapisummary::
-
-   code_General.settings.BackendManagement
-
-
-
-Functions
-~~~~~~~~~
-
-.. autoapisummary::
-
-   code_General.settings.set_settings
-
-
-
-.. py:class:: BackendManagement(argv=None)
-
-   Bases: :py:obj:`django.core.management.ManagementUtility`
-
-   Encapsulate the logic of the django-admin and manage.py utilities.
-
-   .. py:method:: main_help_text(commands_only=False)
-
-      Returns the script's main help text, as a string.
-
-
-
-.. py:function:: set_settings()
+   /autoapi/code_General/settings/base/index
 
 

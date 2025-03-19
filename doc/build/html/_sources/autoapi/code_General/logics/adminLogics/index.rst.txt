@@ -1,0 +1,53 @@
+code_General.logics.adminLogics
+===============================
+
+.. py:module:: code_General.logics.adminLogics
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Logic for Admin
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.logics.adminLogics.logger
+   code_General.logics.adminLogics.loggerError
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.logics.adminLogics.logicForUpdateDetailsOfUserAsAdmin
+   code_General.logics.adminLogics.logicForDeleteUserAsAdmin
+   code_General.logics.adminLogics.logicForGetAllAsAdmin
+   code_General.logics.adminLogics.logicForUpdateDetailsOfOrganizationAsAdmin
+   code_General.logics.adminLogics.logicForDeleteOrganizationAsAdmin
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: loggerError
+
+.. py:function:: logicForUpdateDetailsOfUserAsAdmin(request, content)
+
+.. py:function:: logicForDeleteUserAsAdmin(request, userHashedID)
+
+.. py:function:: logicForGetAllAsAdmin(request)
+
+.. py:function:: logicForUpdateDetailsOfOrganizationAsAdmin(request, content)
+
+.. py:function:: logicForDeleteOrganizationAsAdmin(request, orgaHashedID)
+

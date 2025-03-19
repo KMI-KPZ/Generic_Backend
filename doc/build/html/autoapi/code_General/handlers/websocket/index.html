@@ -1,25 +1,28 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>code_General.handlers.websocket &#8212; KISS-backend 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.imports" href="../../imports/index.html" />
+    <link rel="prev" title="code_General.handlers.users" href="../users/index.html" />
    
   <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -32,14 +35,22 @@
           <div class="body" role="main">
             
   <section id="module-code_General.handlers.websocket">
-<span id="code-general-handlers-websocket"></span><h1><a class="reference internal" href="#module-code_General.handlers.websocket" title="code_General.handlers.websocket"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_General.handlers.websocket</span></code></a><a class="headerlink" href="#module-code_General.handlers.websocket" title="Permalink to this heading">¶</a></h1>
-<p>Part of Semper-KI software</p>
+<span id="code-general-handlers-websocket"></span><h1>code_General.handlers.websocket<a class="headerlink" href="#module-code_General.handlers.websocket" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
 <p>Silvio Weging 2023</p>
 <p>Contains: Websocket for various stuff</p>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.websocket.logger" title="code_General.handlers.websocket.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.websocket.GeneralWebSocket" title="code_General.handlers.websocket.GeneralWebSocket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralWebSocket</span></code></a></p></td>
@@ -48,73 +59,65 @@
 </tbody>
 </table>
 </section>
-<section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.handlers.websocket.logger" title="code_General.handlers.websocket.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py data">
 <dt class="sig sig-object py" id="code_General.handlers.websocket.logger">
-<span class="sig-prename descclassname"><span class="pre">code_General.handlers.websocket.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#code_General.handlers.websocket.logger" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.handlers.websocket.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#code_General.handlers.websocket.logger" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="code_General.handlers.websocket.GeneralWebSocket">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.websocket.</span></span><span class="sig-name descname"><span class="pre">GeneralWebSocket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.handlers.websocket.</span></span><span class="sig-name descname"><span class="pre">GeneralWebSocket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">channels.generic.websocket.AsyncJsonWebsocketConsumer</span></code></p>
 <p>Variant of AsyncWebsocketConsumer that automatically JSON-encodes and decodes
 messages as they come in and go out. Expects everything to be text; will
 error on binary data.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.handlers.websocket.GeneralWebSocket.getSession">
-<span class="sig-name descname"><span class="pre">getSession</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.getSession" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">getSession</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.getSession" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.handlers.websocket.GeneralWebSocket.setSession">
-<span class="sig-name descname"><span class="pre">setSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.setSession" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.setSession" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.handlers.websocket.GeneralWebSocket.connect">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.connect" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.connect" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.handlers.websocket.GeneralWebSocket.disconnect">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.disconnect" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.disconnect" title="Link to this definition">¶</a></dt>
 <dd><p>Called when a WebSocket connection is closed.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.handlers.websocket.GeneralWebSocket.receive">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">receive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bytes_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.receive" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">receive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bytes_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.receive" title="Link to this definition">¶</a></dt>
 <dd><p>Called with a decoded WebSocket frame.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.handlers.websocket.GeneralWebSocket.send">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bytes_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">close</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.send" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bytes_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">close</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.send" title="Link to this definition">¶</a></dt>
 <dd><p>Sends a reply back down the WebSocket</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.handlers.websocket.GeneralWebSocket.sendMessage">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sendMessage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.sendMessage" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sendMessage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.sendMessage" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.handlers.websocket.GeneralWebSocket.sendMessageJSON">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sendMessageJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.sendMessageJSON" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sendMessageJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.handlers.websocket.GeneralWebSocket.sendMessageJSON" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</section>
 </section>
 </section>
 
@@ -123,7 +126,7 @@ error on binary data.</p>
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
 
@@ -134,28 +137,95 @@ error on binary data.</p>
 
 
 
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.handlers</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../admin/index.html">code_General.handlers.admin</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../apiToken/index.html">code_General.handlers.apiToken</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../authentification/index.html">code_General.handlers.authentification</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../email/index.html">code_General.handlers.email</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../events/index.html">code_General.handlers.events</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../files/index.html">code_General.handlers.files</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../frontpage/index.html">code_General.handlers.frontpage</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../organizations/index.html">code_General.handlers.organizations</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../statistics/index.html">code_General.handlers.statistics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../testResponse/index.html">code_General.handlers.testResponse</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../users/index.html">code_General.handlers.users</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.handlers.websocket</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.websocket.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.handlers.websocket.GeneralWebSocket"><code class="docutils literal notranslate"><span class="pre">GeneralWebSocket</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.websocket.GeneralWebSocket.getSession"><code class="docutils literal notranslate"><span class="pre">GeneralWebSocket.getSession()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.websocket.GeneralWebSocket.setSession"><code class="docutils literal notranslate"><span class="pre">GeneralWebSocket.setSession()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.websocket.GeneralWebSocket.connect"><code class="docutils literal notranslate"><span class="pre">GeneralWebSocket.connect()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.websocket.GeneralWebSocket.disconnect"><code class="docutils literal notranslate"><span class="pre">GeneralWebSocket.disconnect()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.websocket.GeneralWebSocket.receive"><code class="docutils literal notranslate"><span class="pre">GeneralWebSocket.receive()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.websocket.GeneralWebSocket.send"><code class="docutils literal notranslate"><span class="pre">GeneralWebSocket.send()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.websocket.GeneralWebSocket.sendMessage"><code class="docutils literal notranslate"><span class="pre">GeneralWebSocket.sendMessage()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.handlers.websocket.GeneralWebSocket.sendMessageJSON"><code class="docutils literal notranslate"><span class="pre">GeneralWebSocket.sendMessageJSON()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../logics/index.html">code_General.logics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelFiles/index.html">code_General.modelFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">code_General.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.handlers</a><ul>
+      <li>Previous: <a href="../users/index.html" title="previous chapter">code_General.handlers.users</a></li>
+      <li>Next: <a href="../../imports/index.html" title="next chapter">code_General.imports</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -169,11 +239,11 @@ error on binary data.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2023, Silvio Weging.
+      &#169;2023, Silvio Weging.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../../../_sources/autoapi/code_General/handlers/websocket/index.rst.txt"

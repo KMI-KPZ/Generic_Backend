@@ -1,11 +1,11 @@
-:py:mod:`code_General.handlers.authentification`
-================================================
+code_General.handlers.authentification
+======================================
 
 .. py:module:: code_General.handlers.authentification
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,32 +13,8 @@
 
 
 
-Module Contents
----------------
-
-
-Functions
-~~~~~~~~~
-
-.. autoapisummary::
-
-   code_General.handlers.authentification.isLoggedIn
-   code_General.handlers.authentification.provideRightsFile
-   code_General.handlers.authentification.loginUser
-   code_General.handlers.authentification.setOrganizationName
-   code_General.handlers.authentification.retrieveRolesAndPermissionsForMemberOfOrganization
-   code_General.handlers.authentification.retrieveRolesAndPermissionsForStandardUser
-   code_General.handlers.authentification.setRoleAndPermissionsOfUser
-   code_General.handlers.authentification.callbackLogin
-   code_General.handlers.authentification.getRolesOfUser
-   code_General.handlers.authentification.getPermissionsOfUser
-   code_General.handlers.authentification.getNewRoleAndPermissionsForUser
-   code_General.handlers.authentification.logoutUser
-
-
-
 Attributes
-~~~~~~~~~~
+----------
 
 .. autoapisummary::
 
@@ -46,27 +22,104 @@ Attributes
    code_General.handlers.authentification.loggerError
 
 
-.. py:data:: logger
-   
+Classes
+-------
 
-   
+.. autoapisummary::
+
+   code_General.handlers.authentification.SReqLocale
+   code_General.handlers.authentification.SResPermissionsOfUser
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.handlers.authentification.createCsrfCookie
+   code_General.handlers.authentification.isLoggedIn
+   code_General.handlers.authentification.setLocaleOfUser
+   code_General.handlers.authentification.provideRightsFile
+   code_General.handlers.authentification.loginAsTestUser
+   code_General.handlers.authentification.loginUser
+   code_General.handlers.authentification.callbackLogin
+   code_General.handlers.authentification.getRolesOfUser
+   code_General.handlers.authentification.getPermissionsOfUser
+   code_General.handlers.authentification.getNewRoleAndPermissionsForUser
+   code_General.handlers.authentification.logoutUser
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
 
 .. py:data:: loggerError
-   
 
-   
+.. py:function:: createCsrfCookie(request: rest_framework.request.Request)
 
-.. py:function:: isLoggedIn(request)
+   Ensures that the csrf cookie is set correctly.
+
+   :param request: GET request
+   :type request: HTTP GET
+   :return: Response with cookie
+   :rtype: HTTP Response
+
+
+
+.. py:function:: isLoggedIn(request: rest_framework.request.Request)
 
    Check whether the token of a user has expired and a new login is necessary
 
    :param request: User session token
    :type request: Dictionary
    :return: True if the token is valid or False if not
-   :rtype: Bool
+   :rtype: HttpResponse
 
 
-.. py:function:: provideRightsFile(request)
+.. py:class:: SReqLocale(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: locale
+
+
+.. py:function:: setLocaleOfUser(request: rest_framework.request.Request)
+
+   Get the preferred language of the user from the frontend
+
+   :param request: Information from the frontend
+   :type request: Dictionary-like object (nonmutable)
+   :return: Success if language could be saved in session, failed if not
+   :rtype: HttpResponse
+
+
+
+.. py:function:: provideRightsFile(request: rest_framework.request.Request)
 
    Returns the json file containing the rights for the frontend
 
@@ -77,7 +130,18 @@ Attributes
 
 
 
-.. py:function:: loginUser(request)
+.. py:function:: loginAsTestUser(request: rest_framework.request.Request)
+
+   Use fakeUser, fakeOrganization or fakeAdmin to log in from the swagger interface.
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: Nothing
+   :rtype: None
+
+
+
+.. py:function:: loginUser(request: rest_framework.request.Request)
 
    Return a link for redirection to Auth0.
 
@@ -88,49 +152,7 @@ Attributes
 
 
 
-.. py:function:: setOrganizationName(request)
-
-   Set's the Organization name based on the information of the token
-
-   :param request: request containing OAuth Token
-   :type request: Dict
-   :return: Nothing
-   :rtype: None
-
-
-
-.. py:function:: retrieveRolesAndPermissionsForMemberOfOrganization(session)
-
-   Get the roles and the permissions via API from Auth0
-
-   :param session: The session of the user
-   :type session: Dict
-   :return: Dict with roles and permissions
-   :rtype: Dict
-
-
-.. py:function:: retrieveRolesAndPermissionsForStandardUser(session)
-
-   Get the roles and the permissions via API from Auth0
-
-   :param session: The session of the user
-   :type session: Dict
-   :return: Dict with roles and permissions
-   :rtype: Dict
-
-
-.. py:function:: setRoleAndPermissionsOfUser(request)
-
-   Set's the role and the permissions of the user based on the information of the token
-
-   :param request: request containing OAuth Token
-   :type request: Dict
-   :return: Exception or True
-   :rtype: Exception or Bool
-
-
-
-.. py:function:: callbackLogin(request)
+.. py:function:: callbackLogin(request: rest_framework.request.Request)
 
    TODO: Check if user really is part of an organization or not -> check if misclick at login, and set flags and instances here
    Get information back from Auth0.
@@ -143,7 +165,7 @@ Attributes
 
 
 
-.. py:function:: getRolesOfUser(request)
+.. py:function:: getRolesOfUser(request: rest_framework.request.Request)
 
    Get Roles of User.
 
@@ -153,7 +175,44 @@ Attributes
    :rtype: JSONResponse
 
 
-.. py:function:: getPermissionsOfUser(request)
+.. py:class:: SResPermissionsOfUser(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: context
+
+      Returns the context as passed to the root serializer on initialization.
+
+
+
+   .. py:attribute:: permission
+
+
+.. py:function:: getPermissionsOfUser(request: rest_framework.request.Request)
 
    Get Permissions of User.
 
@@ -163,17 +222,17 @@ Attributes
    :rtype: JSONResponse
 
 
-.. py:function:: getNewRoleAndPermissionsForUser(request)
+.. py:function:: getNewRoleAndPermissionsForUser(request: rest_framework.request.Request)
 
    In case the role changed, get new role and new permissions from auth0
 
    :param request: GET request
    :type request: HTTP GET
-   :return: New Permissions for User
-   :rtype: JSONResponse
+   :return: If successfull or not
+   :rtype: Bool
 
 
-.. py:function:: logoutUser(request)
+.. py:function:: logoutUser(request: rest_framework.request.Request)
 
    Delete session for this user and log out.
 

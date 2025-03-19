@@ -1,0 +1,113 @@
+code_General.handlers.apiToken
+==============================
+
+.. py:module:: code_General.handlers.apiToken
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Handlers for handling the API Token
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.handlers.apiToken.logger
+   code_General.handlers.apiToken.loggerError
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.handlers.apiToken.SResAPIToken
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.handlers.apiToken.getAPIToken
+   code_General.handlers.apiToken.generateAPIToken
+   code_General.handlers.apiToken.deleteAPIToken
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: loggerError
+
+.. py:class:: SResAPIToken(instance=None, data=empty, **kwargs)
+
+   Bases: :py:obj:`rest_framework.serializers.Serializer`
+
+
+   The BaseSerializer class provides a minimal class which may be used
+   for writing custom serializer implementations.
+
+   Note that we strongly restrict the ordering of operations/properties
+   that may be used on the serializer in order to enforce correct usage.
+
+   In particular, if a `data=` argument is passed then:
+
+   .is_valid() - Available.
+   .initial_data - Available.
+   .validated_data - Only available after calling `is_valid()`
+   .errors - Only available after calling `is_valid()`
+   .data - Only available after calling `is_valid()`
+
+   If a `data=` argument is not passed then:
+
+   .is_valid() - Not available.
+   .initial_data - Not available.
+   .validated_data - Not available.
+   .errors - Not available.
+   .data - Available.
+
+
+   .. py:attribute:: token
+
+
+.. py:function:: getAPIToken(request: rest_framework.request.Request)
+
+   Returns an existing API Token
+
+   :param request: GET Request
+   :type request: HTTP GET
+   :return: JSON
+   :rtype: JSON Response
+
+
+
+.. py:function:: generateAPIToken(request: rest_framework.request.Request)
+
+   Generate a new API Token, thus deleting the old
+
+   :param request: POST Request
+   :type request: HTTP POST
+   :return: Http Response
+   :rtype: HttpResponse
+
+
+
+.. py:function:: deleteAPIToken(request: rest_framework.request.Request)
+
+   Deleted an API Token
+
+   :param request: DELETE Request
+   :type request: HTTP DELETE
+   :return: Success or not
+   :rtype: HttpResponse
+
+
+

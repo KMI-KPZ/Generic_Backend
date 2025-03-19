@@ -1,0 +1,105 @@
+code_General.modelFiles.eventModel
+==================================
+
+.. py:module:: code_General.modelFiles.eventModel
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2023
+
+   Contains: Models for events
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   code_General.modelFiles.eventModel.EventDescription
+   code_General.modelFiles.eventModel.Event
+
+
+Module Contents
+---------------
+
+.. py:class:: EventDescription
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   What does an event entry consists of?
+
+
+
+   .. py:attribute:: eventID
+
+
+   .. py:attribute:: eventType
+
+
+   .. py:attribute:: userHashedID
+
+
+   .. py:attribute:: eventData
+
+
+   .. py:attribute:: createdWhen
+
+
+   .. py:attribute:: triggerEvent
+
+
+.. py:class:: Event(*args, **kwargs)
+
+   Bases: :py:obj:`django.db.models.Model`
+
+
+   Event database class
+
+   :eventID: Primary key
+   :eventType: The type of the event, e.g. processEvent
+   :userHashedID: ID of the user that is the recipient of the event
+   :eventData: The event itself
+   :createdWhen: Automatically assigned date and time(UTC+0) when the entry is created
+   :triggerEvent: Should the event trigger a popup?
+
+
+
+   .. py:attribute:: eventID
+
+
+   .. py:attribute:: eventType
+
+
+   .. py:attribute:: userHashedID
+
+
+   .. py:attribute:: eventData
+
+
+   .. py:attribute:: createdWhen
+
+
+   .. py:attribute:: triggerEvent
+
+
+   .. py:class:: Meta
+
+      .. py:attribute:: ordering
+         :value: ['createdWhen']
+
+
+
+      .. py:attribute:: indexes
+
+
+
+   .. py:method:: __str__()
+
+
+   .. py:method:: toDict()
+
+

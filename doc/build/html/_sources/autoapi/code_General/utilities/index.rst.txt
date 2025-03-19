@@ -1,20 +1,26 @@
-:py:mod:`code_General.utilities`
-================================
+code_General.utilities
+======================
 
 .. py:module:: code_General.utilities
 
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   basics/index.rst
-   crypto/index.rst
-   customStrEnum/index.rst
-   files/index.rst
-   rights/index.rst
-   signals/index.rst
+   /autoapi/code_General/utilities/apiCalls/index
+   /autoapi/code_General/utilities/asyncTask/index
+   /autoapi/code_General/utilities/basics/index
+   /autoapi/code_General/utilities/createFilePreviews/index
+   /autoapi/code_General/utilities/crypto/index
+   /autoapi/code_General/utilities/customStrEnum/index
+   /autoapi/code_General/utilities/files/index
+   /autoapi/code_General/utilities/mocks/index
+   /autoapi/code_General/utilities/oauth/index
+   /autoapi/code_General/utilities/rights/index
+   /autoapi/code_General/utilities/signals/index
+   /autoapi/code_General/utilities/temporaryFolder/index
 
 

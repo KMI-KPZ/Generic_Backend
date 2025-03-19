@@ -1,11 +1,11 @@
-:py:mod:`code_General.utilities.customStrEnum`
-==============================================
+code_General.utilities.customStrEnum
+====================================
 
 .. py:module:: code_General.utilities.customStrEnum
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,24 +13,24 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
-   code_General.utilities.customStrEnum.StrEnumExactylAsDefined
+   code_General.utilities.customStrEnum.StrEnumExactlyAsDefined
 
 
+Module Contents
+---------------
 
-
-.. py:class:: StrEnumExactylAsDefined
+.. py:class:: StrEnumExactlyAsDefined
 
    Bases: :py:obj:`str`, :py:obj:`enum.ReprEnum`
 
+
    Enum where members are also (and must be) strings and are represented exacty as defined in the enum
+
 
 
    .. py:method:: _generate_next_value_(start, count, last_values)

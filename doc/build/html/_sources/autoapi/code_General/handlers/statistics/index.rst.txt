@@ -1,11 +1,11 @@
-:py:mod:`code_General.handlers.statistics`
-==========================================
+code_General.handlers.statistics
+================================
 
 .. py:module:: code_General.handlers.statistics
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,45 +13,19 @@
 
 
 
-Module Contents
----------------
-
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
-   code_General.handlers.statistics.checkSession
-   code_General.handlers.statistics.getNumOfLoggedInUsers
    code_General.handlers.statistics.getNumberOfUsers
-   code_General.handlers.statistics.getIpAdress
+   code_General.handlers.statistics.getIpAddress
 
 
+Module Contents
+---------------
 
-.. py:function:: checkSession(session)
-   :async:
-
-   Async check if user in session is logged in or not
-
-   :param session: coded session dict
-   :type session: Dictionary
-   :return: 1 or 0 if session is logged in or not
-   :rtype: Integer
-
-
-.. py:function:: getNumOfLoggedInUsers(activeSessions)
-   :async:
-
-   Async check how many users are currently logged in
-
-   :param activeSessions: sessions
-   :type activeSessions: hashtable 
-   :return: number of logged in users
-   :rtype: Integer
-
-
-.. py:function:: getNumberOfUsers(request)
+.. py:function:: getNumberOfUsers(request: rest_framework.request.Request)
 
    Return number of currently logged in users and 
    number of users that have an active session 
@@ -63,9 +37,9 @@ Functions
 
 
 
-.. py:function:: getIpAdress(request, *args, **kwargs)
+.. py:function:: getIpAddress(request, *args, **kwargs)
 
-   Get the IP Adress of any illegit request and write it to a log file
+   Get the IP Address of any illegit request and write it to a log file
 
    :param request: GET request
    :type request: HTTP GET

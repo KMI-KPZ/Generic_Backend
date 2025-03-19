@@ -1,0 +1,41 @@
+code_General.logics.emailLogics
+===============================
+
+.. py:module:: code_General.logics.emailLogics
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Logic for Emails
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.logics.emailLogics.logger
+   code_General.logics.emailLogics.loggerError
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.logics.emailLogics.logicForSendContactForm
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: loggerError
+
+.. py:function:: logicForSendContactForm(validatedInput)
+

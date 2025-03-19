@@ -1,0 +1,43 @@
+main.settings.debug
+===================
+
+.. py:module:: main.settings.debug
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2023
+
+   Contains: Further settings for debug mode
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   main.settings.debug.DEBUG
+   main.settings.debug.BACKEND_SETTINGS
+   main.settings.debug.REDIS_HOST
+   main.settings.debug.CACHES
+
+
+Module Contents
+---------------
+
+.. py:data:: DEBUG
+   :value: True
+
+
+.. py:data:: BACKEND_SETTINGS
+   :value: 'debug'
+
+
+.. py:data:: REDIS_HOST
+   :value: 'files'
+
+
+.. py:data:: CACHES
+

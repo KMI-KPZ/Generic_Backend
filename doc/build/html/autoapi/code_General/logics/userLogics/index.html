@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>code_General.logics.userLogics &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.modelFiles" href="../../modelFiles/index.html" />
+    <link rel="prev" title="code_General.logics.statisticsLogics" href="../statisticsLogics/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.logics.userLogics">
+<span id="code-general-logics-userlogics"></span><h1>code_General.logics.userLogics<a class="headerlink" href="#module-code_General.logics.userLogics" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
+<p>Silvio Weging 2024</p>
+<p>Contains: Logic for the users</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.userLogics.logger" title="code_General.logics.userLogics.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.logics.userLogics.loggerError" title="code_General.logics.userLogics.loggerError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loggerError</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.userLogics.logicForGetUserDetails" title="code_General.logics.userLogics.logicForGetUserDetails"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForGetUserDetails</span></code></a>(request)</p></td>
+<td><p>Get the contractors for the service</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.logics.userLogics.logicForDeleteUser" title="code_General.logics.userLogics.logicForDeleteUser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForDeleteUser</span></code></a>(request)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.logics.userLogics.logicForAddUserTest" title="code_General.logics.userLogics.logicForAddUserTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logicForAddUserTest</span></code></a>(request)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.logics.userLogics.logger">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.userLogics.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#code_General.logics.userLogics.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.logics.userLogics.loggerError">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.userLogics.</span></span><span class="sig-name descname"><span class="pre">loggerError</span></span><a class="headerlink" href="#code_General.logics.userLogics.loggerError" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.userLogics.logicForGetUserDetails">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.userLogics.</span></span><span class="sig-name descname"><span class="pre">logicForGetUserDetails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.userLogics.logicForGetUserDetails" title="Link to this definition">¶</a></dt>
+<dd><p>Get the contractors for the service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The contractors</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.logics.userLogics.getUserKeyWOSC">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.logics.userLogics.</span></span><span class="sig-name descname"><span class="pre">getUserKeyWOSC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uID</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.userLogics.getUserKeyWOSC" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve User ID from Session without special characters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>User key from database without stuff like | or ^</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.logics.userLogics.getUserKey">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.logics.userLogics.</span></span><span class="sig-name descname"><span class="pre">getUserKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.userLogics.getUserKey" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve User ID from Session</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> (<em>Dictionary</em>) – session</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>User key session</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.userLogics.logicForDeleteUser">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.userLogics.</span></span><span class="sig-name descname"><span class="pre">logicForDeleteUser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.userLogics.logicForDeleteUser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="code_General.logics.userLogics.logicForAddUserTest">
+<span class="sig-prename descclassname"><span class="pre">code_General.logics.userLogics.</span></span><span class="sig-name descname"><span class="pre">logicForAddUserTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.logics.userLogics.logicForAddUserTest" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../handlers/index.html">code_General.handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.logics</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../adminLogics/index.html">code_General.logics.adminLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../authenticationLogics/index.html">code_General.logics.authenticationLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../emailLogics/index.html">code_General.logics.emailLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../eventLogics/index.html">code_General.logics.eventLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../filesLogics/index.html">code_General.logics.filesLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../organizationLogics/index.html">code_General.logics.organizationLogics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../statisticsLogics/index.html">code_General.logics.statisticsLogics</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.logics.userLogics</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.userLogics.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.userLogics.loggerError"><code class="docutils literal notranslate"><span class="pre">loggerError</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.userLogics.logicForGetUserDetails"><code class="docutils literal notranslate"><span class="pre">logicForGetUserDetails()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.userLogics.getUserKeyWOSC"><code class="docutils literal notranslate"><span class="pre">getUserKeyWOSC()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.userLogics.getUserKey"><code class="docutils literal notranslate"><span class="pre">getUserKey()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.userLogics.logicForDeleteUser"><code class="docutils literal notranslate"><span class="pre">logicForDeleteUser()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.logics.userLogics.logicForAddUserTest"><code class="docutils literal notranslate"><span class="pre">logicForAddUserTest()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelFiles/index.html">code_General.modelFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">code_General.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.logics</a><ul>
+      <li>Previous: <a href="../statisticsLogics/index.html" title="previous chapter">code_General.logics.statisticsLogics</a></li>
+      <li>Next: <a href="../../modelFiles/index.html" title="next chapter">code_General.modelFiles</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_General/logics/userLogics/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

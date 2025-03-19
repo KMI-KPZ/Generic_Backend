@@ -1,0 +1,22 @@
+main
+====
+
+.. py:module:: main
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/main/apps/index
+   /autoapi/main/asgi/index
+   /autoapi/main/checks/index
+   /autoapi/main/helper/index
+   /autoapi/main/management/index
+   /autoapi/main/settings/index
+   /autoapi/main/urls/index
+   /autoapi/main/wsgi/index
+
+

@@ -1,11 +1,11 @@
-:py:mod:`code_General.modelFiles.organizationModel`
-===================================================
+code_General.modelFiles.organizationModel
+=========================================
 
 .. py:module:: code_General.modelFiles.organizationModel
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,88 +13,182 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    code_General.modelFiles.organizationModel.OrganizationDescription
+   code_General.modelFiles.organizationModel.OrganizationDetails
+   code_General.modelFiles.organizationModel.OrganizationUpdateType
+   code_General.modelFiles.organizationModel.OrganizationNotificationSettings
+   code_General.modelFiles.organizationModel.OrganizationNotificationTargets
+   code_General.modelFiles.organizationModel.OrganizationPriorities
    code_General.modelFiles.organizationModel.Organization
 
 
-
+Module Contents
+---------------
 
 .. py:class:: OrganizationDescription
 
-   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
 
    What does an Organization consists of?
 
 
-   .. py:attribute:: subID
-      
 
-      
+   .. py:attribute:: subID
+
 
    .. py:attribute:: hashedID
-      
 
-      
 
    .. py:attribute:: name
-      
 
-      
 
    .. py:attribute:: details
-      
 
-      
 
    .. py:attribute:: users
-      
 
-      
 
    .. py:attribute:: supportedServices
-      
 
-      
 
    .. py:attribute:: uri
-      
 
-      
 
    .. py:attribute:: createdWhen
-      
 
-      
 
    .. py:attribute:: updatedWhen
-      
 
-      
 
    .. py:attribute:: accessedWhen
-      
 
-      
+
+.. py:class:: OrganizationDetails
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   What details can an organization have?
+
+
+
+   .. py:attribute:: addresses
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: taxID
+
+
+   .. py:attribute:: locale
+
+
+   .. py:attribute:: branding
+
+
+   .. py:attribute:: notificationSettings
+
+
+   .. py:attribute:: priorities
+
+
+   .. py:attribute:: services
+
+
+.. py:class:: OrganizationUpdateType
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   What updated can happen to a user?
+
+
+
+   .. py:attribute:: displayName
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: branding
+
+
+   .. py:attribute:: supportedServices
+
+
+   .. py:attribute:: services
+
+
+   .. py:attribute:: notifications
+
+
+   .. py:attribute:: locale
+
+
+   .. py:attribute:: address
+
+
+   .. py:attribute:: priorities
+
+
+   .. py:attribute:: taxID
+
+
+.. py:class:: OrganizationNotificationSettings
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   Which notifications can be received?
+   Some can be set here but most are specific to the plattform itself
+
+
+
+   .. py:attribute:: newsletter
+
+
+.. py:class:: OrganizationNotificationTargets
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   What is the target for each notification?
+
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: event
+
+
+.. py:class:: OrganizationPriorities
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   If the organization has some priorities, they can be set here
+   Is used in Semper-KI for calculations, can be used here for whatever
 
 
 .. py:class:: Organization(*args, **kwargs)
 
    Bases: :py:obj:`django.db.models.Model`
 
+
    Profile management class for organizations.
 
    :subID: Unique ID for that person returned by Auth0, primary key
    :hashedID: SHA-512 hashed value of the subID for anonymous identification
    :name: Nickname returned by Auth0, used for filter searches in DB
-   :details: Adress, tax id and so on
+   :details: Address, tax id and so on
    :users: Link to users belonging to that organization
    :supportedServices: Array of service codes that this organization supports
    :uri: Representation link inside the knowledge graph
@@ -102,70 +196,65 @@ Classes
    :updatedWhen: Date and time at which the entry was updated
    :accessedWhen: Last date and time the data was fetched from the database, automatically set
 
+
+   .. py:attribute:: subID
+
+
+   .. py:attribute:: hashedID
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: details
+
+
+   .. py:attribute:: users
+
+
+   .. py:attribute:: supportedServices
+
+
+   .. py:attribute:: uri
+
+
+   .. py:attribute:: createdWhen
+
+
+   .. py:attribute:: updatedWhen
+
+
+   .. py:attribute:: accessedWhen
+
+
    .. py:class:: Meta
 
       .. py:attribute:: indexes
-         
-
-         
 
 
-   .. py:attribute:: subID
-      
-
-      
-
-   .. py:attribute:: hashedID
-      
-
-      
-
-   .. py:attribute:: name
-      
-
-      
-
-   .. py:attribute:: details
-      
-
-      
-
-   .. py:attribute:: users
-      
-
-      
-
-   .. py:attribute:: supportedServices
-      
-
-      
-
-   .. py:attribute:: uri
-      
-
-      
-
-   .. py:attribute:: createdWhen
-      
-
-      
-
-   .. py:attribute:: updatedWhen
-      
-
-      
-
-   .. py:attribute:: accessedWhen
-      
-
-      
 
    .. py:method:: __str__()
 
-      Return str(self).
-
 
    .. py:method:: toDict()
+
+
+   .. py:method:: initializeDetails()
+
+      Fill JSON field with necessary details
+
+      :return: Organzation
+      :rtype: Organzation
+
+
+
+
+   .. py:method:: updateDetails()
+
+      Fill existing JSON field with necessary details from an old entry or initialize new ones
+
+      :return: Organzation
+      :rtype: Organzation
 
 
 

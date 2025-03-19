@@ -1,11 +1,11 @@
-:py:mod:`code_General.modelFiles.userModel`
-===========================================
+code_General.modelFiles.userModel
+=================================
 
 .. py:module:: code_General.modelFiles.userModel
 
 .. autoapi-nested-parse::
 
-   Part of Semper-KI software
+   Generic Backend
 
    Silvio Weging 2023
 
@@ -13,76 +13,157 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    code_General.modelFiles.userModel.UserDescription
+   code_General.modelFiles.userModel.UserDetails
+   code_General.modelFiles.userModel.UserNotificationSettings
+   code_General.modelFiles.userModel.UserNotificationTargets
+   code_General.modelFiles.userModel.UserStatistics
+   code_General.modelFiles.userModel.UserUpdateType
    code_General.modelFiles.userModel.User
 
 
-
+Module Contents
+---------------
 
 .. py:class:: UserDescription
 
-   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactylAsDefined`
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
 
    What does a user consists of?
 
 
-   .. py:attribute:: subID
-      
 
-      
+   .. py:attribute:: subID
+
 
    .. py:attribute:: hashedID
-      
 
-      
 
    .. py:attribute:: name
-      
 
-      
 
    .. py:attribute:: organizations
-      
 
-      
 
    .. py:attribute:: details
-      
 
-      
 
    .. py:attribute:: createdWhen
-      
 
-      
 
    .. py:attribute:: updatedWhen
-      
 
-      
 
    .. py:attribute:: accessedWhen
-      
 
-      
 
    .. py:attribute:: lastSeen
-      
 
-      
+
+.. py:class:: UserDetails
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   What details can a user have
+
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: addresses
+
+
+   .. py:attribute:: locale
+
+
+   .. py:attribute:: notificationSettings
+
+
+   .. py:attribute:: statistics
+
+
+.. py:class:: UserNotificationSettings
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   Which notifications can be received?
+   Some can be set here but most are specific to the plattform itself (just inherit from this class)
+
+
+
+   .. py:attribute:: newsletter
+
+
+.. py:class:: UserNotificationTargets
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   What is the target for each notification?
+
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: event
+
+
+.. py:class:: UserStatistics
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   Which statistics are measured?
+
+
+
+   .. py:attribute:: lastLogin
+
+
+   .. py:attribute:: numberOfLoginsTotal
+
+
+   .. py:attribute:: locationOfLastLogin
+
+
+.. py:class:: UserUpdateType
+
+   Bases: :py:obj:`code_General.utilities.customStrEnum.StrEnumExactlyAsDefined`
+
+
+   What updated can happen to a user?
+
+
+
+   .. py:attribute:: displayName
+
+
+   .. py:attribute:: email
+
+
+   .. py:attribute:: notifications
+
+
+   .. py:attribute:: locale
+
+
+   .. py:attribute:: address
 
 
 .. py:class:: User(*args, **kwargs)
 
    Bases: :py:obj:`django.db.models.Model`
+
 
    Profile management class for regular users.
 
@@ -90,71 +171,75 @@ Classes
    :hashedID: SHA-512 hashed value of the subID for anonymous identification
    :name: Nickname returned by Auth0, used for filter searches in DB
    :organizations: The organizations that the user belongs to
-   :details: Adress, E-Mail, ...
+   :details: Address, E-Mail, ...
    :createdWhen: Automatically assigned date and time(UTC+0) when the user first registered
    :updatedWhen: Date and time at which the entry was updated
    :accessedWhen: Last date and time the user was fetched from the database, automatically set
    :lastSeen: When was the user last online, set manually
 
+
+   .. py:attribute:: subID
+
+
+   .. py:attribute:: hashedID
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: organizations
+
+
+   .. py:attribute:: details
+
+
+   .. py:attribute:: createdWhen
+
+
+   .. py:attribute:: updatedWhen
+
+
+   .. py:attribute:: accessedWhen
+
+
+   .. py:attribute:: lastSeen
+
+
    .. py:class:: Meta
 
       .. py:attribute:: indexes
-         
-
-         
 
 
-   .. py:attribute:: subID
-      
-
-      
-
-   .. py:attribute:: hashedID
-      
-
-      
-
-   .. py:attribute:: name
-      
-
-      
-
-   .. py:attribute:: organizations
-      
-
-      
-
-   .. py:attribute:: details
-      
-
-      
-
-   .. py:attribute:: createdWhen
-      
-
-      
-
-   .. py:attribute:: updatedWhen
-      
-
-      
-
-   .. py:attribute:: accessedWhen
-      
-
-      
-
-   .. py:attribute:: lastSeen
-      
-
-      
 
    .. py:method:: __str__()
 
-      Return str(self).
+      Return string representation
+
 
 
    .. py:method:: toDict()
+
+      Return dictionary representation
+
+
+
+   .. py:method:: initializeDetails()
+
+      Fill JSON field with necessary details
+
+      :return: User
+      :rtype: User
+
+
+
+
+   .. py:method:: updateDetails()
+
+      Fill existing JSON field with necessary details from an old entry or initialize new ones
+
+      :return: User
+      :rtype: User
+
 
 
 

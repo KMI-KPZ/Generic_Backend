@@ -1,0 +1,67 @@
+code_General.logics.statisticsLogics
+====================================
+
+.. py:module:: code_General.logics.statisticsLogics
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Logic for statistics
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   code_General.logics.statisticsLogics.logger
+   code_General.logics.statisticsLogics.loggerError
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.logics.statisticsLogics.checkSession
+   code_General.logics.statisticsLogics.getNumOfLoggedInUsers
+   code_General.logics.statisticsLogics.logicForGetNumberOfUsers
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:data:: loggerError
+
+.. py:function:: checkSession(session)
+   :async:
+
+
+   Async check if user in session is logged in or not
+
+   :param session: coded session dict
+   :type session: Dictionary
+   :return: 1 or 0 if session is logged in or not
+   :rtype: Integer
+
+
+.. py:function:: getNumOfLoggedInUsers(activeSessions)
+   :async:
+
+
+   Async check how many users are currently logged in
+
+   :param activeSessions: sessions
+   :type activeSessions: hashtable 
+   :return: number of logged in users
+   :rtype: Integer
+
+
+.. py:function:: logicForGetNumberOfUsers(request)
+

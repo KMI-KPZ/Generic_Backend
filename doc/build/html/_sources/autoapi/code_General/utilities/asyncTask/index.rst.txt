@@ -1,0 +1,45 @@
+code_General.utilities.asyncTask
+================================
+
+.. py:module:: code_General.utilities.asyncTask
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging 2024
+
+   Contains: Send away a task in a fire-and-forget fashion
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   code_General.utilities.asyncTask.getOrCreateEventLoop
+   code_General.utilities.asyncTask.runInBackground
+   code_General.utilities.asyncTask.testTask
+
+
+Module Contents
+---------------
+
+.. py:function:: getOrCreateEventLoop() -> asyncio.AbstractEventLoop
+
+   Since threads don't have their own event loop, a new one must be created usually
+
+
+
+.. py:function:: runInBackground(task)
+
+   Decorator for a task that shall be run in the background when called
+
+   :param task: The function
+   :type task: Function Object
+
+
+
+.. py:function:: testTask(a: str)
+

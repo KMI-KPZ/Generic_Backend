@@ -1,0 +1,80 @@
+main.apps
+=========
+
+.. py:module:: main.apps
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Silvio Weging & Thomas Skodawessely 2023
+
+   Contains: Modules that need to be imported
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   main.apps.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   main.apps.BackendDjangoConfig
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:class:: BackendDjangoConfig(app_name, app_module)
+
+   Bases: :py:obj:`django.apps.AppConfig`, :py:obj:`main.settings.base.BackendConfigHelper`
+
+
+   Readying the main app
+
+
+
+   .. py:attribute:: name
+      :value: 'main'
+
+
+
+   .. py:attribute:: checks_disable
+
+
+   .. py:method:: collectAllImports()
+
+      Collect all "imports.py" files and imports content
+
+
+
+
+   .. py:method:: ready()
+
+      Start app
+
+
+
+
+   .. py:method:: __repr__()
+
+
+   .. py:method:: doCheck(check_name)
+
+      determine if check should be executed
+      :param check_name: Name of the check
+      :type check_name: str
+      :return: True if check should be executed
+      :rtype: bool
+
+
+

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>code_General.utilities.oauth &#8212; KISS-backend 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.utilities.rights" href="../rights/index.html" />
+    <link rel="prev" title="code_General.utilities.mocks" href="../mocks/index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-code_General.utilities.oauth">
+<span id="code-general-utilities-oauth"></span><h1>code_General.utilities.oauth<a class="headerlink" href="#module-code_General.utilities.oauth" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
+<p>Thomas Skodawessely &amp; Silvio Weging 2024</p>
+<p>Contains: Oauth token management class</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.utilities.oauth.ManageToken" title="code_General.utilities.oauth.ManageToken"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ManageToken</span></code></a></p></td>
+<td><p>Manage oauth token class.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.utilities.oauth.ManageToken">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.utilities.oauth.</span></span><span class="sig-name descname"><span class="pre">ManageToken</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_endpoint_auth_method</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.oauth.ManageToken" title="Link to this definition">¶</a></dt>
+<dd><p>Manage oauth token class.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.oauth.ManageToken._token">
+<span class="sig-name descname"><span class="pre">_token</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#code_General.utilities.oauth.ManageToken._token" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.oauth.ManageToken.client">
+<span class="sig-name descname"><span class="pre">client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">authlib.integrations.requests_client.OAuth2Session</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#code_General.utilities.oauth.ManageToken.client" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.oauth.ManageToken.client_id">
+<span class="sig-name descname"><span class="pre">client_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#code_General.utilities.oauth.ManageToken.client_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.oauth.ManageToken.client_secret">
+<span class="sig-name descname"><span class="pre">client_secret</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#code_General.utilities.oauth.ManageToken.client_secret" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.oauth.ManageToken.token_endpoint">
+<span class="sig-name descname"><span class="pre">token_endpoint</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#code_General.utilities.oauth.ManageToken.token_endpoint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.utilities.oauth.ManageToken.token_endpoint_auth_method">
+<span class="sig-name descname"><span class="pre">token_endpoint_auth_method</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#code_General.utilities.oauth.ManageToken.token_endpoint_auth_method" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.oauth.ManageToken.__getattr__">
+<span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.oauth.ManageToken.__getattr__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.oauth.ManageToken.__del__">
+<span class="sig-name descname"><span class="pre">__del__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.oauth.ManageToken.__del__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.oauth.ManageToken.getAccessToken">
+<span class="sig-name descname"><span class="pre">getAccessToken</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.oauth.ManageToken.getAccessToken" title="Link to this definition">¶</a></dt>
+<dd><p>Get initial token. Made as a function to be callable from outside.
+Reminder for me: It makes no sense to save this access token in redis because it expires much to quickly!</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.utilities.oauth.ManageToken.checkIfExpired">
+<span class="sig-name descname"><span class="pre">checkIfExpired</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.utilities.oauth.ManageToken.checkIfExpired" title="Link to this definition">¶</a></dt>
+<dd><p>Check if token has expired and if so, refresh it.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../handlers/index.html">code_General.handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../logics/index.html">code_General.logics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelFiles/index.html">code_General.modelFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.utilities</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../apiCalls/index.html">code_General.utilities.apiCalls</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../asyncTask/index.html">code_General.utilities.asyncTask</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../basics/index.html">code_General.utilities.basics</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../createFilePreviews/index.html">code_General.utilities.createFilePreviews</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../crypto/index.html">code_General.utilities.crypto</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../customStrEnum/index.html">code_General.utilities.customStrEnum</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../files/index.html">code_General.utilities.files</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../mocks/index.html">code_General.utilities.mocks</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.utilities.oauth</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.utilities.oauth.ManageToken"><code class="docutils literal notranslate"><span class="pre">ManageToken</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.oauth.ManageToken._token"><code class="docutils literal notranslate"><span class="pre">ManageToken._token</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.oauth.ManageToken.client"><code class="docutils literal notranslate"><span class="pre">ManageToken.client</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.oauth.ManageToken.client_id"><code class="docutils literal notranslate"><span class="pre">ManageToken.client_id</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.oauth.ManageToken.client_secret"><code class="docutils literal notranslate"><span class="pre">ManageToken.client_secret</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.oauth.ManageToken.token_endpoint"><code class="docutils literal notranslate"><span class="pre">ManageToken.token_endpoint</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.oauth.ManageToken.token_endpoint_auth_method"><code class="docutils literal notranslate"><span class="pre">ManageToken.token_endpoint_auth_method</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.oauth.ManageToken.__getattr__"><code class="docutils literal notranslate"><span class="pre">ManageToken.__getattr__()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.oauth.ManageToken.__del__"><code class="docutils literal notranslate"><span class="pre">ManageToken.__del__()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.oauth.ManageToken.getAccessToken"><code class="docutils literal notranslate"><span class="pre">ManageToken.getAccessToken()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.utilities.oauth.ManageToken.checkIfExpired"><code class="docutils literal notranslate"><span class="pre">ManageToken.checkIfExpired()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../rights/index.html">code_General.utilities.rights</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../signals/index.html">code_General.utilities.signals</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../temporaryFolder/index.html">code_General.utilities.temporaryFolder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.utilities</a><ul>
+      <li>Previous: <a href="../mocks/index.html" title="previous chapter">code_General.utilities.mocks</a></li>
+      <li>Next: <a href="../rights/index.html" title="next chapter">code_General.utilities.rights</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023, Silvio Weging.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../../../_sources/autoapi/code_General/utilities/oauth/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

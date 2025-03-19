@@ -1,0 +1,22 @@
+code_General.logics
+===================
+
+.. py:module:: code_General.logics
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/code_General/logics/adminLogics/index
+   /autoapi/code_General/logics/authenticationLogics/index
+   /autoapi/code_General/logics/emailLogics/index
+   /autoapi/code_General/logics/eventLogics/index
+   /autoapi/code_General/logics/filesLogics/index
+   /autoapi/code_General/logics/organizationLogics/index
+   /autoapi/code_General/logics/statisticsLogics/index
+   /autoapi/code_General/logics/userLogics/index
+
+

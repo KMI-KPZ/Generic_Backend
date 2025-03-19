@@ -1,25 +1,28 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>code_General.modelFiles.organizationModel &#8212; KISS-backend 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.modelFiles.userModel" href="../userModel/index.html" />
+    <link rel="prev" title="code_General.modelFiles.filesModel" href="../filesModel/index.html" />
    
   <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -32,84 +35,242 @@
           <div class="body" role="main">
             
   <section id="module-code_General.modelFiles.organizationModel">
-<span id="code-general-modelfiles-organizationmodel"></span><h1><a class="reference internal" href="#module-code_General.modelFiles.organizationModel" title="code_General.modelFiles.organizationModel"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_General.modelFiles.organizationModel</span></code></a><a class="headerlink" href="#module-code_General.modelFiles.organizationModel" title="Permalink to this heading">¶</a></h1>
-<p>Part of Semper-KI software</p>
+<span id="code-general-modelfiles-organizationmodel"></span><h1>code_General.modelFiles.organizationModel<a class="headerlink" href="#module-code_General.modelFiles.organizationModel" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
 <p>Silvio Weging 2023</p>
 <p>Contains: Model for organizations</p>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription" title="code_General.modelFiles.organizationModel.OrganizationDescription"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OrganizationDescription</span></code></a></p></td>
 <td><p>What does an Organization consists of?</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization" title="code_General.modelFiles.organizationModel.Organization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Organization</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDetails" title="code_General.modelFiles.organizationModel.OrganizationDetails"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OrganizationDetails</span></code></a></p></td>
+<td><p>What details can an organization have?</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType" title="code_General.modelFiles.organizationModel.OrganizationUpdateType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OrganizationUpdateType</span></code></a></p></td>
+<td><p>What updated can happen to a user?</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationNotificationSettings" title="code_General.modelFiles.organizationModel.OrganizationNotificationSettings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OrganizationNotificationSettings</span></code></a></p></td>
+<td><p>Which notifications can be received?</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationNotificationTargets" title="code_General.modelFiles.organizationModel.OrganizationNotificationTargets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OrganizationNotificationTargets</span></code></a></p></td>
+<td><p>What is the target for each notification?</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationPriorities" title="code_General.modelFiles.organizationModel.OrganizationPriorities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OrganizationPriorities</span></code></a></p></td>
+<td><p>If the organization has some priorities, they can be set here</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization" title="code_General.modelFiles.organizationModel.Organization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Organization</span></code></a></p></td>
 <td><p>Profile management class for organizations.</p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDescription">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.modelFiles.organizationModel.</span></span><span class="sig-name descname"><span class="pre">OrganizationDescription</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactylAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactylAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactylAsDefined</span></code></a></p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.modelFiles.organizationModel.</span></span><span class="sig-name descname"><span class="pre">OrganizationDescription</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactlyAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactlyAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactlyAsDefined</span></code></a></p>
 <p>What does an Organization consists of?</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDescription.subID">
-<span class="sig-name descname"><span class="pre">subID</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.subID" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">subID</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.subID" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDescription.hashedID">
-<span class="sig-name descname"><span class="pre">hashedID</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.hashedID" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">hashedID</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.hashedID" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDescription.name">
-<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDescription.details">
-<span class="sig-name descname"><span class="pre">details</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.details" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">details</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.details" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDescription.users">
-<span class="sig-name descname"><span class="pre">users</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.users" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">users</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.users" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDescription.supportedServices">
-<span class="sig-name descname"><span class="pre">supportedServices</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.supportedServices" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">supportedServices</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.supportedServices" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDescription.uri">
-<span class="sig-name descname"><span class="pre">uri</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.uri" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">uri</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.uri" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDescription.createdWhen">
-<span class="sig-name descname"><span class="pre">createdWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.createdWhen" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">createdWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.createdWhen" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDescription.updatedWhen">
-<span class="sig-name descname"><span class="pre">updatedWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.updatedWhen" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">updatedWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.updatedWhen" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDescription.accessedWhen">
-<span class="sig-name descname"><span class="pre">accessedWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.accessedWhen" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">accessedWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDescription.accessedWhen" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDetails">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.modelFiles.organizationModel.</span></span><span class="sig-name descname"><span class="pre">OrganizationDetails</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDetails" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactlyAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactlyAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactlyAsDefined</span></code></a></p>
+<p>What details can an organization have?</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDetails.addresses">
+<span class="sig-name descname"><span class="pre">addresses</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDetails.addresses" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDetails.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDetails.email" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDetails.taxID">
+<span class="sig-name descname"><span class="pre">taxID</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDetails.taxID" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDetails.locale">
+<span class="sig-name descname"><span class="pre">locale</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDetails.locale" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDetails.branding">
+<span class="sig-name descname"><span class="pre">branding</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDetails.branding" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDetails.notificationSettings">
+<span class="sig-name descname"><span class="pre">notificationSettings</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDetails.notificationSettings" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDetails.priorities">
+<span class="sig-name descname"><span class="pre">priorities</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDetails.priorities" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationDetails.services">
+<span class="sig-name descname"><span class="pre">services</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationDetails.services" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationUpdateType">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.modelFiles.organizationModel.</span></span><span class="sig-name descname"><span class="pre">OrganizationUpdateType</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactlyAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactlyAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactlyAsDefined</span></code></a></p>
+<p>What updated can happen to a user?</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationUpdateType.displayName">
+<span class="sig-name descname"><span class="pre">displayName</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.displayName" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationUpdateType.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.email" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationUpdateType.branding">
+<span class="sig-name descname"><span class="pre">branding</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.branding" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationUpdateType.supportedServices">
+<span class="sig-name descname"><span class="pre">supportedServices</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.supportedServices" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationUpdateType.services">
+<span class="sig-name descname"><span class="pre">services</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.services" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationUpdateType.notifications">
+<span class="sig-name descname"><span class="pre">notifications</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.notifications" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationUpdateType.locale">
+<span class="sig-name descname"><span class="pre">locale</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.locale" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationUpdateType.address">
+<span class="sig-name descname"><span class="pre">address</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.address" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationUpdateType.priorities">
+<span class="sig-name descname"><span class="pre">priorities</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.priorities" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationUpdateType.taxID">
+<span class="sig-name descname"><span class="pre">taxID</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.taxID" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationNotificationSettings">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.modelFiles.organizationModel.</span></span><span class="sig-name descname"><span class="pre">OrganizationNotificationSettings</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationNotificationSettings" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactlyAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactlyAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactlyAsDefined</span></code></a></p>
+<p>Which notifications can be received?
+Some can be set here but most are specific to the plattform itself</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationNotificationSettings.newsletter">
+<span class="sig-name descname"><span class="pre">newsletter</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationNotificationSettings.newsletter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationNotificationTargets">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.modelFiles.organizationModel.</span></span><span class="sig-name descname"><span class="pre">OrganizationNotificationTargets</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationNotificationTargets" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactlyAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactlyAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactlyAsDefined</span></code></a></p>
+<p>What is the target for each notification?</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationNotificationTargets.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationNotificationTargets.email" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationNotificationTargets.event">
+<span class="sig-name descname"><span class="pre">event</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationNotificationTargets.event" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.OrganizationPriorities">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.modelFiles.organizationModel.</span></span><span class="sig-name descname"><span class="pre">OrganizationPriorities</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.OrganizationPriorities" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../utilities/customStrEnum/index.html#code_General.utilities.customStrEnum.StrEnumExactlyAsDefined" title="code_General.utilities.customStrEnum.StrEnumExactlyAsDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_General.utilities.customStrEnum.StrEnumExactlyAsDefined</span></code></a></p>
+<p>If the organization has some priorities, they can be set here
+Is used in Semper-KI for calculations, can be used here for whatever</p>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.modelFiles.organizationModel.</span></span><span class="sig-name descname"><span class="pre">Organization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.modelFiles.organizationModel.</span></span><span class="sig-name descname"><span class="pre">Organization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">django.db.models.Model</span></code></p>
 <p>Profile management class for organizations.</p>
 <dl class="field-list simple">
@@ -123,7 +284,7 @@
 <dd class="field-odd"><p>Nickname returned by Auth0, used for filter searches in DB</p>
 </dd>
 <dt class="field-even">Details<span class="colon">:</span></dt>
-<dd class="field-even"><p>Adress, tax id and so on</p>
+<dd class="field-even"><p>Address, tax id and so on</p>
 </dd>
 <dt class="field-odd">Users<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Link to users belonging to that organization</p>
@@ -144,80 +305,106 @@
 <dd class="field-even"><p>Last date and time the data was fetched from the database, automatically set</p>
 </dd>
 </dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.Meta">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.Meta" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.Meta.indexes">
-<span class="sig-name descname"><span class="pre">indexes</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.Meta.indexes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.subID">
-<span class="sig-name descname"><span class="pre">subID</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.subID" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">subID</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.subID" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.hashedID">
-<span class="sig-name descname"><span class="pre">hashedID</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.hashedID" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">hashedID</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.hashedID" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.name">
-<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.details">
-<span class="sig-name descname"><span class="pre">details</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.details" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">details</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.details" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.users">
-<span class="sig-name descname"><span class="pre">users</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.users" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">users</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.users" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.supportedServices">
-<span class="sig-name descname"><span class="pre">supportedServices</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.supportedServices" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">supportedServices</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.supportedServices" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.uri">
-<span class="sig-name descname"><span class="pre">uri</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.uri" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">uri</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.uri" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.createdWhen">
-<span class="sig-name descname"><span class="pre">createdWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.createdWhen" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">createdWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.createdWhen" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.updatedWhen">
-<span class="sig-name descname"><span class="pre">updatedWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.updatedWhen" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">updatedWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.updatedWhen" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.accessedWhen">
-<span class="sig-name descname"><span class="pre">accessedWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.accessedWhen" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">accessedWhen</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.accessedWhen" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.Meta" title="Link to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.Meta.indexes">
+<span class="sig-name descname"><span class="pre">indexes</span></span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.Meta.indexes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.__str__">
-<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.__str__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return str(self).</p>
-</dd></dl>
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.__str__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.toDict">
-<span class="sig-name descname"><span class="pre">toDict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.toDict" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">toDict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.toDict" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.initializeDetails">
+<span class="sig-name descname"><span class="pre">initializeDetails</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.initializeDetails" title="Link to this definition">¶</a></dt>
+<dd><p>Fill JSON field with necessary details</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Organzation</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Organzation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.modelFiles.organizationModel.Organization.updateDetails">
+<span class="sig-name descname"><span class="pre">updateDetails</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.modelFiles.organizationModel.Organization.updateDetails" title="Link to this definition">¶</a></dt>
+<dd><p>Fill existing JSON field with necessary details from an old entry or initialize new ones</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Organzation</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Organzation</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
-</section>
 </section>
 </section>
 
@@ -226,7 +413,7 @@
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
 
@@ -237,28 +424,143 @@
 
 
 
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../connections/index.html">code_General.connections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../handlers/index.html">code_General.handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../logics/index.html">code_General.logics</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.modelFiles</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../apiTokenModel/index.html">code_General.modelFiles.apiTokenModel</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../eventModel/index.html">code_General.modelFiles.eventModel</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../filesModel/index.html">code_General.modelFiles.filesModel</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.modelFiles.organizationModel</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription"><code class="docutils literal notranslate"><span class="pre">OrganizationDescription</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription.subID"><code class="docutils literal notranslate"><span class="pre">OrganizationDescription.subID</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription.hashedID"><code class="docutils literal notranslate"><span class="pre">OrganizationDescription.hashedID</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription.name"><code class="docutils literal notranslate"><span class="pre">OrganizationDescription.name</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription.details"><code class="docutils literal notranslate"><span class="pre">OrganizationDescription.details</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription.users"><code class="docutils literal notranslate"><span class="pre">OrganizationDescription.users</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription.supportedServices"><code class="docutils literal notranslate"><span class="pre">OrganizationDescription.supportedServices</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription.uri"><code class="docutils literal notranslate"><span class="pre">OrganizationDescription.uri</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription.createdWhen"><code class="docutils literal notranslate"><span class="pre">OrganizationDescription.createdWhen</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription.updatedWhen"><code class="docutils literal notranslate"><span class="pre">OrganizationDescription.updatedWhen</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDescription.accessedWhen"><code class="docutils literal notranslate"><span class="pre">OrganizationDescription.accessedWhen</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDetails"><code class="docutils literal notranslate"><span class="pre">OrganizationDetails</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDetails.addresses"><code class="docutils literal notranslate"><span class="pre">OrganizationDetails.addresses</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDetails.email"><code class="docutils literal notranslate"><span class="pre">OrganizationDetails.email</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDetails.taxID"><code class="docutils literal notranslate"><span class="pre">OrganizationDetails.taxID</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDetails.locale"><code class="docutils literal notranslate"><span class="pre">OrganizationDetails.locale</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDetails.branding"><code class="docutils literal notranslate"><span class="pre">OrganizationDetails.branding</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDetails.notificationSettings"><code class="docutils literal notranslate"><span class="pre">OrganizationDetails.notificationSettings</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDetails.priorities"><code class="docutils literal notranslate"><span class="pre">OrganizationDetails.priorities</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationDetails.services"><code class="docutils literal notranslate"><span class="pre">OrganizationDetails.services</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType"><code class="docutils literal notranslate"><span class="pre">OrganizationUpdateType</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.displayName"><code class="docutils literal notranslate"><span class="pre">OrganizationUpdateType.displayName</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.email"><code class="docutils literal notranslate"><span class="pre">OrganizationUpdateType.email</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.branding"><code class="docutils literal notranslate"><span class="pre">OrganizationUpdateType.branding</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.supportedServices"><code class="docutils literal notranslate"><span class="pre">OrganizationUpdateType.supportedServices</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.services"><code class="docutils literal notranslate"><span class="pre">OrganizationUpdateType.services</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.notifications"><code class="docutils literal notranslate"><span class="pre">OrganizationUpdateType.notifications</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.locale"><code class="docutils literal notranslate"><span class="pre">OrganizationUpdateType.locale</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.address"><code class="docutils literal notranslate"><span class="pre">OrganizationUpdateType.address</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.priorities"><code class="docutils literal notranslate"><span class="pre">OrganizationUpdateType.priorities</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationUpdateType.taxID"><code class="docutils literal notranslate"><span class="pre">OrganizationUpdateType.taxID</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationNotificationSettings"><code class="docutils literal notranslate"><span class="pre">OrganizationNotificationSettings</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationNotificationSettings.newsletter"><code class="docutils literal notranslate"><span class="pre">OrganizationNotificationSettings.newsletter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationNotificationTargets"><code class="docutils literal notranslate"><span class="pre">OrganizationNotificationTargets</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationNotificationTargets.email"><code class="docutils literal notranslate"><span class="pre">OrganizationNotificationTargets.email</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationNotificationTargets.event"><code class="docutils literal notranslate"><span class="pre">OrganizationNotificationTargets.event</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.modelFiles.organizationModel.OrganizationPriorities"><code class="docutils literal notranslate"><span class="pre">OrganizationPriorities</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization"><code class="docutils literal notranslate"><span class="pre">Organization</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.subID"><code class="docutils literal notranslate"><span class="pre">Organization.subID</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.hashedID"><code class="docutils literal notranslate"><span class="pre">Organization.hashedID</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.name"><code class="docutils literal notranslate"><span class="pre">Organization.name</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.details"><code class="docutils literal notranslate"><span class="pre">Organization.details</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.users"><code class="docutils literal notranslate"><span class="pre">Organization.users</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.supportedServices"><code class="docutils literal notranslate"><span class="pre">Organization.supportedServices</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.uri"><code class="docutils literal notranslate"><span class="pre">Organization.uri</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.createdWhen"><code class="docutils literal notranslate"><span class="pre">Organization.createdWhen</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.updatedWhen"><code class="docutils literal notranslate"><span class="pre">Organization.updatedWhen</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.accessedWhen"><code class="docutils literal notranslate"><span class="pre">Organization.accessedWhen</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.Meta"><code class="docutils literal notranslate"><span class="pre">Organization.Meta</span></code></a><ul>
+<li class="toctree-l10"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.Meta.indexes"><code class="docutils literal notranslate"><span class="pre">Organization.Meta.indexes</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.__str__"><code class="docutils literal notranslate"><span class="pre">Organization.__str__()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.toDict"><code class="docutils literal notranslate"><span class="pre">Organization.toDict()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.initializeDetails"><code class="docutils literal notranslate"><span class="pre">Organization.initializeDetails()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.modelFiles.organizationModel.Organization.updateDetails"><code class="docutils literal notranslate"><span class="pre">Organization.updateDetails()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../userModel/index.html">code_General.modelFiles.userModel</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">code_General.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.modelFiles</a><ul>
+      <li>Previous: <a href="../filesModel/index.html" title="previous chapter">code_General.modelFiles.filesModel</a></li>
+      <li>Next: <a href="../userModel/index.html" title="next chapter">code_General.modelFiles.userModel</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -272,11 +574,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2023, Silvio Weging.
+      &#169;2023, Silvio Weging.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../../../_sources/autoapi/code_General/modelFiles/organizationModel/index.rst.txt"

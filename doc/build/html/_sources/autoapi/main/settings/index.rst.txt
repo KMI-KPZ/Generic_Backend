@@ -1,0 +1,76 @@
+main.settings
+=============
+
+.. py:module:: main.settings
+
+.. autoapi-nested-parse::
+
+   Generic Backend
+
+   Thomas Skodawessely 2023
+
+   Contains: Set Settings helper functions
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/main/settings/base/index
+   /autoapi/main/settings/debug/index
+   /autoapi/main/settings/debug_local/index
+   /autoapi/main/settings/helper/index
+   /autoapi/main/settings/local/index
+   /autoapi/main/settings/local_container/index
+   /autoapi/main/settings/production/index
+   /autoapi/main/settings/staging/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   main.settings.BackendManagement
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   main.settings.set_settings
+
+
+Package Contents
+----------------
+
+.. py:class:: BackendManagement(argv=None)
+
+   Bases: :py:obj:`django.core.management.ManagementUtility`
+
+
+   Encapsulate the logic of the django-admin and manage.py utilities.
+
+
+   .. py:method:: main_help_text(commands_only=False)
+
+      Returns the script's main help text, as a string.
+
+
+
+
+.. py:function:: set_settings(settingsPath: str)
+
+   Choose correct settings file
+
+   :param settingsPath: The path of the settings folder
+   :type settingsPath: str
+   :return: None
+   :rtype: None
+
+
+

@@ -1,25 +1,28 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>code_General.connections.s3 &#8212; KISS-backend 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+    <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="code_General.definitions" href="../../definitions/index.html" />
+    <link rel="prev" title="code_General.connections.redis" href="../redis/index.html" />
    
   <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -32,24 +35,12 @@
           <div class="body" role="main">
             
   <section id="module-code_General.connections.s3">
-<span id="code-general-connections-s3"></span><h1><a class="reference internal" href="#module-code_General.connections.s3" title="code_General.connections.s3"><code class="xref py py-mod docutils literal notranslate"><span class="pre">code_General.connections.s3</span></code></a><a class="headerlink" href="#module-code_General.connections.s3" title="Permalink to this heading">¶</a></h1>
-<p>Part of Semper-KI software</p>
+<span id="code-general-connections-s3"></span><h1>code_General.connections.s3<a class="headerlink" href="#module-code_General.connections.s3" title="Link to this heading">¶</a></h1>
+<p>Generic Backend</p>
 <p>Silvio Weging 2023</p>
 <p>Contains: Services for aws cloud storage and file management</p>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
-<section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.connections.s3.ManageS3" title="code_General.connections.s3.ManageS3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ManageS3</span></code></a></p></td>
-<td><p>Class for managing access to local/remote AWS</p></td>
-</tr>
-</tbody>
-</table>
-</section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#code_General.connections.s3.manageLocalS3" title="code_General.connections.s3.manageLocalS3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manageLocalS3</span></code></a></p></td>
@@ -58,21 +49,82 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#code_General.connections.s3.manageRemoteS3" title="code_General.connections.s3.manageRemoteS3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manageRemoteS3</span></code></a></p></td>
 <td><p></p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.connections.s3.manageStaticsS3" title="code_General.connections.s3.manageStaticsS3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manageStaticsS3</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#code_General.connections.s3.manageRemoteS3Buckets" title="code_General.connections.s3.manageRemoteS3Buckets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manageRemoteS3Buckets</span></code></a></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#code_General.connections.s3.ManageS3" title="code_General.connections.s3.ManageS3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ManageS3</span></code></a></p></td>
+<td><p>Class for managing access to local/remote AWS</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="code_General.connections.s3.ManageS3">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.connections.s3.</span></span><span class="sig-name descname"><span class="pre">ManageS3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aesKey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucketName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">code_General.connections.s3.</span></span><span class="sig-name descname"><span class="pre">ManageS3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aesKey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucketName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downloadLinkPrefix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3" title="Link to this definition">¶</a></dt>
 <dd><p>Class for managing access to local/remote AWS</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.__getattr__">
-<span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.__getattr__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.__getattr__" title="Link to this definition">¶</a></dt>
+<dd><p>Lazy loading of the boto client. Is stored in a function object that is called in __getattr__</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>str</em>) – the attribute to get</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the attribute</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.initClient">
+<span class="sig-name descname"><span class="pre">initClient</span></span><a class="headerlink" href="#code_General.connections.s3.ManageS3.initClient" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.initResource">
+<span class="sig-name descname"><span class="pre">initResource</span></span><a class="headerlink" href="#code_General.connections.s3.ManageS3.initResource" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.bucketName">
+<span class="sig-name descname"><span class="pre">bucketName</span></span><a class="headerlink" href="#code_General.connections.s3.ManageS3.bucketName" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.aesEncryptionKey">
+<span class="sig-name descname"><span class="pre">aesEncryptionKey</span></span><a class="headerlink" href="#code_General.connections.s3.ManageS3.aesEncryptionKey" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.local">
+<span class="sig-name descname"><span class="pre">local</span></span><a class="headerlink" href="#code_General.connections.s3.ManageS3.local" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.downloadLinkPrefix">
+<span class="sig-name descname"><span class="pre">downloadLinkPrefix</span></span><a class="headerlink" href="#code_General.connections.s3.ManageS3.downloadLinkPrefix" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.createBucket">
-<span class="sig-name descname"><span class="pre">createBucket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucketName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.createBucket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a named bucket to put stuff in. Should only be used freely for localstack!</p>
+<span class="sig-name descname"><span class="pre">createBucket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucketName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.createBucket" title="Link to this definition">¶</a></dt>
+<dd><p>Create a named bucket to put stuff in. Should only be used freely for minio!</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>bucketName</strong> (<em>Str</em>) – Name of the bucket</p>
@@ -88,7 +140,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.uploadFile">
-<span class="sig-name descname"><span class="pre">uploadFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileKey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.uploadFile" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">uploadFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileKey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isPublicFile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.uploadFile" title="Link to this definition">¶</a></dt>
 <dd><p>Upload a binary in-memory file to storage.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -107,9 +159,23 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.uploadFileObject">
+<span class="sig-name descname"><span class="pre">uploadFileObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileKey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.uploadFileObject" title="Link to this definition">¶</a></dt>
+<dd><p>Upload a binary in-memory file like object to storage.
+:param fileKey: the key with which to retrieve the file again later
+:type fileKey: str
+:param file: the file like object to be uploaded - should have a read method
+:type file: object
+:param config: the configuration for the upload (see boto3 documentation)
+:type config: dict
+:return: Pass through of the boto3 upload_fileobj response
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.downloadFile">
-<span class="sig-name descname"><span class="pre">downloadFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileKey</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.downloadFile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Upload a binary in-memory file to storage.</p>
+<span class="sig-name descname"><span class="pre">downloadFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileKey</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decrypt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">io.BytesIO</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#code_General.connections.s3.ManageS3.downloadFile" title="Link to this definition">¶</a></dt>
+<dd><p>Download a binary in-memory file to storage.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>fileKey</strong> (<em>Str</em>) – The key with which to retrieve the file again later</p>
@@ -124,8 +190,62 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.getFileObject">
+<span class="sig-name descname"><span class="pre">getFileObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileKey</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.getFileObject" title="Link to this definition">¶</a></dt>
+<dd><p>Get the file object from storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fileKey</strong> (<em>Str</em>) – The key with which to retrieve the file again later in combination with the bucket name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>( FileObject or None , true if successful)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>( object, bool )</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.getFileStreamingBody">
+<span class="sig-name descname"><span class="pre">getFileStreamingBody</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileKey</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">botocore.response.StreamingBody</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#code_General.connections.s3.ManageS3.getFileStreamingBody" title="Link to this definition">¶</a></dt>
+<dd><p>Get the file object stream from storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fileKey</strong> (<em>str</em>) – the key with which to retrieve the file again later</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>( the objects streaming body or None , true if successful)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>( StreamingBody, bool )</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.copyFile">
+<span class="sig-name descname"><span class="pre">copyFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inPath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outPath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.copyFile" title="Link to this definition">¶</a></dt>
+<dd><p>Copy a file inside the same bucket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inPath</strong> (<em>str</em>) – The file to be copied</p></li>
+<li><p><strong>outPath</strong> (<em>str</em>) – The new file path</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Nothing</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.deleteFile">
-<span class="sig-name descname"><span class="pre">deleteFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileKey</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.deleteFile" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">deleteFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileKey</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.deleteFile" title="Link to this definition">¶</a></dt>
 <dd><p>Delete a file from storage.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -140,19 +260,59 @@
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.getContentOfBucket">
+<span class="sig-name descname"><span class="pre">getContentOfBucket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.getContentOfBucket" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve the content of a certain bucket from the storage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prefix</strong> (<em>str</em>) – The prefix of the folder</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of files</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="code_General.connections.s3.ManageS3.getDownloadLinkPrefix">
+<span class="sig-name descname"><span class="pre">getDownloadLinkPrefix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#code_General.connections.s3.ManageS3.getDownloadLinkPrefix" title="Link to this definition">¶</a></dt>
+<dd><p>What is the prefix for downloading files?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Link prefix</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="code_General.connections.s3.manageLocalS3">
-<span class="sig-prename descclassname"><span class="pre">code_General.connections.s3.</span></span><span class="sig-name descname"><span class="pre">manageLocalS3</span></span><a class="headerlink" href="#code_General.connections.s3.manageLocalS3" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.connections.s3.</span></span><span class="sig-name descname"><span class="pre">manageLocalS3</span></span><a class="headerlink" href="#code_General.connections.s3.manageLocalS3" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="code_General.connections.s3.manageRemoteS3">
-<span class="sig-prename descclassname"><span class="pre">code_General.connections.s3.</span></span><span class="sig-name descname"><span class="pre">manageRemoteS3</span></span><a class="headerlink" href="#code_General.connections.s3.manageRemoteS3" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">code_General.connections.s3.</span></span><span class="sig-name descname"><span class="pre">manageRemoteS3</span></span><a class="headerlink" href="#code_General.connections.s3.manageRemoteS3" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.connections.s3.manageStaticsS3">
+<span class="sig-prename descclassname"><span class="pre">code_General.connections.s3.</span></span><span class="sig-name descname"><span class="pre">manageStaticsS3</span></span><a class="headerlink" href="#code_General.connections.s3.manageStaticsS3" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="code_General.connections.s3.manageRemoteS3Buckets">
+<span class="sig-prename descclassname"><span class="pre">code_General.connections.s3.</span></span><span class="sig-name descname"><span class="pre">manageRemoteS3Buckets</span></span><a class="headerlink" href="#code_General.connections.s3.manageRemoteS3Buckets" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </section>
 </section>
 
@@ -161,7 +321,7 @@
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <h1 class="logo"><a href="../../../../index.html">KISS-backend</a></h1>
 
@@ -172,28 +332,100 @@
 
 
 
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Reference</a></li>
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../conf/index.html">conf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../main/index.html">main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../manage/index.html">manage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">code_General</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">code_General.connections</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../auth0/index.html">code_General.connections.auth0</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../mailer/index.html">code_General.connections.mailer</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../postgresql/index.html">code_General.connections.postgresql</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../redis/index.html">code_General.connections.redis</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">code_General.connections.s3</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#attributes">Attributes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.connections.s3.ManageS3"><code class="docutils literal notranslate"><span class="pre">ManageS3</span></code></a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.__getattr__"><code class="docutils literal notranslate"><span class="pre">ManageS3.__getattr__()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.initClient"><code class="docutils literal notranslate"><span class="pre">ManageS3.initClient</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.initResource"><code class="docutils literal notranslate"><span class="pre">ManageS3.initResource</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.bucketName"><code class="docutils literal notranslate"><span class="pre">ManageS3.bucketName</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.aesEncryptionKey"><code class="docutils literal notranslate"><span class="pre">ManageS3.aesEncryptionKey</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.local"><code class="docutils literal notranslate"><span class="pre">ManageS3.local</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.downloadLinkPrefix"><code class="docutils literal notranslate"><span class="pre">ManageS3.downloadLinkPrefix</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.createBucket"><code class="docutils literal notranslate"><span class="pre">ManageS3.createBucket()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.uploadFile"><code class="docutils literal notranslate"><span class="pre">ManageS3.uploadFile()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.uploadFileObject"><code class="docutils literal notranslate"><span class="pre">ManageS3.uploadFileObject()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.downloadFile"><code class="docutils literal notranslate"><span class="pre">ManageS3.downloadFile()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.getFileObject"><code class="docutils literal notranslate"><span class="pre">ManageS3.getFileObject()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.getFileStreamingBody"><code class="docutils literal notranslate"><span class="pre">ManageS3.getFileStreamingBody()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.copyFile"><code class="docutils literal notranslate"><span class="pre">ManageS3.copyFile()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.deleteFile"><code class="docutils literal notranslate"><span class="pre">ManageS3.deleteFile()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.getContentOfBucket"><code class="docutils literal notranslate"><span class="pre">ManageS3.getContentOfBucket()</span></code></a></li>
+<li class="toctree-l9"><a class="reference internal" href="#code_General.connections.s3.ManageS3.getDownloadLinkPrefix"><code class="docutils literal notranslate"><span class="pre">ManageS3.getDownloadLinkPrefix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.connections.s3.manageLocalS3"><code class="docutils literal notranslate"><span class="pre">manageLocalS3</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.connections.s3.manageRemoteS3"><code class="docutils literal notranslate"><span class="pre">manageRemoteS3</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.connections.s3.manageStaticsS3"><code class="docutils literal notranslate"><span class="pre">manageStaticsS3</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="#code_General.connections.s3.manageRemoteS3Buckets"><code class="docutils literal notranslate"><span class="pre">manageRemoteS3Buckets</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../definitions/index.html">code_General.definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../handlers/index.html">code_General.handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../imports/index.html">code_General.imports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../logics/index.html">code_General.logics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modelFiles/index.html">code_General.modelFiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">code_General.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../settings/index.html">code_General.settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../templates/index.html">code_General.templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../tests/index.html">code_General.tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../urls/index.html">code_General.urls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utilities/index.html">code_General.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../BenchyMcMarkface/index.html">BenchyMcMarkface</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">API Reference</a><ul>
+  <li><a href="../../index.html">code_General</a><ul>
+  <li><a href="../index.html">code_General.connections</a><ul>
+      <li>Previous: <a href="../redis/index.html" title="previous chapter">code_General.connections.redis</a></li>
+      <li>Next: <a href="../../definitions/index.html" title="next chapter">code_General.definitions</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -207,11 +439,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2023, Silvio Weging.
+      &#169;2023, Silvio Weging.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../../../_sources/autoapi/code_General/connections/s3/index.rst.txt"
