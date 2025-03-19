@@ -32,7 +32,6 @@ from ..utilities import crypto, signals
 from ..utilities.basics import checkIfNestedKeyExists
 
 from logging import getLogger
-logger = getLogger("errors")
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")

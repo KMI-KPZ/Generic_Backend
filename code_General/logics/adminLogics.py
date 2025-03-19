@@ -17,7 +17,6 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 from logging import getLogger
-logger = getLogger("errors")
 
 logger = logging.getLogger("logToFile")
 loggerError = logging.getLogger("errors")
