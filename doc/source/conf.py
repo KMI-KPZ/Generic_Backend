@@ -6,10 +6,10 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'KISS-backend'
-copyright = '2023, Silvio Weging'
+project = 'Generic-backend'
+copyright = '2025, Silvio Weging'
 author = 'Silvio Weging'
-release = '0.1'
+release = '0.4'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

@@ -1,4 +1,4 @@
-Welcome to KISS-backend's documentation!
+Welcome to the documentation of the Generic-backend!
 ========================================
 
 .. toctree::

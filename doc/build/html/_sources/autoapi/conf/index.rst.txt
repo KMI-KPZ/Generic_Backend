@@ -26,11 +26,11 @@ Module Contents
 ---------------
 
 .. py:data:: project
-   :value: 'KISS-backend'
+   :value: 'Generic-backend'
 
 
 .. py:data:: copyright
-   :value: '2023, Silvio Weging'
+   :value: '2025, Silvio Weging'
 
 
 .. py:data:: author
@@ -38,7 +38,7 @@ Module Contents
 
 
 .. py:data:: release
-   :value: '0.1'
+   :value: '0.4'
 
 
 .. py:data:: extensions
