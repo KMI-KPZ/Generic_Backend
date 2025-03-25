@@ -13,6 +13,7 @@ import base64
 from io import BytesIO
 from datetime import datetime
 from boto3.s3.transfer import TransferConfig
+from django.conf import settings
 
 from ..utilities import crypto
 from ..definitions import *
@@ -66,9 +67,11 @@ def logicForGenericUploadFiles(request):
                 assert fileID != "", f"In {logicForGenericUploadFiles.__name__}: non-empty fileID expected"
                 filePath = userName+"/"+fileID
                 # generate preview
-                previewPath = createAndStorePreview(file, nameOfFile, locale, filePath)
-                if isinstance(previewPath, Exception):
-                    raise previewPath
+                previewPath = ""
+                if settings.AWS_SECRET_ACCESS_KEY != "":
+                    previewPath = createAndStorePreview(file, nameOfFile, locale, filePath)
+                    if isinstance(previewPath, Exception):
+                        raise previewPath
                 # TODO store somewhere with some information
 
                 # determine where to upload the file (remote or local, currently only local)
