@@ -60,7 +60,8 @@ try:
         try:
             #if path == dummy: #TODO
             #    return
-            manageStaticsS3.deleteFile(path)
+            pathInStorage = "public/" + path.replace(settings.S3_STATIC_URL, "")
+            manageStaticsS3.deleteFile(pathInStorage)
         except Exception as error:
             loggerError.error(f"Error while deleting preview: {str(error)}")
 

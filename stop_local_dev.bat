@@ -1,1 +1,1 @@
-docker-compose --env-file .env.local_container -p local-dev -f docker-local-dev-services.yml -f docker-local-dev-container-backend.yml down
+docker compose --env-file .env.local_container -p semperki-local-dev -f docker-local-dev-services.yml -f docker-local-dev-container-backend.yml down
