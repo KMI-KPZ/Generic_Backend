@@ -26,7 +26,6 @@ logger = getLogger("errors")
 
 #TODO: switch to async versions at some point
 
-# TODO alles raus was keine Datenbankcalls raus (LUKAS)
 
 ####################################################################################
 # Profile

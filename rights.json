@@ -1,221 +1,271 @@
 {
    "Rights": [
-      {
-         "permission": {
-            "context": "processes",
-            "permission": "read"
-         },
-         "elements": [
-            "Projects",
-            "HomeAuthorizedProject",
-            "ProjectsButton",
-            "ProjectButtonSee"
-         ],
-         "paths": [
-            "retrieveProjects",
-            "getMissedEvents",
-            "getProject",
-            "getFlatProjects",
-            "getProcessHistory",
-            "downloadProcessHistory"
-         ]
-      },
-      {
-         "permission": {
-            "context": "processes",
-            "permission": "files"
-         },
-         "elements": [
-             "ProjectFile"
-         ],
-         "paths": [
-            "updateProcess",
-            "downloadFilesAsZip",
-            "downloadFile",
-            "uploadFiles",
-            "uploadModel",
-            "deleteFile",
-            "deleteModel",
-            "downloadProcessHistory"
-         ]
-      },
-      {
-         "permission": {
-            "context": "processes",
-            "permission": "messages"
-         },
-         "elements": [
-            "Chat",
-            "ProcessButtonChat"
-         ],
-         "paths": [
-            "updateProcess"
-         ]
-      },
-      {
-         "permission": {
-            "context": "processes",
-            "permission": "edit"
-         },
-         "elements": [
-            "ProjectButtonEditName",
-            "ProjectsButtonNew",
-            "ProjectButtonEdit",
-            "ProjectButtonNew",
-            "ProjectButtonEDIT",
-            "ProjectButtonDELETE",
-            "ProjectButtonCONTRACTOR_SELECTED",
-            "ProjectButtonVERIFYING_AND_REQUESTED",
-            "ProjectButtonVERIFYING",
-            "ProjectButtonREQUESTED",
-            "ProjectButtonCLARIFICATION",
-            "ProjectButtonCONFIRMED_BY_CONTRACTOR",
-            "ProjectButtonREJECTED_BY_CONTRACTOR",
-            "ProjectButtonCONFIRMED_BY_CLIENT",
-            "ProjectButtonREJECTED_BY_CLIENT",
-            "ProjectButtonPRODUCTION",
-            "ProjectButtonDELIVERY",
-            "ProjectButtonCOMPLETED",
-            "ProjectButtonREPROJECT",
-            "ProcessButtonModelPreView",
-            "ProcessButtonEDIT",
-            "ProcessButtonDELETE",
-            "ProcessButtonCONTRACTOR_SELECTED",
-            "ProcessButtonVERIFYING_AND_REQUESTED",
-            "ProcessButtonVERIFYING",
-            "ProcessButtonREQUESTED",
-            "ProcessButtonCLARIFICATION",
-            "ProcessButtonCONFIRMED_BY_CONTRACTOR",
-            "ProcessButtonREJECTED_BY_CONTRACTOR",
-            "ProcessButtonCONFIRMED_BY_CLIENT",
-            "ProcessButtonREJECTED_BY_CLIENT",
-            "ProcessButtonPRODUCTION",
-            "ProcessButtonDELIVERY",
-            "ProcessButtonCOMPLETED",
-            "ProcessButtonREPROJECTButton"
-         ],
-         "paths": [
-            "updateProcess",
-            "updateProject",
-            "getContractors",
-            "saveProjects",
-            "verifyProject",
-            "sendProject",
-            "createProcessID",
-            "createProjectID"
-         ]
-      },
-      {
-         "permission": {
-            "context": "processes",
-            "permission": "delete"
-         },
-         "elements": [
-            "ProjectButtonDelete",
-            "ProcessButtonDelete"
-         ],
-         "paths": [
-            "deleteProcesses",
-            "deleteProjects",
-            "deleteFile",
-            "deleteModel"
-         ]
-      },
-      {
-         "permission": {
-            "context": "orga",
-            "permission": "delete"
-         },
-         "elements": [
-            "OrganizationButtonDelete"
-         ],
-         "paths": [
-            "deleteOrganization"
-         ]
-      },
-      {
-         "permission": {
-            "context": "orga",
-            "permission": "edit"
-         },
-         "elements": [
-            "OrganizationInvitation",
-            "OrganizationButtonEditOrga",
-            "OrganizationButtonEditUser",
-            "OrganizationButtonDeleteUser",
-            "OrganizationButtonCreateRole",
-            "OrganizationButtonEditRole",
-            "OrganizationButtonDeleteRole"
-         ],
-         "paths": [
-            "organizations_setPermissionsForRole",
-            "organizations_deleteRole",
-            "organizations_editRole",
-            "organizations_removeRole",
-            "organizations_assignRole",
-            "organizations_createRole",
-            "organizations_deleteUser",
-            "organizations_addUser",
-            "organizations_getInviteLink",
-            "updateDetailsOfOrganization"
-         ]
-      },
-      {
-         "permission": {
-            "context": "orga",
-            "permission": "read"
-         },
-         "elements": [
-            "Organization",
-            "HomeAuthorizedOrganization",
-            "OrganizationRoles"
-         ],
-         "paths": [
-            "organizations_getPermissionsForRole",
-            "organizations_getPermissions",
-            "organizations_getRoles",
-            "organizations_fetchUsers"
-         ]
-      },
-      {
-         "permission": {
-            "context": "resources",
-            "permission": "read"
-         },
-         "elements": [
-            "Resources",
-            "HomeAuthorizedResources"
-         ],
-         "paths": [
-            "orga_getMaterials",
-            "orga_getPrinters",
-            "onto_getMaterial",
-            "onto_getPrinter",
-            "onto_getPrinters",
-            "onto_getMaterials"
-         ]
-      },
-      {
-         "permission": {
-            "context": "resources",
-            "permission": "edit"
-         },
-         "elements": [
-            "ResourcesMaterialsForm",
-            "ResourcesPrintersAdd",
-            "ResourcesButtonAddMaterial",
-            "ResourcesButtonAddPrinter"
-         ],
-         "paths": [
-            "orga_removeMaterial",
-            "orga_createMaterial",
-            "orga_addMaterialEdit",
-            "orga_addMaterial",
-            "orga_removePrinter",
-            "orga_createPrinter",
-            "orga_addPrinterEdit",
-            "orga_addPrinter"
-         ]
-      }
+     {
+       "permission": {
+         "context": "processes",
+         "permission": "read"
+       },
+       "elements": [
+         "HomeProjects",
+         "Projects",
+         "Project",
+         "HomeAuthorizedProject",
+         "ProjectsButton",
+         "ProjectButtonSee",
+         "ProcessSelectContractorCostOverView"
+       ],
+       "paths": [
+         "retrieveProjects",
+         "getMissedEvents",
+         "getProject",
+         "getFlatProjects",
+         "getProcess",
+         "getProcessHistory",
+         "downloadProcessHistory",
+         "statusButtonRequest",
+         "checkModel",
+         "getProjectForDashboard"
+       ]
+     },
+     {
+       "permission": {
+         "context": "processes",
+         "permission": "files"
+       },
+       "elements": [
+         "ProjectFile",
+         "ProcessFileRowDownload",
+         "ProcessFileRowDelete",
+         "ProcessFileDownloadAll",
+         "ProcessFileUpload",
+         "ProcessContractUpload",
+         "ProcessPaymentUpload"
+       ],
+       "paths": [
+         "updateProcess",
+         "updateProcessFunction",
+         "downloadFilesAsZip",
+         "downloadFile",
+         "uploadFiles",
+         "uploadModel",
+         "deleteFile",
+         "deleteModel",
+         "downloadProcessHistory",
+         "downloadFileStream",
+         "checkModel"
+       ]
+     },
+     {
+       "permission": {
+         "context": "processes",
+         "permission": "messages"
+       },
+       "elements": ["Chat", "ProcessButtonChat", "ChatInput"],
+       "paths": ["updateProcess", "updateProcessFunction"]
+     },
+     {
+       "permission": {
+         "context": "processes",
+         "permission": "edit"
+       },
+       "elements": [
+         "ProcessSelectContractorSelect",
+         "ProcessContractorSelectionEditAddress",
+         "ProcessContractorSelectionResetAddress",
+         "ProcessSelectContractorContractorList",
+         "ProcessSelectContractorEdit",
+         "ProcessManufacturingServiceAddModel",
+         "ProcessManufacturingServiceEditModel",
+         "ProcessManufacturingServiceDeleteModel",
+         "ProcessManufacturingServiceAddNoModel",
+         "ProcessManufacturingServiceAddMaterial",
+         "ProcessManufacturingServiceEditMaterial",
+         "ProcessManufacturingServiceDeleteMaterial",
+         "ProcessManufacturingServiceAddPostProcessing",
+         "ProcessManufacturingServiceEditPostProcessing",
+         "ProcessManufacturingServiceDeletePostProcessing",
+         "ProcessManipulateServiceEditFreeText",
+         "ProcessEditService",
+         "ProcessActionContainer",
+         "ProcessEditTitle",
+         "ProjectCreateProcess",
+         "ProcessAddDependencies",
+         "ProjectCreate",
+         "ProjectClone",
+         "ProcessClone",
+         "ProjectCreateProcess",
+         "ProjectEdit",
+         "ProjectContractorSelection",
+         "ProjectButtonEditName",
+         "ProjectsButtonNew",
+         "ProjectButtonEdit",
+         "ProjectButtonNew",
+         "ProjectButtonDELETE",
+         "ProjectButtonDelete",
+         "ProjectButtonCONTRACTOR_SELECTED",
+         "ProjectStatusButtons",
+         "ProjectButtonVERIFYING_AND_REQUESTED",
+         "ProjectButtonVERIFYING",
+         "ProjectButtonREQUESTED",
+         "ProjectButtonCLARIFICATION",
+         "ProjectButtonCONFIRMED_BY_CONTRACTOR",
+         "ProjectButtonREJECTED_BY_CONTRACTOR",
+         "ProjectButtonCONFIRMED_BY_CLIENT",
+         "ProjectButtonREJECTED_BY_CLIENT",
+         "ProjectButtonPRODUCTION",
+         "ProjectButtonDELIVERY",
+         "ProjectButtonCOMPLETED",
+         "ProjectButtonREPROJECT",
+         "ProcessButtonModelPreView",
+         "ProcessButtonEDIT",
+         "ProcessButtonDelete",
+         "ProcessButtonDELETE",
+         "ProcessStatusButtons",
+         "ProcessButtonCONTRACTOR_SELECTED",
+         "ProcessButtonVERIFYING_AND_REQUESTED",
+         "ProcessButtonVERIFYING",
+         "ProcessButtonREQUESTED",
+         "ProcessButtonCLARIFICATION",
+         "ProcessButtonCONFIRMED_BY_CONTRACTOR",
+         "ProcessButtonREJECTED_BY_CONTRACTOR",
+         "ProcessButtonCONFIRMED_BY_CLIENT",
+         "ProcessButtonREJECTED_BY_CLIENT",
+         "ProcessButtonPRODUCTION",
+         "ProcessButtonDELIVERY",
+         "ProcessButtonCOMPLETED",
+         "ProcessButtonREPROJECTButton"
+       ],
+       "paths": [
+         "updateProcess",
+         "updateProcessFunction",
+         "updateProject",
+         "getContractors",
+         "saveProjects",
+         "verifyProject",
+         "sendProject",
+         "createProcessID",
+         "createProjectID",
+         "statusButtonRequest",
+         "checkModel",
+         "cloneProcesses"
+       ]
+     },
+     {
+       "permission": {
+         "context": "processes",
+         "permission": "delete"
+       },
+       "elements": [
+         "ProjectDelete",
+         "ProcessDelete",
+         "ProcessDeleteService",
+         "ProjectsButtonDeleteSelected",
+         "ProjectButtonDelete",
+         "ProcessButtonDelete"
+       ],
+       "paths": [
+         "deleteProcesses",
+         "deleteProjects",
+         "deleteFile",
+         "deleteModel",
+         "statusButtonRequest"
+       ]
+     },
+     {
+       "permission": {
+         "context": "orga",
+         "permission": "delete"
+       },
+       "elements": ["OrganizationButtonDelete"],
+       "paths": ["deleteOrganization"]
+     },
+     {
+       "permission": {
+         "context": "orga",
+         "permission": "edit"
+       },
+       "elements": [
+         "OrganizationInvitation",
+         "OrganizationButtonEditOrga",
+         "OrganizationButtonEditUser",
+         "OrganizationButtonDeleteUser",
+         "OrganizationButtonCreateRole",
+         "OrganizationButtonEditRole",
+         "OrganizationButtonDeleteRole"
+       ],
+       "paths": [
+         "organizationsSetPermissionsForRole",
+         "organizationsDeleteRole",
+         "organizationsEditRole",
+         "organizationsRemoveRole",
+         "organizationsAssignRole",
+         "organizationsCreateRole",
+         "organizationsDeleteUser",
+         "organizationsAddUser",
+         "organizationsGetInviteLink",
+         "updateDetailsOfOrganization",
+         "organizationsFetchInvitees",
+         "organizationsDeleteInvite"
+       ]
+     },
+     {
+       "permission": {
+         "context": "orga",
+         "permission": "read"
+       },
+       "elements": [
+         "Organization",
+         "HomeAuthorizedOrganization",
+         "HomeOrgaResources",
+         "OrganizationRoles"
+       ],
+       "paths": [
+         "organizationsGetPermissionsForRole",
+         "organizationsGetPermissions",
+         "organizationsGetRoles",
+         "organizationsFetchUsers"
+       ]
+     },
+     {
+       "permission": {
+         "context": "resources",
+         "permission": "read"
+       },
+       "elements": ["Resources", "HomeAuthorizedResources"],
+       "paths": [
+         "orga_getGraph",
+         "orga_getResources",
+         "orga_getNodes",
+         "orga_getNodeViaID",
+         "orga_getAssociatedResources",
+         "orga_getNeighbors",
+         "orga_getRequestsForAdditions"
+       ]
+     },
+     {
+       "permission": {
+         "context": "resources",
+         "permission": "edit"
+       },
+       "elements": [
+         "ResourcesMaterialsForm",
+         "ResourcesPrintersAdd",
+         "ResourcesButtonAddMaterial",
+         "ResourcesButtonAddPrinter"
+       ],
+       "paths": [
+         "orga_createNode",
+         "orga_updateNode",
+         "orga_deleteNode",
+         "orga_addEdgesToOrga",
+         "orga_addEdgeForOrga",
+         "orga_removeEdgeToOrga",
+         "orga_removeEdge",
+         "orga_removeAll",
+         "orga_createOrUpdateAndLinkNodes",
+         "orga_makeRequestForAdditions"
+       ]
+     }
    ]
-}
+ }
+ 

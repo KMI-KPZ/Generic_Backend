@@ -17,11 +17,12 @@ done
 
 if [ "$MODE" = "local_container" ]; then
     echo "Starting services and backend in local container"
-    docker-compose -p local-dev -f docker-local-dev-services.yml -f docker-local-dev-container-backend.yml up -d --build backend
+    docker compose --env-file .env.local_container -p semperki-local-dev -f docker-local-dev-services.yml -f docker-local-dev-container-backend.yml up -d --no-deps --build backend
+    docker compose --env-file .env.local_container -p semperki-local-dev -f docker-local-dev-services.yml -f docker-local-dev-container-backend.yml up -d
     echo "Local containers started"
 elif [ "$MODE" = "local" ]; then
     echo "Starting local services, you can use "
-    docker-compose -p local-dev -f docker-local-dev-services.yml up -d
+    docker compose --env-file .env.local -p semperki-local-dev -f docker-local-dev-services.yml up -d
     echo "Local started"
 else
     echo "Error: Wrong mode. Please use -m 'local_container' or 'local'"

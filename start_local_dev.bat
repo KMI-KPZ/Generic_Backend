@@ -31,7 +31,7 @@ if "%MODE%" == "local_container" (
     echo Local containers started
 ) else if "%MODE%" == "local" (
     echo Starting local services
-    docker-compose -p local-dev -f docker-local-dev-services.yml up -d
+    docker compose --env-file .env.local -p semperki-local-dev -f docker-local-dev-services.yml up -d
     echo Local started
 )
 EXIT /B 0

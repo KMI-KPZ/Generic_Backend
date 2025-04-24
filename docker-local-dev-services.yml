@@ -43,7 +43,6 @@ services:
     container_name: minio-aws
     volumes:
       - ./minio/data:/data
-      - ./minio/config:/root/.minio
       - ./docker/docker-service-minio-start.sh:/usr/local/bin/docker-service-minio-start.sh
     env_file:
       - .env.local_container

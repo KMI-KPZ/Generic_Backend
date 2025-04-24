@@ -44,7 +44,7 @@ class RedisConnection():
             return error
         
     #######################################################
-    def addContentJSON(self, key, content, expire=False):
+    def addContentJSON(self, key, content, expire=True):
         """
         Save a key and its content in redis.
 
@@ -60,7 +60,7 @@ class RedisConnection():
         try:
             self.redis_instance.set(key, json.dumps(content))
             if expire:
-                self.redis_instance.expire(key, 86400) # 24 hours until deletion of the file
+                self.redis_instance.expire(key, 86400) # 24 hours until deletion of the key
             return True
         except (Exception) as error:
             logger.error(f'could not add content to redis: {str(error)}')
