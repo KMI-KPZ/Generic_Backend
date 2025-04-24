@@ -108,7 +108,11 @@ class ManageS3():
                 fileToBeUploaded = crypto.encryptFileWithAES(self.aesEncryptionKey, file) # encrypt file for remote AWS
         response = self.s3_client.upload_fileobj(fileToBeUploaded, self.bucketName, fileKey)
         if isPublicFile:
-            self.s3_client.put_object_acl(ACL='public-read', Bucket=self.bucketName, Key=fileKey)
+            try:
+                self.s3_client.put_object_acl(ACL='public-read', Bucket=self.bucketName, Key=fileKey)
+            except Exception as e:
+                logging.warning(f"Error while setting ACL for file {fileKey}: {str(e)}")
+                # let it continue anyway
         # TODO if response...
 
         return True
@@ -276,7 +280,7 @@ class ManageS3():
 
 ##########################################################
 
-manageLocalS3 = ManageS3(settings.AES_ENCRYPTION_KEY,'us-east-1','files',settings.LOCALSTACK_ENDPOINT, settings.LOCALSTACK_ACCESS_KEY, settings.LOCALSTACK_SECRET, True, "")
-manageRemoteS3 = ManageS3(settings.AES_ENCRYPTION_KEY,settings.AWS_LOCATION, settings.AWS_BUCKET_NAME, f"https://{settings.AWS_BUCKET_NAME}.{settings.AWS_REGION_NAME}.{settings.AWS_S3_ENDPOINT_URL}", settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, False, f"https://{settings.AWS_BUCKET_NAME}.{settings.AWS_REGION_NAME}.{settings.AWS_CDN_ENDPOINT}/")
-manageStaticsS3 = ManageS3(settings.AES_ENCRYPTION_KEY,settings.AWS_STATICS_LOCATION, settings.AWS_STATICS_BUCKET_NAME, f"https://{settings.AWS_STATICS_LOCATION}.{settings.AWS_REGION_NAME}.{settings.AWS_S3_ENDPOINT_URL}", settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, False, f"https://{settings.AWS_STATICS_LOCATION}.{settings.AWS_REGION_NAME}.{settings.AWS_CDN_ENDPOINT}/")
-manageRemoteS3Buckets = ManageS3(settings.AES_ENCRYPTION_KEY,settings.AWS_LOCATION, settings.AWS_BUCKET_NAME, f"https://{settings.AWS_REGION_NAME}.{settings.AWS_S3_ENDPOINT_URL}", settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, False, f"https://{settings.AWS_BUCKET_NAME}.{settings.AWS_REGION_NAME}.{settings.AWS_CDN_ENDPOINT}/")
+manageLocalS3 = ManageS3(settings.AES_ENCRYPTION_KEY,'us-east-1','files',settings.S3_LOCAL_ENDPOINT, settings.S3_LOCAL_ACCESS_KEY, settings.S3_LOCAL_SECRET, True, "")
+manageRemoteS3 = ManageS3(settings.AES_ENCRYPTION_KEY,settings.S3_LOCATION, settings.S3_BUCKET_NAME, settings.S3_ENDPOINT_COMPLETE_URL, settings.S3_ACCESS_KEY_ID, settings.S3_SECRET_ACCESS_KEY, False, settings.S3_ENDPOINT_COMPLETE_CDN_URL)
+manageStaticsS3 = ManageS3(settings.AES_ENCRYPTION_KEY,settings.S3_STATICS_LOCATION, settings.S3_STATICS_BUCKET_NAME, settings.S3_STATIC_ENDPOINT_COMPLETE_URL, settings.S3_ACCESS_KEY_ID, settings.S3_SECRET_ACCESS_KEY, False, settings.S3_STATIC_ENDPOINT_COMPLETE_CDN_URL)
+manageRemoteS3Buckets = ManageS3(settings.AES_ENCRYPTION_KEY,settings.S3_LOCATION, settings.S3_BUCKET_NAME, settings.S3_ENDPOINT_URL, settings.S3_ACCESS_KEY_ID, settings.S3_SECRET_ACCESS_KEY, False, settings.S3_ENDPOINT_COMPLETE_CDN_URL)

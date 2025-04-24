@@ -7,7 +7,6 @@ If you want a good Style Guide for Python, please refer to: [this](https://peps.
 - [Code Style Guide for the generic backend](#code-style-guide-for-the-generic-backend)
   - [Table of content](#table-of-content)
   - [General](#general)
-  - [Folder structure](#folder-structure)
   - [File structure](#file-structure)
   - [Class structure](#class-structure)
   - [Function structure](#function-structure)
@@ -18,7 +17,7 @@ If you want a good Style Guide for Python, please refer to: [this](https://peps.
 
 ## General
 We use [Camel case](https://en.wikipedia.org/wiki/Camel_case) for almost everything.
-
+<!-- 
 ## Folder structure
 - `backend`: Contains docker files, .env files and files necessary for git.
   - `.vscode`: Contains the settings for the local debug configuration
@@ -35,7 +34,7 @@ We use [Camel case](https://en.wikipedia.org/wiki/Camel_case) for almost everyth
   - `doc`: Documentation, see [Create Documentation](#create-documentation).
   - `logs`: Log files, see [Logging](#logging)
   - `postgres`: Contains the database(s) for the postgres container
-  - `redis`: Contains snapshots of redis
+  - `redis`: Contains snapshots of redis -->
 
 The `code_General` folder is the one with mostly generic code usable by all (future) web-apps.
 In the file `main/settings/base.py`, the `INSTALLED_APPS` array must contain the paths of the other apps like `code_General` and those developed by you to be usable in django.
@@ -44,26 +43,27 @@ In the file `main/settings/base.py`, the `INSTALLED_APPS` array must contain the
 Every file should start with a header like this:
 ```
 """
-Part of ... software
+Part of Semper-KI software
 
-<Your Name> <Year>
+Silvio Weging 2023
 
-Contains: ?
+Contains: Handlers using simulation to check the orders
+
 """
 ```
 
 Followed by all the imports. The order of those should be:
 python, django, packages, local files of the backend, logger
-Where local files of that module are imported via `.` and those of other module via `<modulename>.`. Imports must be hierarchical! That means imports from files inside `code_General` are allowed but no stuff from deriving code into `code_General`. This avoids spaghetti code.
+Where local files of that module are imported via `.` and those of other module via `<modulename>.`. Imports must be hierarchical! That means imports from files inside `Generic_Backend/code_General` are allowed but no stuff from `code_SemperKI`. You can import stuff from `Generic_Backend/code_General` in `code_SemperKI` though. This avoids spaghetti code.
 ```
 import json, logging
 from django.conf import settings
 
 from channels.layers import get_channel_layer
 
-from ..utilities import basics
+from Generic_Backend.code_General.connections import redis
 
-from code_General.connections import redis
+from ..utilities import basics
 
 logger = logging.getLogger("logToFile")
 ################################################################################################
@@ -81,7 +81,7 @@ def updateOrderCollection(request):
     ...
 ``` 
 
-It is recommended to place functions which are used inside the same file as helper functions at the top of the file. Then functions which use GET, followed by those who PATCH, PUT or POST and at the end those that DELETE. If these are inside a class then this structure recursively aplies to member functions as well.
+It is recommended to place functions which are used inside the same file as helper functions at the top of the file. Then handlers which use GET, followed by those who PATCH, PUT or POST and at the end those that DELETE. If these are inside a class then this structure recursively aplies to member functions as well.
 
 
 ## Class structure
@@ -93,10 +93,11 @@ class ManageQueries():
     Contains query from file as object
 
     """
-    savedQuery = None
+    savedQuery = None # static variable, can be changed from outside for every instance
 
     #######################################################
     def __init__(self, ...):
+        self.classVariable = None # Instance specific class variable
         ...
 
     #######################################################
@@ -114,6 +115,10 @@ Exceptions to this structure are Enum-Classes:
 ####################################################################################
 # Enum for updateOrder
 class EnumUpdates(enum.Enum):
+    """
+    This enum class is about something.
+
+    """
     status = 1
     chat = 2
     files = 3
@@ -127,8 +132,8 @@ Functions usually contain the visual barrier, some decorators that check paramet
 ```
 #######################################################
 @checkIfUserIsLoggedIn(json=True)
-@require_http_methods(["GET"])
 @checkIfRightsAreSufficient(json=True)
+@require_http_methods(["GET"])
 def getMissedEvents(request):
     """
     Show how many events (chat messages ...) were missed since last login.
@@ -146,7 +151,7 @@ If the type of a parameter and or the return type of the function is important, 
 def foo(param:type) -> retType:
     ...
 ```
-The docstring is structures as follows:
+The docstring is structured as follows:
 ```
 """
 Context
@@ -227,7 +232,7 @@ Writing to this log file in the code needs some preliminaries:
   ```
   import logging
   from datetime import datetime
-  from ..utilities.basics import Logging
+  from ..definitions import Logging
   logger = logging.getLogger("logToFile")
   ```
 - Then in any function the logger can be called with `logger.info(...)` where ... is a string with a certain structure
