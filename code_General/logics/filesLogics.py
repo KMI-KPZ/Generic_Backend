@@ -68,7 +68,7 @@ def logicForGenericUploadFiles(request):
                 filePath = userName+"/"+fileID
                 # generate preview
                 previewPath = ""
-                if settings.AWS_SECRET_ACCESS_KEY != "":
+                if settings.S3_SECRET_ACCESS_KEY != "":
                     previewPath = createAndStorePreview(file, nameOfFile, locale, filePath)
                     if isinstance(previewPath, Exception):
                         raise previewPath

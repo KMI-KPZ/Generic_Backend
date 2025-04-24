@@ -30,7 +30,7 @@ try:
             file.seek(0)
             basePath = storagePath+"_preview"+".jpg"
             remotePath = "public/previews/" + basePath
-            outPath = settings.STATIC_URL + "previews/" + basePath
+            outPath = settings.S3_STATIC_URL + "previews/" + basePath
             try:
                 pathToPreviewImage = ""
                 # TODO send this to another task since this can fail
