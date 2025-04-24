@@ -386,33 +386,30 @@ STORAGES = {
     "default":{
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "access_key": AWS_ACCESS_KEY_ID,
-            "secret_key": AWS_SECRET_ACCESS_KEY,
-            "bucket_name": AWS_BUCKET_NAME,
+            "access_key": S3_ACCESS_KEY_ID,
+            "secret_key": S3_SECRET_ACCESS_KEY,
+            "bucket_name": S3_BUCKET_NAME,
             "object_parameters": {'CacheControl': 'max-age=86400'},
             "default_acl": "private",
-            "location": AWS_LOCATION,
-            "region_name": AWS_REGION_NAME,
-            "endpoint_url": "https://"+ f'{AWS_REGION_NAME}{AWS_S3_ENDPOINT_URL}'
+            "location": S3_LOCATION,
+            "region_name": S3_REGION_NAME,
+            "endpoint_url": S3_ENDPOINT_URL
         }
     },
     "staticfiles": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
-            "access_key": AWS_ACCESS_KEY_ID,
-            "secret_key": AWS_SECRET_ACCESS_KEY,
-            "bucket_name": AWS_STATICS_BUCKET_NAME,
+            "access_key": S3_ACCESS_KEY_ID,
+            "secret_key": S3_SECRET_ACCESS_KEY,
+            "bucket_name": S3_STATICS_BUCKET_NAME,
             "object_parameters": {'CacheControl': 'max-age=86400'},
             "default_acl": "public-read",
-            "location": AWS_STATICS_LOCATION,
-            "region_name": AWS_REGION_NAME,
-            "endpoint_url": "https://"+f'{AWS_REGION_NAME}.{AWS_S3_ENDPOINT_URL}'
+            "location": S3_STATICS_LOCATION,
+            "region_name": S3_REGION_NAME,
+            "endpoint_url": S3_ENDPOINT_URL
         }
     }
 }
-
-
-STATIC_URL = f"https://{AWS_STATICS_BUCKET_NAME}.{AWS_REGION_NAME}.{AWS_CDN_ENDPOINT}/{AWS_STATICS_LOCATION}/public/"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

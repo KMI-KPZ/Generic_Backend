@@ -1,9 +1,188 @@
-# Generic Backend for everybody
+#  Generic Backend
 
-## Preliminaries
-Since this code is part of the Semper-KI platform, it has been written with this particular goal in mind. Nevertheless, stuff like file handling, oauth, and ID management are necessary for almost all platforms. Hence this repository. 
+## 📚 Table of Contents
 
-## Folder stucture
+- [Generic Backend](#generic-backend)
+  - [📚 Table of Contents](#-table-of-contents)
+  - [🔍 Project Overview](#-project-overview)
+    - [Short Description](#short-description)
+    - [Tech Stack](#tech-stack)
+  - [🚀 Getting Started](#-getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Environment Variables](#environment-variables)
+    - [Installation](#installation)
+    - [Running the Application](#running-the-application)
+      - [Windows](#windows)
+      - [Linux/Mac](#linuxmac)
+  - [🛠️ Development](#️-development)
+    - [Run Backend Locally (Without Docker)](#run-backend-locally-without-docker)
+      - [Prerequisites](#prerequisites-1)
+      - [Environment Variables](#environment-variables-1)
+      - [Installation](#installation-1)
+      - [Services](#services)
+      - [Database](#database)
+    - [Docker files](#docker-files)
+    - [🗃️ Folder structure](#️-folder-structure)
+    - [Documentation](#documentation)
+    - [Branch descriptions:](#branch-descriptions)
+  - [🌟 Best Practices](#-best-practices)
+    - [Linting and Formatting](#linting-and-formatting)
+    - [Recommended VSCode Extensions](#recommended-vscode-extensions)
+  - [📜 License](#-license)
+
+
+## 🔍 Project Overview
+
+### Short Description
+
+The Generic Backend is the generic part of the Semper-KI platform where users can submit their 3D printing requirements and find suitable service providers. 
+It can be used as a baseline for other django-based backends since it includes multiple parts that almost every backend needs at some point.
+
+
+### Tech Stack
+
+- **Language**: Python 3.11
+- **Backend**: Django, Django REST Framework, Channels
+- **Auth & Security**: Authlib
+- **Database**: PostgreSQL
+- **Caching**: Redis
+- **Task Queue**: Celery (Redis as broker)
+- **Storage**: MinIO, S3 compatible
+- **API Documentation**: Swagger UI (DRF Spectacular)
+- **Testing & Debugging**: pytest, Django Test Framework
+- **Deployment**: Gunicorn, Uvicorn, Nginx
+- **Containerization**: Docker
+- **Code Quality**: Pylint
+
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed on your machine:
+
+- `Docker`: Latest version
+- (`Python`: 3.11)
+
+### Environment Variables
+Make sure you have the following `.env` files
+- `.env.local_container`: For local development with Docker 
+- `.env.staging`: For a deployed staging environment on a server
+- `.env.production`: For a deployed production environment on a server
+
+
+- If you don't have any .env file:
+  - Ask someone who does on your team
+  - Create one yourself based on the .env template `exampleEnv.txt`
+
+### Installation
+
+Clone the repository:
+
+```bash
+git clone git@github.com:KMI-KPZ/Generic_Backend.git
+cd Generic_Backend
+```
+
+
+Optional:
+- Install packages to your local machine
+```
+python -m pip install -r requirements.txt
+```
+
+
+### Running the Application
+To run the application, you can use our `docker compose` starting script in the root of the project.
+The Script starts both the services and the backend inside Docker containers.
+
+#### Windows
+```
+start_local_dev.bat -m local_container
+```
+
+#### Linux/Mac
+1. Make the script executable:
+```
+chmod +x start_local_dev.sh
+```
+2. Run the script
+```
+./start_local_dev.sh -m local_container
+```
+
+> **Note:**  
+> The backend container supports hot reloading — changes to files are reflected automatically after saving.  
+> In debug mode, the current request handler must complete before the worker restarts.  
+> There may be a slight delay before the changes take effect, but the logs will indicate when the reload occurs.
+
+
+## 🛠️ Development
+
+
+### Run Backend Locally (Without Docker)
+#### Prerequisites
+
+Make sure you have the following installed on your machine:
+
+- `Docker`: Latest version
+- `Python`: 3.11
+
+#### Environment Variables
+Make sure you have the following `.env` files
+- `.env.dev`: For local debugging via VS Code
+- `.env.local`: For local development of the backend without docker (services always run inside docker)
+
+#### Installation
+Follow installation in [Getting Started](#-Getting-Started) (clone project and install submodules)
+
+- Install packages to your local machine
+```
+python -m pip install -r requirements.txt
+```
+
+#### Services
+- Run the services in Docker containers:
+
+```bash
+# Windows
+start_local_dev.bat -m local
+
+# Linux / macOS
+chmod +x start_local_dev.sh
+./start_local_dev.sh -m local
+```
+
+#### Database
+1. Create the database:
+```
+python manage.py create_db --env local
+```
+2. Migrate the database to the latest state:
+```
+python manage.py migrate --env local
+```
+3. Run the backend locally:
+```
+python manage.py runserver --env local
+```
+
+
+### Docker files
+There are a couple of docker and docker-compose files in the root folder. 
+Regarding the docker files:
+- `Dockerfile`: Used by local docker-compose files, uses caching for faster builds
+- `Dockerfile.Server`:  Used for compose files that run on a server (no caching for example)
+
+As for the compose files:
+- `docker-local-dev-container-backend.yml`: For the backend container when running in local_container mode
+- `docker-local-dev-services.yml`: Every other container like redis, postgres and so on for local use
+- `docker-compose.test.yml`: For running the tests, can be called via docker-compose up directly, usable by GitHub Actions
+- `docker-compose.staging.yml`: Used on the server for staging
+- `docker-compose.production.yml`: Same as above albeit for production
+
+
+### 🗃️ Folder structure
 - `.`: The main folder contains the manage.py file of django and docker files as well as the .env files
   - `.devcontainer`: Contains the json needed for running the service containers together with the debug container
   - `.vscode`: Everything necessary to run the debug-mode of VS Code
@@ -32,70 +211,34 @@ Since this code is part of the Semper-KI platform, it has been written with this
   - `redis`: Folder that holds snapshots of redis
   - `run`: Run scripts
 
-## Environments
-In order to get this working, you'll need an environment file (so called `env`-file) for your particular software. You can generate an empty .env file with ```python manage.py generate_env``` (scroll down a bit). The output should be copied into a file lying in your project root folder. You could also just use the `exampleEnv.txt` template and then fill in your specific keys.
+### Documentation
+If backend is running: 
+- Project Documentation: Available at [`http://127.0.0.1:8000/private/doc`](http://127.0.0.1:8000/private/doc)
+- Swagger UI (API reference): Available at [`http://127.0.0.1:8000/public/api/schema/swagger-ui/`](http://127.0.0.1:8000/public/api/schema/swagger-ui/)
 
-We use the following services:
 
-Local:
-- postgres as database
-- pgadmin to look into the database
-- redis as key-value store
-- minio as a local S3 compatible cloud
+### Branch descriptions:
+- **dev**: Where all branches derive from and will be pushed to
+- **main**: publish/forkable branch, only pull requests from dev go here
 
-Remote:
-- Digital Ocean Spaces as remote S3 compatible cloud storage
-- Auth0 for ID Management
-- CMEM for ontology stuff (not necessary for this code)
-- The InfAI E-Mail provider
+## 🌟 Best Practices
+Please refer to the [Code style guide](./CodeStyle.md).
 
-There will probably be more keys printed than you need, just leave them empty, delete them or use some dummy string.
+### Linting and Formatting
 
-After you filled in the necessary details, create five .env files in the root directory of this code: `.env.dev`, `.env.local`, `.env.local_container`, `.env.production`, `.env.staging` and copy these details in there. Change internal connections hosts (e.g. database, redis) as well as the ENV_TOKEN to the respective environment to see which env file is being used in outputs.
-These will then be used when running the containers or locally. `.env.dev` for example will be used if you debug via VS Code. If only the docker containers are of interest, `.env.local_container` is used. See the next section how to install and launch it.
+A `.pylintrc` configuration file is located in the main folder and can be used with the **Pylint** extension in VS Code.
+This ensures consistent linting across the project.
 
-## Installation for dev purposes
-(hint: on windows use the .bat version on linux the .sh version)
+### Recommended VSCode Extensions
 
-- check, that you have at least Python 3.11 installed (via Terminal/Powershell and `python --version`) and correctly linked in your system environment variables (see: https://realpython.com/add-python-to-path/)
-- for clean initialization check that the `postgres` folder is empty as well as `redis` folder (if they already exist, if not they should be generated by the containers)
-- create the folder `logs` if it doesn't exist in the root directory of the project, as well as the files `info.log`, `performance.log` and `ip_log.log` inside it. Open your WSL/Terminal and call `sudo chown -R 5678 logs/` to give the docker container the rights to edit them
-- To run the backend with local installations of all packages:
-  - call ```python -m pip install -r requirements.txt``` to install packages to your local machine 
-  - call ```start_local_dev.bat -m local ``` to build and run only the containers with background connections (database, redis, ...)
-  - call ```python manage.py create_db --env local``` to create the database named in .env.local (which should be the same as in .env.local_container) 
-  - call ```python manage.py migrate --env local``` to migrate the database to the latest state 
-  - now you can call ```python manage.py runserver --env local``` to start the backend locally and edit 
-  - or use VS Code and RUN->Start Debugging but beforehand, stop all containers with ```stop_local_dev.bat```
-- To just start the containers without installing anything aside from docker:
-  - launch the containerized version via ```start_local_dev.bat -m local_container```
-- It worked if http://127.0.0.1:8000 gives you a hint that there is nothing to see there :D
+- Pylint
+- Pip Manager
+- Docker
 
-INFO: The documentation can be seen via the private/doc path
+## 📜 License
 
-<!-- ## Debug logging
-In order to have debug output in the console, in your .env.[MODE] file set ```DJANGO_LOG_LEVEL=DEBUG```.
-To log your messages use ```getLogger("django_debug").debug("your message")``` -->
+This project is licensed under the [MIT License](https://mit-license.org/).
 
-## Docker files
-There are a couple of docker and docker-compose files in the root folder. 
-Regarding the docker files:
-- `Dockerfile`: Used by local docker-compose files, uses caching for faster builds
-- `Dockerfile.Server`:  Used for compose files that run on a server (no caching for example)
+You are free to use, modify, and distribute this software, provided that you comply with the terms of the license.
 
-As for the compose files:
-- `docker-local-dev-container-backend.yml`: For the backend container when running in local_container mode
-- `docker-local-dev-services.yml`: Every other container like redis, postgres and so on
-- `docker-compose.test.yml`: For running the tests, can be called via docker-compose up directly
-- `docker-compose.staging.yml`: Used on the server for staging
-- `docker-compose.production.yml`: Same as above albeit for production
-
-## Optional commands
-- ```python manage.py generate_env``` to output an example env file with default values, use with "-p --env <environment>" to get see the values currently used in django
-- ```python manage.py create_db --env <environment>``` to create the database named in <environment> - which for now should be "local"
-- ```python manage.py check --env <environment>``` to check if the parameters are set, the database can be reached, redis can be reached
-- ```python manage.py mail --env <environment> email-address``` to send a test mail to the email-address
-
-## Good to know
-- The Backend Container supports hot reloading, which means that editing files and saving changes will be reflected instantly. For the Debug Version, the current handler must be finished, then the worker will restart after saving the changes. The Container is a bit delayed but the logs show if and when it happened.
-
+For more details, see the [LICENSE](./LICENSE) file in this repository.
