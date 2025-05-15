@@ -2,6 +2,7 @@
 Generic Backend
 
 Silvio Weging 2023
+Lukas Hein 2024
 
 Contains: Handling of admin view requests
 

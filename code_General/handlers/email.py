@@ -2,6 +2,7 @@
 Generic Backend
 
 Thomas Skodawessely 2023
+Lukas Hein 2024
 
 Contains: handlers for sending emails out of different front end forms
 """
