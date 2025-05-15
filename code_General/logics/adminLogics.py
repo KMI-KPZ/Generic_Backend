@@ -2,6 +2,7 @@
 Generic Backend
 
 Silvio Weging 2024
+Lukas Hein 2024
 
 Contains: Logic for Admin
 """
